@@ -1,0 +1,38 @@
+[
+    {
+        "Role": "System Admin",
+        "Privileges": [
+            "CareplanCategory.Create",
+            "CareplanCategory.Search",
+            "CareplanCategory.GetById",
+            "CareplanCategory.Update",
+            "CareplanCategory.Delete",
+
+            "CarePlan.Create",
+            "CarePlan.Search",
+            "CarePlan.GetById",
+            "CarePlan.Update",
+            "CarePlan.Delete"
+        ]
+    },
+    {
+        "Role": "Moderator",
+        "Privileges": [
+            "CareplanCategory.Create",
+            "CareplanCategory.Search",
+            "CareplanCategory.GetById",
+            "CareplanCategory.Update",
+            "CareplanCategory.Delete",
+
+            "CarePlan.Create",
+            "CarePlan.Search",
+            "CarePlan.GetById",
+            "CarePlan.Update",
+            "CarePlan.Delete"
+        ]
+    },
+    {
+        "Role": "Patient",
+        "Privileges": []
+    }
+]

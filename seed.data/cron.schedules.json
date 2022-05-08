@@ -1,0 +1,18 @@
+{
+    "local": {
+        "FileCleanup": "*/30 * * * *",
+        "DailyReminder": "*/15 * * * *"
+    },
+    "development": {
+        "FileCleanup": "*/30 * * * *",
+        "DailyReminder": "*/15 * * * *"
+    },
+    "uat": {
+        "FileCleanup": "*/30 * * * *",
+        "DailyReminder": "*/15 * * * *"
+    },
+    "production": {
+        "FileCleanup": "*/30 * * * *",
+        "DailyReminder": "*/15 * * * *"
+    }
+}

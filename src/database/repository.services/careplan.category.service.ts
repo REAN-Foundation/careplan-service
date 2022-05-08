@@ -1,0 +1,138 @@
+import { Model as CareplanCategory } from '../models/CareplanCategory';
+import { ErrorHandler } from '../../common/error.handler';
+import { CareplanCategoryCreateModel } from '../../domain.types/careplan.category.domain.types';
+import { CareplanCategoryDto, CareplanCategorySearchFilters, CareplanCategorySearchResults } from '../../domain.types/careplan.category.domain.types';
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+export class CareplanCategoryService {
+
+    create = async (createModel: CareplanCategoryCreateModel): Promise < CareplanCategoryDto > => {
+        try {
+            var record = await CareplanCategory.create(createModel);
+            return await exports.getById(record.id);
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to create careplan category!', error);
+        }
+    }
+
+    getById = async (id): Promise < CareplanCategoryDto > => {
+        try {
+            var record = await CareplanCategory.findOne({
+                where : {
+                    id : id
+                },
+                include : [
+
+                ]
+            });
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve careplan category!', error);
+        }
+    }
+
+    exists = async (id): Promise < boolean > => {
+        try {
+            const record = await CareplanCategory.findByPk(id);
+            return record !== null;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of careplan category!', error);
+        }
+    }
+
+    search = async (filters: CareplanCategorySearchFilters): Promise < CareplanCategorySearchResults > => {
+        try {
+
+            var search = {
+                where   : {},
+                include : []
+            };
+
+            if (filters.Type) {
+                search.where['Type'] = filters.Type;
+            }
+
+            //Sorting
+            let orderByColumn = 'CreatedAt';
+            if (filters.OrderBy) {
+                orderByColumn = filters.OrderBy;
+            }
+            let order = 'ASC';
+            if (filters.Order === 'descending') {
+                order = 'DESC';
+            }
+            search['order'] = [
+                [orderByColumn, order]
+            ];
+
+            if (filters.OrderBy) {
+                //In case the order-by attribute is on associated model
+                //search['order'] = [[ '<AssociatedModel>', filters.OrderBy, order]];
+            }
+
+            //Pagination
+            let limit = 25;
+            if (filters.ItemsPerPage) {
+                limit = filters.ItemsPerPage;
+            }
+            let offset = 0;
+            let pageIndex = 0;
+            if (filters.PageIndex) {
+                pageIndex = filters.PageIndex < 0 ? 0 : filters.PageIndex;
+                offset = pageIndex * limit;
+            }
+            search['limit'] = limit;
+            search['offset'] = offset;
+
+            const foundResults = await CareplanCategory.findAndCountAll(search);
+            const searchResults: CareplanCategorySearchResults = {
+                TotalCount     : foundResults.count,
+                RetrievedCount : foundResults.rows.length,
+                PageIndex      : pageIndex,
+                ItemsPerPage   : limit,
+                Order          : order === 'DESC' ? 'descending' : 'ascending',
+                OrderedBy      : orderByColumn,
+                Items          : foundResults.rows,
+            };
+
+            return searchResults;
+
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to search careplan category records!', error);
+        }
+    }
+
+    update = async (id, updateModel) => {
+        try {
+            if (Object.keys(updateModel).length > 0) {
+                var res = await CareplanCategory.update(updateModel, {
+                    where : {
+                        id : id
+                    }
+                });
+                if (res.length !== 1) {
+                    throw new Error('Unable to update careplan category!');
+                }
+            }
+            return await exports.getById(id);
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to update careplan category!', error);
+        }
+    }
+
+    delete = async (id) => {
+        try {
+            var result = await CareplanCategory.destroy({
+                where : {
+                    id : id
+                }
+            });
+            return result === 1;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to delete careplan category!', error);
+        }
+    }
+
+}
+///////////////////////////////////////////////////////////////////////////////////////////////
