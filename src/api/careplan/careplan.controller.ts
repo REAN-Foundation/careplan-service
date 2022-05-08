@@ -20,7 +20,7 @@ export class CarePlanController extends BaseController{
 
     create = async (request: express.Request, response: express.Response): Promise <void> => {
         try {
-            await this.setContext('CarePlan.Create', request, response);
+            await this.setContext('Careplan.Create', request, response);
             const record = await this._delegate.create(request.body);
             const message = 'Care plan added successfully!';
             ResponseHandler.success(request, response, message, 201, record);
@@ -31,7 +31,7 @@ export class CarePlanController extends BaseController{
 
     getById = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.setContext('CarePlan.GetById', request, response);
+            await this.setContext('Careplan.GetById', request, response);
             const record = await this._delegate.getById(request.params.id);
             const message = 'Care plan retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, record);
@@ -42,7 +42,7 @@ export class CarePlanController extends BaseController{
 
     search = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.setContext('CarePlan.Search', request, response);
+            await this.setContext('Careplan.Search', request, response);
             const searchResults = await this._delegate.search(request.query);
             const message = 'Care plan records retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, searchResults);
@@ -53,7 +53,7 @@ export class CarePlanController extends BaseController{
 
     update = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.setContext('CarePlan.Update', request, response);
+            await this.setContext('Careplan.Update', request, response);
             const updatedRecord = await this._delegate.update(request.params.id, request.body);
             const message = 'Care plan updated successfully!';
             ResponseHandler.success(request, response, message, 200, updatedRecord);
@@ -64,7 +64,7 @@ export class CarePlanController extends BaseController{
 
     delete = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.setContext('CarePlan.Delete', request, response);
+            await this.setContext('Careplan.Delete', request, response);
             const result = await this._delegate.delete(request.params.id);
             const message = 'Care plan deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);

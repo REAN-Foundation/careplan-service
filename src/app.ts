@@ -10,6 +10,7 @@ import { Loader } from './startup/loader';
 import { Scheduler } from './startup/scheduler';
 import { DatabaseModelManager } from './database/database.model.manager';
 import { DatabaseConnector } from './database/database.connector';
+import { Seeder } from './startup/seeder';
 
 /////////////////////////////////////////////////////////////////////////
 
@@ -40,11 +41,12 @@ export default class Application {
 
     warmUp = async () => {
         try {
+            ConfigurationManager.loadConfigurations();
             await this.setupDatabaseConnection();
             await Loader.init();
             await this.setupMiddlewares();
             await this._router.init();
-            await Loader.Seeder.seed();
+            await Seeder.seed();
             await Scheduler.instance().schedule();
         }
         catch (error) {
@@ -65,7 +67,7 @@ export default class Application {
             await DatabaseModelManager.dropAll();
         }
     
-        DatabaseModelManager.setupAssociations(); //set associations
+        await DatabaseModelManager.setupAssociations(); //set associations
     
         await connection.sequelize.sync({ alter: true });
     

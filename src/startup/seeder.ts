@@ -2,7 +2,6 @@
 // import path from "path";
 import { Helper } from "../common/helper";
 import { Logger } from "../common/logger";
-import { injectable } from "tsyringe";
 // import * as RolePrivilegesList from '../../seed.data/role.privileges.json';
 // import { Helper } from "../common/helper";
 // import { Logger } from "../common/logger";
@@ -14,7 +13,6 @@ import { injectable } from "tsyringe";
 
 //////////////////////////////////////////////////////////////////////////////
 
-@injectable()
 export class Seeder {
 
     // _apiClientService: ApiClientService = null;
@@ -32,9 +30,9 @@ export class Seeder {
     //     this._fileResourceService = Loader.container.resolve(FileResourceService);
     // }
 
-    public seed = async (): Promise<void> => {
+    public static seed = async (): Promise<void> => {
         try {
-            await this.createTempFolders();
+            await Seeder.createTempFolders();
             // await this.seedDefaultRoles();
             // await this.seedRolePrivileges();
             // await this.seedInternalClients();
@@ -44,7 +42,7 @@ export class Seeder {
         }
     };
 
-    private createTempFolders = async () => {
+    private static createTempFolders = async () => {
         await Helper.createTempDownloadFolder();
         await Helper.createTempUploadFolder();
     };

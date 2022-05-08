@@ -1,4 +1,4 @@
-import { Model as RolePrivilege } from '../models/RolePrivilege';
+import { RolePrivilegeModel } from '../models/role.privilege.model';
 import { ErrorHandler } from '../../common/error.handler';
 import { Op } from 'sequelize';
 
@@ -6,9 +6,11 @@ import { Op } from 'sequelize';
 
 export class RolePrivilegeService {
 
+    RolePrivilege = RolePrivilegeModel.Model();
+
     create = async (createModel) => {
         try {
-            return await RolePrivilege.create(createModel);
+            return await this.RolePrivilege.create(createModel);
         } catch (error) {
             ErrorHandler.throwDbAccessError('Unable to create role privilege!', error);
         }
@@ -16,7 +18,7 @@ export class RolePrivilegeService {
 
     getById = async (id) => {
         try {
-            return await RolePrivilege.findByPk(id);
+            return await this.RolePrivilege.findByPk(id);
         } catch (error) {
             ErrorHandler.throwDbAccessError('Unable to retrieve role privilege!', error);
         }
@@ -24,7 +26,7 @@ export class RolePrivilegeService {
 
     getPrivilegesForRole = async (roleId) => {
         try {
-            const rolePrivileges = await RolePrivilege.findAll({
+            const rolePrivileges = await this.RolePrivilege.findAll({
                 where : {
                     RoleId : roleId,
                 },
@@ -37,7 +39,7 @@ export class RolePrivilegeService {
 
     hasPrivilegeForRole = async (roleId, privilege) => {
         try {
-            const rolePrivileges = await RolePrivilege.findAll({
+            const rolePrivileges = await this.RolePrivilege.findAll({
                 where : {
                     RoleId    : roleId,
                     Privilege : { [Op.like]: '%' + privilege + '%' },

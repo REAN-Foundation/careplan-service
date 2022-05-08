@@ -38,8 +38,7 @@ export interface FileStorageConfig {
 
 export interface CommunicationConfig {
     SMSProvider              : SMSServiceProvider,
-    EmailProvider            : EmailServiceProvider,
-    InAppNotificationProvider: InAppNotificationServiceProvider
+    EmailProvider            : EmailServiceProvider
 }
 
 export interface TemporaryFoldersConfig {
@@ -66,18 +65,9 @@ export interface Configurations {
     SystemIdentifier    : string;
     BaseUrl             : string;
     Auth                : AuthConfig;
-    Database            : DatabaseConfig;
-    Ehr                 : EHRConfig;
     FileStorage         : FileStorageConfig;
     Communication       : CommunicationConfig;
     TemporaryFolders    : TemporaryFoldersConfig;
-    Careplans           : {
-        Enabled : boolean;
-        Provider: string;
-        Service : string;
-        Plans   : CareplanConfig[]
-    } [];
     MaxUploadFileSize   : number;
     JwtExpiresIn        : number;
-    FormServiceProviders: FormServiceProvider[];
 }

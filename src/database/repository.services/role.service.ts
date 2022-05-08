@@ -1,4 +1,4 @@
-import { Model as Role } from '../models/Role';
+import { RoleModel } from '../models/role.model';
 import { ErrorHandler } from '../../common/error.handler';
 import { Op } from 'sequelize';
 
@@ -6,9 +6,11 @@ import { Op } from 'sequelize';
 
 export class RoleService {
 
+    Role = RoleModel.Model();
+
     create = async (createModel) => {
         try {
-            return await Role.create(createModel);
+            return await this.Role.create(createModel);
         } catch (error) {
             ErrorHandler.throwDbAccessError('Unable to create role!', error);
         }
@@ -16,7 +18,7 @@ export class RoleService {
 
     getById = async (id) => {
         try {
-            return await Role.findByPk(id);
+            return await this.Role.findByPk(id);
         } catch (error) {
             ErrorHandler.throwDbAccessError('Unable to retrieve role!', error);
         }
@@ -24,7 +26,7 @@ export class RoleService {
 
     getByName = async (name) => {
         try {
-            return await Role.findOne({ where: { RoleName: { [Op.like]: '%' + name + '%' } } });
+            return await this.Role.findOne({ where: { RoleName: { [Op.like]: '%' + name + '%' } } });
         } catch (error) {
             ErrorHandler.throwDbAccessError('Unable to retrieve role!', error);
         }
@@ -32,7 +34,7 @@ export class RoleService {
 
     getAllRoles = async () => {
         try {
-            return await Role.findAll();
+            return await this.Role.findAll();
         } catch (error) {
             ErrorHandler.throwDbAccessError('Unable to retrieve role!', error);
         }
@@ -40,7 +42,7 @@ export class RoleService {
 
     delete = async (id) => {
         try {
-            var result = await Role.destroy({ where: { id: id } });
+            var result = await this.Role.destroy({ where: { id: id } });
             return result === 1;
         } catch (error) {
             ErrorHandler.throwDbAccessError('Unable to delete role!', error);

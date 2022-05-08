@@ -1,6 +1,6 @@
-import { CareplanModel } from '../models/Careplan';
-import { Model as CareplanCategory } from '../models/CareplanCategory';
-import { Model as User } from '../models/User';
+import { CareplanModel } from '../models/careplan.model';
+import { CareplanCategoryModel } from '../models/careplan.category.model';
+import { UserModel } from '../models/user.model';
 import { ErrorHandler } from '../../common/error.handler';
 import { CareplanCreateModel } from '../../domain.types/careplan.domain.types';
 import { CareplanDto, CareplanSearchFilters, CareplanSearchResults } from '../../domain.types/careplan.domain.types';
@@ -10,6 +10,10 @@ import { CareplanDto, CareplanSearchFilters, CareplanSearchResults } from '../..
 export class CareplanService {
 
     Careplan = CareplanModel.Model();
+
+    CareplanCategory = CareplanCategoryModel.Model();
+
+    User = UserModel.Model();
 
     create = async (createModel: CareplanCreateModel): Promise < CareplanDto > => {
         try {
@@ -27,12 +31,12 @@ export class CareplanService {
                     id : id
                 },
                 include : [{
-                    model    : CareplanCategory,
+                    model    : this.CareplanCategory,
                     required : false,
                     as       : 'Category',
                     //through: { attributes: [] }
                 }, {
-                    model    : User,
+                    model    : this.User,
                     required : false,
                     as       : 'OwnerUser',
                     //through: { attributes: [] }
@@ -85,7 +89,7 @@ export class CareplanService {
                 search.where['IsActive'] = filters.IsActive;
             }
             const includeCareplanCategoryAsCategory = {
-                model    : CareplanCategory,
+                model    : this.CareplanCategory,
                 required : false,
                 as       : 'Category',
                 where    : {}
@@ -95,7 +99,7 @@ export class CareplanService {
             //}
             search.include.push(includeCareplanCategoryAsCategory);
             const includeUserAsOwnerUser = {
-                model    : User,
+                model    : this.User,
                 required : false,
                 as       : 'OwnerUser',
                 where    : {}

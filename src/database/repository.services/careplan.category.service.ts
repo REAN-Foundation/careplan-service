@@ -1,4 +1,4 @@
-import { Model as CareplanCategory } from '../models/CareplanCategory';
+import { CareplanCategoryModel } from '../models/careplan.category.model';
 import { ErrorHandler } from '../../common/error.handler';
 import { CareplanCategoryCreateModel } from '../../domain.types/careplan.category.domain.types';
 import { CareplanCategoryDto, CareplanCategorySearchFilters, CareplanCategorySearchResults } from '../../domain.types/careplan.category.domain.types';
@@ -7,9 +7,11 @@ import { CareplanCategoryDto, CareplanCategorySearchFilters, CareplanCategorySea
 
 export class CareplanCategoryService {
 
+    CareplanCategory = CareplanCategoryModel.Model();
+
     create = async (createModel: CareplanCategoryCreateModel): Promise < CareplanCategoryDto > => {
         try {
-            var record = await CareplanCategory.create(createModel);
+            var record = await this.CareplanCategory.create(createModel);
             return await exports.getById(record.id);
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create careplan category!', error);
@@ -18,7 +20,7 @@ export class CareplanCategoryService {
 
     getById = async (id): Promise < CareplanCategoryDto > => {
         try {
-            var record = await CareplanCategory.findOne({
+            var record = await this.CareplanCategory.findOne({
                 where : {
                     id : id
                 },
@@ -34,7 +36,7 @@ export class CareplanCategoryService {
 
     exists = async (id): Promise < boolean > => {
         try {
-            const record = await CareplanCategory.findByPk(id);
+            const record = await this.CareplanCategory.findByPk(id);
             return record !== null;
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of careplan category!', error);
@@ -85,7 +87,7 @@ export class CareplanCategoryService {
             search['limit'] = limit;
             search['offset'] = offset;
 
-            const foundResults = await CareplanCategory.findAndCountAll(search);
+            const foundResults = await this.CareplanCategory.findAndCountAll(search);
             const searchResults: CareplanCategorySearchResults = {
                 TotalCount     : foundResults.count,
                 RetrievedCount : foundResults.rows.length,
@@ -106,7 +108,7 @@ export class CareplanCategoryService {
     update = async (id, updateModel) => {
         try {
             if (Object.keys(updateModel).length > 0) {
-                var res = await CareplanCategory.update(updateModel, {
+                var res = await this.CareplanCategory.update(updateModel, {
                     where : {
                         id : id
                     }
@@ -123,7 +125,7 @@ export class CareplanCategoryService {
 
     delete = async (id) => {
         try {
-            var result = await CareplanCategory.destroy({
+            var result = await this.CareplanCategory.destroy({
                 where : {
                     id : id
                 }

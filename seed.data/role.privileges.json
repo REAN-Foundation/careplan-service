@@ -8,11 +8,11 @@
             "CareplanCategory.Update",
             "CareplanCategory.Delete",
 
-            "CarePlan.Create",
-            "CarePlan.Search",
-            "CarePlan.GetById",
-            "CarePlan.Update",
-            "CarePlan.Delete"
+            "Careplan.Create",
+            "Careplan.Search",
+            "Careplan.GetById",
+            "Careplan.Update",
+            "Careplan.Delete"
         ]
     },
     {
@@ -24,11 +24,11 @@
             "CareplanCategory.Update",
             "CareplanCategory.Delete",
 
-            "CarePlan.Create",
-            "CarePlan.Search",
-            "CarePlan.GetById",
-            "CarePlan.Update",
-            "CarePlan.Delete"
+            "Careplan.Create",
+            "Careplan.Search",
+            "Careplan.GetById",
+            "Careplan.Update",
+            "Careplan.Delete"
         ]
     },
     {

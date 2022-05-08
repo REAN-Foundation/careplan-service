@@ -16,8 +16,6 @@ export class Loader {
     private static _authorizer: Authorizer = null;
 
     private static _authenticator: Authenticator = null;
-
-    private static _seeder: Seeder = null;
     
     private static _scheduler: Scheduler = Scheduler.instance();
 
@@ -31,10 +29,6 @@ export class Loader {
     
     public static get Authorizer() {
         return Loader._authorizer;
-    }
-
-    public static get Seeder() {
-        return Loader._seeder;
     }
 
     public static get Scheduler() {

@@ -83,16 +83,16 @@ export class CareplanModel {
                 paranoid        : true,
                 tableName       : CareplanModel.TableName,
             });
-    }
+    };
 
     static associate = (models) => {
-        models.CarePlan.belongsTo(models.CareplanCategory, {
+        models.Careplan.belongsTo(models.CareplanCategory, {
             sourceKey : 'CategoryId',
             targetKey : 'id',
             as        : 'Category',
         });
 
-        models.CarePlan.belongsTo(models.User, {
+        models.Careplan.belongsTo(models.User, {
             sourceKey : 'OwnerUserId',
             targetKey : 'id',
             as        : 'OwnerUser',

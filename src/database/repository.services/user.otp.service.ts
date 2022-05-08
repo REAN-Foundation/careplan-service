@@ -1,10 +1,12 @@
-import { Model as UserOtp } from '../models/UserOtp';
+import { UserOtpModel } from '../models/user.otp.model';
 import { ErrorHandler } from '../../common/error.handler';
 import { Op } from 'sequelize';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 export class UserOtpService {
+
+    UserOtp = UserOtpModel.Model();
 
     create = async (userId, purpose) => {
         try {
@@ -15,7 +17,7 @@ export class UserOtpService {
                 ValidFrom : new Date(),
                 ValidTill : new Date(Date.now() + 600 * 1000),
             };
-            return await UserOtp.create(otp);
+            return await this.UserOtp.create(otp);
         } catch (error) {
             ErrorHandler.throwDbAccessError('Unable to create otp!', error);
         }
@@ -23,7 +25,7 @@ export class UserOtpService {
 
     getLatestActiveOtp = async (userId) => {
         try {
-            const otps = await UserOtp.findAll({
+            const otps = await this.UserOtp.findAll({
                 where : {
                     UserId    : userId,
                     Validated : false,
@@ -42,7 +44,7 @@ export class UserOtpService {
 
     markAsUsed = async (id) => {
         try {
-            var otp = await UserOtp.findByPk(id);
+            var otp = await this.UserOtp.findByPk(id);
             otp.Validated = true;
             await otp.save();
         } catch (error) {

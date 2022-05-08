@@ -1,6 +1,6 @@
-import { Model as User } from '../models/User';
-import { Model as UserLoginSession } from '../models/UserLoginSession';
-import { Model as Role } from '../models/Role';
+import { UserModel } from '../models/user.model';
+import { UserLoginSessionModel } from '../models/user.login.session.model';
+import { RoleModel } from '../models/role.model';
 import { ErrorHandler } from '../../common/error.handler';
 import { Op } from 'sequelize';
 import { passwordStrength } from 'check-password-strength';
@@ -12,9 +12,15 @@ import { DurationType } from '../../domain.types/miscellaneous/time.types';
 
 export class UserService {
 
+    User = UserModel.Model();
+
+    UserLoginSession = UserLoginSessionModel.Model();
+
+    Role = RoleModel.Model();
+
     create = async (createModel) => {
         try {
-            var record = await User.create(createModel);
+            var record = await this.User.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create user!', error);
@@ -23,13 +29,13 @@ export class UserService {
 
     getById = async (id) => {
         try {
-            var record = await User.findOne({
+            var record = await this.User.findOne({
                 where : {
                     id : id
                 },
                 include : [
                     {
-                        model    : Role,
+                        model    : this.Role,
                         required : true,
                         as       : 'Role',
                         //through: { attributes: [] }
@@ -44,7 +50,7 @@ export class UserService {
 
     exists = async (id) => {
         try {
-            const record = await User.findByPk(id);
+            const record = await this.User.findByPk(id);
             return record !== null;
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of user!', error);
@@ -127,7 +133,7 @@ export class UserService {
             search['limit'] = limit;
             search['offset'] = offset;
 
-            const foundResults = await User.findAndCountAll(search);
+            const foundResults = await this.User.findAndCountAll(search);
             const searchResults = {
                 TotalCount     : foundResults.count,
                 RetrievedCount : foundResults.rows.length,
@@ -148,7 +154,7 @@ export class UserService {
     update = async (id, updateModel) => {
         try {
             if (Object.keys(updateModel).length > 0) {
-                var res = await User.update(updateModel, {
+                var res = await this.User.update(updateModel, {
                     where : {
                         id : id
                     }
@@ -165,7 +171,7 @@ export class UserService {
 
     delete = async (id) => {
         try {
-            var result = await User.destroy({
+            var result = await this.User.destroy({
                 where : {
                     id : id
                 }
@@ -178,7 +184,7 @@ export class UserService {
 
     getUserWithPhone = async (countryCode, phone) => {
         try {
-            const record = await User.findOne({
+            const record = await this.User.findOne({
                 where : {
                     CountryCode : countryCode,
                     Phone       : phone,
@@ -192,7 +198,7 @@ export class UserService {
 
     getUserWithEmail = async (email) => {
         try {
-            const record = await User.findOne({
+            const record = await this.User.findOne({
                 where : {
                     Email : email
                 }
@@ -205,7 +211,7 @@ export class UserService {
 
     getUserWithUserName = async (username) => {
         try {
-            const record = await User.findOne({
+            const record = await this.User.findOne({
                 where : {
                     UserName : username
                 }
@@ -249,13 +255,13 @@ export class UserService {
                 UserName : userName
             });
         }
-        const user = await User.findOne({
+        const user = await this.User.findOne({
             where : {
                 [Op.or] : filters
             }
         });
 
-        var role = await Role.findByPk(user.RoleId);
+        var role = await this.Role.findByPk(user.RoleId);
         user['Role'] = role;
 
         return user;
@@ -300,7 +306,7 @@ export class UserService {
         try {
             var now = new Date();
             var till = TimeHelper.addDuration(now, 3, DurationType.Day);
-            var record = await UserLoginSession.create({
+            var record = await this.UserLoginSession.create({
                 UserId    : userId,
                 IsActive  : true,
                 StartedAt : now,
@@ -314,7 +320,7 @@ export class UserService {
 
     invalidateUserLoginSession = async (sessionId) => {
         try {
-            var record = await UserLoginSession.findByPk(sessionId);
+            var record = await this.UserLoginSession.findByPk(sessionId);
             record.IsActive = false;
             await record.save();
             return record;
@@ -325,7 +331,7 @@ export class UserService {
 
     isValidUserLoginSession = async (sessionId) => {
         try {
-            var record = await UserLoginSession.findByPk(sessionId);
+            var record = await this.UserLoginSession.findByPk(sessionId);
             if (record == null) {
                 return false;
             }
@@ -343,7 +349,7 @@ export class UserService {
 
     resetPassword = async (userId, hashedPassword) => {
         try {
-            var res = await User.update(
+            var res = await this.User.update(
                 { Password: hashedPassword },
                 { where: { id: userId } }
             );

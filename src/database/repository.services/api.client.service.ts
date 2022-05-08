@@ -1,4 +1,4 @@
-import { Model as ApiClient } from '../models/ApiClient';
+import { ApiClientModel } from '../models/api.client.model';
 import { ApiClientDomainModel, ApiClientDto, ClientApiKeyDto } from '../../domain.types/api.client.domain.types';
 import { Logger } from '../../common/logger';
 import { ApiError } from '../../common/api.error';
@@ -8,6 +8,8 @@ import { Op } from 'sequelize';
 ///////////////////////////////////////////////////////////////////////
 
 export class ApiClientService {
+
+    ApiClient = ApiClientModel.Model();
 
     create = async (clientDomainModel: ApiClientDomainModel): Promise<ApiClientDto> => {
         try {
@@ -21,7 +23,7 @@ export class ApiClientService {
                 ValidFrom  : clientDomainModel.ValidFrom ?? null,
                 ValidTill  : clientDomainModel.ValidTill ?? null,
             };
-            const client = await ApiClient.create(entity);
+            const client = await this.ApiClient.create(entity);
             const dto = await this.toDto(client);
             return dto;
         } catch (error) {
@@ -32,7 +34,7 @@ export class ApiClientService {
 
     getById = async (id: string): Promise<ApiClientDto> => {
         try {
-            const client = await ApiClient.findByPk(id);
+            const client = await this.ApiClient.findByPk(id);
             const dto = await this.toDto(client);
             return dto;
         } catch (error) {
@@ -43,7 +45,7 @@ export class ApiClientService {
 
     getByClientCode = async (clientCode: string): Promise<ApiClientDto> =>{
         try {
-            const client = await ApiClient.findOne({
+            const client = await this.ApiClient.findOne({
                 where : {
                     ClientCode : clientCode
                 }
@@ -58,7 +60,7 @@ export class ApiClientService {
 
     getClientHashedPassword = async(id: string): Promise<string> => {
         try {
-            const client = await ApiClient.findByPk(id);
+            const client = await this.ApiClient.findByPk(id);
             return client.Password;
         } catch (error) {
             Logger.instance().log(error.message);
@@ -68,7 +70,7 @@ export class ApiClientService {
 
     getApiKey = async(id: string): Promise<ClientApiKeyDto> => {
         try {
-            const client = await ApiClient.findByPk(id);
+            const client = await this.ApiClient.findByPk(id);
             const dto = await this.toClientSecretsDto(client);
             return dto;
         } catch (error) {
@@ -79,7 +81,7 @@ export class ApiClientService {
     
     setApiKey = async(id: string, apiKey: string, validFrom: Date, validTill: Date): Promise<ClientApiKeyDto> => {
         try {
-            const client = await ApiClient.findByPk(id);
+            const client = await this.ApiClient.findByPk(id);
             client.ApiKey = apiKey;
             client.ValidFrom = validFrom;
             client.ValidTill = validTill;
@@ -94,7 +96,7 @@ export class ApiClientService {
     
     isApiKeyValid = async (apiKey: string): Promise<CurrentClient> => {
         try {
-            const client = await ApiClient.findOne({
+            const client = await this.ApiClient.findOne({
                 where : {
                     ApiKey    : apiKey,
                     ValidFrom : { [Op.lte]: new Date() },
@@ -118,7 +120,7 @@ export class ApiClientService {
     
     update = async (id: string, clientDomainModel: ApiClientDomainModel): Promise<ApiClientDto> => {
         try {
-            const client = await ApiClient.findByPk(id);
+            const client = await this.ApiClient.findByPk(id);
 
             //Client code is not modifiable
             //Use renew key to update ApiKey, ValidFrom and ValidTill
@@ -150,7 +152,7 @@ export class ApiClientService {
 
     delete = async (id: string): Promise<boolean> => {
         try {
-            const result = await ApiClient.destroy({ where: { id: id } });
+            const result = await this.ApiClient.destroy({ where: { id: id } });
             return result === 1;
         } catch (error) {
             Logger.instance().log(error.message);
