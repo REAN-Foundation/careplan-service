@@ -1,7 +1,7 @@
 import express from "express";
 import { Logger } from "../common/logger";
-import { register as registerCareplanRoutes } from "../api/careplan/careplan.routes";
-import { register as registerCareplanCategoryRoutes } from "../api/careplan.category/careplan.category.routes";
+import { register as registerCareplanRoutes } from "../api/careplan/careplan/careplan.routes";
+import { register as registerCareplanCategoryRoutes } from "../api/careplan/careplan.category/careplan.category.routes";
 
 ////////////////////////////////////////////////////////////////////////////////////
 

@@ -13,7 +13,7 @@ export class BaseController {
         this._authorizer = Loader.Authorizer;
     }
 
-    setContext = async (
+    authorize = async (
         context: string,
         request: express.Request,
         response: express.Response,

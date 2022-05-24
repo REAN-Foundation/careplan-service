@@ -1,6 +1,6 @@
-import { UserService } from '../../database/repository.services/user.service';
+import { UserService } from '../../database/repository.services/user/user.service';
 import { SmsService } from '../../modules/communication/sms.service';
-import { UserOtpService } from '../../database/repository.services/user.otp.service';
+import { UserOtpService } from '../../database/repository.services/user/user.otp.service';
 import { ErrorHandler } from '../../common/error.handler';
 import { Helper } from '../../common/helper';
 import { Logger } from '../../common/logger';
@@ -11,7 +11,7 @@ import {
     UserSearchFilters,
     UserSearchResults,
     UserUpdateModel
-} from '../../domain.types/user.domain.types';
+} from '../../domain.types/user/user.domain.types';
 import { uuid } from '../../domain.types/miscellaneous/system.types';
 import { Loader } from '../../startup/loader';
 import { UserHelper } from '../user.helper';

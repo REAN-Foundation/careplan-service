@@ -1,5 +1,5 @@
 import { RoleModel } from '../models/role.model';
-import { ErrorHandler } from '../../common/error.handler';
+import { ErrorHandler } from '../../../common/error.handler';
 import { Op } from 'sequelize';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////

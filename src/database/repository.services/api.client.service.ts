@@ -1,9 +1,10 @@
 import { ApiClientModel } from '../models/api.client.model';
-import { ApiClientDomainModel, ApiClientDto, ClientApiKeyDto } from '../../domain.types/api.client.domain.types';
+import { ApiClientCreateModel, ApiClientDto, ApiClientSearchFilters, ApiClientSearchResults, ApiClientUpdateModel, ClientApiKeyDto } from '../../domain.types/api.client.domain.types';
 import { Logger } from '../../common/logger';
 import { ApiError } from '../../common/api.error';
 import { CurrentClient } from '../../domain.types/miscellaneous/current.client';
 import { Op } from 'sequelize';
+import { ErrorHandler } from '../../common/error.handler';
 
 ///////////////////////////////////////////////////////////////////////
 
@@ -11,7 +12,7 @@ export class ApiClientService {
 
     ApiClient = ApiClientModel.Model();
 
-    create = async (clientDomainModel: ApiClientDomainModel): Promise<ApiClientDto> => {
+    create = async (clientDomainModel: ApiClientCreateModel): Promise<ApiClientDto> => {
         try {
             const entity = {
                 ClientName : clientDomainModel.ClientName,
@@ -42,6 +43,37 @@ export class ApiClientService {
             throw new ApiError(500, error.message);
         }
     };
+
+    search = async (filters: ApiClientSearchFilters): Promise < ApiClientSearchResults > => {
+        try {
+
+            var search = this.getSearchModel(filters);
+            var {
+                order,
+                orderByColumn
+            } = this.addSortingToSearch(search, filters);
+            var {
+                pageIndex,
+                limit
+            } = this.addPaginationToSearch(search, filters);
+
+            const foundResults = await this.ApiClient.findAndCountAll(search);
+            const searchResults: ApiClientSearchResults = {
+                TotalCount     : foundResults.count,
+                RetrievedCount : foundResults.rows.length,
+                PageIndex      : pageIndex,
+                ItemsPerPage   : limit,
+                Order          : order === 'DESC' ? 'descending' : 'ascending',
+                OrderedBy      : orderByColumn,
+                Items          : foundResults.rows,
+            };
+
+            return searchResults;
+
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to search api client records!', error);
+        }
+    }
 
     getByClientCode = async (clientCode: string): Promise<ApiClientDto> =>{
         try {
@@ -118,7 +150,7 @@ export class ApiClientService {
         }
     }
     
-    update = async (id: string, clientDomainModel: ApiClientDomainModel): Promise<ApiClientDto> => {
+    update = async (id: string, clientDomainModel: ApiClientUpdateModel): Promise<ApiClientDto> => {
         try {
             const client = await this.ApiClient.findByPk(id);
 
@@ -169,12 +201,14 @@ export class ApiClientService {
             active = true;
         }
         const dto: ApiClientDto = {
-            id         : client.id,
-            ClientName : client.ClientName,
-            ClientCode : client.ClientCode,
-            Phone      : client.Phone,
-            Email      : client.Email,
-            IsActive   : active
+            id           : client.id,
+            ClientName   : client.ClientName,
+            ClientCode   : client.ClientCode,
+            Phone        : client.Phone,
+            Email        : client.Email,
+            IsActive     : active,
+            CountryCode  : client.CountryCode,
+            IsPrivileged : false
         };
         return dto;
     }
@@ -193,5 +227,93 @@ export class ApiClientService {
         };
         return dto;
     }
+    
+    //#region Privates
+
+    private getSearchModel = (filters) => {
+
+        var search = {
+            where   : {},
+            include : []
+        };
+
+        if (filters.ClientName) {
+            search.where['ClientName'] = {
+                [Op.like] : '%' + filters.ClientName + '%'
+            };
+        }
+        if (filters.ClientCode) {
+            search.where['ClientCode'] = {
+                [Op.like] : '%' + filters.ClientCode + '%'
+            };
+        }
+        if (filters.IsPrivileged) {
+            search.where['IsPrivileged'] = filters.IsPrivileged;
+        }
+        if (filters.CountryCode) {
+            search.where['CountryCode'] = filters.CountryCode;
+        }
+        if (filters.Phone) {
+            search.where['Phone'] = filters.Phone;
+        }
+        if (filters.Email) {
+            search.where['Email'] = filters.Email;
+        }
+        if (filters.ValidFrom) {
+            search.where['ValidFrom'] = filters.ValidFrom;
+        }
+        if (filters.ValidTill) {
+            search.where['ValidTill'] = filters.ValidTill;
+        }
+
+        return search;
+    }
+
+    private addSortingToSearch = (search, filters) => {
+
+        let orderByColumn = 'CreatedAt';
+        if (filters.OrderBy) {
+            orderByColumn = filters.OrderBy;
+        }
+        let order = 'ASC';
+        if (filters.Order === 'descending') {
+            order = 'DESC';
+        }
+        search['order'] = [
+            [orderByColumn, order]
+        ];
+
+        if (filters.OrderBy) {
+            //In case the 'order-by attribute' is on associated model
+            //search['order'] = [[ '<AssociatedModel>', filters.OrderBy, order]];
+        }
+        return {
+            order,
+            orderByColumn
+        };
+    }
+
+    private addPaginationToSearch = (search, filters) => {
+
+        let limit = 25;
+        if (filters.ItemsPerPage) {
+            limit = filters.ItemsPerPage;
+        }
+        let offset = 0;
+        let pageIndex = 0;
+        if (filters.PageIndex) {
+            pageIndex = filters.PageIndex < 0 ? 0 : filters.PageIndex;
+            offset = pageIndex * limit;
+        }
+        search['limit'] = limit;
+        search['offset'] = offset;
+
+        return {
+            pageIndex,
+            limit
+        };
+    }
+
+    //#endregion
 
 }

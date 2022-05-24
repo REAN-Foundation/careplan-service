@@ -1,9 +1,9 @@
 'use strict';
 
 import { Helper } from '../common/helper';
-import { UserService } from '../database/repository.services/user.service';
+import { UserService } from '../database/repository.services/user/user.service';
 import { ErrorHandler } from '../common/error.handler';
-import { UserCreateModel } from '../domain.types/user.domain.types';
+import { UserCreateModel } from '../domain.types/user/user.domain.types';
 
 ////////////////////////////////////////////////////////////////////////
 
