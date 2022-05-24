@@ -1,9 +1,9 @@
-import { CareplanModel } from '../models/careplan.model';
-import { CareplanCategoryModel } from '../models/careplan/careplan.category.model';
-import { UserModel } from '../models/user.model';
+import { CareplanModel } from '../../models/careplan/careplan.model';
+import { CareplanCategoryModel } from '../../models/careplan/careplan.category.model';
+import { UserModel } from '../../models/user/user.model';
 import { ErrorHandler } from '../../../common/error.handler';
-import { CareplanCreateModel } from '../../domain.types/careplan/careplan.domain.types';
-import { CareplanDto, CareplanSearchFilters, CareplanSearchResults } from '../../domain.types/careplan/careplan.domain.types';
+import { CareplanCreateModel } from '../../../domain.types/careplan/careplan.domain.types';
+import { CareplanDto, CareplanSearchFilters, CareplanSearchResults } from '../../../domain.types/careplan/careplan.domain.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 

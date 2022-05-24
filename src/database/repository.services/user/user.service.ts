@@ -1,12 +1,12 @@
-import { UserModel } from '../models/user.model';
-import { UserLoginSessionModel } from '../models/user.login.session.model';
-import { RoleModel } from '../models/role.model';
+import { UserModel } from '../../models/user/user.model';
+import { UserLoginSessionModel } from '../../models/user/user.login.session.model';
+import { RoleModel } from '../../models/role.model';
 import { ErrorHandler } from '../../../common/error.handler';
 import { Op } from 'sequelize';
 import { passwordStrength } from 'check-password-strength';
-import { Helper } from '../../common/helper';
-import { TimeHelper } from '../../common/time.helper';
-import { DurationType } from '../../domain.types/miscellaneous/time.types';
+import { Helper } from '../../../common/helper';
+import { TimeHelper } from '../../../common/time.helper';
+import { DurationType } from '../../../domain.types/miscellaneous/time.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 

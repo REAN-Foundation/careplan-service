@@ -1,53 +1,48 @@
 import {
-    UserSelectedPriorityModel
-} from '../../models/user.responses/user.selected.priority.model';
+    FileResourceModel
+} from '../models/file.resource.model';
 import {
     UserModel
-} from '../../models/user/user.model';
-import {
-    CareplanModel
-} from '../../models/careplan/careplan.model';
+} from '../models/user/user.model';
 
 import {
     ErrorHandler
-} from '../../../common/error.handler';
+} from '../../common/error.handler';
 import {
-    UserSelectedPriorityCreateModel,
-    UserSelectedPrioritySearchFilters,
-    UserSelectedPrioritySearchResults
-} from '../../../domain.types/user.responses/user.selected.priority.domain.types';
+    FileResourceCreateModel,
+    FileResourceSearchFilters,
+    FileResourceSearchResults
+} from '../../domain.types/file.resource.domain.types';
 import {
     Op
 } from 'sequelize';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-export class UserSelectedPriorityService {
+export class FileResourceService {
 
     //#region Models
 
-    UserSelectedPriority = UserSelectedPriorityModel.Model();
+    FileResource = FileResourceModel.Model();
 
     User = UserModel.Model();
-
-    Careplan = CareplanModel.Model();
 
     //#endregion
 
     //#region Publics
 
-    create = async (createModel: UserSelectedPriorityCreateModel) => {
+    create = async (createModel: FileResourceCreateModel) => {
         try {
-            var record = await this.UserSelectedPriority.create(createModel);
+            var record = await this.FileResource.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to create user selected priority!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to create file resource!', error);
         }
     }
 
     getById = async (id) => {
         try {
-            const record = await this.UserSelectedPriority.findOne({
+            const record = await this.FileResource.findOne({
                 where : {
                     id : id
                 },
@@ -56,31 +51,26 @@ export class UserSelectedPriorityService {
                     required : false,
                     as       : 'User',
                     //through: { attributes: [] }
-                }, {
-                    model    : this.Careplan,
-                    required : false,
-                    as       : 'Careplan',
-                    //through: { attributes: [] }
                 },
 
                 ]
             });
             return record;
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve user selected priority!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve file resource!', error);
         }
     }
 
     exists = async (id): Promise < boolean > => {
         try {
-            const record = await this.UserSelectedPriority.findByPk(id);
+            const record = await this.FileResource.findByPk(id);
             return record !== null;
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of user selected priority!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of file resource!', error);
         }
     }
 
-    search = async (filters: UserSelectedPrioritySearchFilters): Promise < UserSelectedPrioritySearchResults > => {
+    search = async (filters: FileResourceSearchFilters): Promise < FileResourceSearchResults > => {
         try {
 
             var search = this.getSearchModel(filters);
@@ -93,8 +83,8 @@ export class UserSelectedPriorityService {
                 limit
             } = this.addPaginationToSearch(search, filters);
 
-            const foundResults = await this.UserSelectedPriority.findAndCountAll(search);
-            const searchResults: UserSelectedPrioritySearchResults = {
+            const foundResults = await this.FileResource.findAndCountAll(search);
+            const searchResults: FileResourceSearchResults = {
                 TotalCount     : foundResults.count,
                 RetrievedCount : foundResults.rows.length,
                 PageIndex      : pageIndex,
@@ -107,38 +97,38 @@ export class UserSelectedPriorityService {
             return searchResults;
 
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to search user selected priority records!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to search file resource records!', error);
         }
     }
 
     update = async (id, updateModel) => {
         try {
             if (Object.keys(updateModel).length > 0) {
-                var res = await this.UserSelectedPriority.update(updateModel, {
+                var res = await this.FileResource.update(updateModel, {
                     where : {
                         id : id
                     }
                 });
                 if (res.length !== 1) {
-                    throw new Error('Unable to update user selected priority!');
+                    throw new Error('Unable to update file resource!');
                 }
             }
             return await this.getById(id);
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to update user selected priority!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to update file resource!', error);
         }
     }
 
     delete = async (id) => {
         try {
-            var result = await this.UserSelectedPriority.destroy({
+            var result = await this.FileResource.destroy({
                 where : {
                     id : id
                 }
             });
             return result === 1;
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to delete user selected priority!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to delete file resource!', error);
         }
     }
 
@@ -153,27 +143,23 @@ export class UserSelectedPriorityService {
             include : []
         };
 
-        if (filters.Name) {
-            search.where['Name'] = {
-                [Op.like] : '%' + filters.Name + '%'
+        if (filters.FileName) {
+            search.where['FileName'] = {
+                [Op.like] : '%' + filters.FileName + '%'
             };
         }
-        if (filters.Description) {
-            search.where['Description'] = {
-                [Op.like] : '%' + filters.Description + '%'
+        if (filters.IsPublicResource) {
+            search.where['IsPublicResource'] = filters.IsPublicResource;
+        }
+        if (filters.Tags) {
+            search.where['Tags'] = {
+                [Op.like] : '%' + filters.Tags + '%'
             };
         }
-        if (filters.CareplanId) {
-            search.where['CareplanId'] = filters.CareplanId;
-        }
-        if (filters.AssetId) {
-            search.where['AssetId'] = filters.AssetId;
-        }
-        if (filters.AssetType) {
-            search.where['AssetType'] = filters.AssetType;
-        }
-        if (filters.StartDate) {
-            search.where['StartDate'] = filters.StartDate;
+        if (filters.MimeType) {
+            search.where['MimeType'] = {
+                [Op.like] : '%' + filters.MimeType + '%'
+            };
         }
         const includeUserAsUser = {
             model    : this.User,
@@ -185,16 +171,6 @@ export class UserSelectedPriorityService {
         //    includeUser.where['Xyz'] = filters.Xyz;
         //}
         search.include.push(includeUserAsUser);
-        const includeCareplanAsCareplan = {
-            model    : this.Careplan,
-            required : false,
-            as       : 'Careplan',
-            where    : {}
-        };
-        //if (filters.Xyz != undefined) {
-        //    includeCareplan.where['Xyz'] = filters.Xyz;
-        //}
-        search.include.push(includeCareplanAsCareplan);
 
         return search;
     }
