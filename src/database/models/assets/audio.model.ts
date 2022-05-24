@@ -1,6 +1,6 @@
 import {
     DatabaseConnector
-} from '../database.connector';
+} from '../../database.connector';
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -16,59 +16,59 @@ export class AudioModel {
         const Sequelize: any = db.Sequelize;
 
         return {
-            id: {
-                type: Sequelize.INTEGER,
-                allowNull: false,
-                autoIncrement: true,
-                primaryKey: true
+            id : {
+                type          : Sequelize.INTEGER,
+                allowNull     : false,
+                autoIncrement : true,
+                primaryKey    : true
             },
-            AssetCode: {
-                type: Sequelize.STRING(256),
-                allowNull: false
+            AssetCode : {
+                type      : Sequelize.STRING(256),
+                allowNull : false
             },
-            Name: {
-                type: Sequelize.STRING(256),
-                allowNull: false
+            Name : {
+                type      : Sequelize.STRING(256),
+                allowNull : false
             },
-            Transcript: {
-                type: Sequelize.TEXT,
-                allowNull: false
+            Transcript : {
+                type      : Sequelize.TEXT,
+                allowNull : false
             },
-            Url: {
-                type: Sequelize.TEXT,
-                allowNull: true
+            Url : {
+                type      : Sequelize.TEXT,
+                allowNull : true
             },
-            FileResourceId: {
-                type: Sequelize.UUID,
-                allowNull: true,
-                foreignKey: true,
-                unique: false
+            FileResourceId : {
+                type       : Sequelize.UUID,
+                allowNull  : true,
+                foreignKey : true,
+                unique     : false
             },
-            AssetCategory: {
-                type: Sequelize.STRING(128),
-                allowNull: false,
-                defaultValue: 'Educational'
+            AssetCategory : {
+                type         : Sequelize.STRING(128),
+                allowNull    : false,
+                defaultValue : 'Educational'
             },
-            OwnerUserId: {
-                type: Sequelize.UUID,
-                allowNull: false,
-                foreignKey: true,
-                unique: false
+            OwnerUserId : {
+                type       : Sequelize.UUID,
+                allowNull  : false,
+                foreignKey : true,
+                unique     : false
             },
-            Tags: {
-                type: Sequelize.TEXT,
-                allowNull: false,
-                defaultValue: []
+            Tags : {
+                type         : Sequelize.TEXT,
+                allowNull    : false,
+                defaultValue : []
             },
-            Version: {
-                type: Sequelize.STRING(128),
-                allowNull: false,
-                defaultValue: 'V1'
+            Version : {
+                type         : Sequelize.STRING(128),
+                allowNull    : false,
+                defaultValue : 'V1'
             },
 
-            CreatedAt: Sequelize.DATE,
-            UpdatedAt: Sequelize.DATE,
-            DeletedAt: Sequelize.DATE
+            CreatedAt : Sequelize.DATE,
+            UpdatedAt : Sequelize.DATE,
+            DeletedAt : Sequelize.DATE
         };
     }
 
@@ -81,13 +81,13 @@ export class AudioModel {
         return sequelize.define(
             AudioModel.ModelName,
             schema, {
-                createdAt: 'CreatedAt',
-                updatedAt: 'UpdatedAt',
-                deletedAt: 'DeletedAt',
-                freezeTableName: true,
-                timestamps: true,
-                paranoid: true,
-                tableName: AudioModel.TableName,
+                createdAt       : 'CreatedAt',
+                updatedAt       : 'UpdatedAt',
+                deletedAt       : 'DeletedAt',
+                freezeTableName : true,
+                timestamps      : true,
+                paranoid        : true,
+                tableName       : AudioModel.TableName,
             });
     };
 
@@ -95,17 +95,16 @@ export class AudioModel {
 
         //Add associations here...
 
-
         models.Audio.belongsTo(models.FileResource, {
-            sourceKey: 'FileResourceId',
-            targetKey: 'id',
-            as: 'FileResource'
+            sourceKey : 'FileResourceId',
+            targetKey : 'id',
+            as        : 'FileResource'
         });
 
         models.Audio.belongsTo(models.User, {
-            sourceKey: 'OwnerUserId',
-            targetKey: 'id',
-            as: 'OwnerUser'
+            sourceKey : 'OwnerUserId',
+            targetKey : 'id',
+            as        : 'OwnerUser'
         });
 
     };

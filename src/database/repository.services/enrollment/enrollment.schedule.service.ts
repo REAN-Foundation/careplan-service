@@ -6,13 +6,13 @@ import {
 } from '../../models/enrollment/enrollment.model';
 import {
     UserModel
-} from '../models/user.model';
+} from '../../models/user/user.model';
 import {
     CareplanScheduleModel
-} from '../models/careplan.schedule.model';
+} from '../../models/careplan/careplan.schedule.model';
 import {
     CareplanModel
-} from '../models/careplan.model';
+} from '../../models/careplan/careplan.model';
 
 import {
     ErrorHandler
@@ -22,9 +22,6 @@ import {
     EnrollmentScheduleSearchFilters,
     EnrollmentScheduleSearchResults
 } from '../../../domain.types/enrollment/enrollment.schedule.domain.types';
-import {
-    Op
-} from 'sequelize';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -42,7 +39,6 @@ export class EnrollmentScheduleService {
 
     Careplan = CareplanModel.Model();
 
-
     //#endregion
 
     //#region Publics
@@ -59,30 +55,30 @@ export class EnrollmentScheduleService {
     getById = async (id) => {
         try {
             const record = await this.EnrollmentSchedule.findOne({
-                where: {
-                    id: id
+                where : {
+                    id : id
                 },
-                include: [{
-                        model: this.Enrollment,
-                        required: false,
-                        as: 'Enrollment',
-                        //through: { attributes: [] }
-                    }, {
-                        model: this.User,
-                        required: false,
-                        as: 'User',
-                        //through: { attributes: [] }
-                    }, {
-                        model: this.CareplanSchedule,
-                        required: false,
-                        as: 'CareplanSchedule',
-                        //through: { attributes: [] }
-                    }, {
-                        model: this.Careplan,
-                        required: false,
-                        as: 'Careplan',
-                        //through: { attributes: [] }
-                    },
+                include : [{
+                    model    : this.Enrollment,
+                    required : false,
+                    as       : 'Enrollment',
+                    //through: { attributes: [] }
+                }, {
+                    model    : this.User,
+                    required : false,
+                    as       : 'User',
+                    //through: { attributes: [] }
+                }, {
+                    model    : this.CareplanSchedule,
+                    required : false,
+                    as       : 'CareplanSchedule',
+                    //through: { attributes: [] }
+                }, {
+                    model    : this.Careplan,
+                    required : false,
+                    as       : 'Careplan',
+                    //through: { attributes: [] }
+                },
 
                 ]
             });
@@ -116,13 +112,13 @@ export class EnrollmentScheduleService {
 
             const foundResults = await this.EnrollmentSchedule.findAndCountAll(search);
             const searchResults: EnrollmentScheduleSearchResults = {
-                TotalCount: foundResults.count,
-                RetrievedCount: foundResults.rows.length,
-                PageIndex: pageIndex,
-                ItemsPerPage: limit,
-                Order: order === 'DESC' ? 'descending' : 'ascending',
-                OrderedBy: orderByColumn,
-                Items: foundResults.rows,
+                TotalCount     : foundResults.count,
+                RetrievedCount : foundResults.rows.length,
+                PageIndex      : pageIndex,
+                ItemsPerPage   : limit,
+                Order          : order === 'DESC' ? 'descending' : 'ascending',
+                OrderedBy      : orderByColumn,
+                Items          : foundResults.rows,
             };
 
             return searchResults;
@@ -136,8 +132,8 @@ export class EnrollmentScheduleService {
         try {
             if (Object.keys(updateModel).length > 0) {
                 var res = await this.EnrollmentSchedule.update(updateModel, {
-                    where: {
-                        id: id
+                    where : {
+                        id : id
                     }
                 });
                 if (res.length !== 1) {
@@ -153,8 +149,8 @@ export class EnrollmentScheduleService {
     delete = async (id) => {
         try {
             var result = await this.EnrollmentSchedule.destroy({
-                where: {
-                    id: id
+                where : {
+                    id : id
                 }
             });
             return result === 1;
@@ -170,63 +166,62 @@ export class EnrollmentScheduleService {
     private getSearchModel = (filters) => {
 
         var search = {
-            where: {},
-            include: []
+            where   : {},
+            include : []
         };
 
         if (filters.AssetId) {
-            search.where['AssetId'] = filters.AssetId
+            search.where['AssetId'] = filters.AssetId;
         }
         if (filters.AssetType) {
-            search.where['AssetType'] = filters.AssetType
+            search.where['AssetType'] = filters.AssetType;
         }
         if (filters.CareplanId) {
-            search.where['CareplanId'] = filters.CareplanId
+            search.where['CareplanId'] = filters.CareplanId;
         }
         if (filters.TimeSlot) {
-            search.where['TimeSlot'] = filters.TimeSlot
+            search.where['TimeSlot'] = filters.TimeSlot;
         }
         const includeEnrollmentAsEnrollment = {
-            model: this.Enrollment,
-            required: false,
-            as: 'Enrollment',
-            where: {}
-        }
+            model    : this.Enrollment,
+            required : false,
+            as       : 'Enrollment',
+            where    : {}
+        };
         //if (filters.Xyz != undefined) {
         //    includeEnrollment.where['Xyz'] = filters.Xyz;
         //}
         search.include.push(includeEnrollmentAsEnrollment);
         const includeUserAsUser = {
-            model: this.User,
-            required: false,
-            as: 'User',
-            where: {}
-        }
+            model    : this.User,
+            required : false,
+            as       : 'User',
+            where    : {}
+        };
         //if (filters.Xyz != undefined) {
         //    includeUser.where['Xyz'] = filters.Xyz;
         //}
         search.include.push(includeUserAsUser);
         const includeCareplanScheduleAsCareplanSchedule = {
-            model: this.CareplanSchedule,
-            required: false,
-            as: 'CareplanSchedule',
-            where: {}
-        }
+            model    : this.CareplanSchedule,
+            required : false,
+            as       : 'CareplanSchedule',
+            where    : {}
+        };
         //if (filters.Xyz != undefined) {
         //    includeCareplanSchedule.where['Xyz'] = filters.Xyz;
         //}
         search.include.push(includeCareplanScheduleAsCareplanSchedule);
         const includeCareplanAsCareplan = {
-            model: this.Careplan,
-            required: false,
-            as: 'Careplan',
-            where: {}
-        }
+            model    : this.Careplan,
+            required : false,
+            as       : 'Careplan',
+            where    : {}
+        };
         //if (filters.Xyz != undefined) {
         //    includeCareplan.where['Xyz'] = filters.Xyz;
         //}
         search.include.push(includeCareplanAsCareplan);
-
 
         return search;
     }

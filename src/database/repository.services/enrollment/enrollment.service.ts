@@ -1,12 +1,12 @@
 import {
     EnrollmentModel
-} from '../models/enrollment/enrollment.model';
+} from '../../models/enrollment/enrollment.model';
 import {
     CareplanModel
-} from '../models/careplan.model';
+} from '../../models/careplan/careplan.model';
 import {
     UserModel
-} from '../models/user.model';
+} from '../../models/user/user.model';
 
 import {
     ErrorHandler
@@ -15,10 +15,7 @@ import {
     EnrollmentCreateModel,
     EnrollmentSearchFilters,
     EnrollmentSearchResults
-} from '../../domain.types/enrollment/enrollment.domain.types';
-import {
-    Op
-} from 'sequelize';
+} from '../../../domain.types/enrollment/enrollment.domain.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -31,7 +28,6 @@ export class EnrollmentService {
     Careplan = CareplanModel.Model();
 
     User = UserModel.Model();
-
 
     //#endregion
 
@@ -49,20 +45,20 @@ export class EnrollmentService {
     getById = async (id) => {
         try {
             const record = await this.Enrollment.findOne({
-                where: {
-                    id: id
+                where : {
+                    id : id
                 },
-                include: [{
-                        model: this.Careplan,
-                        required: false,
-                        as: 'Careplan',
-                        //through: { attributes: [] }
-                    }, {
-                        model: this.User,
-                        required: false,
-                        as: 'User',
-                        //through: { attributes: [] }
-                    },
+                include : [{
+                    model    : this.Careplan,
+                    required : false,
+                    as       : 'Careplan',
+                    //through: { attributes: [] }
+                }, {
+                    model    : this.User,
+                    required : false,
+                    as       : 'User',
+                    //through: { attributes: [] }
+                },
 
                 ]
             });
@@ -96,13 +92,13 @@ export class EnrollmentService {
 
             const foundResults = await this.Enrollment.findAndCountAll(search);
             const searchResults: EnrollmentSearchResults = {
-                TotalCount: foundResults.count,
-                RetrievedCount: foundResults.rows.length,
-                PageIndex: pageIndex,
-                ItemsPerPage: limit,
-                Order: order === 'DESC' ? 'descending' : 'ascending',
-                OrderedBy: orderByColumn,
-                Items: foundResults.rows,
+                TotalCount     : foundResults.count,
+                RetrievedCount : foundResults.rows.length,
+                PageIndex      : pageIndex,
+                ItemsPerPage   : limit,
+                Order          : order === 'DESC' ? 'descending' : 'ascending',
+                OrderedBy      : orderByColumn,
+                Items          : foundResults.rows,
             };
 
             return searchResults;
@@ -116,8 +112,8 @@ export class EnrollmentService {
         try {
             if (Object.keys(updateModel).length > 0) {
                 var res = await this.Enrollment.update(updateModel, {
-                    where: {
-                        id: id
+                    where : {
+                        id : id
                     }
                 });
                 if (res.length !== 1) {
@@ -133,8 +129,8 @@ export class EnrollmentService {
     delete = async (id) => {
         try {
             var result = await this.Enrollment.destroy({
-                where: {
-                    id: id
+                where : {
+                    id : id
                 }
             });
             return result === 1;
@@ -150,37 +146,36 @@ export class EnrollmentService {
     private getSearchModel = (filters) => {
 
         var search = {
-            where: {},
-            include: []
+            where   : {},
+            include : []
         };
 
         if (filters.CareplanId) {
-            search.where['CareplanId'] = filters.CareplanId
+            search.where['CareplanId'] = filters.CareplanId;
         }
         if (filters.ProgressStatus) {
-            search.where['ProgressStatus'] = filters.ProgressStatus
+            search.where['ProgressStatus'] = filters.ProgressStatus;
         }
         const includeCareplanAsCareplan = {
-            model: this.Careplan,
-            required: false,
-            as: 'Careplan',
-            where: {}
-        }
+            model    : this.Careplan,
+            required : false,
+            as       : 'Careplan',
+            where    : {}
+        };
         //if (filters.Xyz != undefined) {
         //    includeCareplan.where['Xyz'] = filters.Xyz;
         //}
         search.include.push(includeCareplanAsCareplan);
         const includeUserAsUser = {
-            model: this.User,
-            required: false,
-            as: 'User',
-            where: {}
-        }
+            model    : this.User,
+            required : false,
+            as       : 'User',
+            where    : {}
+        };
         //if (filters.Xyz != undefined) {
         //    includeUser.where['Xyz'] = filters.Xyz;
         //}
         search.include.push(includeUserAsUser);
-
 
         return search;
     }

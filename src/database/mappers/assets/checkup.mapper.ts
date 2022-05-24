@@ -1,6 +1,6 @@
 import {
     CheckupDto
-} from '../../domain.types/assets/checkup.domain.types';
+} from '../../../domain.types/assets/checkup.domain.types';
 
 ///////////////////////////////////////////////////////////////////////////////////
 
@@ -11,14 +11,14 @@ export class CheckupMapper {
             return null;
         }
         const dto: CheckupDto = {
-            id: checkup.id,
-            AssetCode: checkup.AssetCode,
-            Name: checkup.Name,
-            Description: checkup.Description,
-            AssetCategory: checkup.AssetCategory,
-            OwnerUserId: checkup.OwnerUserId,
-            Tags: checkup.Tags,
-            Version: checkup.Version,
+            id            : checkup.id,
+            AssetCode     : checkup.AssetCode,
+            Name          : checkup.Name,
+            Description   : checkup.Description,
+            AssetCategory : checkup.AssetCategory,
+            OwnerUserId   : checkup.OwnerUserId,
+            Tags          : checkup.Tags,
+            Version       : checkup.Version,
 
         };
         return dto;

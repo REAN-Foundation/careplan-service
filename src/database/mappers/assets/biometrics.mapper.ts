@@ -1,6 +1,6 @@
 import {
     BiometricsDto
-} from '../../domain.types/assets/biometrics.domain.types';
+} from '../../../domain.types/assets/biometrics.domain.types';
 
 ///////////////////////////////////////////////////////////////////////////////////
 
@@ -11,16 +11,16 @@ export class BiometricsMapper {
             return null;
         }
         const dto: BiometricsDto = {
-            id: biometrics.id,
-            AssetCode: biometrics.AssetCode,
-            Name: biometrics.Name,
-            Description: biometrics.Description,
-            AssetCategory: biometrics.AssetCategory,
-            BiometricsType: biometrics.BiometricsType,
-            MeasurementUnit: biometrics.MeasurementUnit,
-            OwnerUserId: biometrics.OwnerUserId,
-            Tags: biometrics.Tags,
-            Version: biometrics.Version,
+            id              : biometrics.id,
+            AssetCode       : biometrics.AssetCode,
+            Name            : biometrics.Name,
+            Description     : biometrics.Description,
+            AssetCategory   : biometrics.AssetCategory,
+            BiometricsType  : biometrics.BiometricsType,
+            MeasurementUnit : biometrics.MeasurementUnit,
+            OwnerUserId     : biometrics.OwnerUserId,
+            Tags            : biometrics.Tags,
+            Version         : biometrics.Version,
 
         };
         return dto;

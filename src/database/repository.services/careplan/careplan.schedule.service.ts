@@ -1,9 +1,9 @@
 import {
     CareplanScheduleModel
-} from '../models/careplan.schedule.model';
+} from '../../models/careplan/careplan.schedule.model';
 import {
     CareplanModel
-} from '../models/careplan.model';
+} from '../../models/careplan/careplan.model';
 
 import {
     ErrorHandler
@@ -12,10 +12,7 @@ import {
     CareplanScheduleCreateModel,
     CareplanScheduleSearchFilters,
     CareplanScheduleSearchResults
-} from '../../domain.types/careplan/careplan.schedule.domain.types';
-import {
-    Op
-} from 'sequelize';
+} from '../../../domain.types/careplan/careplan.schedule.domain.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -26,7 +23,6 @@ export class CareplanScheduleService {
     CareplanSchedule = CareplanScheduleModel.Model();
 
     Careplan = CareplanModel.Model();
-
 
     //#endregion
 
@@ -44,15 +40,15 @@ export class CareplanScheduleService {
     getById = async (id) => {
         try {
             const record = await this.CareplanSchedule.findOne({
-                where: {
-                    id: id
+                where : {
+                    id : id
                 },
-                include: [{
-                        model: this.Careplan,
-                        required: false,
-                        as: 'Careplan',
-                        //through: { attributes: [] }
-                    },
+                include : [{
+                    model    : this.Careplan,
+                    required : false,
+                    as       : 'Careplan',
+                    //through: { attributes: [] }
+                },
 
                 ]
             });
@@ -86,13 +82,13 @@ export class CareplanScheduleService {
 
             const foundResults = await this.CareplanSchedule.findAndCountAll(search);
             const searchResults: CareplanScheduleSearchResults = {
-                TotalCount: foundResults.count,
-                RetrievedCount: foundResults.rows.length,
-                PageIndex: pageIndex,
-                ItemsPerPage: limit,
-                Order: order === 'DESC' ? 'descending' : 'ascending',
-                OrderedBy: orderByColumn,
-                Items: foundResults.rows,
+                TotalCount     : foundResults.count,
+                RetrievedCount : foundResults.rows.length,
+                PageIndex      : pageIndex,
+                ItemsPerPage   : limit,
+                Order          : order === 'DESC' ? 'descending' : 'ascending',
+                OrderedBy      : orderByColumn,
+                Items          : foundResults.rows,
             };
 
             return searchResults;
@@ -106,8 +102,8 @@ export class CareplanScheduleService {
         try {
             if (Object.keys(updateModel).length > 0) {
                 var res = await this.CareplanSchedule.update(updateModel, {
-                    where: {
-                        id: id
+                    where : {
+                        id : id
                     }
                 });
                 if (res.length !== 1) {
@@ -123,8 +119,8 @@ export class CareplanScheduleService {
     delete = async (id) => {
         try {
             var result = await this.CareplanSchedule.destroy({
-                where: {
-                    id: id
+                where : {
+                    id : id
                 }
             });
             return result === 1;
@@ -140,36 +136,35 @@ export class CareplanScheduleService {
     private getSearchModel = (filters) => {
 
         var search = {
-            where: {},
-            include: []
+            where   : {},
+            include : []
         };
 
         if (filters.AssetId) {
-            search.where['AssetId'] = filters.AssetId
+            search.where['AssetId'] = filters.AssetId;
         }
         if (filters.AssetType) {
-            search.where['AssetType'] = filters.AssetType
+            search.where['AssetType'] = filters.AssetType;
         }
         if (filters.CareplanId) {
-            search.where['CareplanId'] = filters.CareplanId
+            search.where['CareplanId'] = filters.CareplanId;
         }
         if (filters.Day) {
-            search.where['Day'] = filters.Day
+            search.where['Day'] = filters.Day;
         }
         if (filters.TimeSlot) {
-            search.where['TimeSlot'] = filters.TimeSlot
+            search.where['TimeSlot'] = filters.TimeSlot;
         }
         const includeCareplanAsCareplan = {
-            model: this.Careplan,
-            required: false,
-            as: 'Careplan',
-            where: {}
-        }
+            model    : this.Careplan,
+            required : false,
+            as       : 'Careplan',
+            where    : {}
+        };
         //if (filters.Xyz != undefined) {
         //    includeCareplan.where['Xyz'] = filters.Xyz;
         //}
         search.include.push(includeCareplanAsCareplan);
-
 
         return search;
     }

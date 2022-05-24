@@ -1,5 +1,5 @@
 import { RolePrivilegeModel } from '../models/role.privilege.model';
-import { ErrorHandler } from '../../../common/error.handler';
+import { ErrorHandler } from '../../common/error.handler';
 import { Op } from 'sequelize';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////

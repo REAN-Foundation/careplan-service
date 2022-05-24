@@ -1,6 +1,6 @@
 import {
     MessageDto
-} from '../../domain.types/assets/message.domain.types';
+} from '../../../domain.types/assets/message.domain.types';
 
 ///////////////////////////////////////////////////////////////////////////////////
 
@@ -11,16 +11,16 @@ export class MessageMapper {
             return null;
         }
         const dto: MessageDto = {
-            id: message.id,
-            AssetCode: message.AssetCode,
-            Name: message.Name,
-            Description: message.Description,
-            Category: message.Category,
-            MessageType: message.MessageType,
-            OwnerUserId: message.OwnerUserId,
-            Tags: message.Tags,
-            Url: message.Url,
-            Version: message.Version,
+            id          : message.id,
+            AssetCode   : message.AssetCode,
+            Name        : message.Name,
+            Description : message.Description,
+            Category    : message.Category,
+            MessageType : message.MessageType,
+            OwnerUserId : message.OwnerUserId,
+            Tags        : message.Tags,
+            Url         : message.Url,
+            Version     : message.Version,
 
         };
         return dto;

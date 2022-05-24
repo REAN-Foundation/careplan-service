@@ -1,12 +1,12 @@
 import {
     UserSelectedActionPlanModel
-} from '../models/user.responses/user.selected.action.plan.model';
+} from '../../models/user.responses/user.selected.action.plan.model';
 import {
     UserModel
-} from '../models/user.model';
+} from '../../models/user/user.model';
 import {
     CareplanModel
-} from '../models/careplan.model';
+} from '../../models/careplan/careplan.model';
 
 import {
     ErrorHandler
@@ -15,7 +15,7 @@ import {
     UserSelectedActionPlanCreateModel,
     UserSelectedActionPlanSearchFilters,
     UserSelectedActionPlanSearchResults
-} from '../../domain.types/user.response/user.selected.action.plan.domain.types';
+} from '../../../domain.types/user.responses/user.selected.action.plan.domain.types';
 import {
     Op
 } from 'sequelize';
@@ -31,7 +31,6 @@ export class UserSelectedActionPlanService {
     User = UserModel.Model();
 
     Careplan = CareplanModel.Model();
-
 
     //#endregion
 
@@ -49,20 +48,20 @@ export class UserSelectedActionPlanService {
     getById = async (id) => {
         try {
             const record = await this.UserSelectedActionPlan.findOne({
-                where: {
-                    id: id
+                where : {
+                    id : id
                 },
-                include: [{
-                        model: this.User,
-                        required: false,
-                        as: 'User',
-                        //through: { attributes: [] }
-                    }, {
-                        model: this.Careplan,
-                        required: false,
-                        as: 'Careplan',
-                        //through: { attributes: [] }
-                    },
+                include : [{
+                    model    : this.User,
+                    required : false,
+                    as       : 'User',
+                    //through: { attributes: [] }
+                }, {
+                    model    : this.Careplan,
+                    required : false,
+                    as       : 'Careplan',
+                    //through: { attributes: [] }
+                },
 
                 ]
             });
@@ -96,13 +95,13 @@ export class UserSelectedActionPlanService {
 
             const foundResults = await this.UserSelectedActionPlan.findAndCountAll(search);
             const searchResults: UserSelectedActionPlanSearchResults = {
-                TotalCount: foundResults.count,
-                RetrievedCount: foundResults.rows.length,
-                PageIndex: pageIndex,
-                ItemsPerPage: limit,
-                Order: order === 'DESC' ? 'descending' : 'ascending',
-                OrderedBy: orderByColumn,
-                Items: foundResults.rows,
+                TotalCount     : foundResults.count,
+                RetrievedCount : foundResults.rows.length,
+                PageIndex      : pageIndex,
+                ItemsPerPage   : limit,
+                Order          : order === 'DESC' ? 'descending' : 'ascending',
+                OrderedBy      : orderByColumn,
+                Items          : foundResults.rows,
             };
 
             return searchResults;
@@ -116,8 +115,8 @@ export class UserSelectedActionPlanService {
         try {
             if (Object.keys(updateModel).length > 0) {
                 var res = await this.UserSelectedActionPlan.update(updateModel, {
-                    where: {
-                        id: id
+                    where : {
+                        id : id
                     }
                 });
                 if (res.length !== 1) {
@@ -133,8 +132,8 @@ export class UserSelectedActionPlanService {
     delete = async (id) => {
         try {
             var result = await this.UserSelectedActionPlan.destroy({
-                where: {
-                    id: id
+                where : {
+                    id : id
                 }
             });
             return result === 1;
@@ -150,64 +149,63 @@ export class UserSelectedActionPlanService {
     private getSearchModel = (filters) => {
 
         var search = {
-            where: {},
-            include: []
+            where   : {},
+            include : []
         };
 
         if (filters.Name) {
             search.where['Name'] = {
-                [Op.like]: '%' + filters.Name + '%'
-            }
+                [Op.like] : '%' + filters.Name + '%'
+            };
         }
         if (filters.Description) {
             search.where['Description'] = {
-                [Op.like]: '%' + filters.Description + '%'
-            }
+                [Op.like] : '%' + filters.Description + '%'
+            };
         }
         if (filters.CareplanId) {
-            search.where['CareplanId'] = filters.CareplanId
+            search.where['CareplanId'] = filters.CareplanId;
         }
         if (filters.AssetId) {
-            search.where['AssetId'] = filters.AssetId
+            search.where['AssetId'] = filters.AssetId;
         }
         if (filters.AssetType) {
-            search.where['AssetType'] = filters.AssetType
+            search.where['AssetType'] = filters.AssetType;
         }
         if (filters.AdditionalDetails) {
             search.where['AdditionalDetails'] = {
-                [Op.like]: '%' + filters.AdditionalDetails + '%'
-            }
+                [Op.like] : '%' + filters.AdditionalDetails + '%'
+            };
         }
         if (filters.StartDate) {
-            search.where['StartDate'] = filters.StartDate
+            search.where['StartDate'] = filters.StartDate;
         }
         if (filters.EndDate) {
-            search.where['EndDate'] = filters.EndDate
+            search.where['EndDate'] = filters.EndDate;
         }
         if (filters.ProgressStatus) {
-            search.where['ProgressStatus'] = filters.ProgressStatus
+            search.where['ProgressStatus'] = filters.ProgressStatus;
         }
         const includeUserAsUser = {
-            model: this.User,
-            required: false,
-            as: 'User',
-            where: {}
-        }
+            model    : this.User,
+            required : false,
+            as       : 'User',
+            where    : {}
+        };
         //if (filters.Xyz != undefined) {
         //    includeUser.where['Xyz'] = filters.Xyz;
         //}
         search.include.push(includeUserAsUser);
         const includeCareplanAsCareplan = {
-            model: this.Careplan,
-            required: false,
-            as: 'Careplan',
-            where: {}
-        }
+            model    : this.Careplan,
+            required : false,
+            as       : 'Careplan',
+            where    : {}
+        };
         //if (filters.Xyz != undefined) {
         //    includeCareplan.where['Xyz'] = filters.Xyz;
         //}
         search.include.push(includeCareplanAsCareplan);
-
 
         return search;
     }

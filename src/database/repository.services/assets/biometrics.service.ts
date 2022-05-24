@@ -1,9 +1,9 @@
 import {
     BiometricsModel
-} from '../models/biometrics.model';
+} from '../../models/assets//biometrics.model';
 import {
     UserModel
-} from '../models/user.model';
+} from '../../models/user/user.model';
 
 import {
     ErrorHandler
@@ -12,7 +12,7 @@ import {
     BiometricsCreateModel,
     BiometricsSearchFilters,
     BiometricsSearchResults
-} from '../../domain.types/assets/biometrics.domain.types';
+} from '../../../domain.types/assets/biometrics.domain.types';
 import {
     Op
 } from 'sequelize';
@@ -26,7 +26,6 @@ export class BiometricsService {
     Biometrics = BiometricsModel.Model();
 
     User = UserModel.Model();
-
 
     //#endregion
 
@@ -44,15 +43,15 @@ export class BiometricsService {
     getById = async (id) => {
         try {
             const record = await this.Biometrics.findOne({
-                where: {
-                    id: id
+                where : {
+                    id : id
                 },
-                include: [{
-                        model: this.User,
-                        required: false,
-                        as: 'OwnerUser',
-                        //through: { attributes: [] }
-                    },
+                include : [{
+                    model    : this.User,
+                    required : false,
+                    as       : 'OwnerUser',
+                    //through: { attributes: [] }
+                },
 
                 ]
             });
@@ -86,13 +85,13 @@ export class BiometricsService {
 
             const foundResults = await this.Biometrics.findAndCountAll(search);
             const searchResults: BiometricsSearchResults = {
-                TotalCount: foundResults.count,
-                RetrievedCount: foundResults.rows.length,
-                PageIndex: pageIndex,
-                ItemsPerPage: limit,
-                Order: order === 'DESC' ? 'descending' : 'ascending',
-                OrderedBy: orderByColumn,
-                Items: foundResults.rows,
+                TotalCount     : foundResults.count,
+                RetrievedCount : foundResults.rows.length,
+                PageIndex      : pageIndex,
+                ItemsPerPage   : limit,
+                Order          : order === 'DESC' ? 'descending' : 'ascending',
+                OrderedBy      : orderByColumn,
+                Items          : foundResults.rows,
             };
 
             return searchResults;
@@ -106,8 +105,8 @@ export class BiometricsService {
         try {
             if (Object.keys(updateModel).length > 0) {
                 var res = await this.Biometrics.update(updateModel, {
-                    where: {
-                        id: id
+                    where : {
+                        id : id
                     }
                 });
                 if (res.length !== 1) {
@@ -123,8 +122,8 @@ export class BiometricsService {
     delete = async (id) => {
         try {
             var result = await this.Biometrics.destroy({
-                where: {
-                    id: id
+                where : {
+                    id : id
                 }
             });
             return result === 1;
@@ -140,59 +139,58 @@ export class BiometricsService {
     private getSearchModel = (filters) => {
 
         var search = {
-            where: {},
-            include: []
+            where   : {},
+            include : []
         };
 
         if (filters.AssetCode) {
             search.where['AssetCode'] = {
-                [Op.like]: '%' + filters.AssetCode + '%'
-            }
+                [Op.like] : '%' + filters.AssetCode + '%'
+            };
         }
         if (filters.Name) {
             search.where['Name'] = {
-                [Op.like]: '%' + filters.Name + '%'
-            }
+                [Op.like] : '%' + filters.Name + '%'
+            };
         }
         if (filters.Description) {
             search.where['Description'] = {
-                [Op.like]: '%' + filters.Description + '%'
-            }
+                [Op.like] : '%' + filters.Description + '%'
+            };
         }
         if (filters.AssetCategory) {
             search.where['AssetCategory'] = {
-                [Op.like]: '%' + filters.AssetCategory + '%'
-            }
+                [Op.like] : '%' + filters.AssetCategory + '%'
+            };
         }
         if (filters.BiometricsType) {
-            search.where['BiometricsType'] = filters.BiometricsType
+            search.where['BiometricsType'] = filters.BiometricsType;
         }
         if (filters.MeasurementUnit) {
             search.where['MeasurementUnit'] = {
-                [Op.like]: '%' + filters.MeasurementUnit + '%'
-            }
+                [Op.like] : '%' + filters.MeasurementUnit + '%'
+            };
         }
         if (filters.Tags) {
             search.where['Tags'] = {
-                [Op.like]: '%' + filters.Tags + '%'
-            }
+                [Op.like] : '%' + filters.Tags + '%'
+            };
         }
         if (filters.Version) {
             search.where['Version'] = {
-                [Op.like]: '%' + filters.Version + '%'
-            }
+                [Op.like] : '%' + filters.Version + '%'
+            };
         }
         const includeUserAsOwnerUser = {
-            model: this.User,
-            required: false,
-            as: 'OwnerUser',
-            where: {}
-        }
+            model    : this.User,
+            required : false,
+            as       : 'OwnerUser',
+            where    : {}
+        };
         //if (filters.Xyz != undefined) {
         //    includeUser.where['Xyz'] = filters.Xyz;
         //}
         search.include.push(includeUserAsOwnerUser);
-
 
         return search;
     }

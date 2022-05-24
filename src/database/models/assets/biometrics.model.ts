@@ -1,6 +1,5 @@
-import {
-    DatabaseConnector
-} from '../database.connector';
+import { BiometricsTypeList } from '../../../domain.types/assets/biometrics.domain.types';
+import { DatabaseConnector } from '../../database.connector';
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -16,58 +15,58 @@ export class BiometricsModel {
         const Sequelize: any = db.Sequelize;
 
         return {
-            id: {
-                type: Sequelize.INTEGER,
-                allowNull: false,
-                autoIncrement: true,
-                primaryKey: true
+            id : {
+                type          : Sequelize.INTEGER,
+                allowNull     : false,
+                autoIncrement : true,
+                primaryKey    : true
             },
-            AssetCode: {
-                type: Sequelize.STRING(256),
-                allowNull: false
+            AssetCode : {
+                type      : Sequelize.STRING(256),
+                allowNull : false
             },
-            Name: {
-                type: Sequelize.STRING(256),
-                allowNull: false
+            Name : {
+                type      : Sequelize.STRING(256),
+                allowNull : false
             },
-            Description: {
-                type: Sequelize.TEXT,
-                allowNull: false
+            Description : {
+                type      : Sequelize.TEXT,
+                allowNull : false
             },
-            AssetCategory: {
-                type: Sequelize.STRING(128),
-                allowNull: false,
-                defaultValue: 'Biometrics'
+            AssetCategory : {
+                type         : Sequelize.STRING(128),
+                allowNull    : false,
+                defaultValue : 'Biometrics'
             },
-            BiometricsType: {
-                type: Sequelize.ENUM(["Blood pressure", "Blood glucose", "Blood oxygen saturation", "Body height", "Body weight", "Body temperature", "Pulse", "Other"]),
-                allowNull: false,
-                defaultValue: 'Other'
+            BiometricsType : {
+                type         : Sequelize.ENUM(BiometricsTypeList),
+                allowNull    : false,
+                defaultValue : 'Other'
             },
-            MeasurementUnit: {
-                type: Sequelize.STRING(128),
-                allowNull: true
+            MeasurementUnit : {
+                type      : Sequelize.STRING(128),
+                allowNull : true
             },
-            OwnerUserId: {
-                type: Sequelize.UUID,
-                allowNull: false,
-                foreignKey: true,
-                unique: false
+            OwnerUserId : {
+                type       : Sequelize.UUID,
+                allowNull  : false,
+                foreignKey : true,
+                unique     : false
             },
-            Tags: {
-                type: Sequelize.TEXT,
-                allowNull: false,
-                defaultValue: []
+            Tags : {
+                type         : Sequelize.TEXT,
+                allowNull    : false,
+                defaultValue : []
             },
-            Version: {
-                type: Sequelize.STRING(128),
-                allowNull: false,
-                defaultValue: 'V1'
+            Version : {
+                type         : Sequelize.STRING(128),
+                allowNull    : false,
+                defaultValue : 'V1'
             },
 
-            CreatedAt: Sequelize.DATE,
-            UpdatedAt: Sequelize.DATE,
-            DeletedAt: Sequelize.DATE
+            CreatedAt : Sequelize.DATE,
+            UpdatedAt : Sequelize.DATE,
+            DeletedAt : Sequelize.DATE
         };
     }
 
@@ -80,13 +79,13 @@ export class BiometricsModel {
         return sequelize.define(
             BiometricsModel.ModelName,
             schema, {
-                createdAt: 'CreatedAt',
-                updatedAt: 'UpdatedAt',
-                deletedAt: 'DeletedAt',
-                freezeTableName: true,
-                timestamps: true,
-                paranoid: true,
-                tableName: BiometricsModel.TableName,
+                createdAt       : 'CreatedAt',
+                updatedAt       : 'UpdatedAt',
+                deletedAt       : 'DeletedAt',
+                freezeTableName : true,
+                timestamps      : true,
+                paranoid        : true,
+                tableName       : BiometricsModel.TableName,
             });
     };
 
@@ -94,11 +93,10 @@ export class BiometricsModel {
 
         //Add associations here...
 
-
         models.Biometrics.belongsTo(models.User, {
-            sourceKey: 'OwnerUserId',
-            targetKey: 'id',
-            as: 'OwnerUser'
+            sourceKey : 'OwnerUserId',
+            targetKey : 'id',
+            as        : 'OwnerUser'
         });
 
     };

@@ -16,62 +16,62 @@ export class UserSelectedActionPlanModel {
         const Sequelize: any = db.Sequelize;
 
         return {
-            id: {
-                type: Sequelize.UUID,
-                allowNull: false,
-                defaultValue: Sequelize.UUIDV4,
-                primaryKey: true
+            id : {
+                type         : Sequelize.UUID,
+                allowNull    : false,
+                defaultValue : Sequelize.UUIDV4,
+                primaryKey   : true
             },
-            Name: {
-                type: Sequelize.STRING(256),
-                allowNull: false
+            Name : {
+                type      : Sequelize.STRING(256),
+                allowNull : false
             },
-            Description: {
-                type: Sequelize.TEXT,
-                allowNull: false
+            Description : {
+                type      : Sequelize.TEXT,
+                allowNull : false
             },
-            UserId: {
-                type: Sequelize.UUID,
-                allowNull: false,
-                foreignKey: true,
-                unique: false
+            UserId : {
+                type       : Sequelize.UUID,
+                allowNull  : false,
+                foreignKey : true,
+                unique     : false
             },
-            CareplanId: {
-                type: Sequelize.INTEGER,
-                allowNull: false,
-                foreignKey: true,
-                unique: false
+            CareplanId : {
+                type       : Sequelize.INTEGER,
+                allowNull  : false,
+                foreignKey : true,
+                unique     : false
             },
-            AssetId: {
-                type: Sequelize.INTEGER,
-                allowNull: false
+            AssetId : {
+                type      : Sequelize.INTEGER,
+                allowNull : false
             },
-            AssetType: {
-                type: Sequelize.STRING(128),
-                allowNull: false,
-                defaultValue: 'Action plan'
+            AssetType : {
+                type         : Sequelize.STRING(128),
+                allowNull    : false,
+                defaultValue : 'Action plan'
             },
-            AdditionalDetails: {
-                type: Sequelize.TEXT,
-                allowNull: true
+            AdditionalDetails : {
+                type      : Sequelize.TEXT,
+                allowNull : true
             },
-            StartDate: {
-                type: Sequelize.DATE,
-                allowNull: false
+            StartDate : {
+                type      : Sequelize.DATE,
+                allowNull : false
             },
-            EndDate: {
-                type: Sequelize.DATE,
-                allowNull: false
+            EndDate : {
+                type      : Sequelize.DATE,
+                allowNull : false
             },
-            ProgressStatus: {
-                type: Sequelize.ENUM(["Pending", "In-progress", "Completed", "Cancelled", "Delayed", "Unknown"]),
-                allowNull: false,
-                defaultValue: 'Pending'
+            ProgressStatus : {
+                type         : Sequelize.ENUM(["Pending", "In-progress", "Completed", "Cancelled", "Delayed", "Unknown"]),
+                allowNull    : false,
+                defaultValue : 'Pending'
             },
 
-            CreatedAt: Sequelize.DATE,
-            UpdatedAt: Sequelize.DATE,
-            DeletedAt: Sequelize.DATE
+            CreatedAt : Sequelize.DATE,
+            UpdatedAt : Sequelize.DATE,
+            DeletedAt : Sequelize.DATE
         };
     }
 
@@ -84,13 +84,13 @@ export class UserSelectedActionPlanModel {
         return sequelize.define(
             UserSelectedActionPlanModel.ModelName,
             schema, {
-                createdAt: 'CreatedAt',
-                updatedAt: 'UpdatedAt',
-                deletedAt: 'DeletedAt',
-                freezeTableName: true,
-                timestamps: true,
-                paranoid: true,
-                tableName: UserSelectedActionPlanModel.TableName,
+                createdAt       : 'CreatedAt',
+                updatedAt       : 'UpdatedAt',
+                deletedAt       : 'DeletedAt',
+                freezeTableName : true,
+                timestamps      : true,
+                paranoid        : true,
+                tableName       : UserSelectedActionPlanModel.TableName,
             });
     };
 
@@ -98,17 +98,16 @@ export class UserSelectedActionPlanModel {
 
         //Add associations here...
 
-
         models.UserSelectedActionPlan.belongsTo(models.User, {
-            sourceKey: 'UserId',
-            targetKey: 'id',
-            as: 'User'
+            sourceKey : 'UserId',
+            targetKey : 'id',
+            as        : 'User'
         });
 
         models.UserSelectedActionPlan.belongsTo(models.Careplan, {
-            sourceKey: 'CareplanId',
-            targetKey: 'id',
-            as: 'Careplan'
+            sourceKey : 'CareplanId',
+            targetKey : 'id',
+            as        : 'Careplan'
         });
 
     };

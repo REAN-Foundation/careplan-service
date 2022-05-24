@@ -1,4 +1,4 @@
-import { DatabaseConnector } from '../database.connector';
+import { DatabaseConnector } from '../../database.connector';
 
 ////////////////////////////////////////////////////////////////////////
 

@@ -1,9 +1,9 @@
 import {
     ConsultationModel
-} from '../models/consultation.model';
+} from '../../models/assets/consultation.model';
 import {
     UserModel
-} from '../models/user.model';
+} from '../../models/user/user.model';
 
 import {
     ErrorHandler
@@ -12,7 +12,7 @@ import {
     ConsultationCreateModel,
     ConsultationSearchFilters,
     ConsultationSearchResults
-} from '../../domain.types/assets/consultation.domain.types';
+} from '../../../domain.types/assets/consultation.domain.types';
 import {
     Op
 } from 'sequelize';
@@ -26,7 +26,6 @@ export class ConsultationService {
     Consultation = ConsultationModel.Model();
 
     User = UserModel.Model();
-
 
     //#endregion
 
@@ -44,15 +43,15 @@ export class ConsultationService {
     getById = async (id) => {
         try {
             const record = await this.Consultation.findOne({
-                where: {
-                    id: id
+                where : {
+                    id : id
                 },
-                include: [{
-                        model: this.User,
-                        required: false,
-                        as: 'OwnerUser',
-                        //through: { attributes: [] }
-                    },
+                include : [{
+                    model    : this.User,
+                    required : false,
+                    as       : 'OwnerUser',
+                    //through: { attributes: [] }
+                },
 
                 ]
             });
@@ -86,13 +85,13 @@ export class ConsultationService {
 
             const foundResults = await this.Consultation.findAndCountAll(search);
             const searchResults: ConsultationSearchResults = {
-                TotalCount: foundResults.count,
-                RetrievedCount: foundResults.rows.length,
-                PageIndex: pageIndex,
-                ItemsPerPage: limit,
-                Order: order === 'DESC' ? 'descending' : 'ascending',
-                OrderedBy: orderByColumn,
-                Items: foundResults.rows,
+                TotalCount     : foundResults.count,
+                RetrievedCount : foundResults.rows.length,
+                PageIndex      : pageIndex,
+                ItemsPerPage   : limit,
+                Order          : order === 'DESC' ? 'descending' : 'ascending',
+                OrderedBy      : orderByColumn,
+                Items          : foundResults.rows,
             };
 
             return searchResults;
@@ -106,8 +105,8 @@ export class ConsultationService {
         try {
             if (Object.keys(updateModel).length > 0) {
                 var res = await this.Consultation.update(updateModel, {
-                    where: {
-                        id: id
+                    where : {
+                        id : id
                     }
                 });
                 if (res.length !== 1) {
@@ -123,8 +122,8 @@ export class ConsultationService {
     delete = async (id) => {
         try {
             var result = await this.Consultation.destroy({
-                where: {
-                    id: id
+                where : {
+                    id : id
                 }
             });
             return result === 1;
@@ -140,54 +139,53 @@ export class ConsultationService {
     private getSearchModel = (filters) => {
 
         var search = {
-            where: {},
-            include: []
+            where   : {},
+            include : []
         };
 
         if (filters.AssetCode) {
             search.where['AssetCode'] = {
-                [Op.like]: '%' + filters.AssetCode + '%'
-            }
+                [Op.like] : '%' + filters.AssetCode + '%'
+            };
         }
         if (filters.Name) {
             search.where['Name'] = {
-                [Op.like]: '%' + filters.Name + '%'
-            }
+                [Op.like] : '%' + filters.Name + '%'
+            };
         }
         if (filters.Description) {
             search.where['Description'] = {
-                [Op.like]: '%' + filters.Description + '%'
-            }
+                [Op.like] : '%' + filters.Description + '%'
+            };
         }
         if (filters.ConsultationType) {
-            search.where['ConsultationType'] = filters.ConsultationType
+            search.where['ConsultationType'] = filters.ConsultationType;
         }
         if (filters.AssetCategory) {
             search.where['AssetCategory'] = {
-                [Op.like]: '%' + filters.AssetCategory + '%'
-            }
+                [Op.like] : '%' + filters.AssetCategory + '%'
+            };
         }
         if (filters.Tags) {
             search.where['Tags'] = {
-                [Op.like]: '%' + filters.Tags + '%'
-            }
+                [Op.like] : '%' + filters.Tags + '%'
+            };
         }
         if (filters.Version) {
             search.where['Version'] = {
-                [Op.like]: '%' + filters.Version + '%'
-            }
+                [Op.like] : '%' + filters.Version + '%'
+            };
         }
         const includeUserAsOwnerUser = {
-            model: this.User,
-            required: false,
-            as: 'OwnerUser',
-            where: {}
-        }
+            model    : this.User,
+            required : false,
+            as       : 'OwnerUser',
+            where    : {}
+        };
         //if (filters.Xyz != undefined) {
         //    includeUser.where['Xyz'] = filters.Xyz;
         //}
         search.include.push(includeUserAsOwnerUser);
-
 
         return search;
     }

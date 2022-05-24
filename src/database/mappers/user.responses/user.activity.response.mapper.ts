@@ -1,6 +1,6 @@
 import {
     UserActivityResponseDto
-} from '../../domain.types/user.response/user.activity.response.domain.types';
+} from '../../../domain.types/user.responses/user.activity.response.domain.types';
 
 ///////////////////////////////////////////////////////////////////////////////////
 
@@ -11,16 +11,16 @@ export class UserActivityResponseMapper {
             return null;
         }
         const dto: UserActivityResponseDto = {
-            id: userActivityResponse.id,
-            UserId: userActivityResponse.UserId,
-            EnrollmentScheduleId: userActivityResponse.EnrollmentScheduleId,
-            CareplanScheduleId: userActivityResponse.CareplanScheduleId,
-            CareplanId: userActivityResponse.CareplanId,
-            AssetId: userActivityResponse.AssetId,
-            AssetType: userActivityResponse.AssetType,
-            Response: userActivityResponse.Response,
-            TimeResponded: userActivityResponse.TimeResponded,
-            ProgressStatus: userActivityResponse.ProgressStatus,
+            id                   : userActivityResponse.id,
+            UserId               : userActivityResponse.UserId,
+            EnrollmentScheduleId : userActivityResponse.EnrollmentScheduleId,
+            CareplanScheduleId   : userActivityResponse.CareplanScheduleId,
+            CareplanId           : userActivityResponse.CareplanId,
+            AssetId              : userActivityResponse.AssetId,
+            AssetType            : userActivityResponse.AssetType,
+            Response             : userActivityResponse.Response,
+            TimeResponded        : userActivityResponse.TimeResponded,
+            ProgressStatus       : userActivityResponse.ProgressStatus,
 
         };
         return dto;

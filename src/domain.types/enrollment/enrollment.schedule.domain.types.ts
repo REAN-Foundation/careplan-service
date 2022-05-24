@@ -1,3 +1,4 @@
+import { AssetType, TimeSlot } from "../assets/asset.types";
 import {
     BaseSearchFilters,
     BaseSearchResults
@@ -7,31 +8,30 @@ import {
 } from "../miscellaneous/system.types";
 
 export interface EnrollmentScheduleCreateModel {
-    AssetType ? : AssetType;
+    AssetType ?: AssetType;
 }
 
 export interface EnrollmentScheduleUpdateModel {
-    AssetType ? : AssetType;
+    AssetType ?: AssetType;
 }
 
 export interface EnrollmentScheduleDto {
-    id: uuid;
-    EnrollmentId: uuid;
-    UserId: uuid;
+    id                : uuid;
+    EnrollmentId      : uuid;
+    UserId            : uuid;
     CareplanScheduleId: uuid;
-    AssetId: number;
-    AssetType: AssetType;
-    CareplanId: number;
-    TimeSlot: TimeSlot;
-    ScheduledDate: Date;
-
+    AssetId           : number;
+    AssetType         : AssetType;
+    CareplanId        : number;
+    TimeSlot          : TimeSlot;
+    ScheduledDate     : Date;
 }
 
 export interface EnrollmentScheduleSearchFilters extends BaseSearchFilters {
-    AssetId ? : number;
-    AssetType ? : AssetType;
-    CareplanId ? : number;
-    TimeSlot ? : TimeSlot;
+    AssetId    ?: number;
+    AssetType  ?: AssetType;
+    CareplanId ?: number;
+    TimeSlot   ?: TimeSlot;
 }
 
 export interface EnrollmentScheduleSearchResults extends BaseSearchResults {

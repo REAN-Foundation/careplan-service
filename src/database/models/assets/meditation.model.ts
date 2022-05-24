@@ -1,6 +1,7 @@
+import { MeditationTypeList } from '../../../domain.types/assets/meditation.domain.types';
 import {
     DatabaseConnector
-} from '../database.connector';
+} from '../../database.connector';
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -16,59 +17,59 @@ export class MeditationModel {
         const Sequelize: any = db.Sequelize;
 
         return {
-            id: {
-                type: Sequelize.INTEGER,
-                allowNull: false,
-                autoIncrement: true,
-                primaryKey: true
+            id : {
+                type          : Sequelize.INTEGER,
+                allowNull     : false,
+                autoIncrement : true,
+                primaryKey    : true
             },
-            AssetCode: {
-                type: Sequelize.STRING(256),
-                allowNull: false
+            AssetCode : {
+                type      : Sequelize.STRING(256),
+                allowNull : false
             },
-            Name: {
-                type: Sequelize.STRING(256),
-                allowNull: false
+            Name : {
+                type      : Sequelize.STRING(256),
+                allowNull : false
             },
-            Description: {
-                type: Sequelize.TEXT,
-                allowNull: false
+            Description : {
+                type      : Sequelize.TEXT,
+                allowNull : false
             },
-            MeditationType: {
-                type: Sequelize.ENUM(["Mindfulness", "Spiritual", "Focused", "Mantra", "Progressive relaxation", "Transcendental", "Visualization"]),
-                allowNull: false,
-                defaultValue: 'Mindfulness'
+            MeditationType : {
+                type         : Sequelize.ENUM(MeditationTypeList),
+                allowNull    : false,
+                defaultValue : 'Mindfulness'
             },
-            RecommendedDurationMin: {
-                type: Sequelize.INTEGER,
-                allowNull: false,
-                defaultValue: 15
+            RecommendedDurationMin : {
+                type         : Sequelize.INTEGER,
+                allowNull    : false,
+                defaultValue : 15
             },
-            AssetCategory: {
-                type: Sequelize.STRING(128),
-                allowNull: false,
-                defaultValue: 'Stress management'
+            AssetCategory : {
+                type         : Sequelize.STRING(128),
+                allowNull    : false,
+                defaultValue : 'Stress management'
             },
-            OwnerUserId: {
-                type: Sequelize.UUID,
-                allowNull: false,
-                foreignKey: true,
-                unique: false
+            OwnerUserId : {
+                type       : Sequelize.UUID,
+                allowNull  : false,
+                foreignKey : true,
+                unique     : false
             },
-            Tags: {
-                type: Sequelize.TEXT,
-                allowNull: false,
-                defaultValue: []
+            Tags : {
+                type         : Sequelize.TEXT,
+                allowNull    : false,
+                defaultValue : []
             },
-            Version: {
-                type: Sequelize.STRING(128),
-                allowNull: false,
-                defaultValue: 'V1'
+            Version : {
+                type         : Sequelize.STRING(128),
+                allowNull    : false,
+                defaultValue : 'V1'
             },
 
-            CreatedAt: Sequelize.DATE,
-            UpdatedAt: Sequelize.DATE,
-            DeletedAt: Sequelize.DATE
+            CreatedAt : Sequelize.DATE,
+            UpdatedAt : Sequelize.DATE,
+            DeletedAt : Sequelize.DATE
         };
     }
 
@@ -81,13 +82,13 @@ export class MeditationModel {
         return sequelize.define(
             MeditationModel.ModelName,
             schema, {
-                createdAt: 'CreatedAt',
-                updatedAt: 'UpdatedAt',
-                deletedAt: 'DeletedAt',
-                freezeTableName: true,
-                timestamps: true,
-                paranoid: true,
-                tableName: MeditationModel.TableName,
+                createdAt       : 'CreatedAt',
+                updatedAt       : 'UpdatedAt',
+                deletedAt       : 'DeletedAt',
+                freezeTableName : true,
+                timestamps      : true,
+                paranoid        : true,
+                tableName       : MeditationModel.TableName,
             });
     };
 
@@ -95,11 +96,10 @@ export class MeditationModel {
 
         //Add associations here...
 
-
         models.Meditation.belongsTo(models.User, {
-            sourceKey: 'OwnerUserId',
-            targetKey: 'id',
-            as: 'OwnerUser'
+            sourceKey : 'OwnerUserId',
+            targetKey : 'id',
+            as        : 'OwnerUser'
         });
 
     };

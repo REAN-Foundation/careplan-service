@@ -1,9 +1,9 @@
 import {
     PriorityModel
-} from '../models/priority.model';
+} from '../../models/assets/priority.model';
 import {
     UserModel
-} from '../models/user.model';
+} from '../../models/user/user.model';
 
 import {
     ErrorHandler
@@ -12,7 +12,7 @@ import {
     PriorityCreateModel,
     PrioritySearchFilters,
     PrioritySearchResults
-} from '../../domain.types/assets/priority.domain.types';
+} from '../../../domain.types/assets/priority.domain.types';
 import {
     Op
 } from 'sequelize';
@@ -26,7 +26,6 @@ export class PriorityService {
     Priority = PriorityModel.Model();
 
     User = UserModel.Model();
-
 
     //#endregion
 
@@ -44,15 +43,15 @@ export class PriorityService {
     getById = async (id) => {
         try {
             const record = await this.Priority.findOne({
-                where: {
-                    id: id
+                where : {
+                    id : id
                 },
-                include: [{
-                        model: this.User,
-                        required: false,
-                        as: 'OwnerUser',
-                        //through: { attributes: [] }
-                    },
+                include : [{
+                    model    : this.User,
+                    required : false,
+                    as       : 'OwnerUser',
+                    //through: { attributes: [] }
+                },
 
                 ]
             });
@@ -86,13 +85,13 @@ export class PriorityService {
 
             const foundResults = await this.Priority.findAndCountAll(search);
             const searchResults: PrioritySearchResults = {
-                TotalCount: foundResults.count,
-                RetrievedCount: foundResults.rows.length,
-                PageIndex: pageIndex,
-                ItemsPerPage: limit,
-                Order: order === 'DESC' ? 'descending' : 'ascending',
-                OrderedBy: orderByColumn,
-                Items: foundResults.rows,
+                TotalCount     : foundResults.count,
+                RetrievedCount : foundResults.rows.length,
+                PageIndex      : pageIndex,
+                ItemsPerPage   : limit,
+                Order          : order === 'DESC' ? 'descending' : 'ascending',
+                OrderedBy      : orderByColumn,
+                Items          : foundResults.rows,
             };
 
             return searchResults;
@@ -106,8 +105,8 @@ export class PriorityService {
         try {
             if (Object.keys(updateModel).length > 0) {
                 var res = await this.Priority.update(updateModel, {
-                    where: {
-                        id: id
+                    where : {
+                        id : id
                     }
                 });
                 if (res.length !== 1) {
@@ -123,8 +122,8 @@ export class PriorityService {
     delete = async (id) => {
         try {
             var result = await this.Priority.destroy({
-                where: {
-                    id: id
+                where : {
+                    id : id
                 }
             });
             return result === 1;
@@ -140,51 +139,50 @@ export class PriorityService {
     private getSearchModel = (filters) => {
 
         var search = {
-            where: {},
-            include: []
+            where   : {},
+            include : []
         };
 
         if (filters.AssetCode) {
             search.where['AssetCode'] = {
-                [Op.like]: '%' + filters.AssetCode + '%'
-            }
+                [Op.like] : '%' + filters.AssetCode + '%'
+            };
         }
         if (filters.Name) {
             search.where['Name'] = {
-                [Op.like]: '%' + filters.Name + '%'
-            }
+                [Op.like] : '%' + filters.Name + '%'
+            };
         }
         if (filters.Description) {
             search.where['Description'] = {
-                [Op.like]: '%' + filters.Description + '%'
-            }
+                [Op.like] : '%' + filters.Description + '%'
+            };
         }
         if (filters.AssetCategory) {
             search.where['AssetCategory'] = {
-                [Op.like]: '%' + filters.AssetCategory + '%'
-            }
+                [Op.like] : '%' + filters.AssetCategory + '%'
+            };
         }
         if (filters.Tags) {
             search.where['Tags'] = {
-                [Op.like]: '%' + filters.Tags + '%'
-            }
+                [Op.like] : '%' + filters.Tags + '%'
+            };
         }
         if (filters.Version) {
             search.where['Version'] = {
-                [Op.like]: '%' + filters.Version + '%'
-            }
+                [Op.like] : '%' + filters.Version + '%'
+            };
         }
         const includeUserAsOwnerUser = {
-            model: this.User,
-            required: false,
-            as: 'OwnerUser',
-            where: {}
-        }
+            model    : this.User,
+            required : false,
+            as       : 'OwnerUser',
+            where    : {}
+        };
         //if (filters.Xyz != undefined) {
         //    includeUser.where['Xyz'] = filters.Xyz;
         //}
         search.include.push(includeUserAsOwnerUser);
-
 
         return search;
     }

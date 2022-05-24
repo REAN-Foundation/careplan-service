@@ -6,6 +6,18 @@ import {
     uuid
 } from "../miscellaneous/system.types";
 
+export enum MessageType {
+    Educational = "Educational",
+    Status      = "Status",
+    Unknown     = "Unknown"
+}
+
+export const MessageTypeList: MessageType[] = [
+    MessageType.Educational,
+    MessageType.Status,
+    MessageType.Unknown,
+];
+
 export interface MessageCreateModel {
     AssetCode ? : string;
     Name ? : string;

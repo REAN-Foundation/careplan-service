@@ -1,6 +1,5 @@
-import {
-    DatabaseConnector
-} from '../database.connector';
+import { MessageTypeList } from '../../../domain.types/assets/message.domain.types';
+import { DatabaseConnector } from '../../database.connector';
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -16,58 +15,58 @@ export class MessageModel {
         const Sequelize: any = db.Sequelize;
 
         return {
-            id: {
-                type: Sequelize.INTEGER,
-                allowNull: false,
-                autoIncrement: true,
-                primaryKey: true
+            id : {
+                type          : Sequelize.INTEGER,
+                allowNull     : false,
+                autoIncrement : true,
+                primaryKey    : true
             },
-            AssetCode: {
-                type: Sequelize.STRING(256),
-                allowNull: false
+            AssetCode : {
+                type      : Sequelize.STRING(256),
+                allowNull : false
             },
-            Name: {
-                type: Sequelize.TEXT,
-                allowNull: false
+            Name : {
+                type      : Sequelize.TEXT,
+                allowNull : false
             },
-            Description: {
-                type: Sequelize.TEXT,
-                allowNull: false
+            Description : {
+                type      : Sequelize.TEXT,
+                allowNull : false
             },
-            Category: {
-                type: Sequelize.STRING(128),
-                allowNull: false,
-                defaultValue: 'Educational'
+            Category : {
+                type         : Sequelize.STRING(128),
+                allowNull    : false,
+                defaultValue : 'Educational'
             },
-            MessageType: {
-                type: Sequelize.ENUM(["Educational", "Status", "Unknown"]),
-                allowNull: false,
-                defaultValue: 'Unknown'
+            MessageType : {
+                type         : Sequelize.ENUM(MessageTypeList),
+                allowNull    : false,
+                defaultValue : 'Unknown'
             },
-            OwnerUserId: {
-                type: Sequelize.UUID,
-                allowNull: false,
-                foreignKey: true,
-                unique: false
+            OwnerUserId : {
+                type       : Sequelize.UUID,
+                allowNull  : false,
+                foreignKey : true,
+                unique     : false
             },
-            Tags: {
-                type: Sequelize.TEXT,
-                allowNull: false,
-                defaultValue: []
+            Tags : {
+                type         : Sequelize.TEXT,
+                allowNull    : false,
+                defaultValue : []
             },
-            Url: {
-                type: Sequelize.TEXT,
-                allowNull: true
+            Url : {
+                type      : Sequelize.TEXT,
+                allowNull : true
             },
-            Version: {
-                type: Sequelize.STRING(128),
-                allowNull: false,
-                defaultValue: 'V1'
+            Version : {
+                type         : Sequelize.STRING(128),
+                allowNull    : false,
+                defaultValue : 'V1'
             },
 
-            CreatedAt: Sequelize.DATE,
-            UpdatedAt: Sequelize.DATE,
-            DeletedAt: Sequelize.DATE
+            CreatedAt : Sequelize.DATE,
+            UpdatedAt : Sequelize.DATE,
+            DeletedAt : Sequelize.DATE
         };
     }
 
@@ -80,13 +79,13 @@ export class MessageModel {
         return sequelize.define(
             MessageModel.ModelName,
             schema, {
-                createdAt: 'CreatedAt',
-                updatedAt: 'UpdatedAt',
-                deletedAt: 'DeletedAt',
-                freezeTableName: true,
-                timestamps: true,
-                paranoid: true,
-                tableName: MessageModel.TableName,
+                createdAt       : 'CreatedAt',
+                updatedAt       : 'UpdatedAt',
+                deletedAt       : 'DeletedAt',
+                freezeTableName : true,
+                timestamps      : true,
+                paranoid        : true,
+                tableName       : MessageModel.TableName,
             });
     };
 
@@ -94,11 +93,10 @@ export class MessageModel {
 
         //Add associations here...
 
-
         models.Message.belongsTo(models.User, {
-            sourceKey: 'OwnerUserId',
-            targetKey: 'id',
-            as: 'OwnerUser'
+            sourceKey : 'OwnerUserId',
+            targetKey : 'id',
+            as        : 'OwnerUser'
         });
 
     };

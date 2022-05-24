@@ -6,6 +6,20 @@ import {
     uuid
 } from "../miscellaneous/system.types";
 
+export enum AppointmentType {
+    Doctor        = "Doctor",
+    Lab           = "Lab",
+    Physiotherapy = "Physiotherapy",
+    Other         = "Other"
+}
+
+export const AppointmentTypeList: AppointmentType[] = [
+    AppointmentType.Doctor,
+    AppointmentType.Lab,
+    AppointmentType.Physiotherapy,
+    AppointmentType.Other,
+];
+
 export interface AppointmentCreateModel {
     AssetCode       ?: string;
     Name            ?: string;

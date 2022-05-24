@@ -3,16 +3,16 @@ import {
 } from '../../models/user.responses/user.activity.response.model';
 import {
     UserModel
-} from '../models/user.model';
+} from '../../models/user/user.model';
 import {
     EnrollmentScheduleModel
 } from '../../models/enrollment/enrollment.schedule.model';
 import {
     CareplanScheduleModel
-} from '../models/careplan.schedule.model';
+} from '../../models/careplan/careplan.schedule.model';
 import {
     CareplanModel
-} from '../models/careplan.model';
+} from '../../models/careplan/careplan.model';
 
 import {
     ErrorHandler
@@ -42,7 +42,6 @@ export class UserActivityResponseService {
 
     Careplan = CareplanModel.Model();
 
-
     //#endregion
 
     //#region Publics
@@ -59,30 +58,30 @@ export class UserActivityResponseService {
     getById = async (id) => {
         try {
             const record = await this.UserActivityResponse.findOne({
-                where: {
-                    id: id
+                where : {
+                    id : id
                 },
-                include: [{
-                        model: this.User,
-                        required: false,
-                        as: 'User',
-                        //through: { attributes: [] }
-                    }, {
-                        model: this.EnrollmentSchedule,
-                        required: false,
-                        as: 'EnrollmentSchedule',
-                        //through: { attributes: [] }
-                    }, {
-                        model: this.CareplanSchedule,
-                        required: false,
-                        as: 'CareplanSchedule',
-                        //through: { attributes: [] }
-                    }, {
-                        model: this.Careplan,
-                        required: false,
-                        as: 'Careplan',
-                        //through: { attributes: [] }
-                    },
+                include : [{
+                    model    : this.User,
+                    required : false,
+                    as       : 'User',
+                    //through: { attributes: [] }
+                }, {
+                    model    : this.EnrollmentSchedule,
+                    required : false,
+                    as       : 'EnrollmentSchedule',
+                    //through: { attributes: [] }
+                }, {
+                    model    : this.CareplanSchedule,
+                    required : false,
+                    as       : 'CareplanSchedule',
+                    //through: { attributes: [] }
+                }, {
+                    model    : this.Careplan,
+                    required : false,
+                    as       : 'Careplan',
+                    //through: { attributes: [] }
+                },
 
                 ]
             });
@@ -116,13 +115,13 @@ export class UserActivityResponseService {
 
             const foundResults = await this.UserActivityResponse.findAndCountAll(search);
             const searchResults: UserActivityResponseSearchResults = {
-                TotalCount: foundResults.count,
-                RetrievedCount: foundResults.rows.length,
-                PageIndex: pageIndex,
-                ItemsPerPage: limit,
-                Order: order === 'DESC' ? 'descending' : 'ascending',
-                OrderedBy: orderByColumn,
-                Items: foundResults.rows,
+                TotalCount     : foundResults.count,
+                RetrievedCount : foundResults.rows.length,
+                PageIndex      : pageIndex,
+                ItemsPerPage   : limit,
+                Order          : order === 'DESC' ? 'descending' : 'ascending',
+                OrderedBy      : orderByColumn,
+                Items          : foundResults.rows,
             };
 
             return searchResults;
@@ -136,8 +135,8 @@ export class UserActivityResponseService {
         try {
             if (Object.keys(updateModel).length > 0) {
                 var res = await this.UserActivityResponse.update(updateModel, {
-                    where: {
-                        id: id
+                    where : {
+                        id : id
                     }
                 });
                 if (res.length !== 1) {
@@ -153,8 +152,8 @@ export class UserActivityResponseService {
     delete = async (id) => {
         try {
             var result = await this.UserActivityResponse.destroy({
-                where: {
-                    id: id
+                where : {
+                    id : id
                 }
             });
             return result === 1;
@@ -170,71 +169,70 @@ export class UserActivityResponseService {
     private getSearchModel = (filters) => {
 
         var search = {
-            where: {},
-            include: []
+            where   : {},
+            include : []
         };
 
         if (filters.CareplanId) {
-            search.where['CareplanId'] = filters.CareplanId
+            search.where['CareplanId'] = filters.CareplanId;
         }
         if (filters.AssetId) {
-            search.where['AssetId'] = filters.AssetId
+            search.where['AssetId'] = filters.AssetId;
         }
         if (filters.AssetType) {
-            search.where['AssetType'] = filters.AssetType
+            search.where['AssetType'] = filters.AssetType;
         }
         if (filters.Response) {
             search.where['Response'] = {
-                [Op.like]: '%' + filters.Response + '%'
-            }
+                [Op.like] : '%' + filters.Response + '%'
+            };
         }
         if (filters.TimeResponded) {
-            search.where['TimeResponded'] = filters.TimeResponded
+            search.where['TimeResponded'] = filters.TimeResponded;
         }
         if (filters.ProgressStatus) {
-            search.where['ProgressStatus'] = filters.ProgressStatus
+            search.where['ProgressStatus'] = filters.ProgressStatus;
         }
         const includeUserAsUser = {
-            model: this.User,
-            required: false,
-            as: 'User',
-            where: {}
-        }
+            model    : this.User,
+            required : false,
+            as       : 'User',
+            where    : {}
+        };
         //if (filters.Xyz != undefined) {
         //    includeUser.where['Xyz'] = filters.Xyz;
         //}
         search.include.push(includeUserAsUser);
         const includeEnrollmentScheduleAsEnrollmentSchedule = {
-            model: this.EnrollmentSchedule,
-            required: false,
-            as: 'EnrollmentSchedule',
-            where: {}
-        }
+            model    : this.EnrollmentSchedule,
+            required : false,
+            as       : 'EnrollmentSchedule',
+            where    : {}
+        };
         //if (filters.Xyz != undefined) {
         //    includeEnrollmentSchedule.where['Xyz'] = filters.Xyz;
         //}
         search.include.push(includeEnrollmentScheduleAsEnrollmentSchedule);
         const includeCareplanScheduleAsCareplanSchedule = {
-            model: this.CareplanSchedule,
-            required: false,
-            as: 'CareplanSchedule',
-            where: {}
-        }
+            model    : this.CareplanSchedule,
+            required : false,
+            as       : 'CareplanSchedule',
+            where    : {}
+        };
         //if (filters.Xyz != undefined) {
         //    includeCareplanSchedule.where['Xyz'] = filters.Xyz;
         //}
         search.include.push(includeCareplanScheduleAsCareplanSchedule);
         const includeCareplanAsCareplan = {
-            model: this.Careplan,
-            required: false,
-            as: 'Careplan',
-            where: {}
-        }
+            model    : this.Careplan,
+            required : false,
+            as       : 'Careplan',
+            where    : {}
+        };
         //if (filters.Xyz != undefined) {
         //    includeCareplan.where['Xyz'] = filters.Xyz;
         //}
         search.include.push(includeCareplanAsCareplan);
-
 
         return search;
     }

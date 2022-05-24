@@ -1,6 +1,6 @@
 import {
     UserSelectedPriorityDto
-} from '../../domain.types/user.selected.priority.domain.types';
+} from '../../../domain.types/user.responses/user.selected.priority.domain.types';
 
 ///////////////////////////////////////////////////////////////////////////////////
 
@@ -11,14 +11,14 @@ export class UserSelectedPriorityMapper {
             return null;
         }
         const dto: UserSelectedPriorityDto = {
-            id: userSelectedPriority.id,
-            Name: userSelectedPriority.Name,
-            Description: userSelectedPriority.Description,
-            UserId: userSelectedPriority.UserId,
-            CareplanId: userSelectedPriority.CareplanId,
-            AssetId: userSelectedPriority.AssetId,
-            AssetType: userSelectedPriority.AssetType,
-            StartDate: userSelectedPriority.StartDate,
+            id          : userSelectedPriority.id,
+            Name        : userSelectedPriority.Name,
+            Description : userSelectedPriority.Description,
+            UserId      : userSelectedPriority.UserId,
+            CareplanId  : userSelectedPriority.CareplanId,
+            AssetId     : userSelectedPriority.AssetId,
+            AssetType   : userSelectedPriority.AssetType,
+            StartDate   : userSelectedPriority.StartDate,
 
         };
         return dto;

@@ -1,12 +1,12 @@
 import {
     AudioModel
-} from '../models/audio.model';
+} from '../../models/assets/audio.model';
 import {
     FileResourceModel
-} from '../models/file.resource.model';
+} from '../../models/file.resource.model';
 import {
     UserModel
-} from '../models/user.model';
+} from '../../models/user/user.model';
 
 import {
     ErrorHandler
@@ -15,7 +15,7 @@ import {
     AudioCreateModel,
     AudioSearchFilters,
     AudioSearchResults
-} from '../../domain.types/assets/audio.domain.types';
+} from '../../../domain.types/assets/audio.domain.types';
 import {
     Op
 } from 'sequelize';
@@ -31,7 +31,6 @@ export class AudioService {
     FileResource = FileResourceModel.Model();
 
     User = UserModel.Model();
-
 
     //#endregion
 
@@ -49,20 +48,20 @@ export class AudioService {
     getById = async (id) => {
         try {
             const record = await this.Audio.findOne({
-                where: {
-                    id: id
+                where : {
+                    id : id
                 },
-                include: [{
-                        model: this.FileResource,
-                        required: false,
-                        as: 'FileResource',
-                        //through: { attributes: [] }
-                    }, {
-                        model: this.User,
-                        required: false,
-                        as: 'OwnerUser',
-                        //through: { attributes: [] }
-                    },
+                include : [{
+                    model    : this.FileResource,
+                    required : false,
+                    as       : 'FileResource',
+                    //through: { attributes: [] }
+                }, {
+                    model    : this.User,
+                    required : false,
+                    as       : 'OwnerUser',
+                    //through: { attributes: [] }
+                },
 
                 ]
             });
@@ -96,13 +95,13 @@ export class AudioService {
 
             const foundResults = await this.Audio.findAndCountAll(search);
             const searchResults: AudioSearchResults = {
-                TotalCount: foundResults.count,
-                RetrievedCount: foundResults.rows.length,
-                PageIndex: pageIndex,
-                ItemsPerPage: limit,
-                Order: order === 'DESC' ? 'descending' : 'ascending',
-                OrderedBy: orderByColumn,
-                Items: foundResults.rows,
+                TotalCount     : foundResults.count,
+                RetrievedCount : foundResults.rows.length,
+                PageIndex      : pageIndex,
+                ItemsPerPage   : limit,
+                Order          : order === 'DESC' ? 'descending' : 'ascending',
+                OrderedBy      : orderByColumn,
+                Items          : foundResults.rows,
             };
 
             return searchResults;
@@ -116,8 +115,8 @@ export class AudioService {
         try {
             if (Object.keys(updateModel).length > 0) {
                 var res = await this.Audio.update(updateModel, {
-                    where: {
-                        id: id
+                    where : {
+                        id : id
                     }
                 });
                 if (res.length !== 1) {
@@ -133,8 +132,8 @@ export class AudioService {
     delete = async (id) => {
         try {
             var result = await this.Audio.destroy({
-                where: {
-                    id: id
+                where : {
+                    id : id
                 }
             });
             return result === 1;
@@ -150,66 +149,65 @@ export class AudioService {
     private getSearchModel = (filters) => {
 
         var search = {
-            where: {},
-            include: []
+            where   : {},
+            include : []
         };
 
         if (filters.AssetCode) {
             search.where['AssetCode'] = {
-                [Op.like]: '%' + filters.AssetCode + '%'
-            }
+                [Op.like] : '%' + filters.AssetCode + '%'
+            };
         }
         if (filters.Name) {
             search.where['Name'] = {
-                [Op.like]: '%' + filters.Name + '%'
-            }
+                [Op.like] : '%' + filters.Name + '%'
+            };
         }
         if (filters.Transcript) {
             search.where['Transcript'] = {
-                [Op.like]: '%' + filters.Transcript + '%'
-            }
+                [Op.like] : '%' + filters.Transcript + '%'
+            };
         }
         if (filters.Url) {
             search.where['Url'] = {
-                [Op.like]: '%' + filters.Url + '%'
-            }
+                [Op.like] : '%' + filters.Url + '%'
+            };
         }
         if (filters.AssetCategory) {
             search.where['AssetCategory'] = {
-                [Op.like]: '%' + filters.AssetCategory + '%'
-            }
+                [Op.like] : '%' + filters.AssetCategory + '%'
+            };
         }
         if (filters.Tags) {
             search.where['Tags'] = {
-                [Op.like]: '%' + filters.Tags + '%'
-            }
+                [Op.like] : '%' + filters.Tags + '%'
+            };
         }
         if (filters.Version) {
             search.where['Version'] = {
-                [Op.like]: '%' + filters.Version + '%'
-            }
+                [Op.like] : '%' + filters.Version + '%'
+            };
         }
         const includeFileResourceAsFileResource = {
-            model: this.FileResource,
-            required: false,
-            as: 'FileResource',
-            where: {}
-        }
+            model    : this.FileResource,
+            required : false,
+            as       : 'FileResource',
+            where    : {}
+        };
         //if (filters.Xyz != undefined) {
         //    includeFileResource.where['Xyz'] = filters.Xyz;
         //}
         search.include.push(includeFileResourceAsFileResource);
         const includeUserAsOwnerUser = {
-            model: this.User,
-            required: false,
-            as: 'OwnerUser',
-            where: {}
-        }
+            model    : this.User,
+            required : false,
+            as       : 'OwnerUser',
+            where    : {}
+        };
         //if (filters.Xyz != undefined) {
         //    includeUser.where['Xyz'] = filters.Xyz;
         //}
         search.include.push(includeUserAsOwnerUser);
-
 
         return search;
     }

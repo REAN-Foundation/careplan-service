@@ -1,4 +1,4 @@
-import { UserOtpModel } from '../models/user.otp.model';
+import { UserOtpModel } from '../../models/user/user.otp.model';
 import { ErrorHandler } from '../../../common/error.handler';
 import { Op } from 'sequelize';
 
