@@ -1,6 +1,6 @@
-import * as fs from 'fs';
 import * as path from 'path';
 import { Logger } from '../common/logger';
+import readdirp from 'readdirp';
 
 ///////////////////////////////////////////////////////////////////////////////////
 
@@ -13,16 +13,26 @@ export class DatabaseModelManager {
 
         var modelsPath = path.join(__dirname, 'models');
 
+        var modelFiles = [];
+        for await (const entry of readdirp(modelsPath)) {
+            const { fullPath } = entry;
+            if (fullPath.endsWith(".js")) {
+                modelFiles.push({
+                    FileName : path.basename(fullPath),
+                    FullPath : fullPath
+                });
+            }
+        }
+
         //Get all model file paths
-        var modelFiles = fs.readdirSync(modelsPath).filter((file) => {
-            return (file.endsWith(".js"));
-        });
+        // var modelFiles = fs.readdirSync(modelsPath).filter((file) => {
+        //     return (file.endsWith(".js"));
+        // });
 
-        for await (var file of modelFiles) {
-
-            var name: string = DatabaseModelManager.getModelName(file);
-            
-            const modelFilePath = path.join(modelsPath, file);
+        for await (var f of modelFiles) {
+            const fileName = f.FileName;
+            const modelFilePath = f.FullPath;
+            var name: string = DatabaseModelManager.getModelName(fileName);
             const imported = await import(modelFilePath);
             const modelClass = imported[name];
             const modelName = modelClass.ModelName;
@@ -69,14 +79,25 @@ export class DatabaseModelManager {
 
         var modelsPath = path.join(__dirname, 'models');
 
+        var modelFiles = [];
+        for await (const entry of readdirp(modelsPath)) {
+            const { fullPath } = entry;
+            if (fullPath.endsWith(".js")) {
+                modelFiles.push({
+                    FileName : path.basename(fullPath),
+                    FullPath : fullPath
+                });
+            }
+        }
+
         //Get all model file paths
-        var modelFiles = fs.readdirSync(modelsPath).filter((file) => {
-            return (file.indexOf(".js") !== -1);
-        });
+        // var modelFiles = fs.readdirSync(modelsPath).filter((file) => {
+        //     return (file.indexOf(".js") !== -1);
+        // });
 
         //Import each of the model file into db object as key:val (model-name:model) pair
-        modelFiles.forEach((file) => {
-            const modelFilePath = path.join(modelsPath, file);
+        modelFiles.forEach((f) => {
+            const modelFilePath = f.FullPath;
             // eslint-disable-next-line @typescript-eslint/no-var-requires
             const mdl = require(modelFilePath);
             const modelName = mdl.ModelName;

@@ -10,8 +10,6 @@ export class DatabaseConnector {
 
     private static _sequelize: Sequelize = null;
 
-    private static _initialized = false;
-
     static initialize = async () => {
 
         try {
