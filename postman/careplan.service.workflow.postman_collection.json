@@ -7,8 +7,125 @@
 	},
 	"item": [
 		{
+			"name": "service health-check",
+			"item": [
+				{
+					"name": "Health-check",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Request is successfull\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.expect(jsonRes).to.have.property('message');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}",
+							"host": [
+								"{{BASE_URL}}"
+							]
+						},
+						"description": "This request will be used by API monitor to check the health of the service."
+					},
+					"response": []
+				}
+			],
+			"description": "API to check the health of the service."
+		},
+		{
 			"name": "Admin login",
-			"item": []
+			"item": [
+				{
+					"name": "Admin log-in",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"try {\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.environment.set(\"ADMIN_USER_JWT\", jsonRes.Data.AccessToken);\r",
+									"}\r",
+									"catch (error) {\r",
+									"    console.log(error.message);\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Request is successfull\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.expect(jsonRes.Status).to.eql('success');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Admin login: Access token is returned\", function () {\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.expect(jsonRes.Data).to.have.property('AccessToken');\r",
+									"    pm.expect(jsonRes.Data.AccessToken).to.not.be.null;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"    //pm.environment.set(\"ADMIN_PASSWORD\", jsonRes.Data.Client.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{API_CLIENT_INTERNAL_KEY}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"UserName\": \"admin\",\r\n    \"Password\": \"{{ADMIN_PASSWORD}}\"\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/users/login-password",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"users",
+								"login-password"
+							]
+						},
+						"description": "User login with username/phone/email and password.\n\n'LoginRoleId' is the role id through which user wants to log into the system provided the user has the role."
+					},
+					"response": []
+				}
+			]
 		},
 		{
 			"name": "User management",
@@ -23,7 +140,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"try {\r",
 									"    var respData = pm.response.json();\r",
@@ -37,7 +153,8 @@
 									"\r",
 									"pm.test('New api client record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
 									"\r"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -52,12 +169,12 @@
 							{
 								"key": "Authorization",
 								"type": "text",
-								"value": "Bearer {{USER_JWT}}"
+								"value": "Bearer {{ADMIN_USER_JWT}}"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n   \"ClientName\": \"Rean Patient App\",\r\n\"IsPrivileged\": True,\r\n\"Password\": \"\",\r\n\"ApiKey\": \"\"\r\n\r\n}\r\n"
+							"raw": "{\r\n    \"ClientName\": \"Rean Patient App\",\r\n    \"ClientInterfaceType\": \"Web App\",\r\n    \"IsPrivileged\": true,\r\n    \"Password\": \"abc#123XYZ\"\r\n}"
 						},
 						"url": {
 							"raw": "{{BASE_URL}}/api-clients",
@@ -207,7 +324,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\"ClientName\": \"Rean Patient App\",\r\n\"ClientCode\": \"REANPAT\",\r\n\"IsPrivileged\": True,\r\n\"CountryCode\": \"\",\r\n\"Phone\": \"\",\r\n\"Email\": \"\",\r\n\"Password\": \"\",\r\n\"ApiKey\": \"\",\r\n\"ValidFrom\": \"2022-01-01\",\r\n\"ValidTill\": \"2023-01-01\"\r\n\r\n}\r\n"
+							"raw": "{\r\n\"ClientName\": \"Rean Patient App\",\r\n\"ClientCode\": \"REANPAT\",\r\n\"ClientInterfaceType\": \"Educational\",\r\n\"IsPrivileged\": True,\r\n\"CountryCode\": \"\",\r\n\"Phone\": \"\",\r\n\"Email\": \"\",\r\n\"Password\": \"\",\r\n\"ApiKey\": \"\",\r\n\"ValidFrom\": \"2022-01-01\",\r\n\"ValidTill\": \"2023-01-01\"\r\n\r\n}\r\n"
 						},
 						"url": {
 							"raw": "{{BASE_URL}}/api-clients/{{API_CLIENT_ID}}",

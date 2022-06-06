@@ -1,0 +1,2124 @@
+{
+	"info": {
+		"_postman_id": "f543ff4a-0657-44d1-b9e2-a4e145df4079",
+		"name": "careplan.service.crud",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5510218"
+	},
+	"item": [
+		{
+			"name": "Action plan",
+			"item": [
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"try {\r",
+									"    var respData = pm.response.json();\r",
+									"    pm.environment.set(\"ACTION_PLAN_ID\", respData.Data.id);\r",
+									"}\r",
+									"catch (error) {\r",
+									"    console.log(error.message);\r",
+									"}\r",
+									"\r",
+									"pm.test('Request is successfull', function () {\r    pm.response.to.have.status(200);\r    var jsonRes = pm.response.json();\r    pm.expect(jsonRes.Status).to.eql('success');\r});\r",
+									"\r",
+									"pm.test('New action plan record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
+									"\r"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"AssetCode\": \"ACTIONPLAN-HF-1\",\r\n\"Name\": \"Join the gym\",\r\n\"Description\": \"Studies confirm that working out with a partner significantly increases time spent exercising. A study by the Society of Behavioral Medicine showed that working with a partner, especially in a team format, improved performance, doubling the workout time of those who exercised alone.\",\r\n\"Version\": \"V1\"\r\n\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/assets/action-plans",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"assets",
+								"action-plans"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/assets/action-plans/{{ACTION_PLAN_ID}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"assets",
+								"action-plans",
+								"{{ACTION_PLAN_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search with filters",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/assets/action-plans/search?assetCode=xyz&name=xyz&description=xyz&assetCategory=xyz&tags=xyz&version=xyz",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"assets",
+								"action-plans",
+								"search"
+							],
+							"query": [
+								{
+									"key": "assetCode",
+									"value": "xyz"
+								},
+								{
+									"key": "name",
+									"value": "xyz"
+								},
+								{
+									"key": "description",
+									"value": "xyz"
+								},
+								{
+									"key": "assetCategory",
+									"value": "xyz"
+								},
+								{
+									"key": "tags",
+									"value": "xyz"
+								},
+								{
+									"key": "version",
+									"value": "xyz"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"try {\r",
+									"    var respData = pm.response.json();\r",
+									"    pm.environment.set(\"ACTION_PLAN_ID\", respData.Data.id);\r",
+									"}\r",
+									"catch (error) {\r",
+									"    console.log(error.message);\r",
+									"}\r",
+									"\r",
+									"pm.test('Request is successfull', function () {\r    pm.response.to.have.status(200);\r    var jsonRes = pm.response.json();\r    pm.expect(jsonRes.Status).to.eql('success');\r});\r",
+									"\r",
+									"pm.test('New action plan record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
+									"\r"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"AssetCode\": \"ACTIONPLAN-HF-1\",\r\n\"Name\": \"Join the gym\",\r\n\"Description\": \"Studies confirm that working out with a partner significantly increases time spent exercising. A study by the Society of Behavioral Medicine showed that working with a partner, especially in a team format, improved performance, doubling the workout time of those who exercised alone.\",\r\n\"Tags\": ['Maternity', 'Neo-natal-care'],\r\n\"Version\": \"V1\"\r\n\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/assets/action-plans/{{ACTION_PLAN_ID}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"assets",
+								"action-plans",
+								"{{ACTION_PLAN_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/assets/action-plans/{{ACTION_PLAN_ID}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"assets",
+								"action-plans",
+								"{{ACTION_PLAN_ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Animation",
+			"item": [
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"try {\r",
+									"    var respData = pm.response.json();\r",
+									"    pm.environment.set(\"ANIMATION_ID\", respData.Data.id);\r",
+									"}\r",
+									"catch (error) {\r",
+									"    console.log(error.message);\r",
+									"}\r",
+									"\r",
+									"pm.test('Request is successfull', function () {\r    pm.response.to.have.status(200);\r    var jsonRes = pm.response.json();\r    pm.expect(jsonRes.Status).to.eql('success');\r});\r",
+									"\r",
+									"pm.test('New animation record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
+									"\r"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"AssetCode\": \"ANIMATION-MT-3\",\r\n\"Name\": \"Know your condition!\",\r\n\"Transcript\": \"Studies confirm that working out with a partner ...\",\r\n\"Url\": \"http://watchlearnlive.heart.org/CVML_Player.php?moduleSelect=hrtflr\",\r\n\"Version\": \"V1\"\r\n\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/assets/animations",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"assets",
+								"animations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/assets/animations/{{ANIMATION_ID}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"assets",
+								"animations",
+								"{{ANIMATION_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search with filters",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/assets/animations/search?assetCode=xyz&name=xyz&transcript=xyz&url=xyz&assetCategory=xyz&tags=xyz&version=xyz",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"assets",
+								"animations",
+								"search"
+							],
+							"query": [
+								{
+									"key": "assetCode",
+									"value": "xyz"
+								},
+								{
+									"key": "name",
+									"value": "xyz"
+								},
+								{
+									"key": "transcript",
+									"value": "xyz"
+								},
+								{
+									"key": "url",
+									"value": "xyz"
+								},
+								{
+									"key": "assetCategory",
+									"value": "xyz"
+								},
+								{
+									"key": "tags",
+									"value": "xyz"
+								},
+								{
+									"key": "version",
+									"value": "xyz"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"try {\r",
+									"    var respData = pm.response.json();\r",
+									"    pm.environment.set(\"ANIMATION_ID\", respData.Data.id);\r",
+									"}\r",
+									"catch (error) {\r",
+									"    console.log(error.message);\r",
+									"}\r",
+									"\r",
+									"pm.test('Request is successfull', function () {\r    pm.response.to.have.status(200);\r    var jsonRes = pm.response.json();\r    pm.expect(jsonRes.Status).to.eql('success');\r});\r",
+									"\r",
+									"pm.test('New animation record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
+									"\r"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"AssetCode\": \"ANIMATION-MT-3\",\r\n\"Name\": \"Know your condition!\",\r\n\"Transcript\": \"Studies confirm that working out with a partner ...\",\r\n\"Url\": \"http://watchlearnlive.heart.org/CVML_Player.php?moduleSelect=hrtflr\",\r\n\"Tags\": ['Maternity', 'Neo-natal-care'],\r\n\"Version\": \"V1\"\r\n\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/assets/animations/{{ANIMATION_ID}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"assets",
+								"animations",
+								"{{ANIMATION_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/assets/animations/{{ANIMATION_ID}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"assets",
+								"animations",
+								"{{ANIMATION_ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Api client",
+			"item": [
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"try {\r",
+									"    var respData = pm.response.json();\r",
+									"    pm.environment.set(\"API_CLIENT_ID\", respData.Data.id);\r",
+									"}\r",
+									"catch (error) {\r",
+									"    console.log(error.message);\r",
+									"}\r",
+									"\r",
+									"pm.test('Request is successfull', function () {\r    pm.response.to.have.status(200);\r    var jsonRes = pm.response.json();\r    pm.expect(jsonRes.Status).to.eql('success');\r});\r",
+									"\r",
+									"pm.test('New api client record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
+									"\r"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"ClientName\": \"Rean Patient App\",\r\n\"ClientInterfaceType\": \"Educational\",\r\n\"IsPrivileged\": True,\r\n\"Password\": \"\",\r\n\"ApiKey\": \"\"\r\n\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api-clients",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api-clients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/api-clients/{{API_CLIENT_ID}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api-clients",
+								"{{API_CLIENT_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search with filters",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/api-clients/search?clientName=xyz&clientCode=xyz&clientInterfaceType=xyz&isPrivileged=xyz&countryCode=xyz&phone=xyz&email=xyz&validFrom=xyz&validTill=xyz",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api-clients",
+								"search"
+							],
+							"query": [
+								{
+									"key": "clientName",
+									"value": "xyz"
+								},
+								{
+									"key": "clientCode",
+									"value": "xyz"
+								},
+								{
+									"key": "clientInterfaceType",
+									"value": "xyz"
+								},
+								{
+									"key": "isPrivileged",
+									"value": "xyz"
+								},
+								{
+									"key": "countryCode",
+									"value": "xyz"
+								},
+								{
+									"key": "phone",
+									"value": "xyz"
+								},
+								{
+									"key": "email",
+									"value": "xyz"
+								},
+								{
+									"key": "validFrom",
+									"value": "xyz"
+								},
+								{
+									"key": "validTill",
+									"value": "xyz"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"try {\r",
+									"    var respData = pm.response.json();\r",
+									"    pm.environment.set(\"API_CLIENT_ID\", respData.Data.id);\r",
+									"}\r",
+									"catch (error) {\r",
+									"    console.log(error.message);\r",
+									"}\r",
+									"\r",
+									"pm.test('Request is successfull', function () {\r    pm.response.to.have.status(200);\r    var jsonRes = pm.response.json();\r    pm.expect(jsonRes.Status).to.eql('success');\r});\r",
+									"\r",
+									"pm.test('New api client record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
+									"\r"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"ClientName\": \"Rean Patient App\",\r\n\"ClientCode\": \"REANPAT\",\r\n\"ClientInterfaceType\": \"Educational\",\r\n\"IsPrivileged\": True,\r\n\"CountryCode\": \"\",\r\n\"Phone\": \"\",\r\n\"Email\": \"\",\r\n\"Password\": \"\",\r\n\"ApiKey\": \"\",\r\n\"ValidFrom\": \"2022-01-01\",\r\n\"ValidTill\": \"2023-01-01\"\r\n\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api-clients/{{API_CLIENT_ID}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api-clients",
+								"{{API_CLIENT_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/api-clients/{{API_CLIENT_ID}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api-clients",
+								"{{API_CLIENT_ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Appointment",
+			"item": [
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"try {\r",
+									"    var respData = pm.response.json();\r",
+									"    pm.environment.set(\"APPOINTMENT_ID\", respData.Data.id);\r",
+									"}\r",
+									"catch (error) {\r",
+									"    console.log(error.message);\r",
+									"}\r",
+									"\r",
+									"pm.test('Request is successfull', function () {\r    pm.response.to.have.status(200);\r    var jsonRes = pm.response.json();\r    pm.expect(jsonRes.Status).to.eql('success');\r});\r",
+									"\r",
+									"pm.test('New appointment record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
+									"\r"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"AssetCode\": \"APPOINTMENT-CC-2\",\r\n\"Name\": \"Nutrition\",\r\n\"Description\": \".....\",\r\n\"AppointmentType\": \"Doctor\",\r\n\"Version\": \"V1\"\r\n\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/assets/appointments",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"assets",
+								"appointments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/assets/appointments/{{APPOINTMENT_ID}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"assets",
+								"appointments",
+								"{{APPOINTMENT_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search with filters",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/assets/appointments/search?assetCode=xyz&name=xyz&description=xyz&appointmentType=xyz&assetCategory=xyz&tags=xyz&version=xyz",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"assets",
+								"appointments",
+								"search"
+							],
+							"query": [
+								{
+									"key": "assetCode",
+									"value": "xyz"
+								},
+								{
+									"key": "name",
+									"value": "xyz"
+								},
+								{
+									"key": "description",
+									"value": "xyz"
+								},
+								{
+									"key": "appointmentType",
+									"value": "xyz"
+								},
+								{
+									"key": "assetCategory",
+									"value": "xyz"
+								},
+								{
+									"key": "tags",
+									"value": "xyz"
+								},
+								{
+									"key": "version",
+									"value": "xyz"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"try {\r",
+									"    var respData = pm.response.json();\r",
+									"    pm.environment.set(\"APPOINTMENT_ID\", respData.Data.id);\r",
+									"}\r",
+									"catch (error) {\r",
+									"    console.log(error.message);\r",
+									"}\r",
+									"\r",
+									"pm.test('Request is successfull', function () {\r    pm.response.to.have.status(200);\r    var jsonRes = pm.response.json();\r    pm.expect(jsonRes.Status).to.eql('success');\r});\r",
+									"\r",
+									"pm.test('New appointment record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
+									"\r"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"AssetCode\": \"APPOINTMENT-CC-2\",\r\n\"Name\": \"Nutrition\",\r\n\"Description\": \".....\",\r\n\"AppointmentType\": \"Doctor\",\r\n\"Tags\": ['Maternity', 'Neo-natal-care'],\r\n\"Version\": \"V1\"\r\n\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/assets/appointments/{{APPOINTMENT_ID}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"assets",
+								"appointments",
+								"{{APPOINTMENT_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/assets/appointments/{{APPOINTMENT_ID}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"assets",
+								"appointments",
+								"{{APPOINTMENT_ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Article",
+			"item": [
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"try {\r",
+									"    var respData = pm.response.json();\r",
+									"    pm.environment.set(\"ARTICLE_ID\", respData.Data.id);\r",
+									"}\r",
+									"catch (error) {\r",
+									"    console.log(error.message);\r",
+									"}\r",
+									"\r",
+									"pm.test('Request is successfull', function () {\r    pm.response.to.have.status(200);\r    var jsonRes = pm.response.json();\r    pm.expect(jsonRes.Status).to.eql('success');\r});\r",
+									"\r",
+									"pm.test('New article record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
+									"\r"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"AssetCode\": \"ARTICLE-CC-1\",\r\n\"Name\": \"Know your condition!\",\r\n\"Summary\": \"Studies confirm that working out with a partner ...\",\r\n\"Url\": \"http://watchlearnlive.heart.org/CVML_Player.php?moduleSelect=hrtflr\",\r\n\"Version\": \"V1\"\r\n\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/assets/articles",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"assets",
+								"articles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/assets/articles/{{ARTICLE_ID}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"assets",
+								"articles",
+								"{{ARTICLE_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search with filters",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/assets/articles/search?assetCode=xyz&name=xyz&summary=xyz&url=xyz&assetCategory=xyz&tags=xyz&version=xyz",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"assets",
+								"articles",
+								"search"
+							],
+							"query": [
+								{
+									"key": "assetCode",
+									"value": "xyz"
+								},
+								{
+									"key": "name",
+									"value": "xyz"
+								},
+								{
+									"key": "summary",
+									"value": "xyz"
+								},
+								{
+									"key": "url",
+									"value": "xyz"
+								},
+								{
+									"key": "assetCategory",
+									"value": "xyz"
+								},
+								{
+									"key": "tags",
+									"value": "xyz"
+								},
+								{
+									"key": "version",
+									"value": "xyz"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"try {\r",
+									"    var respData = pm.response.json();\r",
+									"    pm.environment.set(\"ARTICLE_ID\", respData.Data.id);\r",
+									"}\r",
+									"catch (error) {\r",
+									"    console.log(error.message);\r",
+									"}\r",
+									"\r",
+									"pm.test('Request is successfull', function () {\r    pm.response.to.have.status(200);\r    var jsonRes = pm.response.json();\r    pm.expect(jsonRes.Status).to.eql('success');\r});\r",
+									"\r",
+									"pm.test('New article record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
+									"\r"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"AssetCode\": \"ARTICLE-CC-1\",\r\n\"Name\": \"Know your condition!\",\r\n\"Summary\": \"Studies confirm that working out with a partner ...\",\r\n\"Url\": \"http://watchlearnlive.heart.org/CVML_Player.php?moduleSelect=hrtflr\",\r\n\"Tags\": ['Maternity', 'Neo-natal-care'],\r\n\"Version\": \"V1\"\r\n\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/assets/articles/{{ARTICLE_ID}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"assets",
+								"articles",
+								"{{ARTICLE_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/assets/articles/{{ARTICLE_ID}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"assets",
+								"articles",
+								"{{ARTICLE_ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Assessment",
+			"item": [
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"try {\r",
+									"    var respData = pm.response.json();\r",
+									"    pm.environment.set(\"ASSESSMENT_ID\", respData.Data.id);\r",
+									"}\r",
+									"catch (error) {\r",
+									"    console.log(error.message);\r",
+									"}\r",
+									"\r",
+									"pm.test('Request is successfull', function () {\r    pm.response.to.have.status(200);\r    var jsonRes = pm.response.json();\r    pm.expect(jsonRes.Status).to.eql('success');\r});\r",
+									"\r",
+									"pm.test('New assessment record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
+									"\r"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"AssetCode\": \"ASSESSMENT-HF-12\",\r\n\"Name\": \"Nutrition\",\r\n\"Description\": \".....\",\r\n\"Template\": \"{}\",\r\n\"Version\": \"V1\"\r\n\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/assets/assessments",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"assets",
+								"assessments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/assets/assessments/{{ASSESSMENT_ID}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"assets",
+								"assessments",
+								"{{ASSESSMENT_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search with filters",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/assets/assessments/search?assetCode=xyz&name=xyz&description=xyz&assetCategory=xyz&template=xyz&tags=xyz&version=xyz",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"assets",
+								"assessments",
+								"search"
+							],
+							"query": [
+								{
+									"key": "assetCode",
+									"value": "xyz"
+								},
+								{
+									"key": "name",
+									"value": "xyz"
+								},
+								{
+									"key": "description",
+									"value": "xyz"
+								},
+								{
+									"key": "assetCategory",
+									"value": "xyz"
+								},
+								{
+									"key": "template",
+									"value": "xyz"
+								},
+								{
+									"key": "tags",
+									"value": "xyz"
+								},
+								{
+									"key": "version",
+									"value": "xyz"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"try {\r",
+									"    var respData = pm.response.json();\r",
+									"    pm.environment.set(\"ASSESSMENT_ID\", respData.Data.id);\r",
+									"}\r",
+									"catch (error) {\r",
+									"    console.log(error.message);\r",
+									"}\r",
+									"\r",
+									"pm.test('Request is successfull', function () {\r    pm.response.to.have.status(200);\r    var jsonRes = pm.response.json();\r    pm.expect(jsonRes.Status).to.eql('success');\r});\r",
+									"\r",
+									"pm.test('New assessment record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
+									"\r"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"AssetCode\": \"ASSESSMENT-HF-12\",\r\n\"Name\": \"Nutrition\",\r\n\"Description\": \".....\",\r\n\"Template\": \"{}\",\r\n\"Tags\": ['Maternity', 'Neo-natal-care'],\r\n\"Version\": \"V1\"\r\n\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/assets/assessments/{{ASSESSMENT_ID}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"assets",
+								"assessments",
+								"{{ASSESSMENT_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/assets/assessments/{{ASSESSMENT_ID}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"assets",
+								"assessments",
+								"{{ASSESSMENT_ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Audio",
+			"item": [
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"try {\r",
+									"    var respData = pm.response.json();\r",
+									"    pm.environment.set(\"AUDIO_ID\", respData.Data.id);\r",
+									"}\r",
+									"catch (error) {\r",
+									"    console.log(error.message);\r",
+									"}\r",
+									"\r",
+									"pm.test('Request is successfull', function () {\r    pm.response.to.have.status(200);\r    var jsonRes = pm.response.json();\r    pm.expect(jsonRes.Status).to.eql('success');\r});\r",
+									"\r",
+									"pm.test('New audio record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
+									"\r"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"AssetCode\": \"AUDIO-CC-1\",\r\n\"Name\": \"Know your condition!\",\r\n\"Transcript\": \"Studies confirm that working out with a partner ...\",\r\n\"Url\": \"http://watchlearnlive.heart.org/CVML_Player.php?moduleSelect=hrtflr\",\r\n\"Version\": \"V1\"\r\n\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/assets/audio",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"assets",
+								"audio"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/assets/audio/{{AUDIO_ID}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"assets",
+								"audio",
+								"{{AUDIO_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search with filters",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/assets/audio/search?assetCode=xyz&name=xyz&transcript=xyz&url=xyz&assetCategory=xyz&tags=xyz&version=xyz",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"assets",
+								"audio",
+								"search"
+							],
+							"query": [
+								{
+									"key": "assetCode",
+									"value": "xyz"
+								},
+								{
+									"key": "name",
+									"value": "xyz"
+								},
+								{
+									"key": "transcript",
+									"value": "xyz"
+								},
+								{
+									"key": "url",
+									"value": "xyz"
+								},
+								{
+									"key": "assetCategory",
+									"value": "xyz"
+								},
+								{
+									"key": "tags",
+									"value": "xyz"
+								},
+								{
+									"key": "version",
+									"value": "xyz"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"try {\r",
+									"    var respData = pm.response.json();\r",
+									"    pm.environment.set(\"AUDIO_ID\", respData.Data.id);\r",
+									"}\r",
+									"catch (error) {\r",
+									"    console.log(error.message);\r",
+									"}\r",
+									"\r",
+									"pm.test('Request is successfull', function () {\r    pm.response.to.have.status(200);\r    var jsonRes = pm.response.json();\r    pm.expect(jsonRes.Status).to.eql('success');\r});\r",
+									"\r",
+									"pm.test('New audio record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
+									"\r"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"AssetCode\": \"AUDIO-CC-1\",\r\n\"Name\": \"Know your condition!\",\r\n\"Transcript\": \"Studies confirm that working out with a partner ...\",\r\n\"Url\": \"http://watchlearnlive.heart.org/CVML_Player.php?moduleSelect=hrtflr\",\r\n\"Tags\": ['Maternity', 'Neo-natal-care'],\r\n\"Version\": \"V1\"\r\n\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/assets/audio/{{AUDIO_ID}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"assets",
+								"audio",
+								"{{AUDIO_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/assets/audio/{{AUDIO_ID}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"assets",
+								"audio",
+								"{{AUDIO_ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Biometrics",
+			"item": [
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"try {\r",
+									"    var respData = pm.response.json();\r",
+									"    pm.environment.set(\"BIOMETRICS_ID\", respData.Data.id);\r",
+									"}\r",
+									"catch (error) {\r",
+									"    console.log(error.message);\r",
+									"}\r",
+									"\r",
+									"pm.test('Request is successfull', function () {\r    pm.response.to.have.status(200);\r    var jsonRes = pm.response.json();\r    pm.expect(jsonRes.Status).to.eql('success');\r});\r",
+									"\r",
+									"pm.test('New biometrics record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
+									"\r"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"AssetCode\": \"BIOMETRICS-HF-12\",\r\n\"Name\": \"Nutrition\",\r\n\"Description\": \".....\",\r\n\"BiometricsType\": \"Blood pressure\",\r\n\"MeasurementUnit\": \"mmHg\",\r\n\"Version\": \"V1\"\r\n\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/assets/biometrics",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"assets",
+								"biometrics"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/assets/biometrics/{{BIOMETRICS_ID}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"assets",
+								"biometrics",
+								"{{BIOMETRICS_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search with filters",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/assets/biometrics/search?assetCode=xyz&name=xyz&description=xyz&assetCategory=xyz&biometricsType=xyz&measurementUnit=xyz&tags=xyz&version=xyz",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"assets",
+								"biometrics",
+								"search"
+							],
+							"query": [
+								{
+									"key": "assetCode",
+									"value": "xyz"
+								},
+								{
+									"key": "name",
+									"value": "xyz"
+								},
+								{
+									"key": "description",
+									"value": "xyz"
+								},
+								{
+									"key": "assetCategory",
+									"value": "xyz"
+								},
+								{
+									"key": "biometricsType",
+									"value": "xyz"
+								},
+								{
+									"key": "measurementUnit",
+									"value": "xyz"
+								},
+								{
+									"key": "tags",
+									"value": "xyz"
+								},
+								{
+									"key": "version",
+									"value": "xyz"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"try {\r",
+									"    var respData = pm.response.json();\r",
+									"    pm.environment.set(\"BIOMETRICS_ID\", respData.Data.id);\r",
+									"}\r",
+									"catch (error) {\r",
+									"    console.log(error.message);\r",
+									"}\r",
+									"\r",
+									"pm.test('Request is successfull', function () {\r    pm.response.to.have.status(200);\r    var jsonRes = pm.response.json();\r    pm.expect(jsonRes.Status).to.eql('success');\r});\r",
+									"\r",
+									"pm.test('New biometrics record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
+									"\r"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"AssetCode\": \"BIOMETRICS-HF-12\",\r\n\"Name\": \"Nutrition\",\r\n\"Description\": \".....\",\r\n\"BiometricsType\": \"Blood pressure\",\r\n\"MeasurementUnit\": \"mmHg\",\r\n\"Tags\": ['Maternity', 'Neo-natal-care'],\r\n\"Version\": \"V1\"\r\n\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/assets/biometrics/{{BIOMETRICS_ID}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"assets",
+								"biometrics",
+								"{{BIOMETRICS_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/assets/biometrics/{{BIOMETRICS_ID}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"assets",
+								"biometrics",
+								"{{BIOMETRICS_ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Careplan schedule",
+			"item": [
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"try {\r",
+									"    var respData = pm.response.json();\r",
+									"    pm.environment.set(\"CAREPLAN_SCHEDULE_ID\", respData.Data.id);\r",
+									"}\r",
+									"catch (error) {\r",
+									"    console.log(error.message);\r",
+									"}\r",
+									"\r",
+									"pm.test('Request is successfull', function () {\r    pm.response.to.have.status(200);\r    var jsonRes = pm.response.json();\r    pm.expect(jsonRes.Status).to.eql('success');\r});\r",
+									"\r",
+									"pm.test('New careplan schedule record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
+									"\r"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"AssetId\": \"{{ASSET_ID}}\",\r\n\"AssetType\": \"Message\",\r\n\"CareplanId\": \"{{CAREPLAN_ID}}\",\r\n\"Day\": 15,\r\n\"TimeSlot\": \"Morning\"\r\n\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/careplan-schedules",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"careplan-schedules"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/careplan-schedules/{{CAREPLAN_SCHEDULE_ID}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"careplan-schedules",
+								"{{CAREPLAN_SCHEDULE_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search with filters",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/careplan-schedules/search?assetId=xyz&assetType=xyz&careplanId=xyz&day=xyz&timeSlot=xyz",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"careplan-schedules",
+								"search"
+							],
+							"query": [
+								{
+									"key": "assetId",
+									"value": "xyz"
+								},
+								{
+									"key": "assetType",
+									"value": "xyz"
+								},
+								{
+									"key": "careplanId",
+									"value": "xyz"
+								},
+								{
+									"key": "day",
+									"value": "xyz"
+								},
+								{
+									"key": "timeSlot",
+									"value": "xyz"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"try {\r",
+									"    var respData = pm.response.json();\r",
+									"    pm.environment.set(\"CAREPLAN_SCHEDULE_ID\", respData.Data.id);\r",
+									"}\r",
+									"catch (error) {\r",
+									"    console.log(error.message);\r",
+									"}\r",
+									"\r",
+									"pm.test('Request is successfull', function () {\r    pm.response.to.have.status(200);\r    var jsonRes = pm.response.json();\r    pm.expect(jsonRes.Status).to.eql('success');\r});\r",
+									"\r",
+									"pm.test('New careplan schedule record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
+									"\r"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"AssetId\": \"{{ASSET_ID}}\",\r\n\"AssetType\": \"Message\",\r\n\"CareplanId\": \"{{CAREPLAN_ID}}\",\r\n\"Day\": 15,\r\n\"TimeSlot\": \"Morning\"\r\n\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/careplan-schedules/{{CAREPLAN_SCHEDULE_ID}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"careplan-schedules",
+								"{{CAREPLAN_SCHEDULE_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{USER_JWT}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/careplan-schedules/{{CAREPLAN_SCHEDULE_ID}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"careplan-schedules",
+								"{{CAREPLAN_SCHEDULE_ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

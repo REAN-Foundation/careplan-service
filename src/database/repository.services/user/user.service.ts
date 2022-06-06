@@ -1,6 +1,7 @@
 import { UserModel } from '../../models/user/user.model';
 import { UserLoginSessionModel } from '../../models/user/user.login.session.model';
 import { RoleModel } from '../../models/role.model';
+import { UserRoleModel } from '../../models/user/user.role.model';
 import { ErrorHandler } from '../../../common/error.handler';
 import { Op } from 'sequelize';
 import { passwordStrength } from 'check-password-strength';
@@ -14,12 +15,15 @@ export class UserService {
 
     User = UserModel.Model();
 
-    UserLoginSession = UserLoginSessionModel.Model();
-
     Role = RoleModel.Model();
+
+    UserRole = UserRoleModel.Model();
+
+    UserLoginSession = UserLoginSessionModel.Model();
 
     create = async (createModel) => {
         try {
+            createModel.Password = Helper.hash(createModel.Password);
             var record = await this.User.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
@@ -32,16 +36,19 @@ export class UserService {
             var record = await this.User.findOne({
                 where : {
                     id : id
-                },
-                include : [
-                    {
-                        model    : this.Role,
-                        required : true,
-                        as       : 'Role',
-                        //through: { attributes: [] }
-                    }
-                ]
+                }
             });
+            if (record) {
+                const userRole = await this.UserRole.findOne({
+                    where : {
+                        UserId : record.id
+                    }
+                });
+                if (userRole) {
+                    const role = await this.Role.findByPk(userRole.RoleId);
+                    record['Role'] = role;
+                }
+            }
             return record;
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve user!', error);
@@ -261,6 +268,10 @@ export class UserService {
             }
         });
 
+        if (!user) {
+            return null;
+        }
+
         var role = await this.Role.findByPk(user.RoleId);
         user['Role'] = role;
 
@@ -287,7 +298,7 @@ export class UserService {
             updateModel.Email = inputModel.Email;
         }
         if (Helper.hasProperty(inputModel, 'Password')) {
-            updateModel.Password = inputModel.Password;
+            updateModel.Password = Helper.hash(inputModel.Password);
         }
         if (Helper.hasProperty(inputModel, 'ImageUrl')) {
             updateModel.ImageUrl = inputModel.ImageUrl;

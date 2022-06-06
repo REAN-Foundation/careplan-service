@@ -10,12 +10,12 @@ export class AnimationValidator {
     static validateCreateRequest = async (requestBody) => {
         try {
             const schema = joi.object({
-                AssetCode: joi.string().max(256).optional(),
-                Name: joi.string().max(256).optional(),
-                Transcript: joi.string().optional(),
-                Url: joi.string().optional(),
-                Tags: joi.array().items(joi.string()).optional(),
-                Version: joi.string().max(128).optional()
+                AssetCode  : joi.string().max(256).optional(),
+                Name       : joi.string().max(256).optional(),
+                Transcript : joi.string().optional(),
+                Url        : joi.string().optional(),
+                Tags       : joi.array().items(joi.string()).optional(),
+                Version    : joi.string().max(128).optional()
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -26,12 +26,12 @@ export class AnimationValidator {
     static validateUpdateRequest = async (requestBody) => {
         try {
             const schema = joi.object({
-                AssetCode: joi.string().max(256).optional(),
-                Name: joi.string().max(256).optional(),
-                Transcript: joi.string().optional(),
-                Url: joi.string().optional(),
-                Tags: joi.array().items(joi.string()).optional(),
-                Version: joi.string().max(128).optional()
+                AssetCode  : joi.string().max(256).optional(),
+                Name       : joi.string().max(256).optional(),
+                Transcript : joi.string().optional(),
+                Url        : joi.string().optional(),
+                Tags       : joi.array().items(joi.string()).optional(),
+                Version    : joi.string().max(128).optional()
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -42,13 +42,13 @@ export class AnimationValidator {
     static validateSearchRequest = async (query) => {
         try {
             const schema = joi.object({
-                assetCode: joi.string().max(256).optional(),
-                name: joi.string().max(256).optional(),
-                transcript: joi.string().optional(),
-                url: joi.string().optional(),
-                assetCategory: joi.string().max(128).optional(),
-                tags: joi.array().items(joi.string()).optional(),
-                version: joi.string().max(128).optional()
+                assetCode     : joi.string().max(256).optional(),
+                name          : joi.string().max(256).optional(),
+                transcript    : joi.string().optional(),
+                url           : joi.string().optional(),
+                assetCategory : joi.string().max(128).optional(),
+                tags          : joi.array().items(joi.string()).optional(),
+                version       : joi.string().max(128).optional()
             });
             return await schema.validateAsync(query);
 

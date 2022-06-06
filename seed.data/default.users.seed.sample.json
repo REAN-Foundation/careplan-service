@@ -1,0 +1,20 @@
+[
+    {
+        "Role": "Admin",
+        "FirstName": "Admin",
+        "LastName": "System",
+        "CountryCode": "+91",
+        "Phone": "0000000000",
+        "UserName": "admin",
+        "Password": "<admin-password>"
+    },
+    {
+        "Role": "ContentModerator",
+        "FirstName": "Content",
+        "LastName": "Moderator",
+        "CountryCode": "+91",
+        "Phone": "1111111111",
+        "UserName": "moderator",
+        "Password": "<moderator-password>"
+    }
+]

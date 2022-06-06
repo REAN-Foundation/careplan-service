@@ -1,34 +1,34 @@
 import express from 'express';
 import {
     ResponseHandler
-} from '../../../common/response.handler';
+} from '../../common/response.handler';
 import {
-    AnimationControllerDelegate
-} from './animation.controller.delegate';
+    UserRoleControllerDelegate
+} from './user.role.controller.delegate';
 import {
     BaseController
-} from '../../base.controller';
+} from '../base.controller';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-export class AnimationController extends BaseController {
+export class UserRoleController extends BaseController {
 
     //#region member variables and constructors
 
-    _delegate: AnimationControllerDelegate = null;
+    _delegate: UserRoleControllerDelegate = null;
 
     constructor() {
         super();
-        this._delegate = new AnimationControllerDelegate();
+        this._delegate = new UserRoleControllerDelegate();
     }
 
     //#endregion
 
     create = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('Animation.Create', request, response);
+            await this.authorize('UserRole.Create', request, response);
             const record = await this._delegate.create(request.body);
-            const message = 'Animation added successfully!';
+            const message = 'User role added successfully!';
             ResponseHandler.success(request, response, message, 201, record);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
@@ -37,9 +37,9 @@ export class AnimationController extends BaseController {
 
     getById = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('Animation.GetById', request, response);
+            await this.authorize('UserRole.GetById', request, response);
             const record = await this._delegate.getById(request.params.id);
-            const message = 'Animation retrieved successfully!';
+            const message = 'User role retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, record);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
@@ -48,9 +48,9 @@ export class AnimationController extends BaseController {
 
     search = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('Animation.Search', request, response);
+            await this.authorize('UserRole.Search', request, response);
             const searchResults = await this._delegate.search(request.query);
-            const message = 'Animation records retrieved successfully!';
+            const message = 'User role records retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, searchResults);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
@@ -59,9 +59,9 @@ export class AnimationController extends BaseController {
 
     update = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('Animation.Update', request, response);
+            await this.authorize('UserRole.Update', request, response);
             const updatedRecord = await this._delegate.update(request.params.id, request.body);
-            const message = 'Animation updated successfully!';
+            const message = 'User role updated successfully!';
             ResponseHandler.success(request, response, message, 200, updatedRecord);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
@@ -70,9 +70,9 @@ export class AnimationController extends BaseController {
 
     delete = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('Animation.Delete', request, response);
+            await this.authorize('UserRole.Delete', request, response);
             const result = await this._delegate.delete(request.params.id);
-            const message = 'Animation deleted successfully!';
+            const message = 'User role deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);

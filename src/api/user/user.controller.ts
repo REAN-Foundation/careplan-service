@@ -20,7 +20,7 @@ export class UserController extends BaseController {
 
     create = async (request: express.Request, response: express.Response): Promise <void> => {
         try {
-            await this.authorize('User.Create', request, response);
+            await this.authorize('User.Create', request, response, false);
             const record = await this._delegate.create(request.body);
             const message = 'User added successfully!';
             ResponseHandler.success(request, response, message, 201, record);
@@ -75,7 +75,7 @@ export class UserController extends BaseController {
 
     loginWithPassword = async (request: express.Request, response: express.Response): Promise <void> => {
         try {
-            this.authorize('User.LoginWithPassword', request, response);
+            this.authorize('User.LoginWithPassword', request, response, false);
             const result = await this._delegate.loginWithPassword(request.body);
             const message = 'User logged in successfully!';
             ResponseHandler.success(request, response, message, 200, result);
@@ -97,7 +97,7 @@ export class UserController extends BaseController {
 
     loginWithOtp = async (request: express.Request, response: express.Response): Promise <void> => {
         try {
-            this.authorize('User.LoginWithOtp', request, response);
+            this.authorize('User.LoginWithOtp', request, response, false);
             const result = await this._delegate.loginWithOtp(request.body);
             const message = 'User logged in successfully!';
             ResponseHandler.success(request, response, message, 200, result);
@@ -108,7 +108,7 @@ export class UserController extends BaseController {
 
     sendOtp = async (request: express.Request, response: express.Response): Promise <void> => {
         try {
-            this.authorize('User.SendOtp', request, response);
+            this.authorize('User.SendOtp', request, response, false);
             const result = await this._delegate.sendOtp(request.body);
             const message = 'Otp sent successfully!';
             ResponseHandler.success(request, response, message, 200, result);
