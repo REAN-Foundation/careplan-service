@@ -10,11 +10,14 @@ export class ActionPlanValidator {
     static validateCreateRequest = async (requestBody) => {
         try {
             const schema = joi.object({
-                AssetCode: joi.string().max(256).optional(),
-                Name: joi.string().max(256).optional(),
-                Description: joi.string().optional(),
-                Tags: joi.array().items(joi.string()).optional(),
-                Version: joi.string().max(128).optional()
+                AssetCode   : joi.string().max(256).optional(),
+                Name        : joi.string().max(256).required(),
+                Description : joi.string().optional(),
+                Tags        : joi.array().items(joi.string()).optional(),
+                Version     : joi.string().max(128).optional(),
+                OwnerUserId : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -25,11 +28,11 @@ export class ActionPlanValidator {
     static validateUpdateRequest = async (requestBody) => {
         try {
             const schema = joi.object({
-                AssetCode: joi.string().max(256).optional(),
-                Name: joi.string().max(256).optional(),
-                Description: joi.string().optional(),
-                Tags: joi.array().items(joi.string()).optional(),
-                Version: joi.string().max(128).optional()
+                AssetCode   : joi.string().max(256).optional(),
+                Name        : joi.string().max(256).optional(),
+                Description : joi.string().optional(),
+                Tags        : joi.array().items(joi.string()).optional(),
+                Version     : joi.string().max(128).optional()
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -40,12 +43,12 @@ export class ActionPlanValidator {
     static validateSearchRequest = async (query) => {
         try {
             const schema = joi.object({
-                assetCode: joi.string().max(256).optional(),
-                name: joi.string().max(256).optional(),
-                description: joi.string().optional(),
-                assetCategory: joi.string().max(128).optional(),
-                tags: joi.array().items(joi.string()).optional(),
-                version: joi.string().max(128).optional()
+                assetCode     : joi.string().max(256).optional(),
+                name          : joi.string().max(256).optional(),
+                description   : joi.string().optional(),
+                assetCategory : joi.string().max(128).optional(),
+                tags          : joi.array().items(joi.string()).optional(),
+                version       : joi.string().max(128).optional()
             });
             return await schema.validateAsync(query);
 

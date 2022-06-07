@@ -40,10 +40,8 @@ export class PriorityModel {
                 defaultValue : 'Prioritization'
             },
             OwnerUserId : {
-                type       : Sequelize.UUID,
-                allowNull  : false,
-                foreignKey : true,
-                unique     : false
+                type      : Sequelize.UUID,
+                allowNull : true
             },
             Tags : {
                 type         : Sequelize.TEXT,
@@ -84,12 +82,6 @@ export class PriorityModel {
     static associate = (models) => {
 
         //Add associations here...
-
-        models.Priority.belongsTo(models.User, {
-            sourceKey : 'OwnerUserId',
-            targetKey : 'id',
-            as        : 'OwnerUser'
-        });
 
     };
 

@@ -50,10 +50,8 @@ export class AnimationModel {
                 defaultValue : 'Educational'
             },
             OwnerUserId : {
-                type       : Sequelize.UUID,
-                allowNull  : false,
-                foreignKey : true,
-                unique     : false
+                type      : Sequelize.UUID,
+                allowNull : true
             },
             Tags : {
                 type         : Sequelize.TEXT,
@@ -101,11 +99,11 @@ export class AnimationModel {
             as        : 'FileResource'
         });
 
-        models.Animation.belongsTo(models.User, {
-            sourceKey : 'OwnerUserId',
-            targetKey : 'id',
-            as        : 'OwnerUser'
-        });
+        // models.Animation.belongsTo(models.User, {
+        //     sourceKey : 'OwnerUserId',
+        //     targetKey : 'id',
+        //     as        : 'OwnerUser'
+        // });
 
     };
 

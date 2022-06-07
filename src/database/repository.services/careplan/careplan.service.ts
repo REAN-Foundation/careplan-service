@@ -19,7 +19,7 @@ export class CareplanService {
 
     //#endregion
 
-    create = async (createModel: CareplanCreateModel): Promise < CareplanDto > => {
+    create = async (createModel: CareplanCreateModel): Promise<CareplanDto> => {
         try {
             var record = await this.Careplan.create(createModel);
             return await exports.getById(record.id);
@@ -28,7 +28,7 @@ export class CareplanService {
         }
     }
 
-    getById = async (id): Promise < CareplanDto > => {
+    getById = async (id): Promise<CareplanDto> => {
         try {
             var record = await this.Careplan.findOne({
                 where : {
@@ -39,13 +39,7 @@ export class CareplanService {
                     required : false,
                     as       : 'Category',
                     //through: { attributes: [] }
-                }, {
-                    model    : this.User,
-                    required : false,
-                    as       : 'OwnerUser',
-                    //through: { attributes: [] }
-                },
-
+                }
                 ]
             });
             return record;
@@ -54,7 +48,7 @@ export class CareplanService {
         }
     }
 
-    exists = async (id): Promise < boolean > => {
+    exists = async (id): Promise<boolean> => {
         try {
             const record = await this.Careplan.findByPk(id);
             return record !== null;
@@ -63,7 +57,7 @@ export class CareplanService {
         }
     }
 
-    search = async (filters: CareplanSearchFilters): Promise < CareplanSearchResults > => {
+    search = async (filters: CareplanSearchFilters): Promise<CareplanSearchResults> => {
         try {
 
             var search = {
@@ -102,16 +96,6 @@ export class CareplanService {
             //    includeCareplanCategory.where['Xyz'] = filters.Xyz;
             //}
             search.include.push(includeCareplanCategoryAsCategory);
-            const includeUserAsOwnerUser = {
-                model    : this.User,
-                required : false,
-                as       : 'OwnerUser',
-                where    : {}
-            };
-            //if (filters.Xyz != undefined) {
-            //    includeUser.where['Xyz'] = filters.Xyz;
-            //}
-            search.include.push(includeUserAsOwnerUser);
 
             //Sorting
             let orderByColumn = 'CreatedAt';

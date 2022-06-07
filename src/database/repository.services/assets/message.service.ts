@@ -45,15 +45,7 @@ export class MessageService {
             const record = await this.Message.findOne({
                 where : {
                     id : id
-                },
-                include : [{
-                    model    : this.User,
-                    required : false,
-                    as       : 'OwnerUser',
-                    //through: { attributes: [] }
-                },
-
-                ]
+                }
             });
             return record;
         } catch (error) {
@@ -176,16 +168,6 @@ export class MessageService {
                 [Op.like] : '%' + filters.Version + '%'
             };
         }
-        const includeUserAsOwnerUser = {
-            model    : this.User,
-            required : false,
-            as       : 'OwnerUser',
-            where    : {}
-        };
-        //if (filters.Xyz != undefined) {
-        //    includeUser.where['Xyz'] = filters.Xyz;
-        //}
-        search.include.push(includeUserAsOwnerUser);
 
         return search;
     }

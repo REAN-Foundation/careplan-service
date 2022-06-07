@@ -27,6 +27,9 @@ export class ActionPlanController extends BaseController {
     create = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
             await this.authorize('ActionPlan.Create', request, response);
+            if (request.currentUser) {
+                request.body.OwnerUserId = request.currentUser.UserId;
+            }
             const record = await this._delegate.create(request.body);
             const message = 'Action plan added successfully!';
             ResponseHandler.success(request, response, message, 201, record);

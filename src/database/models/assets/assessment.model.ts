@@ -45,10 +45,8 @@ export class AssessmentModel {
                 defaultValue : '{}'
             },
             OwnerUserId : {
-                type       : Sequelize.UUID,
-                allowNull  : false,
-                foreignKey : true,
-                unique     : false
+                type      : Sequelize.UUID,
+                allowNull : true
             },
             Tags : {
                 type         : Sequelize.TEXT,
@@ -89,12 +87,6 @@ export class AssessmentModel {
     static associate = (models) => {
 
         //Add associations here...
-
-        models.Assessment.belongsTo(models.User, {
-            sourceKey : 'OwnerUserId',
-            targetKey : 'id',
-            as        : 'OwnerUser'
-        });
 
     };
 

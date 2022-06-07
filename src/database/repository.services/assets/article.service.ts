@@ -45,12 +45,7 @@ export class ArticleService {
                     required : false,
                     as       : 'FileResource',
                     //through: { attributes: [] }
-                }, {
-                    model    : this.User,
-                    required : false,
-                    as       : 'OwnerUser',
-                    //through: { attributes: [] }
-                },
+                }
 
                 ]
             });
@@ -60,7 +55,7 @@ export class ArticleService {
         }
     }
 
-    exists = async (id): Promise < boolean > => {
+    exists = async (id): Promise<boolean> => {
         try {
             const record = await this.Article.findByPk(id);
             return record !== null;
@@ -69,7 +64,7 @@ export class ArticleService {
         }
     }
 
-    search = async (filters: ArticleSearchFilters): Promise < ArticleSearchResults > => {
+    search = async (filters: ArticleSearchFilters): Promise<ArticleSearchResults> => {
         try {
 
             var search = this.getSearchModel(filters);
@@ -187,16 +182,6 @@ export class ArticleService {
         //    includeFileResource.where['Xyz'] = filters.Xyz;
         //}
         search.include.push(includeFileResourceAsFileResource);
-        const includeUserAsOwnerUser = {
-            model    : this.User,
-            required : false,
-            as       : 'OwnerUser',
-            where    : {}
-        };
-        //if (filters.Xyz != undefined) {
-        //    includeUser.where['Xyz'] = filters.Xyz;
-        //}
-        search.include.push(includeUserAsOwnerUser);
 
         return search;
     }

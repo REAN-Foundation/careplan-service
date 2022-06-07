@@ -45,15 +45,7 @@ export class PriorityService {
             const record = await this.Priority.findOne({
                 where : {
                     id : id
-                },
-                include : [{
-                    model    : this.User,
-                    required : false,
-                    as       : 'OwnerUser',
-                    //through: { attributes: [] }
-                },
-
-                ]
+                }
             });
             return record;
         } catch (error) {
@@ -173,16 +165,6 @@ export class PriorityService {
                 [Op.like] : '%' + filters.Version + '%'
             };
         }
-        const includeUserAsOwnerUser = {
-            model    : this.User,
-            required : false,
-            as       : 'OwnerUser',
-            where    : {}
-        };
-        //if (filters.Xyz != undefined) {
-        //    includeUser.where['Xyz'] = filters.Xyz;
-        //}
-        search.include.push(includeUserAsOwnerUser);
 
         return search;
     }
