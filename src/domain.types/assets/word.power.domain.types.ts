@@ -13,6 +13,7 @@ export interface WordPowerCreateModel {
     AdditionalResources ? : string;
     Tags ? : string;
     Version ? : string;
+    OwnerUserId ? : uuid;
 }
 
 export interface WordPowerUpdateModel {
@@ -22,6 +23,7 @@ export interface WordPowerUpdateModel {
     AdditionalResources ? : string;
     Tags ? : string;
     Version ? : string;
+    OwnerUserId ? : uuid;
 }
 
 export interface WordPowerDto {

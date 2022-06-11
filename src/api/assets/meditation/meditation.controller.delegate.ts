@@ -170,7 +170,8 @@ export class MeditationControllerDelegate {
             MeditationType         : requestBody.MeditationType ? requestBody.MeditationType : 'Mindfulness',
             RecommendedDurationMin : requestBody.RecommendedDurationMin ? requestBody.RecommendedDurationMin : 15,
             Tags                   : requestBody.Tags ? JSON.stringify(requestBody.Tags) as string : JSON.stringify([]),
-            Version                : requestBody.Version ? requestBody.Version : 'V1'
+            Version                : requestBody.Version ? requestBody.Version : 'V1',
+            OwnerUserId            : requestBody.OwnerUserId
         };
     }
 

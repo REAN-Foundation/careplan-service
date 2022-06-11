@@ -13,6 +13,7 @@ export interface AnimationCreateModel {
     Url ? : string;
     Tags ? : string;
     Version ? : string;
+    OwnerUserId?: uuid;
 }
 
 export interface AnimationUpdateModel {
@@ -22,6 +23,7 @@ export interface AnimationUpdateModel {
     Url ? : string;
     Tags ? : string;
     Version ? : string;
+    OwnerUserId?: uuid;
 }
 
 export interface AnimationDto {

@@ -27,6 +27,7 @@ export interface AppointmentCreateModel {
     AppointmentType ?: AppointmentType;
     Tags            ?: string;
     Version         ?: string;
+    OwnerUserId?: uuid;
 }
 
 export interface AppointmentUpdateModel {
@@ -36,6 +37,7 @@ export interface AppointmentUpdateModel {
     AppointmentType ? : AppointmentType;
     Tags ? : string;
     Version ? : string;
+    OwnerUserId?: uuid;
 }
 
 export interface AppointmentDto {

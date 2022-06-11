@@ -13,6 +13,7 @@ export interface AudioCreateModel {
     Url ? : string;
     Tags ? : string;
     Version ? : string;
+    OwnerUserId?: uuid;
 }
 
 export interface AudioUpdateModel {
@@ -22,6 +23,7 @@ export interface AudioUpdateModel {
     Url ? : string;
     Tags ? : string;
     Version ? : string;
+    OwnerUserId?: uuid;
 }
 
 export interface AudioDto {

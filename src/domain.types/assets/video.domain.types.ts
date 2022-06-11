@@ -13,6 +13,7 @@ export interface VideoCreateModel {
     Url ? : string;
     Tags ? : string;
     Version ? : string;
+    OwnerUserId ? : uuid;
 }
 
 export interface VideoUpdateModel {
@@ -22,6 +23,7 @@ export interface VideoUpdateModel {
     Url ? : string;
     Tags ? : string;
     Version ? : string;
+    OwnerUserId ? : uuid;
 }
 
 export interface VideoDto {

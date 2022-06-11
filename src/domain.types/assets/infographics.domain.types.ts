@@ -13,6 +13,7 @@ export interface InfographicsCreateModel {
     Url         ?: string;
     Tags        ?: string;
     Version     ?: string;
+    OwnerUserId ?: uuid;
 }
 
 export interface InfographicsUpdateModel {
@@ -22,6 +23,7 @@ export interface InfographicsUpdateModel {
     Url         ?: string;
     Tags        ?: string;
     Version     ?: string;
+    OwnerUserId ?: uuid;
 }
 
 export interface InfographicsDto {

@@ -12,6 +12,7 @@ export interface PriorityCreateModel {
     Description ? : string;
     Tags ? : string;
     Version ? : string;
+    OwnerUserId ? : uuid;
 }
 
 export interface PriorityUpdateModel {
@@ -20,6 +21,7 @@ export interface PriorityUpdateModel {
     Description ? : string;
     Tags ? : string;
     Version ? : string;
+    OwnerUserId ? : uuid;
 }
 
 export interface PriorityDto {
