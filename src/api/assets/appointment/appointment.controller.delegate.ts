@@ -162,7 +162,8 @@ export class AppointmentControllerDelegate {
             Description     : requestBody.Description ? requestBody.Description : null,
             AppointmentType : requestBody.AppointmentType ? requestBody.AppointmentType : 'Doctor',
             Tags            : requestBody.Tags ? JSON.stringify(requestBody.Tags) as string : JSON.stringify([]),
-            Version         : requestBody.Version ? requestBody.Version : 'V1'
+            Version         : requestBody.Version ? requestBody.Version : 'V1',
+            OwnerUserId     : requestBody.OwnerUserId
         };
     }
 

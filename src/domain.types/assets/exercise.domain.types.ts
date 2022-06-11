@@ -53,6 +53,7 @@ export interface ExerciseCreateModel {
     RecommendedDurationMin?: number;
     Tags?                  : string;
     Version?               : string;
+    OwnerUserId?           : uuid;
 }
 
 export interface ExerciseUpdateModel {
@@ -64,6 +65,7 @@ export interface ExerciseUpdateModel {
     RecommendedDurationMin?: number;
     Tags?                  : string;
     Version?               : string;
+    OwnerUserId? : uuid;
 }
 
 export interface ExerciseDto {

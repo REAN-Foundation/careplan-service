@@ -27,6 +27,9 @@ export class ChallengeController extends BaseController {
     create = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
             await this.authorize('Challenge.Create', request, response);
+            if (request.currentUser) {
+                request.body.OwnerUserId = request.currentUser.UserId;
+            }
             const record = await this._delegate.create(request.body);
             const message = 'Challenge added successfully!';
             ResponseHandler.success(request, response, message, 201, record);

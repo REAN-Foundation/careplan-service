@@ -12,6 +12,7 @@ export interface MedicationCreateModel {
     Description ? : string;
     Tags ? : string;
     Version ? : string;
+    OwnerUserId ? : uuid;
 }
 
 export interface MedicationUpdateModel {
@@ -20,6 +21,7 @@ export interface MedicationUpdateModel {
     Description ? : string;
     Tags ? : string;
     Version ? : string;
+    OwnerUserId ? : uuid;
 }
 
 export interface MedicationDto {

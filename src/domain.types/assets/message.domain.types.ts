@@ -26,6 +26,7 @@ export interface MessageCreateModel {
     Tags ? : string;
     Url ? : string;
     Version ? : string;
+    OwnerUserId ? : uuid;
 }
 
 export interface MessageUpdateModel {
@@ -36,6 +37,7 @@ export interface MessageUpdateModel {
     Tags ? : string;
     Url ? : string;
     Version ? : string;
+    OwnerUserId ? : uuid;
 }
 
 export interface MessageDto {

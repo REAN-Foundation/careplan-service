@@ -166,7 +166,8 @@ export class MessageControllerDelegate {
             MessageType : requestBody.MessageType ? requestBody.MessageType : 'Unknown',
             Tags        : requestBody.Tags ? JSON.stringify(requestBody.Tags) as string : JSON.stringify([]),
             Url         : requestBody.Url ? requestBody.Url : null,
-            Version     : requestBody.Version ? requestBody.Version : 'V1'
+            Version     : requestBody.Version ? requestBody.Version : 'V1',
+            OwnerUserId : requestBody.OwnerUserId
         };
     }
 
