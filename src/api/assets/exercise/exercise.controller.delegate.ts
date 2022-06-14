@@ -178,7 +178,8 @@ export class ExerciseControllerDelegate {
             IntensityLevel         : requestBody.IntensityLevel ? requestBody.IntensityLevel : 'Moderate',
             RecommendedDurationMin : requestBody.RecommendedDurationMin ? requestBody.RecommendedDurationMin : 15,
             Tags                   : requestBody.Tags ? JSON.stringify(requestBody.Tags) as string : JSON.stringify([]),
-            Version                : requestBody.Version ? requestBody.Version : 'V1'
+            Version                : requestBody.Version ? requestBody.Version : 'V1',
+            OwnerUserId            : requestBody.OwnerUserId
         };
     }
 

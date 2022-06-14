@@ -13,6 +13,7 @@ export interface AssessmentCreateModel {
     Template ? : string;
     Tags ? : string;
     Version ? : string;
+    OwnerUserId?: uuid;
 }
 
 export interface AssessmentUpdateModel {
@@ -22,6 +23,7 @@ export interface AssessmentUpdateModel {
     Template ? : string;
     Tags ? : string;
     Version ? : string;
+    OwnerUserId?: uuid;
 }
 
 export interface AssessmentDto {

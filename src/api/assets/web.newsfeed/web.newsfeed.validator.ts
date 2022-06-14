@@ -15,7 +15,10 @@ export class WebNewsfeedValidator {
                 Description : joi.string().optional(),
                 Url         : joi.string().optional(),
                 Tags        : joi.array().items(joi.string()).optional(),
-                Version     : joi.string().max(128).optional()
+                Version     : joi.string().max(128).optional(),
+                OwnerUserId : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {

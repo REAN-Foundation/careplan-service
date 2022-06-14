@@ -12,6 +12,7 @@ export interface GoalCreateModel {
     Description ? : string;
     Tags ? : string;
     Version ? : string;
+    OwnerUserId? : uuid;
 }
 
 export interface GoalUpdateModel {
@@ -20,6 +21,7 @@ export interface GoalUpdateModel {
     Description ? : string;
     Tags ? : string;
     Version ? : string;
+    OwnerUserId? : uuid;
 }
 
 export interface GoalDto {

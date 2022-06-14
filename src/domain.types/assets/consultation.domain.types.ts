@@ -25,6 +25,7 @@ export interface ConsultationCreateModel {
     ConsultationType ? : ConsultationType;
     Tags ? : string;
     Version ? : string;
+    OwnerUserId ? : uuid;
 }
 
 export interface ConsultationUpdateModel {
@@ -34,6 +35,7 @@ export interface ConsultationUpdateModel {
     ConsultationType ? : ConsultationType;
     Tags ? : string;
     Version ? : string;
+    OwnerUserId ? : uuid;
 }
 
 export interface ConsultationDto {

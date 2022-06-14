@@ -162,7 +162,8 @@ export class ConsultationControllerDelegate {
             Description      : requestBody.Description ? requestBody.Description : null,
             ConsultationType : requestBody.ConsultationType ? requestBody.ConsultationType : 'Tele-consultation',
             Tags             : requestBody.Tags ? JSON.stringify(requestBody.Tags) as string : JSON.stringify([]),
-            Version          : requestBody.Version ? requestBody.Version : 'V1'
+            Version          : requestBody.Version ? requestBody.Version : 'V1',
+            OwnerUserId      : requestBody.OwnerUserId
         };
     }
 

@@ -12,6 +12,7 @@ export interface ReflectionCreateModel {
     Description ? : string;
     Tags ? : string;
     Version ? : string;
+    OwnerUserId ? : uuid;
 }
 
 export interface ReflectionUpdateModel {
@@ -20,6 +21,7 @@ export interface ReflectionUpdateModel {
     Description ? : string;
     Tags ? : string;
     Version ? : string;
+    OwnerUserId ? : uuid;
 }
 
 export interface ReflectionDto {

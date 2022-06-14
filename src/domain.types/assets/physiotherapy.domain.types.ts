@@ -13,6 +13,7 @@ export interface PhysiotherapyCreateModel {
     RecommendedDurationMin ? : number;
     Tags ? : string;
     Version ? : string;
+    OwnerUserId ? : uuid;
 }
 
 export interface PhysiotherapyUpdateModel {
@@ -22,6 +23,7 @@ export interface PhysiotherapyUpdateModel {
     RecommendedDurationMin ? : number;
     Tags ? : string;
     Version ? : string;
+    OwnerUserId ? : uuid;
 }
 
 export interface PhysiotherapyDto {

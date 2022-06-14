@@ -27,6 +27,9 @@ export class WebLinkController extends BaseController {
     create = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
             await this.authorize('WebLink.Create', request, response);
+            if (request.currentUser) {
+                request.body.OwnerUserId = request.currentUser.UserId;
+            }
             const record = await this._delegate.create(request.body);
             const message = 'Web link added successfully!';
             ResponseHandler.success(request, response, message, 201, record);

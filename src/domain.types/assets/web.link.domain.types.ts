@@ -13,6 +13,7 @@ export interface WebLinkCreateModel {
     Url ? : string;
     Tags ? : string;
     Version ? : string;
+    OwnerUserId ? : uuid;
 }
 
 export interface WebLinkUpdateModel {
@@ -22,6 +23,7 @@ export interface WebLinkUpdateModel {
     Url ? : string;
     Tags ? : string;
     Version ? : string;
+    OwnerUserId ? : uuid;
 }
 
 export interface WebLinkDto {

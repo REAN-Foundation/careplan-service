@@ -154,7 +154,8 @@ export class CheckupControllerDelegate {
             Name        : requestBody.Name ? requestBody.Name : null,
             Description : requestBody.Description ? requestBody.Description : null,
             Tags        : requestBody.Tags ? JSON.stringify(requestBody.Tags) as string : JSON.stringify([]),
-            Version     : requestBody.Version ? requestBody.Version : 'V1'
+            Version     : requestBody.Version ? requestBody.Version : 'V1',
+            OwnerUserId : requestBody.OwnerUserId
         };
     }
 

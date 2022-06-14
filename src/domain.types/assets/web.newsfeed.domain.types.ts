@@ -13,6 +13,7 @@ export interface WebNewsfeedCreateModel {
     Url ? : string;
     Tags ? : string;
     Version ? : string;
+    OwnerUserId ? : uuid;
 }
 
 export interface WebNewsfeedUpdateModel {
@@ -22,6 +23,7 @@ export interface WebNewsfeedUpdateModel {
     Url ? : string;
     Tags ? : string;
     Version ? : string;
+    OwnerUserId ? : uuid;
 }
 
 export interface WebNewsfeedDto {

@@ -12,6 +12,7 @@ export interface ReminderCreateModel {
     Description ? : string;
     Tags ? : string;
     Version ? : string;
+    OwnerUserId ? : uuid;
 }
 
 export interface ReminderUpdateModel {
@@ -20,6 +21,7 @@ export interface ReminderUpdateModel {
     Description ? : string;
     Tags ? : string;
     Version ? : string;
+    OwnerUserId ? : uuid;
 }
 
 export interface ReminderDto {

@@ -12,6 +12,7 @@ export interface CheckupCreateModel {
     Description ? : string;
     Tags ? : string;
     Version ? : string;
+    OwnerUserId ? : uuid;
 }
 
 export interface CheckupUpdateModel {
@@ -20,6 +21,7 @@ export interface CheckupUpdateModel {
     Description ? : string;
     Tags ? : string;
     Version ? : string;
+    OwnerUserId ? : uuid;
 }
 
 export interface CheckupDto {

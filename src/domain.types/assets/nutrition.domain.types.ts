@@ -12,6 +12,7 @@ export interface NutritionCreateModel {
     Description ? : string;
     Tags ? : string;
     Version ? : string;
+    OwnerUserId ? : uuid;
 }
 
 export interface NutritionUpdateModel {
@@ -20,6 +21,7 @@ export interface NutritionUpdateModel {
     Description ? : string;
     Tags ? : string;
     Version ? : string;
+    OwnerUserId ? : uuid;
 }
 
 export interface NutritionDto {
