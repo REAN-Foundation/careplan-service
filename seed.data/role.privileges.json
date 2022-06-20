@@ -28,7 +28,9 @@
             "ApiClient.Search",
             "ApiClient.GetById",
             "ApiClient.Update",
-            "ApiClient.Delete"
+            "ApiClient.Delete",
+            "ApiClient.GetApiKey",
+            "ApiClient.RenewApiKey"
         ]
     },
     {

@@ -1,10 +1,12 @@
 import { ApiClientModel } from '../models/api.client.model';
-import { ApiClientCreateModel, ApiClientDto, ApiClientSearchFilters, ApiClientSearchResults, ApiClientUpdateModel, ClientApiKeyDto } from '../../domain.types/api.client.domain.types';
+import { ApiClientCreateModel, ApiClientDto, ApiClientSearchFilters, ApiClientSearchResults, ApiClientUpdateModel, ApiClientVerificationDomainModel, ClientApiKeyDto } from '../../domain.types/api.client.domain.types';
 import { Logger } from '../../common/logger';
 import { ApiError } from '../../common/api.error';
 import { CurrentClient } from '../../domain.types/miscellaneous/current.client';
 import { Op } from 'sequelize';
 import { ErrorHandler } from '../../common/error.handler';
+import { Helper } from '../../common/helper';
+import * as apikeyGenerator from 'uuid-apikey';
 
 ///////////////////////////////////////////////////////////////////////
 
@@ -24,6 +26,7 @@ export class ApiClientService {
                 ValidFrom  : clientDomainModel.ValidFrom ?? null,
                 ValidTill  : clientDomainModel.ValidTill ?? null,
             };
+            entity.Password = Helper.hash(clientDomainModel.Password);
             const client = await this.ApiClient.create(entity);
             const dto = await this.toDto(client);
             return dto;
@@ -90,6 +93,21 @@ export class ApiClientService {
         }
     }
 
+    getApiKeyByClientCode = async (clientCode: string): Promise<ClientApiKeyDto> =>{
+        try {
+            const client = await this.ApiClient.findOne({
+                where : {
+                    ClientCode : clientCode
+                }
+            });
+            const dto = await this.toClientSecretsDto(client);
+            return dto;
+        } catch (error) {
+            Logger.instance().log(error.message);
+            throw new ApiError(500, error.message);
+        }
+    }
+
     getClientHashedPassword = async(id: string): Promise<string> => {
         try {
             const client = await this.ApiClient.findByPk(id);
@@ -100,9 +118,19 @@ export class ApiClientService {
         }
     }
 
-    getApiKey = async(id: string): Promise<ClientApiKeyDto> => {
+    getApiKey = async(verificationModel: ApiClientVerificationDomainModel): Promise<ClientApiKeyDto> => {
         try {
-            const client = await this.ApiClient.findByPk(id);
+            const client = await this.getApiKeyByClientCode(verificationModel.ClientCode);
+            if (client == null) {
+                const message = 'Client does not exist with code (' + verificationModel.ClientCode + ')';
+                throw new ApiError(404, message);
+            }
+
+            const hashedPassword = await this.getClientHashedPassword(client.id);
+            const isPasswordValid = Helper.compareHashedPassword(verificationModel.Password, hashedPassword);
+            if (!isPasswordValid) {
+                throw new ApiError(401, 'Invalid password!');
+            }
             const dto = await this.toClientSecretsDto(client);
             return dto;
         } catch (error) {
@@ -110,6 +138,31 @@ export class ApiClientService {
             throw new ApiError(500, error.message);
         }
     }
+
+    renewApiKey = async (verificationModel: ApiClientVerificationDomainModel): Promise<ClientApiKeyDto> => {
+
+        const client = await this.getByClientCode(verificationModel.ClientCode);
+        if (client == null) {
+            const message = 'Client does not exist for client code (' + verificationModel.ClientCode + ')';
+            throw new ApiError(404, message);
+        }
+
+        const hashedPassword = await this.getClientHashedPassword(client.id);
+        const isPasswordValid = Helper.compareHashedPassword(verificationModel.Password, hashedPassword);
+        if (!isPasswordValid) {
+            throw new ApiError(401, 'Invalid password!');
+        }
+
+        const key = apikeyGenerator.default.create();
+        const clientApiKeyDto = await this.setApiKey(
+            client.id,
+            key.apiKey,
+            verificationModel.ValidFrom,
+            verificationModel.ValidTill
+        );
+        
+        return clientApiKeyDto;
+    };
     
     setApiKey = async(id: string, apiKey: string, validFrom: Date, validTill: Date): Promise<ClientApiKeyDto> => {
         try {
