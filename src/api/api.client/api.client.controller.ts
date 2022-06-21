@@ -83,7 +83,6 @@ export class ApiClientController extends BaseController {
         try {
 
             await this.authorize('ApiClient.GetApiKey',request, response, false);
-
             const apiKeyDto = await this._delegate.getCurrentApiKey(request);
 
             ResponseHandler.success(request, response, 'Client api keys retrieved successfully!', 200, {

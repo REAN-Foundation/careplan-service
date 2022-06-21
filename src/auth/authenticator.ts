@@ -55,11 +55,11 @@ export class Authenticator {
     public checkAuthentication = async(request: express.Request): Promise<boolean> => {
         const clientAuthResult = await this._authenticator.authenticateClient(request);
         if (clientAuthResult.Result === false){
-            throw new ApiError(401, 'Unauthorized access');
+            throw new ApiError('Unauthorized access', 401);
         }
         const userAuthResult = await this._authenticator.authenticateUser(request);
         if (userAuthResult.Result === false){
-            throw new ApiError(401, 'Unauthorized access');
+            throw new ApiError('Unauthorized access', 401);
         }
         return true;
     };

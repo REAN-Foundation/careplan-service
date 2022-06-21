@@ -22,7 +22,7 @@ export class ApiClientService {
                 Phone      : clientDomainModel.Phone,
                 Email      : clientDomainModel.Email,
                 Password   : clientDomainModel.Password ?? null,
-                ApiKey     : clientDomainModel.ApiKey ?? null,
+                ApiKey     : clientDomainModel.ApiKey ?? apikeyGenerator.default.create().apiKey,
                 ValidFrom  : clientDomainModel.ValidFrom ?? null,
                 ValidTill  : clientDomainModel.ValidTill ?? null,
             };
@@ -32,7 +32,7 @@ export class ApiClientService {
             return dto;
         } catch (error) {
             Logger.instance().log(error.message);
-            throw new ApiError(500, error.message);
+            throw new ApiError(error.message, 500);
         }
     };
 
@@ -43,7 +43,7 @@ export class ApiClientService {
             return dto;
         } catch (error) {
             Logger.instance().log(error.message);
-            throw new ApiError(500, error.message);
+            throw new ApiError(error.message, 500);
         }
     };
 
@@ -89,7 +89,7 @@ export class ApiClientService {
             return dto;
         } catch (error) {
             Logger.instance().log(error.message);
-            throw new ApiError(500, error.message);
+            throw new ApiError(error.message, 500);
         }
     }
 
@@ -104,7 +104,7 @@ export class ApiClientService {
             return dto;
         } catch (error) {
             Logger.instance().log(error.message);
-            throw new ApiError(500, error.message);
+            throw new ApiError(error.message, 500);
         }
     }
 
@@ -114,7 +114,7 @@ export class ApiClientService {
             return client.Password;
         } catch (error) {
             Logger.instance().log(error.message);
-            throw new ApiError(500, error.message);
+            throw new ApiError(error.message, 500);
         }
     }
 
@@ -123,19 +123,19 @@ export class ApiClientService {
             const client = await this.getApiKeyByClientCode(verificationModel.ClientCode);
             if (client == null) {
                 const message = 'Client does not exist with code (' + verificationModel.ClientCode + ')';
-                throw new ApiError(404, message);
+                throw new ApiError(message, 404);
             }
 
             const hashedPassword = await this.getClientHashedPassword(client.id);
             const isPasswordValid = Helper.compareHashedPassword(verificationModel.Password, hashedPassword);
             if (!isPasswordValid) {
-                throw new ApiError(401, 'Invalid password!');
+                throw new ApiError('Invalid password!', 401);
             }
             const dto = await this.toClientSecretsDto(client);
             return dto;
         } catch (error) {
             Logger.instance().log(error.message);
-            throw new ApiError(500, error.message);
+            throw new ApiError(error.message, 500);
         }
     }
 
@@ -144,13 +144,13 @@ export class ApiClientService {
         const client = await this.getByClientCode(verificationModel.ClientCode);
         if (client == null) {
             const message = 'Client does not exist for client code (' + verificationModel.ClientCode + ')';
-            throw new ApiError(404, message);
+            throw new ApiError(message, 404);
         }
 
         const hashedPassword = await this.getClientHashedPassword(client.id);
         const isPasswordValid = Helper.compareHashedPassword(verificationModel.Password, hashedPassword);
         if (!isPasswordValid) {
-            throw new ApiError(401, 'Invalid password!');
+            throw new ApiError('Invalid password!', 401);
         }
 
         const key = apikeyGenerator.default.create();
@@ -175,7 +175,7 @@ export class ApiClientService {
             return dto;
         } catch (error) {
             Logger.instance().log(error.message);
-            throw new ApiError(500, error.message);
+            throw new ApiError(error.message, 500);
         }
     }
     
@@ -199,7 +199,7 @@ export class ApiClientService {
             return currentClient;
         } catch (error) {
             Logger.instance().log(error.message);
-            throw new ApiError(500, error.message);
+            throw new ApiError(error.message, 500);
         }
     }
     
@@ -214,7 +214,7 @@ export class ApiClientService {
                 client.ClientName = clientDomainModel.ClientName;
             }
             if (clientDomainModel.Password != null) {
-                client.Password = clientDomainModel.Password;
+                client.Password = Helper.hash(clientDomainModel.Password);
             }
             if (clientDomainModel.Phone != null) {
                 client.Phone = clientDomainModel.Phone;
@@ -231,7 +231,7 @@ export class ApiClientService {
             return dto;
         } catch (error) {
             Logger.instance().log(error.message);
-            throw new ApiError(500, error.message);
+            throw new ApiError(error.message, 500);
         }
     }
 
@@ -241,7 +241,7 @@ export class ApiClientService {
             return result === 1;
         } catch (error) {
             Logger.instance().log(error.message);
-            throw new ApiError(500, error.message);
+            throw new ApiError(error.message, 500);
         }
     };
 

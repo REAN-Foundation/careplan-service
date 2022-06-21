@@ -22,6 +22,10 @@ import {
     ApiClientSearchFilters,
     ApiClientSearchResults
 } from '../../domain.types/api.client.domain.types';
+import * as apikeyGenerator from 'uuid-apikey';
+import { TimeHelper } from '../../common/time.helper';
+import { DurationType } from '../../domain.types/miscellaneous/time.types';
+import { generate } from 'generate-password';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -39,6 +43,17 @@ export class ApiClientControllerDelegate {
 
     create = async (requestBody: any) => {
         await validator.validateCreateRequest(requestBody);
+        var clientCode = requestBody.ClientCode;
+        if (clientCode) {
+            var existing = await this._service.getByClientCode(clientCode);
+            if (existing) {
+                ErrorHandler.throwConflictError(`Client with this client code already exists!`);
+            }
+        }
+        else {
+            clientCode = await this.getClientCode(requestBody.ClientName);
+            requestBody.ClientCode = clientCode;
+        }
         var createModel: ApiClientCreateModel = this.getCreateModel(requestBody);
         const record = await this._service.create(createModel);
         if (record === null) {
@@ -91,15 +106,15 @@ export class ApiClientControllerDelegate {
 
     getCurrentApiKey = async (request) => {
         const verificationModel = await validator.getOrRenewApiKey(request);
-
         const apiKeyDto = await this._service.getApiKey(verificationModel);
         if (apiKeyDto == null) {
-            throw new ApiError(400, 'Unable to retrieve client api key.');
+            throw new ApiError('Unable to retrieve client api key.', 400);
         }
         return apiKeyDto;
     }
 
     renewApiKey = async (request) => {
+
         const verificationModel = await validator.getOrRenewApiKey(request);
 
         if (verificationModel.ValidFrom == null) {
@@ -113,7 +128,7 @@ export class ApiClientControllerDelegate {
 
         const apiKeyDto = await this._service.renewApiKey(verificationModel);
         if (apiKeyDto == null) {
-            throw new ApiError(400, 'Unable to renew client api key.');
+            throw new ApiError('Unable to renew client api key.', 400);
         }
         return apiKeyDto;
     }
@@ -169,9 +184,6 @@ export class ApiClientControllerDelegate {
         if (Helper.hasProperty(requestBody, 'ClientName')) {
             updateModel.ClientName = requestBody.ClientName;
         }
-        if (Helper.hasProperty(requestBody, 'ClientCode')) {
-            updateModel.ClientCode = requestBody.ClientCode;
-        }
         if (Helper.hasProperty(requestBody, 'IsPrivileged')) {
             updateModel.IsPrivileged = requestBody.IsPrivileged;
         }
@@ -201,6 +213,7 @@ export class ApiClientControllerDelegate {
     }
 
     getCreateModel = (requestBody): ApiClientCreateModel => {
+
         return {
             ClientName   : requestBody.ClientName ? requestBody.ClientName : null,
             ClientCode   : requestBody.ClientCode ? requestBody.ClientCode : null,
@@ -209,9 +222,10 @@ export class ApiClientControllerDelegate {
             Phone        : requestBody.Phone ? requestBody.Phone : null,
             Email        : requestBody.Email ? requestBody.Email : null,
             Password     : requestBody.Password ? requestBody.Password : null,
-            ApiKey       : requestBody.ApiKey ? requestBody.ApiKey : null,
-            ValidFrom    : requestBody.ValidFrom ? requestBody.ValidFrom : null,
-            ValidTill    : requestBody.ValidTill ? requestBody.ValidTill : null
+            ApiKey       : requestBody.ApiKey ? requestBody.ApiKey : apikeyGenerator.default.create().apiKey,
+            ValidFrom    : requestBody.ValidFrom ? requestBody.ValidFrom : new Date(),
+            ValidTill    : requestBody.ValidTill ?
+                requestBody.ValidTill : TimeHelper.addDuration(new Date(), 180, DurationType.Day)
         };
     }
 
@@ -227,7 +241,6 @@ export class ApiClientControllerDelegate {
             CountryCode  : record.CountryCode,
             Phone        : record.Phone,
             Email        : record.Email,
-            Password     : record.Password,
             ApiKey       : record.ApiKey,
             ValidFrom    : record.ValidFrom,
             ValidTill    : record.ValidTill
@@ -252,6 +265,42 @@ export class ApiClientControllerDelegate {
             IsActive            : record.IsActive
         };
     }
+
+    private getClientCodePostfix() {
+        return generate({
+            length    : 8,
+            numbers   : false,
+            lowercase : false,
+            uppercase : true,
+            symbols   : false,
+            exclude   : ',-@#$%^&*()',
+        });
+    }
+
+    private getClientCode = async (clientName: string) => {
+        let name = clientName;
+        name = name.toUpperCase();
+        let cleanedName = '';
+        const len = name.length;
+        for (let i = 0; i < len; i++) {
+            if (Helper.isAlpha(name.charAt(i))) {
+                if (!Helper.isAlphaVowel(name.charAt(i))) {
+                    cleanedName += name.charAt(i);
+                }
+            }
+        }
+        const postfix = this.getClientCodePostfix();
+        let tmpCode = cleanedName + postfix;
+        tmpCode = tmpCode.substring(0, 8);
+        let existing = await this._service.getByClientCode(tmpCode);
+        while (existing != null) {
+            tmpCode = tmpCode.substring(0, 4);
+            tmpCode += this.getClientCodePostfix();
+            tmpCode = tmpCode.substring(0, 8);
+            existing = await this._service.getByClientCode(tmpCode);
+        }
+        return tmpCode;
+    };
 
     //#endregion
 

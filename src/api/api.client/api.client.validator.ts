@@ -4,6 +4,8 @@ import {
     ErrorHandler
 } from '../../common/error.handler';
 import { Helper } from '../../common/helper';
+import { TimeHelper } from '../../common/time.helper';
+import { DurationType } from '../../domain.types/miscellaneous/time.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -16,9 +18,9 @@ export class ApiClientValidator {
                 ClientCode          : joi.string().max(256).optional(),
                 ClientInterfaceType : joi.string().valid("Mobile App", "Web App", "Desktop App", "Other").optional(),
                 IsPrivileged        : joi.boolean().optional(),
-                CountryCode         : joi.string().optional(),
-                Phone               : joi.string().optional(),
-                Email               : joi.string().email().optional(),
+                CountryCode         : joi.string().required(),
+                Phone               : joi.string().required(),
+                Email               : joi.string().email().required(),
                 Password            : joi.string().optional(),
                 ApiKey              : joi.string().optional(),
                 ValidFrom           : joi.date().iso().optional(),
@@ -106,8 +108,8 @@ export class ApiClientValidator {
         model = {
             ClientCode : clientCode,
             Password   : password,
-            ValidFrom  : body.ValidFrom ?? null,
-            ValidTill  : body.ValidTill ?? null,
+            ValidFrom  : body.ValidFrom ?? new Date(),
+            ValidTill  : body.ValidTill ?? TimeHelper.addDuration(new Date(), 180, DurationType.Day),
         };
 
         return model;

@@ -20,11 +20,11 @@ export class BaseController {
         authorize = true) => {
 
         if (context === undefined || context === null) {
-            throw new ApiError(500, 'Invalid request context');
+            throw new ApiError('Invalid request context', 500);
         }
         const tokens = context.split('.');
         if (tokens.length < 2) {
-            throw new ApiError(500, 'Invalid request context');
+            throw new ApiError('Invalid request context', 500);
         }
         const resourceType = tokens[0];
         request.context = context;

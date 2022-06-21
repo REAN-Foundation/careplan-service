@@ -18,7 +18,7 @@ export class Authorizer {
     ): Promise<void> => {
         const authorized = await this._authorizer.authorize(request, response);
         if (!authorized) {
-            throw new ApiError(403, 'Unauthorized access');
+            throw new ApiError('Unauthorized access', 403);
         }
     };
 

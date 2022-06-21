@@ -9,6 +9,7 @@ export class CareplanModel {
     static ModelName  = 'Careplan';
 
     static Schema = () => {
+        
         const db = DatabaseConnector.db();
         const Sequelize: any = db.Sequelize;
 
