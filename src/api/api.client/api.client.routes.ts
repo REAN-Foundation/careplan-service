@@ -20,5 +20,8 @@ export const register = (app: express.Application): void => {
     router.put('/:id', authenticator.authenticateUser, controller.update);
     router.delete('/:id', authenticator.authenticateUser, controller.delete);
 
+    router.get('/:clientCode/current-api-key', controller.getCurrentApiKey);
+    router.put('/:clientCode/renew-api-key', controller.renewApiKey);
+
     app.use('/api/v1/api-clients', router);
 };

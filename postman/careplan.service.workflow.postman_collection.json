@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "47d8475e-ed6c-414f-a504-dbf7de94aacb",
+		"_postman_id": "456bf7cf-bd53-4984-9bc4-05ee825e0a1d",
 		"name": "careplan.service.workflow",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "18989262"
+		"_exporter_id": "15905052"
 	},
 	"item": [
 		{
@@ -61,7 +61,7 @@
 								"exec": [
 									"try {\r",
 									"    var jsonRes = pm.response.json();\r",
-									"    pm.environment.set(\"ADMIN_JWT\", jsonRes.Data.AccessToken);\r",
+									"    pm.environment.set(\"ADMIN_USER_JWT\", jsonRes.Data.AccessToken);\r",
 									"}\r",
 									"catch (error) {\r",
 									"    console.log(error.message);\r",
@@ -109,7 +109,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"UserName\": \"admin\",\r\n    \"Password\": \"{{ADMIN_PASSWORD}}\"\r\n}\r\n"
+							"raw": "{\r\n    \"UserName\": \"admin\",\r\n    \"Password\": \"password\"\r\n}\r\n"
 						},
 						"url": {
 							"raw": "{{BASE_URL}}/users/login-password",
@@ -227,10 +227,20 @@
 									"    console.log(error.message);\r",
 									"}\r",
 									"\r",
-									"pm.test('Request is successfull', function () {\r    pm.response.to.have.status(200);\r    var jsonRes = pm.response.json();\r    pm.expect(jsonRes.Status).to.eql('success');\r});\r",
+									"pm.test('Request is successfull', function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.expect(jsonRes.Status).to.eql('success');\r",
+									"});\r",
 									"\r",
-									"pm.test('New api client record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
-									"\r"
+									"pm.test('New api client record is created', function () {\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    //pm.expect(jsonRes.Data).to.have.property('xyz');\r",
+									"    //let expectedXyz = ;\r",
+									"    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r",
+									"});\r",
+									"\r",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -247,12 +257,12 @@
 							{
 								"key": "Authorization",
 								"type": "text",
-								"value": "Bearer {{ADMIN_USER_JWT}}"
+								"value": "Bearer {{USER_JWT}}"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"ClientName\": \"Rean Patient App\",\r\n    \"ClientInterfaceType\": \"Web App\",\r\n    \"IsPrivileged\": true,\r\n    \"Password\": \"abc#123XYZ\"\r\n}"
+							"raw": "{\r\n    \"ClientName\": \"Rean Patient App\",\r\n    \"ClientCode\": \"REANWORLD\",\r\n    \"ClientInterfaceType\": \"Web App\",\r\n    \"IsPrivileged\": true,\r\n    \"Password\": \"abc#123XYZ\",\r\n    \"ApiKey\": \"004V41E-6JX4ZYM-MAKN1N6-DAY4V6A\"\r\n}"
 						},
 						"url": {
 							"raw": "{{BASE_URL}}/api-clients",
@@ -268,6 +278,17 @@
 				},
 				{
 					"name": "Get by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
@@ -312,7 +333,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{BASE_URL}}/api-clients/search?clientName=xyz&clientCode=xyz&clientInterfaceType=xyz&isPrivileged=xyz&countryCode=xyz&phone=xyz&email=xyz&validFrom=xyz&validTill=xyz",
+							"raw": "{{BASE_URL}}/api-clients/search?clientCode=MYCLIENT",
 							"host": [
 								"{{BASE_URL}}"
 							],
@@ -323,39 +344,47 @@
 							"query": [
 								{
 									"key": "clientName",
-									"value": "xyz"
+									"value": "xyz",
+									"disabled": true
 								},
 								{
 									"key": "clientCode",
-									"value": "xyz"
+									"value": "MYCLIENT"
 								},
 								{
 									"key": "clientInterfaceType",
-									"value": "xyz"
+									"value": "xyz",
+									"disabled": true
 								},
 								{
 									"key": "isPrivileged",
-									"value": "xyz"
+									"value": "xyz",
+									"disabled": true
 								},
 								{
 									"key": "countryCode",
-									"value": "xyz"
+									"value": "xyz",
+									"disabled": true
 								},
 								{
 									"key": "phone",
-									"value": "xyz"
+									"value": "xyz",
+									"disabled": true
 								},
 								{
 									"key": "email",
-									"value": "xyz"
+									"value": "xyz",
+									"disabled": true
 								},
 								{
 									"key": "validFrom",
-									"value": "xyz"
+									"value": "xyz",
+									"disabled": true
 								},
 								{
 									"key": "validTill",
-									"value": "xyz"
+									"value": "xyz",
+									"disabled": true
 								}
 							]
 						}
@@ -368,7 +397,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"try {\r",
 									"    var respData = pm.response.json();\r",
@@ -382,7 +410,8 @@
 									"\r",
 									"pm.test('New api client record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
 									"\r"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -402,7 +431,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\"ClientName\": \"Rean Patient App\",\r\n\"ClientCode\": \"REANPAT\",\r\n\"ClientInterfaceType\": \"Educational\",\r\n\"IsPrivileged\": True,\r\n\"CountryCode\": \"\",\r\n\"Phone\": \"\",\r\n\"Email\": \"\",\r\n\"Password\": \"\",\r\n\"ApiKey\": \"\",\r\n\"ValidFrom\": \"2022-01-01\",\r\n\"ValidTill\": \"2023-01-01\"\r\n\r\n}\r\n"
+							"raw": "{\r\n\"ClientName\": \"Rean Patient App\",\r\n\"ClientCode\": \"REANPAT\",\r\n\"ClientInterfaceType\": \"Mobile App\",\r\n\"IsPrivileged\": true,\r\n\"CountryCode\": \"+91\",\r\n\"Phone\": \"123456666\",\r\n\"Email\": \"abc@xyz.com\",\r\n\"Password\": \"abc#123XYZ\",\r\n\"ApiKey\": \"004V41E-6JX4ZYM-MAKN1N6-DAY4V6K\",\r\n\"ValidFrom\": \"2022-01-01\",\r\n\"ValidTill\": \"2023-01-01\"\r\n\r\n}\r\n"
 						},
 						"url": {
 							"raw": "{{BASE_URL}}/api-clients/{{API_CLIENT_ID}}",
@@ -419,6 +448,31 @@
 				},
 				{
 					"name": "Delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Request is successfull\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.expect(jsonRes.Status).to.eql('success');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Api client deleted successfully!\", function () {\r",
+									"\r",
+									"    var expectedValue = true;\r",
+									"    \r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.expect(jsonRes.Data).to.have.property('Deleted');\r",
+									"    pm.expect(jsonRes.Data.Deleted).equals(expectedValue);\r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "DELETE",
 						"header": [
@@ -443,6 +497,168 @@
 								"{{API_CLIENT_ID}}"
 							]
 						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get current API key",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"try {\r",
+									"    var jsonRes = pm.response.json();\r",
+									"}\r",
+									"catch (error) {\r",
+									"    console.log(error.message);\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Request is successfull\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.expect(jsonRes.Status).to.eql('success');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Api key is returned\", function () {\r",
+									"\r",
+									"    var expectedClientCode = pm.environment.get(\"API_CLIENT_CODE\");\r",
+									"\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.expect(jsonRes.Data).to.have.property('ApiKeyDetails');\r",
+									"    pm.expect(jsonRes.Data.ApiKeyDetails).to.not.be.empty;\r",
+									"    pm.expect(jsonRes.Data.ApiKeyDetails).to.have.property('id');\r",
+									"    pm.expect(jsonRes.Data.ApiKeyDetails).to.have.property('ClientCode');\r",
+									"    pm.expect(jsonRes.Data.ApiKeyDetails.ClientCode).equals(expectedClientCode);\r",
+									"    pm.expect(jsonRes.Data.ApiKeyDetails.ApiKey).to.not.be.empty;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{API_CLIENT_PASSWORD}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{API_CLIENT_CODE}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api-clients/{{API_CLIENT_CODE}}/current-api-key",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api-clients",
+								"{{API_CLIENT_CODE}}",
+								"current-api-key"
+							]
+						},
+						"description": "Get the current valid API key for a given client. \n\nThis API uses basic authentication with Username and Password. As a username, one has to add 'Client code' generated during the registration."
+					},
+					"response": []
+				},
+				{
+					"name": "Renew API key",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Request is successfull\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.expect(jsonRes.Status).to.eql('success');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"New api key is returned\", function () {\r",
+									"\r",
+									"    var currentApiKey = pm.environment.get(\"API_KEY\");\r",
+									"\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.expect(jsonRes.Data).to.have.property('ApiKeyDetails');\r",
+									"    pm.expect(jsonRes.Data.ApiKeyDetails).to.not.be.empty;\r",
+									"    pm.expect(jsonRes.Data.ApiKeyDetails).to.have.property('id');\r",
+									"    pm.expect(jsonRes.Data.ApiKeyDetails).to.have.property('ClientCode');\r",
+									"    pm.expect(jsonRes.Data.ApiKeyDetails.ApiKey).to.not.be.empty;\r",
+									"    pm.expect(jsonRes.Data.ApiKeyDetails.ApiKey).not.equals(currentApiKey);\r",
+									"    \r",
+									"    //set the new key to env\r",
+									"    pm.environment.set(\"API_KEY\", jsonRes.Data.ApiKeyDetails.ApiKey);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{API_CLIENT_PASSWORD}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{API_CLIENT_CODE}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ValidFrom\": \"2021-07-21\",\r\n    \"ValidTill\": \"2024-07-20\"\r\n}"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api-clients/{{API_CLIENT_CODE}}/renew-api-key",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api-clients",
+								"{{API_CLIENT_CODE}}",
+								"renew-api-key"
+							]
+						},
+						"description": "Renew API key with a given validity period. If not added, the key will be valid for 1 year.\n\nThis API uses basic authentication with Username and Password. As a username, one has to add 'Client code' generated during the registration."
 					},
 					"response": []
 				}

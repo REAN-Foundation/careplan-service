@@ -1,7 +1,9 @@
 import * as joi from 'joi';
+import { ApiClientVerificationDomainModel } from '../../domain.types/api.client.domain.types';
 import {
     ErrorHandler
 } from '../../common/error.handler';
+import { Helper } from '../../common/helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -68,5 +70,47 @@ export class ApiClientValidator {
             ErrorHandler.handleValidationError(error);
         }
     }
+
+    static getOrRenewApiKey = async ( request: any
+    ): Promise<ApiClientVerificationDomainModel> => {
+
+        const authHeader = request.headers['authorization'].toString();
+        let tokens = authHeader.split(' ');
+        if (tokens.length < 2) {
+            throw new Error("Invalid authorization header.");
+        }
+        if (tokens[0].toLowerCase() !== 'basic') {
+            throw new Error('Invalid auth header formatting. Should be basic authorization.');
+        }
+        const load = Helper.decodeFromBase64(tokens[1]);
+        tokens = load.split(':');
+        if (tokens.length < 2) {
+            throw new Error("Basic auth formatting error.");
+        }
+        const clientCode = tokens[0].trim();
+        const password = tokens[1].trim();
+
+        const schema = joi.object({
+            ValidFrom : joi.date().optional(),
+            ValidTill : joi.date().optional()
+        });
+        await schema.validateAsync(request.body);
+
+        return ApiClientValidator.getVerificationDomainModel(request.body, clientCode, password);
+    };
+
+    static getVerificationDomainModel = async (body: any, clientCode: string, password: string):
+        Promise<ApiClientVerificationDomainModel> => {
+
+        let model: ApiClientVerificationDomainModel = null;
+        model = {
+            ClientCode : clientCode,
+            Password   : password,
+            ValidFrom  : body.ValidFrom ?? null,
+            ValidTill  : body.ValidTill ?? null,
+        };
+
+        return model;
+    };
 
 }
