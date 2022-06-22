@@ -29,7 +29,7 @@
 
 //             const types = await this._delegate.getPersonRoleTypes();
 //             if (types === null || types.length === 0) {
-//                 throw new ApiError(400, 'Cannot get person role types!');
+//                 throw new ApiError('Cannot get person role types!'. 400);
 //             }
 
 //             ResponseHandler.success(request, response, 'Person role types retrieved successfully!', 200, {
@@ -88,7 +88,7 @@
 
 //             const priorityTypes = await this._delegate.getPriorityTypes();
 //             if (priorityTypes.length === 0) {
-//                 throw new ApiError(400, 'Cannot fetch priorities types!');
+//                 throw new ApiError('Cannot fetch priorities types!', 400);
 //             }
 
 //             ResponseHandler.success(request, response, 'Fetched priority types successfully!', 201, {

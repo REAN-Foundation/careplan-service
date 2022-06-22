@@ -7,40 +7,41 @@ import {
 } from "../miscellaneous/system.types";
 
 export interface ActionPlanCreateModel {
-    AssetCode ? : string;
-    Name ? : string;
-    Description ? : string;
-    Tags ? : string;
-    Version ? : string;
+    AssetCode?  : string;
+    Name?       : string;
+    Description?: string;
+    Tags?       : string;
+    Version?    : string;
+    OwnerUserId?: uuid;
 }
 
 export interface ActionPlanUpdateModel {
-    AssetCode ? : string;
-    Name ? : string;
-    Description ? : string;
-    Tags ? : string;
-    Version ? : string;
+    AssetCode?  : string;
+    Name?       : string;
+    Description?: string;
+    Tags?       : string;
+    Version?    : string;
+    OwnerUserId?: uuid;
 }
 
 export interface ActionPlanDto {
-    id: number;
-    AssetCode: string;
-    Name: string;
-    Description: string;
+    id           : number;
+    AssetCode    : string;
+    Name         : string;
+    Description  : string;
     AssetCategory: string;
-    OwnerUserId: uuid;
-    Tags: string[];
-    Version: string;
-
+    OwnerUserId  : uuid;
+    Tags         : string[];
+    Version      : string;
 }
 
 export interface ActionPlanSearchFilters extends BaseSearchFilters {
-    AssetCode ? : string;
-    Name ? : string;
-    Description ? : string;
-    AssetCategory ? : string;
-    Tags ? : string;
-    Version ? : string;
+    AssetCode?    : string;
+    Name?         : string;
+    Description?  : string;
+    AssetCategory?: string;
+    Tags?         : string;
+    Version?      : string;
 }
 
 export interface ActionPlanSearchResults extends BaseSearchResults {

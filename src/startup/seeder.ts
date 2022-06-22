@@ -1,192 +1,166 @@
-// import fs from "fs";
-// import path from "path";
+import fs from "fs";
+import path from "path";
 import { Helper } from "../common/helper";
 import { Logger } from "../common/logger";
-// import * as RolePrivilegesList from '../../seed.data/role.privileges.json';
-// import { Helper } from "../common/helper";
-// import { Logger } from "../common/logger";
-// import { RoleService } from '../database/repository.services/role.service';
-// import { RolePrivilegeService } from '../database/repository.services/role.privilege.service';
-// import { UseService } from '../database/repository.services/user.service';
-// import { UserDelegate } from '../api/user/user.controller.delegate';
-// import { Loader } from "./loader";
+import * as RolePrivilegesList from '../../seed.data/role.privileges.json';
+import { RoleService } from '../database/repository.services/role.service';
+import { UserRoleService } from '../database/repository.services/user/user.role.service';
+import { RolePrivilegeService } from '../database/repository.services/role.privilege.service';
+import { UserService } from '../database/repository.services/user/user.service';
+import { ApiClientService } from '../database/repository.services/api.client.service';
+import { RoleList } from '../domain.types/miscellaneous/role.types';
+import { UserCreateModel } from "../domain.types/user/user.domain.types";
+import { Gender } from "../domain.types/miscellaneous/system.types";
+import { UserRoleCreateModel } from "../domain.types/user/user.role.domain.types";
 
 //////////////////////////////////////////////////////////////////////////////
 
 export class Seeder {
 
-    // _apiClientService: ApiClientService = null;
+    _apiClientService: ApiClientService = new ApiClientService();
 
-    // _userService: UserService = null;
+    _userService: UserService = new UserService();
 
-    // _roleService: RoleService = null;
+    _roleService: RoleService = new RoleService();
+
+    _rolePrivilegeService: RolePrivilegeService = new RolePrivilegeService();
+
+    _userRoleService: UserRoleService = new UserRoleService();
 
     // _fileResourceService: FileResourceService = null;
 
-    // constructor() {
-    //     this._apiClientService = Loader.container.resolve(ApiClientService);
-    //     this._userService = Loader.container.resolve(UserService);
-    //     this._roleService = Loader.container.resolve(RoleService);
-    //     this._fileResourceService = Loader.container.resolve(FileResourceService);
-    // }
-
-    public static seed = async (): Promise<void> => {
+    public seed = async (): Promise<void> => {
         try {
-            await Seeder.createTempFolders();
-            // await this.seedDefaultRoles();
-            // await this.seedRolePrivileges();
-            // await this.seedInternalClients();
-            // await this.seedSystemAdmin();
+            await this.createTempFolders();
+            await this.seedDefaultRoles();
+            await this.seedRolePrivileges();
+            await this.seedInternalClients();
+            await this.seedDefaultUsers();
         } catch (error) {
             Logger.instance().log(error.message);
         }
     };
 
-    private static createTempFolders = async () => {
+    private createTempFolders = async () => {
         await Helper.createTempDownloadFolder();
         await Helper.createTempUploadFolder();
     };
 
-    // private seedRolePrivileges = async () => {
-    //     try {
-    //         const arr = RolePrivilegesList['default'];
-    //         for (let i = 0; i < arr.length; i++) {
-    //             const rp = arr[i];
-    //             const roleName = rp['Role'];
-    //             const privileges = rp['Privileges'];
+    private seedRolePrivileges = async () => {
+        try {
+            const arr = RolePrivilegesList['default'];
+            for (let i = 0; i < arr.length; i++) {
+                const rp = arr[i];
+                const roleName = rp['Role'];
+                const privileges = rp['Privileges'];
 
-    //             const role = await this._roleRepo.getByName(roleName);
-    //             if (role == null) {
-    //                 continue;
-    //             }
-    //             for (const privilege of privileges) {
-    //                 const exists = await this._rolePrivilegeRepo.hasPrivilegeForRole(role.id, privilege);
-    //                 if (!exists) {
-    //                     await this._rolePrivilegeRepo.create({
-    //                         RoleId    : role.id,
-    //                         Privilege : privilege,
-    //                     });
-    //                 }
-    //             }
-    //         }
-    //     } catch (error) {
-    //         Logger.instance().log('Error occurred while seeding role-privileges!');
-    //     }
-    //     Logger.instance().log('Seeded role-privileges successfully!');
-    // };
+                const role = await this._roleService.getByName(roleName);
+                if (role == null) {
+                    continue;
+                }
+                for (const privilege of privileges) {
+                    const exists = await this._rolePrivilegeService.hasPrivilegeForRole(role.id, privilege);
+                    if (!exists) {
+                        await this._rolePrivilegeService.create({
+                            RoleId    : role.id,
+                            RoleName  : role.RoleName,
+                            Privilege : privilege,
+                        });
+                    }
+                }
+            }
+        } catch (error) {
+            Logger.instance().log('Error occurred while seeding role-privileges!');
+        }
+        Logger.instance().log('Seeded role-privileges successfully!');
+    };
 
-    // private seedSystemAdmin = async () => {
+    private seedDefaultUsers = async () => {
 
-    //     const exists = await this._userRepo.userNameExists('admin');
-    //     if (exists) {
-    //         return;
-    //     }
+        const defaultUsers = this.loadJSONSeedFile('default.users.seed.json');
 
-    //     const SeededSystemAdmin = this.loadJSONSeedFile('system.admin.seed.json');
+        for await (var u of defaultUsers) {
 
-    //     const role = await this._roleRepo.getByName(Roles.SystemAdmin);
+            const role = await this._roleService.getByName(u.Role);
+
+            const existingUser = await this._userService.getUser(null, null, null, u.UserName);
+            if (existingUser) {
+                continue;
+            }
        
-    //     const userDomainModel: UserDomainModel = {
-    //         Person : {
-    //             Phone     : SeededSystemAdmin.Phone,
-    //             FirstName : SeededSystemAdmin.FirstName,
-    //         },
-    //         UserName        : SeededSystemAdmin.UserName,
-    //         Password        : SeededSystemAdmin.Password,
-    //         DefaultTimeZone : SeededSystemAdmin.DefaultTimeZone,
-    //         CurrentTimeZone : SeededSystemAdmin.CurrentTimeZone,
-    //         RoleId          : role.id,
-    //     };
+            const userDomainModel : UserCreateModel = {
+                Phone       : u.Phone,
+                FirstName   : u.FirstName,
+                LastName    : u.LastName,
+                UserName    : u.UserName,
+                Password    : u.Password,
+                RoleId      : role.id,
+                CountryCode : u.CountryCode,
+                Email       : u.Email,
+                Gender      : Gender.Male,
+                BirthDate   : null,
+                Prefix      : ""
+            };
+    
+            const user = await this._userService.create(userDomainModel);
+            const userRole: UserRoleCreateModel = {
+                UserId : user.id,
+                RoleId : role.id,
+            };
+            await this._userRoleService.create(userRole);
+        }
 
-    //     const person = await this._personRepo.create(userDomainModel.Person);
-    //     userDomainModel.Person.id = person.id;
-    //     await this._userRepo.create(userDomainModel);
-    //     await this._personRoleRepo.addPersonRole(person.id, role.id);
+        Logger.instance().log('Seeded admin and moderator successfully!');
+    };
 
-    //     Logger.instance().log('Seeded admin user successfully!');
-    // };
+    private loadJSONSeedFile(file: string): any {
+        var filepath = path.join(process.cwd(), 'seed.data', file);
+        var fileBuffer = fs.readFileSync(filepath, 'utf8');
+        const obj = JSON.parse(fileBuffer);
+        return obj;
+    }
 
-    // private loadJSONSeedFile(file: string): any {
-    //     var filepath = path.join(process.cwd(), 'seed.data', file);
-    //     var fileBuffer = fs.readFileSync(filepath, 'utf8');
-    //     const obj = JSON.parse(fileBuffer);
-    //     return obj;
-    // }
+    private seedInternalClients = async () => {
 
-    // private seedInternalClients = async () => {
+        Logger.instance().log('Seeding internal clients...');
 
-    //     Logger.instance().log('Seeding internal clients...');
+        const arr = this.loadJSONSeedFile('internal.clients.seed.json');
 
-    //     const arr = this.loadJSONSeedFile('internal.clients.seed.json');
+        for (let i = 0; i < arr.length; i++) {
+            var c = arr[i];
+            let client = await this._apiClientService.getByClientCode(c.ClientCode);
+            if (client == null) {
+                const model = {
+                    ClientName   : c['ClientName'],
+                    ClientCode   : c['ClientCode'],
+                    IsPrivileged : c['IsPrivileged'],
+                    Email        : c['Email'],
+                    Password     : c['Password'],
+                    ValidFrom    : new Date(),
+                    ValidTill    : new Date(2030, 12, 31),
+                    ApiKey       : c['ApiKey'],
+                };
+                client = await this._apiClientService.create(model);
+                var str = JSON.stringify(client, null, '  ');
+                Logger.instance().log(str);
+            }
+        }
 
-    //     for (let i = 0; i < arr.length; i++) {
-    //         var c = arr[i];
-    //         let client = await this._apiClientService.getByClientCode(c.ClientCode);
-    //         if (client == null) {
-    //             const model: ApiClientDomainModel = {
-    //                 ClientName   : c['ClientName'],
-    //                 ClientCode   : c['ClientCode'],
-    //                 IsPrivileged : c['IsPrivileged'],
-    //                 Email        : c['Email'],
-    //                 Password     : c['Password'],
-    //                 ValidFrom    : new Date(),
-    //                 ValidTill    : new Date(2030, 12, 31),
-    //                 ApiKey       : c['ApiKey'],
-    //             };
-    //             client = await this._apiClientService.create(model);
-    //             var str = JSON.stringify(client, null, '  ');
-    //             Logger.instance().log(str);
-    //         }
-    //     }
+    };
 
-    // };
-
-    // private seedDefaultRoles = async () => {
+    private seedDefaultRoles = async () => {
         
-    //     const existing = await RoleRepo.search();
-    //     if (existing.length > 0) {
-    //         return;
-    //     }
-        
-    //     await this._roleRepo.create({
-    //         RoleName    : Roles.SystemAdmin,
-    //         Description : 'Admin of the system having elevated privileges.',
-    //     });
-    //     this._roleRepo.create({
-    //         RoleName    : Roles.Patient,
-    //         Description : 'Represents a patient.',
-    //     });
-    //     await this._roleRepo.create({
-    //         RoleName    : Roles.Doctor,
-    //         Description : 'Represents a doctor/physician.',
-    //     });
-    //     await this._roleRepo.create({
-    //         RoleName    : Roles.LabUser,
-    //         Description :
-    //             'Represents a pathology/radiology lab representative/technician/pathologist/radiologist.',
-    //     });
-    //     await this._roleRepo.create({
-    //         RoleName    : Roles.PharmacyUser,
-    //         Description : 'Represents a pharmacy/pharmacist/pharmacy shop owner/drug dispenser.',
-    //     });
-    //     await this._roleRepo.create({
-    //         RoleName    : Roles.Nurse,
-    //         Description : 'Represents an nurse and medical care taker.',
-    //     });
-    //     await this._roleRepo.create({
-    //         RoleName    : Roles.AmbulanceServiceUser,
-    //         Description : 'Represents an ambulance service provider/driver/mobile emergency medic.',
-    //     });
-    //     await this._roleRepo.create({
-    //         RoleName    : Roles.PatientFamilyMember,
-    //         Description : 'Represents a family member of the patient.',
-    //     });
-    //     await this._roleRepo.create({
-    //         RoleName    : Roles.PatientFriend,
-    //         Description : 'Represents a friend of the patient.',
-    //     });
+        for await (var role of RoleList) {
 
-    //     Logger.instance().log('Seeded default roles successfully!');
-    // };
+            var r = await this._roleService.getByName(role);
+            if (!r) {
+                await this._roleService.create({
+                    RoleName : role
+                });
+            }
+        }
+
+        Logger.instance().log('Seeded default roles successfully!');
+    };
 
 }

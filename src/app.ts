@@ -41,12 +41,14 @@ export default class Application {
 
     warmUp = async () => {
         try {
+
             ConfigurationManager.loadConfigurations();
             await this.setupDatabaseConnection();
             await Loader.init();
             await this.setupMiddlewares();
             await this._router.init();
-            await Seeder.seed();
+            const seeder = new Seeder();
+            await seeder.seed();
             await Scheduler.instance().schedule();
         }
         catch (error) {
@@ -122,7 +124,7 @@ export default class Application {
             try {
                 const port = process.env.PORT;
                 const server = this._app.listen(port, () => {
-                    const serviceName = 'REANCare api' + '-' + process.env.NODE_ENV;
+                    const serviceName = 'Careplan service api' + '-' + process.env.NODE_ENV;
                     Logger.instance().log(serviceName + ' is up and listening on port ' + process.env.PORT.toString());
                     this._app.emit("server_started");
                 });

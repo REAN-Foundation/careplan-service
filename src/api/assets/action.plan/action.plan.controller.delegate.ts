@@ -85,7 +85,7 @@ export class ActionPlanControllerDelegate {
         }
         const actionPlanDeleted: boolean = await this._service.delete(id);
         return {
-            Deleted: actionPlanDeleted
+            Deleted : actionPlanDeleted
         };
     }
 
@@ -127,7 +127,7 @@ export class ActionPlanControllerDelegate {
 
     getUpdateModel = (requestBody): ActionPlanUpdateModel => {
 
-        let updateModel: ActionPlanUpdateModel = {};
+        const updateModel: ActionPlanUpdateModel = {};
 
         if (Helper.hasProperty(requestBody, 'AssetCode')) {
             updateModel.AssetCode = requestBody.AssetCode;
@@ -150,11 +150,12 @@ export class ActionPlanControllerDelegate {
 
     getCreateModel = (requestBody): ActionPlanCreateModel => {
         return {
-            AssetCode: requestBody.AssetCode ? requestBody.AssetCode : null,
-            Name: requestBody.Name ? requestBody.Name : null,
-            Description: requestBody.Description ? requestBody.Description : null,
-            Tags: requestBody.Tags ? JSON.stringify(requestBody.Tags) as string : JSON.stringify([]),
-            Version: requestBody.Version ? requestBody.Version : 'V1'
+            AssetCode   : requestBody.AssetCode ? requestBody.AssetCode : null,
+            Name        : requestBody.Name ? requestBody.Name : null,
+            Description : requestBody.Description ? requestBody.Description : null,
+            Tags        : requestBody.Tags ? JSON.stringify(requestBody.Tags) as string : JSON.stringify([]),
+            Version     : requestBody.Version ? requestBody.Version : 'V1',
+            OwnerUserId : requestBody.OwnerUserId
         };
     }
 
@@ -163,14 +164,14 @@ export class ActionPlanControllerDelegate {
             return null;
         }
         return {
-            id: record.id,
-            AssetCode: record.AssetCode,
-            Name: record.Name,
-            Description: record.Description,
-            AssetCategory: record.AssetCategory,
-            OwnerUserId: record.OwnerUserId,
-            Tags: JSON.parse(record.Tags),
-            Version: record.Version
+            id            : record.id,
+            AssetCode     : record.AssetCode,
+            Name          : record.Name,
+            Description   : record.Description,
+            AssetCategory : record.AssetCategory,
+            OwnerUserId   : record.OwnerUserId,
+            Tags          : JSON.parse(record.Tags),
+            Version       : record.Version
         };
     }
 
@@ -179,17 +180,18 @@ export class ActionPlanControllerDelegate {
             return null;
         }
         return {
-            id: record.id,
-            AssetCode: record.AssetCode,
-            Name: record.Name,
-            Description: record.Description,
-            AssetCategory: record.AssetCategory,
-            OwnerUserId: record.OwnerUserId,
-            Tags: JSON.parse(record.Tags),
-            Version: record.Version
+            id            : record.id,
+            AssetCode     : record.AssetCode,
+            Name          : record.Name,
+            Description   : record.Description,
+            AssetCategory : record.AssetCategory,
+            OwnerUserId   : record.OwnerUserId,
+            Tags          : JSON.parse(record.Tags),
+            Version       : record.Version
         };
     }
 
     //#endregion
+
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////

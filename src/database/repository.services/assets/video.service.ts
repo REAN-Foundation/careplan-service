@@ -56,13 +56,7 @@ export class VideoService {
                     required : false,
                     as       : 'FileResource',
                     //through: { attributes: [] }
-                }, {
-                    model    : this.User,
-                    required : false,
-                    as       : 'OwnerUser',
-                    //through: { attributes: [] }
-                },
-
+                }
                 ]
             });
             return record;
@@ -71,7 +65,7 @@ export class VideoService {
         }
     }
 
-    exists = async (id): Promise < boolean > => {
+    exists = async (id): Promise<boolean> => {
         try {
             const record = await this.Video.findByPk(id);
             return record !== null;
@@ -80,7 +74,7 @@ export class VideoService {
         }
     }
 
-    search = async (filters: VideoSearchFilters): Promise < VideoSearchResults > => {
+    search = async (filters: VideoSearchFilters): Promise<VideoSearchResults> => {
         try {
 
             var search = this.getSearchModel(filters);
@@ -198,16 +192,6 @@ export class VideoService {
         //    includeFileResource.where['Xyz'] = filters.Xyz;
         //}
         search.include.push(includeFileResourceAsFileResource);
-        const includeUserAsOwnerUser = {
-            model    : this.User,
-            required : false,
-            as       : 'OwnerUser',
-            where    : {}
-        };
-        //if (filters.Xyz != undefined) {
-        //    includeUser.where['Xyz'] = filters.Xyz;
-        //}
-        search.include.push(includeUserAsOwnerUser);
 
         return search;
     }

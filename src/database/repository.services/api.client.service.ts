@@ -1,10 +1,12 @@
 import { ApiClientModel } from '../models/api.client.model';
-import { ApiClientCreateModel, ApiClientDto, ApiClientSearchFilters, ApiClientSearchResults, ApiClientUpdateModel, ClientApiKeyDto } from '../../domain.types/api.client.domain.types';
+import { ApiClientCreateModel, ApiClientDto, ApiClientSearchFilters, ApiClientSearchResults, ApiClientUpdateModel, ApiClientVerificationDomainModel, ClientApiKeyDto } from '../../domain.types/api.client.domain.types';
 import { Logger } from '../../common/logger';
 import { ApiError } from '../../common/api.error';
 import { CurrentClient } from '../../domain.types/miscellaneous/current.client';
 import { Op } from 'sequelize';
 import { ErrorHandler } from '../../common/error.handler';
+import { Helper } from '../../common/helper';
+import * as apikeyGenerator from 'uuid-apikey';
 
 ///////////////////////////////////////////////////////////////////////
 
@@ -20,16 +22,17 @@ export class ApiClientService {
                 Phone      : clientDomainModel.Phone,
                 Email      : clientDomainModel.Email,
                 Password   : clientDomainModel.Password ?? null,
-                ApiKey     : clientDomainModel.ApiKey ?? null,
+                ApiKey     : clientDomainModel.ApiKey ?? apikeyGenerator.default.create().apiKey,
                 ValidFrom  : clientDomainModel.ValidFrom ?? null,
                 ValidTill  : clientDomainModel.ValidTill ?? null,
             };
+            entity.Password = Helper.hash(clientDomainModel.Password);
             const client = await this.ApiClient.create(entity);
             const dto = await this.toDto(client);
             return dto;
         } catch (error) {
             Logger.instance().log(error.message);
-            throw new ApiError(500, error.message);
+            throw new ApiError(error.message, 500);
         }
     };
 
@@ -40,7 +43,7 @@ export class ApiClientService {
             return dto;
         } catch (error) {
             Logger.instance().log(error.message);
-            throw new ApiError(500, error.message);
+            throw new ApiError(error.message, 500);
         }
     };
 
@@ -86,7 +89,22 @@ export class ApiClientService {
             return dto;
         } catch (error) {
             Logger.instance().log(error.message);
-            throw new ApiError(500, error.message);
+            throw new ApiError(error.message, 500);
+        }
+    }
+
+    getApiKeyByClientCode = async (clientCode: string): Promise<ClientApiKeyDto> =>{
+        try {
+            const client = await this.ApiClient.findOne({
+                where : {
+                    ClientCode : clientCode
+                }
+            });
+            const dto = await this.toClientSecretsDto(client);
+            return dto;
+        } catch (error) {
+            Logger.instance().log(error.message);
+            throw new ApiError(error.message, 500);
         }
     }
 
@@ -96,20 +114,55 @@ export class ApiClientService {
             return client.Password;
         } catch (error) {
             Logger.instance().log(error.message);
-            throw new ApiError(500, error.message);
+            throw new ApiError(error.message, 500);
         }
     }
 
-    getApiKey = async(id: string): Promise<ClientApiKeyDto> => {
+    getApiKey = async(verificationModel: ApiClientVerificationDomainModel): Promise<ClientApiKeyDto> => {
         try {
-            const client = await this.ApiClient.findByPk(id);
+            const client = await this.getApiKeyByClientCode(verificationModel.ClientCode);
+            if (client == null) {
+                const message = 'Client does not exist with code (' + verificationModel.ClientCode + ')';
+                throw new ApiError(message, 404);
+            }
+
+            const hashedPassword = await this.getClientHashedPassword(client.id);
+            const isPasswordValid = Helper.compareHashedPassword(verificationModel.Password, hashedPassword);
+            if (!isPasswordValid) {
+                throw new ApiError('Invalid password!', 401);
+            }
             const dto = await this.toClientSecretsDto(client);
             return dto;
         } catch (error) {
             Logger.instance().log(error.message);
-            throw new ApiError(500, error.message);
+            throw new ApiError(error.message, 500);
         }
     }
+
+    renewApiKey = async (verificationModel: ApiClientVerificationDomainModel): Promise<ClientApiKeyDto> => {
+
+        const client = await this.getByClientCode(verificationModel.ClientCode);
+        if (client == null) {
+            const message = 'Client does not exist for client code (' + verificationModel.ClientCode + ')';
+            throw new ApiError(message, 404);
+        }
+
+        const hashedPassword = await this.getClientHashedPassword(client.id);
+        const isPasswordValid = Helper.compareHashedPassword(verificationModel.Password, hashedPassword);
+        if (!isPasswordValid) {
+            throw new ApiError('Invalid password!', 401);
+        }
+
+        const key = apikeyGenerator.default.create();
+        const clientApiKeyDto = await this.setApiKey(
+            client.id,
+            key.apiKey,
+            verificationModel.ValidFrom,
+            verificationModel.ValidTill
+        );
+        
+        return clientApiKeyDto;
+    };
     
     setApiKey = async(id: string, apiKey: string, validFrom: Date, validTill: Date): Promise<ClientApiKeyDto> => {
         try {
@@ -122,7 +175,7 @@ export class ApiClientService {
             return dto;
         } catch (error) {
             Logger.instance().log(error.message);
-            throw new ApiError(500, error.message);
+            throw new ApiError(error.message, 500);
         }
     }
     
@@ -146,7 +199,7 @@ export class ApiClientService {
             return currentClient;
         } catch (error) {
             Logger.instance().log(error.message);
-            throw new ApiError(500, error.message);
+            throw new ApiError(error.message, 500);
         }
     }
     
@@ -161,7 +214,7 @@ export class ApiClientService {
                 client.ClientName = clientDomainModel.ClientName;
             }
             if (clientDomainModel.Password != null) {
-                client.Password = clientDomainModel.Password;
+                client.Password = Helper.hash(clientDomainModel.Password);
             }
             if (clientDomainModel.Phone != null) {
                 client.Phone = clientDomainModel.Phone;
@@ -178,7 +231,7 @@ export class ApiClientService {
             return dto;
         } catch (error) {
             Logger.instance().log(error.message);
-            throw new ApiError(500, error.message);
+            throw new ApiError(error.message, 500);
         }
     }
 
@@ -188,7 +241,7 @@ export class ApiClientService {
             return result === 1;
         } catch (error) {
             Logger.instance().log(error.message);
-            throw new ApiError(500, error.message);
+            throw new ApiError(error.message, 500);
         }
     };
 

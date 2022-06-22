@@ -106,6 +106,7 @@ export class ResponseHandler {
         //Sanitize response: Don't send request and trace related info in response, only use it for logging
         delete responseObject.Request;
         delete responseObject.Trace;
+        delete responseObject.User;
 
         return response.status(httpCode).send(responseObject);
     }

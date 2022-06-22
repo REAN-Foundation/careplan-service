@@ -12,6 +12,7 @@ export interface ChallengeCreateModel {
     Description ? : string;
     Tags ? : string;
     Version ? : string;
+    OwnerUserId?: uuid;
 }
 
 export interface ChallengeUpdateModel {
@@ -20,6 +21,7 @@ export interface ChallengeUpdateModel {
     Description ? : string;
     Tags ? : string;
     Version ? : string;
+    OwnerUserId?: uuid;
 }
 
 export interface ChallengeDto {

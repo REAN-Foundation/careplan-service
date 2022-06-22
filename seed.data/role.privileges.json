@@ -1,7 +1,57 @@
 [
     {
-        "Role": "System Admin",
+        "Role": "Admin",
         "Privileges": [
+            "User.Create",
+            "User.GetById",
+            "User.Search",
+            "User.Update",
+            "User.Delete",
+            "User.LoginWithPassword",
+            "User.ResetPassword",
+            "User.LoginWithOtp",
+            "User.SendOtp",
+            "User.Logout",
+
+            "FileResource.Upload",
+            "FileResource.GetById",
+            "FileResource.Search",
+            "FileResource.Download",
+
+            "CareplanCategory.Create",
+            "CareplanCategory.Search",
+            "CareplanCategory.GetById",
+            "CareplanCategory.Update",
+            "CareplanCategory.Delete",
+
+            "ApiClient.Create",
+            "ApiClient.Search",
+            "ApiClient.GetById",
+            "ApiClient.Update",
+            "ApiClient.Delete",
+            "ApiClient.GetApiKey",
+            "ApiClient.RenewApiKey"
+        ]
+    },
+    {
+        "Role": "ContentModerator",
+        "Privileges": [
+            "User.Create",
+            "User.GetById",
+            "User.Search",
+            "User.Update",
+            "User.Delete",
+            "User.LoginWithPassword",
+            "User.ResetPassword",
+            "User.LoginWithOtp",
+            "User.SendOtp",
+            "User.Logout",
+
+            "FileResource.Upload",
+            "FileResource.GetById",
+            "FileResource.Search",
+            "FileResource.Download",
+
             "CareplanCategory.Create",
             "CareplanCategory.Search",
             "CareplanCategory.GetById",
@@ -12,27 +62,219 @@
             "Careplan.Search",
             "Careplan.GetById",
             "Careplan.Update",
-            "Careplan.Delete"
-        ]
-    },
-    {
-        "Role": "Moderator",
-        "Privileges": [
-            "CareplanCategory.Create",
-            "CareplanCategory.Search",
-            "CareplanCategory.GetById",
-            "CareplanCategory.Update",
-            "CareplanCategory.Delete",
+            "Careplan.Delete",
 
-            "Careplan.Create",
-            "Careplan.Search",
-            "Careplan.GetById",
-            "Careplan.Update",
-            "Careplan.Delete"
+            "ActionPlan.Create",
+            "ActionPlan.Search",
+            "ActionPlan.GetById",
+            "ActionPlan.Update",
+            "ActionPlan.Delete",
+
+            "Animation.Create",
+            "Animation.Search",
+            "Animation.GetById",
+            "Animation.Update",
+            "Animation.Delete",
+
+            "Appointment.Create",
+            "Appointment.Search",
+            "Appointment.GetById",
+            "Appointment.Update",
+            "Appointment.Delete",
+
+            "Article.Create",
+            "Article.Search",
+            "Article.GetById",
+            "Article.Update",
+            "Article.Delete",
+
+            "Assessment.Create",
+            "Assessment.Search",
+            "Assessment.GetById",
+            "Assessment.Update",
+            "Assessment.Delete",
+
+            "Audio.Create",
+            "Audio.Search",
+            "Audio.GetById",
+            "Audio.Update",
+            "Audio.Delete",
+
+            "Biometrics.Create",
+            "Biometrics.Search",
+            "Biometrics.GetById",
+            "Biometrics.Update",
+            "Biometrics.Delete",
+
+            "CareplanSchedule.Create",
+            "CareplanSchedule.Search",
+            "CareplanSchedule.GetById",
+            "CareplanSchedule.Update",
+            "CareplanSchedule.Delete",
+
+            "Challenge.Create",
+            "Challenge.Search",
+            "Challenge.GetById",
+            "Challenge.Update",
+            "Challenge.Delete",
+
+            "Checkup.Create",
+            "Checkup.Search",
+            "Checkup.GetById",
+            "Checkup.Update",
+            "Checkup.Delete",
+
+            "Consultation.Create",
+            "Consultation.Search",
+            "Consultation.GetById",
+            "Consultation.Update",
+            "Consultation.Delete",
+
+            "Exercise.Create",
+            "Exercise.Search",
+            "Exercise.GetById",
+            "Exercise.Update",
+            "Exercise.Delete",
+
+            "Goal.Create",
+            "Goal.Search",
+            "Goal.GetById",
+            "Goal.Update",
+            "Goal.Delete",
+
+            "Infographics.Create",
+            "Infographics.Search",
+            "Infographics.GetById",
+            "Infographics.Update",
+            "Infographics.Delete",
+
+            "Medication.Create",
+            "Medication.Search",
+            "Medication.GetById",
+            "Medication.Update",
+            "Medication.Delete",
+
+            "Meditation.Create",
+            "Meditation.Search",
+            "Meditation.GetById",
+            "Meditation.Update",
+            "Meditation.Delete",
+
+            "Message.Create",
+            "Message.Search",
+            "Message.GetById",
+            "Message.Update",
+            "Message.Delete",
+
+            "Nutrition.Create",
+            "Nutrition.Search",
+            "Nutrition.GetById",
+            "Nutrition.Update",
+            "Nutrition.Delete",
+
+            "Physiotherapy.Create",
+            "Physiotherapy.Search",
+            "Physiotherapy.GetById",
+            "Physiotherapy.Update",
+            "Physiotherapy.Delete",
+
+            "Priority.Create",
+            "Priority.Search",
+            "Priority.GetById",
+            "Priority.Update",
+            "Priority.Delete",
+
+            "Reflection.Create",
+            "Reflection.Search",
+            "Reflection.GetById",
+            "Reflection.Update",
+            "Reflection.Delete",
+
+            "Reminder.Create",
+            "Reminder.Search",
+            "Reminder.GetById",
+            "Reminder.Update",
+            "Reminder.Delete",
+
+            "Video.Create",
+            "Video.Search",
+            "Video.GetById",
+            "Video.Update",
+            "Video.Delete",
+
+            "WebLink.Create",
+            "WebLink.Search",
+            "WebLink.GetById",
+            "WebLink.Update",
+            "WebLink.Delete",
+
+            "WebNewsfeed.Create",
+            "WebNewsfeed.Search",
+            "WebNewsfeed.GetById",
+            "WebNewsfeed.Update",
+            "WebNewsfeed.Delete",
+
+            "WordPower.Create",
+            "WordPower.Search",
+            "WordPower.GetById",
+            "WordPower.Update",
+            "WordPower.Delete"
         ]
     },
     {
-        "Role": "Patient",
-        "Privileges": []
+        "Role": "Participant",
+        "Privileges": [
+            "User.Create",
+            "User.GetById",
+            "User.Search",
+            "User.Update",
+            "User.Delete",
+            "User.LoginWithPassword",
+            "User.ResetPassword",
+            "User.LoginWithOtp",
+            "User.SendOtp",
+            "User.Logout",
+
+            "FileResource.Upload",
+            "FileResource.GetById",
+            "FileResource.Search",
+            "FileResource.Download",
+
+            "Enrollment.Create",
+            "Enrollment.Search",
+            "Enrollment.GetById",
+            "Enrollment.Update",
+            "Enrollment.Delete",
+
+            "EnrollmentSchedule.Create",
+            "EnrollmentSchedule.Search",
+            "EnrollmentSchedule.GetById",
+            "EnrollmentSchedule.Update",
+            "EnrollmentSchedule.Delete",
+
+            "UserActivityResponse.Create",
+            "UserActivityResponse.Search",
+            "UserActivityResponse.GetById",
+            "UserActivityResponse.Update",
+            "UserActivityResponse.Delete",
+
+            "UserSelectedActionPlan.Create",
+            "UserSelectedActionPlan.Search",
+            "UserSelectedActionPlan.GetById",
+            "UserSelectedActionPlan.Update",
+            "UserSelectedActionPlan.Delete",
+
+            "UserSelectedGoal.Create",
+            "UserSelectedGoal.Search",
+            "UserSelectedGoal.GetById",
+            "UserSelectedGoal.Update",
+            "UserSelectedGoal.Delete",
+
+            "UserSelectedPriority.Create",
+            "UserSelectedPriority.Search",
+            "UserSelectedPriority.GetById",
+            "UserSelectedPriority.Update",
+            "UserSelectedPriority.Delete"
+        ]
     }
 ]

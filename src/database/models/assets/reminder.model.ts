@@ -40,10 +40,8 @@ export class ReminderModel {
                 defaultValue : 'Message'
             },
             OwnerUserId : {
-                type       : Sequelize.UUID,
-                allowNull  : false,
-                foreignKey : true,
-                unique     : false
+                type      : Sequelize.UUID,
+                allowNull : true
             },
             Tags : {
                 type         : Sequelize.TEXT,
@@ -84,12 +82,6 @@ export class ReminderModel {
     static associate = (models) => {
 
         //Add associations here...
-
-        models.Reminder.belongsTo(models.User, {
-            sourceKey : 'OwnerUserId',
-            targetKey : 'id',
-            as        : 'OwnerUser'
-        });
 
     };
 

@@ -44,10 +44,8 @@ export class MessageModel {
                 defaultValue : 'Unknown'
             },
             OwnerUserId : {
-                type       : Sequelize.UUID,
-                allowNull  : false,
-                foreignKey : true,
-                unique     : false
+                type      : Sequelize.UUID,
+                allowNull : true
             },
             Tags : {
                 type         : Sequelize.TEXT,
@@ -92,12 +90,6 @@ export class MessageModel {
     static associate = (models) => {
 
         //Add associations here...
-
-        models.Message.belongsTo(models.User, {
-            sourceKey : 'OwnerUserId',
-            targetKey : 'id',
-            as        : 'OwnerUser'
-        });
 
     };
 

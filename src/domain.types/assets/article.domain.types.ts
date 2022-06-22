@@ -13,6 +13,7 @@ export interface ArticleCreateModel {
     Url ? : string;
     Tags ? : string;
     Version ? : string;
+    OwnerUserId?: uuid;
 }
 
 export interface ArticleUpdateModel {
@@ -22,6 +23,7 @@ export interface ArticleUpdateModel {
     Url ? : string;
     Tags ? : string;
     Version ? : string;
+    OwnerUserId?: uuid;
 }
 
 export interface ArticleDto {

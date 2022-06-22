@@ -162,8 +162,9 @@ export class WordPowerControllerDelegate {
             Description         : requestBody.Description ? requestBody.Description : null,
             AdditionalResources : requestBody.AdditionalResources ?
                 JSON.stringify(requestBody.AdditionalResources) as string : JSON.stringify([]),
-            Tags    : requestBody.Tags ? JSON.stringify(requestBody.Tags) as string : JSON.stringify([]),
-            Version : requestBody.Version ? requestBody.Version : 'V1'
+            Tags        : requestBody.Tags ? JSON.stringify(requestBody.Tags) as string : JSON.stringify([]),
+            Version     : requestBody.Version ? requestBody.Version : 'V1',
+            OwnerUserId : requestBody.OwnerUserId
         };
     }
 

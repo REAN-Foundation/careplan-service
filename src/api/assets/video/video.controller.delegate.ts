@@ -85,7 +85,7 @@ export class VideoControllerDelegate {
         }
         const videoDeleted: boolean = await this._service.delete(id);
         return {
-            Deleted: videoDeleted
+            Deleted : videoDeleted
         };
     }
 
@@ -131,7 +131,7 @@ export class VideoControllerDelegate {
 
     getUpdateModel = (requestBody): VideoUpdateModel => {
 
-        let updateModel: VideoUpdateModel = {};
+        const updateModel: VideoUpdateModel = {};
 
         if (Helper.hasProperty(requestBody, 'AssetCode')) {
             updateModel.AssetCode = requestBody.AssetCode;
@@ -157,12 +157,13 @@ export class VideoControllerDelegate {
 
     getCreateModel = (requestBody): VideoCreateModel => {
         return {
-            AssetCode: requestBody.AssetCode ? requestBody.AssetCode : null,
-            Name: requestBody.Name ? requestBody.Name : null,
-            Transcript: requestBody.Transcript ? requestBody.Transcript : null,
-            Url: requestBody.Url ? requestBody.Url : null,
-            Tags: requestBody.Tags ? JSON.stringify(requestBody.Tags) as string : JSON.stringify([]),
-            Version: requestBody.Version ? requestBody.Version : 'V1'
+            AssetCode   : requestBody.AssetCode ? requestBody.AssetCode : null,
+            Name        : requestBody.Name ? requestBody.Name : null,
+            Transcript  : requestBody.Transcript ? requestBody.Transcript : null,
+            Url         : requestBody.Url ? requestBody.Url : null,
+            Tags        : requestBody.Tags ? JSON.stringify(requestBody.Tags) as string : JSON.stringify([]),
+            Version     : requestBody.Version ? requestBody.Version : 'V1',
+            OwnerUserId : requestBody.OwnerUserId
         };
     }
 
@@ -171,16 +172,16 @@ export class VideoControllerDelegate {
             return null;
         }
         return {
-            id: record.id,
-            AssetCode: record.AssetCode,
-            Name: record.Name,
-            Transcript: record.Transcript,
-            Url: record.Url,
-            FileResourceId: record.FileResourceId,
-            AssetCategory: record.AssetCategory,
-            OwnerUserId: record.OwnerUserId,
-            Tags: JSON.parse(record.Tags),
-            Version: record.Version
+            id             : record.id,
+            AssetCode      : record.AssetCode,
+            Name           : record.Name,
+            Transcript     : record.Transcript,
+            Url            : record.Url,
+            FileResourceId : record.FileResourceId,
+            AssetCategory  : record.AssetCategory,
+            OwnerUserId    : record.OwnerUserId,
+            Tags           : JSON.parse(record.Tags),
+            Version        : record.Version
         };
     }
 
@@ -189,19 +190,20 @@ export class VideoControllerDelegate {
             return null;
         }
         return {
-            id: record.id,
-            AssetCode: record.AssetCode,
-            Name: record.Name,
-            Transcript: record.Transcript,
-            Url: record.Url,
-            FileResourceId: record.FileResourceId,
-            AssetCategory: record.AssetCategory,
-            OwnerUserId: record.OwnerUserId,
-            Tags: JSON.parse(record.Tags),
-            Version: record.Version
+            id             : record.id,
+            AssetCode      : record.AssetCode,
+            Name           : record.Name,
+            Transcript     : record.Transcript,
+            Url            : record.Url,
+            FileResourceId : record.FileResourceId,
+            AssetCategory  : record.AssetCategory,
+            OwnerUserId    : record.OwnerUserId,
+            Tags           : JSON.parse(record.Tags),
+            Version        : record.Version
         };
     }
 
     //#endregion
+
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////

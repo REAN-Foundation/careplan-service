@@ -36,6 +36,7 @@ export interface BiometricsCreateModel {
     MeasurementUnit ?: string;
     Tags            ?: string;
     Version         ?: string;
+    OwnerUserId?: uuid;
 }
 
 export interface BiometricsUpdateModel {
@@ -46,6 +47,7 @@ export interface BiometricsUpdateModel {
     MeasurementUnit ?: string;
     Tags            ?: string;
     Version         ?: string;
+    OwnerUserId?: uuid;
 }
 
 export interface BiometricsDto {

@@ -44,10 +44,8 @@ export class WebLinkModel {
                 defaultValue : 'Educational'
             },
             OwnerUserId : {
-                type       : Sequelize.UUID,
-                allowNull  : false,
-                foreignKey : true,
-                unique     : false
+                type      : Sequelize.UUID,
+                allowNull : true
             },
             Tags : {
                 type         : Sequelize.TEXT,
@@ -88,12 +86,6 @@ export class WebLinkModel {
     static associate = (models) => {
 
         //Add associations here...
-
-        models.WebLink.belongsTo(models.User, {
-            sourceKey : 'OwnerUserId',
-            targetKey : 'id',
-            as        : 'OwnerUser'
-        });
 
     };
 

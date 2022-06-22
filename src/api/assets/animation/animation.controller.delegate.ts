@@ -157,12 +157,13 @@ export class AnimationControllerDelegate {
 
     getCreateModel = (requestBody): AnimationCreateModel => {
         return {
-            AssetCode  : requestBody.AssetCode ? requestBody.AssetCode : null,
-            Name       : requestBody.Name ? requestBody.Name : null,
-            Transcript : requestBody.Transcript ? requestBody.Transcript : null,
-            Url        : requestBody.Url ? requestBody.Url : null,
-            Tags       : requestBody.Tags ? JSON.stringify(requestBody.Tags) as string : JSON.stringify([]),
-            Version    : requestBody.Version ? requestBody.Version : 'V1'
+            AssetCode   : requestBody.AssetCode ? requestBody.AssetCode : null,
+            Name        : requestBody.Name ? requestBody.Name : null,
+            Transcript  : requestBody.Transcript ? requestBody.Transcript : null,
+            Url         : requestBody.Url ? requestBody.Url : null,
+            Tags        : requestBody.Tags ? JSON.stringify(requestBody.Tags) as string : JSON.stringify([]),
+            Version     : requestBody.Version ? requestBody.Version : 'V1',
+            OwnerUserId : requestBody.OwnerUserId
         };
     }
 

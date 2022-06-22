@@ -34,6 +34,7 @@ export interface MeditationCreateModel {
     RecommendedDurationMin ?: number;
     Tags                   ?: string;
     Version                ?: string;
+    OwnerUserId            ?: uuid;
 }
 
 export interface MeditationUpdateModel {
@@ -44,6 +45,7 @@ export interface MeditationUpdateModel {
     RecommendedDurationMin ?: number;
     Tags                   ?: string;
     Version                ?: string;
+    OwnerUserId            ?: uuid;
 }
 
 export interface MeditationDto {

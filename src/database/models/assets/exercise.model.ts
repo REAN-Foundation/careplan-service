@@ -55,10 +55,8 @@ export class ExerciseModel {
                 defaultValue : 'Exercise'
             },
             OwnerUserId : {
-                type       : Sequelize.UUID,
-                allowNull  : false,
-                foreignKey : true,
-                unique     : false
+                type      : Sequelize.UUID,
+                allowNull : true
             },
             Tags : {
                 type         : Sequelize.TEXT,
@@ -99,12 +97,6 @@ export class ExerciseModel {
     static associate = (models) => {
 
         //Add associations here...
-
-        models.Exercise.belongsTo(models.User, {
-            sourceKey : 'OwnerUserId',
-            targetKey : 'id',
-            as        : 'OwnerUser'
-        });
 
     };
 

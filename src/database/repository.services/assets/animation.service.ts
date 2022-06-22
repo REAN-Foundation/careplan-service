@@ -56,13 +56,7 @@ export class AnimationService {
                     required : false,
                     as       : 'FileResource',
                     //through: { attributes: [] }
-                }, {
-                    model    : this.User,
-                    required : false,
-                    as       : 'OwnerUser',
-                    //through: { attributes: [] }
-                },
-
+                }
                 ]
             });
             return record;
@@ -71,7 +65,7 @@ export class AnimationService {
         }
     }
 
-    exists = async (id): Promise < boolean > => {
+    exists = async (id): Promise<boolean> => {
         try {
             const record = await this.Animation.findByPk(id);
             return record !== null;
@@ -80,7 +74,7 @@ export class AnimationService {
         }
     }
 
-    search = async (filters: AnimationSearchFilters): Promise < AnimationSearchResults > => {
+    search = async (filters: AnimationSearchFilters): Promise<AnimationSearchResults> => {
         try {
 
             var search = this.getSearchModel(filters);
@@ -198,16 +192,6 @@ export class AnimationService {
         //    includeFileResource.where['Xyz'] = filters.Xyz;
         //}
         search.include.push(includeFileResourceAsFileResource);
-        const includeUserAsOwnerUser = {
-            model    : this.User,
-            required : false,
-            as       : 'OwnerUser',
-            where    : {}
-        };
-        //if (filters.Xyz != undefined) {
-        //    includeUser.where['Xyz'] = filters.Xyz;
-        //}
-        search.include.push(includeUserAsOwnerUser);
 
         return search;
     }

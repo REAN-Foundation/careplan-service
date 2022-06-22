@@ -9,6 +9,7 @@ export class CareplanModel {
     static ModelName  = 'Careplan';
 
     static Schema = () => {
+        
         const db = DatabaseConnector.db();
         const Sequelize: any = db.Sequelize;
 
@@ -43,10 +44,8 @@ export class CareplanModel {
                 defaultValue : '1.0.0',
             },
             OwnerUserId : {
-                type       : Sequelize.UUID,
-                allowNull  : true,
-                foreignKey : true,
-                unique     : false,
+                type      : Sequelize.UUID,
+                allowNull : true
             },
             Tags : {
                 type         : Sequelize.TEXT,
@@ -92,11 +91,6 @@ export class CareplanModel {
             as        : 'Category',
         });
 
-        models.Careplan.belongsTo(models.User, {
-            sourceKey : 'OwnerUserId',
-            targetKey : 'id',
-            as        : 'OwnerUser',
-        });
     };
 
 }
