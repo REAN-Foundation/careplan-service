@@ -23,9 +23,9 @@ export class WebNewsfeedService {
 
     //#region Models
 
-    WebNewsfeed = WebNewsfeedModel.Model();
+    WebNewsfeed = WebNewsfeedModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 

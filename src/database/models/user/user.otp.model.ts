@@ -1,4 +1,6 @@
-import { DatabaseConnector } from '../../database.connector';
+import * as db from '../../database.connector';
+import { DataTypes } from 'sequelize';
+const sequelize = db.default.sequelize;
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -8,76 +10,64 @@ export class UserOtpModel {
 
     static ModelName = 'UserOtp';
 
-    static Schema = () => {
-        const db = DatabaseConnector.db();
-        const Sequelize: any = db.Sequelize;
+    static Schema = {
+        id : {
+            type         : DataTypes.UUID,
+            allowNull    : false,
+            defaultValue : DataTypes.UUIDV4,
+            primaryKey   : true
+        },
+        UserId : {
+            type       : DataTypes.UUID,
+            allowNull  : false,
+            foreignKey : true,
+            unique     : false
+        },
+        Otp : {
+            type      : DataTypes.STRING(10),
+            allowNull : false,
+        },
+        Purpose : {
+            type         : DataTypes.ENUM("Login", "Verification"),
+            allowNull    : false,
+            defaultValue : 'Login'
+        },
+        Channel : {
+            type         : DataTypes.ENUM("Mobile", "Email"),
+            allowNull    : false,
+            defaultValue : 'Mobile'
+        },
+        Validated : {
+            type         : DataTypes.BOOLEAN,
+            allowNull    : false,
+            defaultValue : false
+        },
+        ValidFrom : {
+            type      : DataTypes.DATE,
+            allowNull : false
+        },
+        ValidTill : {
+            type      : DataTypes.DATE,
+            allowNull : false
+        },
 
-        return {
-            id : {
-                type         : Sequelize.UUID,
-                allowNull    : false,
-                defaultValue : Sequelize.UUIDV4,
-                primaryKey   : true
-            },
-            UserId : {
-                type       : Sequelize.UUID,
-                allowNull  : false,
-                foreignKey : true,
-                unique     : false
-            },
-            Otp : {
-                type      : Sequelize.STRING(10),
-                allowNull : false,
-            },
-            Purpose : {
-                type         : Sequelize.ENUM(["Login", "Verification"]),
-                allowNull    : false,
-                defaultValue : 'Login'
-            },
-            Channel : {
-                type         : Sequelize.ENUM(["Mobile", "Email"]),
-                allowNull    : false,
-                defaultValue : 'Mobile'
-            },
-            Validated : {
-                type         : Sequelize.BOOLEAN,
-                allowNull    : false,
-                defaultValue : false
-            },
-            ValidFrom : {
-                type      : Sequelize.DATE,
-                allowNull : false
-            },
-            ValidTill : {
-                type      : Sequelize.DATE,
-                allowNull : false
-            },
-
-            CreatedAt : Sequelize.DATE,
-            UpdatedAt : Sequelize.DATE,
-            DeletedAt : Sequelize.DATE
-        };
-    }
-
-    static Model: any = () => {
-
-        const db = DatabaseConnector.db();
-        const sequelize = db.sequelize;
-        const schema = UserOtpModel.Schema();
-
-        return sequelize.define(
-            UserOtpModel.ModelName,
-            schema,
-            {
-                createdAt       : 'CreatedAt',
-                updatedAt       : 'UpdatedAt',
-                deletedAt       : 'DeletedAt',
-                freezeTableName : true,
-                timestamps      : true,
-                paranoid        : true,
-                tableName       : UserOtpModel.TableName,
-            });
+        CreatedAt : DataTypes.DATE,
+        UpdatedAt : DataTypes.DATE,
+        DeletedAt : DataTypes.DATE
     };
+
+    static Model: any = sequelize.define(
+        UserOtpModel.ModelName,
+        UserOtpModel.Schema,
+        {
+            createdAt       : 'CreatedAt',
+            updatedAt       : 'UpdatedAt',
+            deletedAt       : 'DeletedAt',
+            freezeTableName : true,
+            timestamps      : true,
+            paranoid        : true,
+            tableName       : UserOtpModel.TableName,
+        });
 
     static associate = (models) => {
 

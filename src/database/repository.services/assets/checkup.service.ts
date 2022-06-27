@@ -23,9 +23,9 @@ export class CheckupService {
 
     //#region Models
 
-    Checkup = CheckupModel.Model();
+    Checkup = CheckupModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 

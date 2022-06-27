@@ -23,9 +23,9 @@ export class PhysiotherapyService {
 
     //#region Models
 
-    Physiotherapy = PhysiotherapyModel.Model();
+    Physiotherapy = PhysiotherapyModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 

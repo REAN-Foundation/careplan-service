@@ -23,9 +23,9 @@ export class GoalService {
 
     //#region Models
 
-    Goal = GoalModel.Model();
+    Goal = GoalModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 

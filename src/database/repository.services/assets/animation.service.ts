@@ -26,11 +26,11 @@ export class AnimationService {
 
     //#region Models
 
-    Animation = AnimationModel.Model();
+    Animation = AnimationModel.Model;
 
-    FileResource = FileResourceModel.Model();
+    FileResource = FileResourceModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 

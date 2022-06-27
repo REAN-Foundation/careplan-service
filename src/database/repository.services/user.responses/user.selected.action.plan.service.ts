@@ -26,11 +26,11 @@ export class UserSelectedActionPlanService {
 
     //#region Models
 
-    UserSelectedActionPlan = UserSelectedActionPlanModel.Model();
+    UserSelectedActionPlan = UserSelectedActionPlanModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
-    Careplan = CareplanModel.Model();
+    Careplan = CareplanModel.Model;
 
     //#endregion
 

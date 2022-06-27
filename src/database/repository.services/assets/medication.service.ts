@@ -23,9 +23,9 @@ export class MedicationService {
 
     //#region Models
 
-    Medication = MedicationModel.Model();
+    Medication = MedicationModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 

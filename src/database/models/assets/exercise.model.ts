@@ -1,6 +1,8 @@
 import { IntensityLevelList } from '../../../domain.types/assets/exercise.domain.types';
 import { ExerciseTypeList } from '../../../domain.types/assets/exercise.domain.types';
-import { DatabaseConnector } from '../../database.connector';
+import * as db from '../../database.connector';
+import { DataTypes } from 'sequelize';
+const sequelize = db.default.sequelize;
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -10,89 +12,77 @@ export class ExerciseModel {
 
     static ModelName = 'Exercise';
 
-    static Schema = () => {
+    static Schema = {
+        id : {
+            type          : DataTypes.INTEGER,
+            allowNull     : false,
+            autoIncrement : true,
+            primaryKey    : true
+        },
+        AssetCode : {
+            type      : DataTypes.STRING(256),
+            allowNull : false
+        },
+        Name : {
+            type      : DataTypes.STRING(256),
+            allowNull : false
+        },
+        Description : {
+            type      : DataTypes.TEXT,
+            allowNull : false
+        },
+        ExerciseType : {
+            type         : DataTypes.ENUM({ values: ExerciseTypeList }),
+            allowNull    : false,
+            defaultValue : 'Aerobic'
+        },
+        IntensityLevel : {
+            type         : DataTypes.ENUM({ values: IntensityLevelList }),
+            allowNull    : false,
+            defaultValue : 'Moderate'
+        },
+        RecommendedDurationMin : {
+            type         : DataTypes.INTEGER,
+            allowNull    : false,
+            defaultValue : 15
+        },
+        AssetCategory : {
+            type         : DataTypes.STRING(128),
+            allowNull    : false,
+            defaultValue : 'Exercise'
+        },
+        OwnerUserId : {
+            type      : DataTypes.UUID,
+            allowNull : true
+        },
+        Tags : {
+            type         : DataTypes.TEXT,
+            allowNull    : false,
+            defaultValue : []
+        },
+        Version : {
+            type         : DataTypes.STRING(128),
+            allowNull    : false,
+            defaultValue : 'V1'
+        },
 
-        const db = DatabaseConnector.db();
-        const Sequelize: any = db.Sequelize;
-
-        return {
-            id : {
-                type          : Sequelize.INTEGER,
-                allowNull     : false,
-                autoIncrement : true,
-                primaryKey    : true
-            },
-            AssetCode : {
-                type      : Sequelize.STRING(256),
-                allowNull : false
-            },
-            Name : {
-                type      : Sequelize.STRING(256),
-                allowNull : false
-            },
-            Description : {
-                type      : Sequelize.TEXT,
-                allowNull : false
-            },
-            ExerciseType : {
-                type         : Sequelize.ENUM(ExerciseTypeList),
-                allowNull    : false,
-                defaultValue : 'Aerobic'
-            },
-            IntensityLevel : {
-                type         : Sequelize.ENUM(IntensityLevelList),
-                allowNull    : false,
-                defaultValue : 'Moderate'
-            },
-            RecommendedDurationMin : {
-                type         : Sequelize.INTEGER,
-                allowNull    : false,
-                defaultValue : 15
-            },
-            AssetCategory : {
-                type         : Sequelize.STRING(128),
-                allowNull    : false,
-                defaultValue : 'Exercise'
-            },
-            OwnerUserId : {
-                type      : Sequelize.UUID,
-                allowNull : true
-            },
-            Tags : {
-                type         : Sequelize.TEXT,
-                allowNull    : false,
-                defaultValue : []
-            },
-            Version : {
-                type         : Sequelize.STRING(128),
-                allowNull    : false,
-                defaultValue : 'V1'
-            },
-
-            CreatedAt : Sequelize.DATE,
-            UpdatedAt : Sequelize.DATE,
-            DeletedAt : Sequelize.DATE
-        };
-    }
-
-    static Model: any = () => {
-
-        const db = DatabaseConnector.db();
-        const sequelize = db.sequelize;
-        const schema = ExerciseModel.Schema();
-
-        return sequelize.define(
-            ExerciseModel.ModelName,
-            schema, {
-                createdAt       : 'CreatedAt',
-                updatedAt       : 'UpdatedAt',
-                deletedAt       : 'DeletedAt',
-                freezeTableName : true,
-                timestamps      : true,
-                paranoid        : true,
-                tableName       : ExerciseModel.TableName,
-            });
+        CreatedAt : DataTypes.DATE,
+        UpdatedAt : DataTypes.DATE,
+        DeletedAt : DataTypes.DATE
     };
+
+    static Model: any = sequelize.define(
+        ExerciseModel.ModelName,
+        ExerciseModel.Schema,
+        {
+            createdAt       : 'CreatedAt',
+            updatedAt       : 'UpdatedAt',
+            deletedAt       : 'DeletedAt',
+            freezeTableName : true,
+            timestamps      : true,
+            paranoid        : true,
+            tableName       : ExerciseModel.TableName,
+        });
 
     static associate = (models) => {
 

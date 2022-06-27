@@ -23,9 +23,9 @@ export class ReflectionService {
 
     //#region Models
 
-    Reflection = ReflectionModel.Model();
+    Reflection = ReflectionModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 

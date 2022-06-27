@@ -56,7 +56,6 @@
     "readdirp": "^3.6.0",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^6.15.0",
-    "sequelize-typescript": "^2.1.0",
     "sharp": "^0.30.0",
     "sleep": "^6.3.0",
     "timezone-support": "^2.0.2",

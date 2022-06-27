@@ -23,9 +23,9 @@ export class BiometricsService {
 
     //#region Models
 
-    Biometrics = BiometricsModel.Model();
+    Biometrics = BiometricsModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 

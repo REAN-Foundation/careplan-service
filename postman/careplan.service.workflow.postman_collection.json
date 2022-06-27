@@ -210,6 +210,156 @@
 			"item": []
 		},
 		{
+			"name": "File resources - upload and download",
+			"item": [
+				{
+					"name": "Upload file",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"try {\r",
+									"    var respData = pm.response.json();\r",
+									"    pm.environment.set(\"FILE_RESOURCE_ID\", respData.Data.id);\r",
+									"    pm.environment.set(\"FILE_RESOURCE_URL\", respData.Data.Url);\r",
+									"}\r",
+									"catch (error) {\r",
+									"    console.log(error.message);\r",
+									"}\r",
+									"\r",
+									"pm.test('Request is successfull', function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.expect(jsonRes.Status).to.eql('success');\r",
+									"});\r",
+									"\r",
+									"pm.test('New file resource record is created', function () {\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.expect(jsonRes.Data).to.have.property('id');\r",
+									"    pm.expect(jsonRes.Data).to.have.property('OriginalFilename');\r",
+									"    pm.expect(jsonRes.Data).to.have.property('Url');\r",
+									"    pm.expect(jsonRes.Data).to.have.property('MimeType');\r",
+									"    pm.expect(jsonRes.Data).to.have.property('Public');\r",
+									"    pm.expect(jsonRes.Data).to.have.property('Size');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/octet-stream",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{MODERATOR_JWT}}",
+								"type": "text"
+							},
+							{
+								"key": "Filename",
+								"value": "kk.jpg",
+								"type": "text"
+							},
+							{
+								"key": "Public",
+								"value": "true",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "file",
+							"file": {
+								"src": "/D:/graduation-cap.png"
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/file-resources/upload",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"file-resources",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Download",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{MODERATOR_JWT}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/file-resources/download/{{FILE_RESOURCE_ID}}?disposition=attachment",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"file-resources",
+								"download",
+								"{{FILE_RESOURCE_ID}}"
+							],
+							"query": [
+								{
+									"key": "disposition",
+									"value": "attachment"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{MODERATOR_JWT}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/file-resources/{{FILE_RESOURCE_ID}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"file-resources",
+								"{{FILE_RESOURCE_ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Api client",
 			"item": [
 				{
@@ -1512,7 +1662,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"try {\r",
 											"    var respData = pm.response.json();\r",
@@ -1526,7 +1675,8 @@
 											"\r",
 											"pm.test('New article record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
 											"\r"
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -1541,7 +1691,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
+										"value": "Bearer {{MODERATOR_JWT}}"
 									}
 								],
 								"body": {
@@ -1748,7 +1898,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"try {\r",
 											"    var respData = pm.response.json();\r",
@@ -1762,7 +1911,8 @@
 											"\r",
 											"pm.test('New assessment record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
 											"\r"
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -1777,7 +1927,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
+										"value": "Bearer {{MODERATOR_JWT}}"
 									}
 								],
 								"body": {
@@ -1984,7 +2134,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"try {\r",
 											"    var respData = pm.response.json();\r",
@@ -1998,7 +2147,8 @@
 											"\r",
 											"pm.test('New audio record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
 											"\r"
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -2013,7 +2163,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
+										"value": "Bearer {{MODERATOR_JWT}}"
 									}
 								],
 								"body": {
@@ -2220,7 +2370,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"try {\r",
 											"    var respData = pm.response.json();\r",
@@ -2234,7 +2383,8 @@
 											"\r",
 											"pm.test('New biometrics record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
 											"\r"
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -2249,7 +2399,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
+										"value": "Bearer {{MODERATOR_JWT}}"
 									}
 								],
 								"body": {
@@ -2460,7 +2610,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"try {\r",
 											"    var respData = pm.response.json();\r",
@@ -2474,7 +2623,8 @@
 											"\r",
 											"pm.test('New nutrition record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
 											"\r"
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -2489,7 +2639,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
+										"value": "Bearer {{MODERATOR_JWT}}"
 									}
 								],
 								"body": {
@@ -2692,7 +2842,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"try {\r",
 											"    var respData = pm.response.json();\r",
@@ -2706,7 +2855,8 @@
 											"\r",
 											"pm.test('New physiotherapy record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
 											"\r"
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -2721,7 +2871,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
+										"value": "Bearer {{MODERATOR_JWT}}"
 									}
 								],
 								"body": {
@@ -2928,7 +3078,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"try {\r",
 											"    var respData = pm.response.json();\r",
@@ -2942,7 +3091,8 @@
 											"\r",
 											"pm.test('New priority record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
 											"\r"
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -2957,7 +3107,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
+										"value": "Bearer {{MODERATOR_JWT}}"
 									}
 								],
 								"body": {
@@ -3160,7 +3310,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"try {\r",
 											"    var respData = pm.response.json();\r",
@@ -3174,7 +3323,8 @@
 											"\r",
 											"pm.test('New reflection record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
 											"\r"
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -3189,7 +3339,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
+										"value": "Bearer {{MODERATOR_JWT}}"
 									}
 								],
 								"body": {
@@ -3392,7 +3542,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"try {\r",
 											"    var respData = pm.response.json();\r",
@@ -3406,7 +3555,8 @@
 											"\r",
 											"pm.test('New reminder record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
 											"\r"
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -3421,7 +3571,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
+										"value": "Bearer {{MODERATOR_JWT}}"
 									}
 								],
 								"body": {
@@ -3624,7 +3774,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"try {\r",
 											"    var respData = pm.response.json();\r",
@@ -3638,7 +3787,8 @@
 											"\r",
 											"pm.test('New video record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
 											"\r"
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -3653,7 +3803,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
+										"value": "Bearer {{MODERATOR_JWT}}"
 									}
 								],
 								"body": {
@@ -3860,7 +4010,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"try {\r",
 											"    var respData = pm.response.json();\r",
@@ -3874,7 +4023,8 @@
 											"\r",
 											"pm.test('New web link record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
 											"\r"
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -3889,7 +4039,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
+										"value": "Bearer {{MODERATOR_JWT}}"
 									}
 								],
 								"body": {
@@ -4096,7 +4246,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"try {\r",
 											"    var respData = pm.response.json();\r",
@@ -4110,7 +4259,8 @@
 											"\r",
 											"pm.test('New web newsfeed record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
 											"\r"
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -4125,7 +4275,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
+										"value": "Bearer {{MODERATOR_JWT}}"
 									}
 								],
 								"body": {
@@ -4332,7 +4482,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"try {\r",
 											"    var respData = pm.response.json();\r",
@@ -4346,7 +4495,8 @@
 											"\r",
 											"pm.test('New word power record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
 											"\r"
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -4361,7 +4511,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
+										"value": "Bearer {{MODERATOR_JWT}}"
 									}
 								],
 								"body": {
@@ -4568,7 +4718,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"try {\r",
 											"    var respData = pm.response.json();\r",
@@ -4582,7 +4731,8 @@
 											"\r",
 											"pm.test('New challenge record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
 											"\r"
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -4597,7 +4747,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
+										"value": "Bearer {{MODERATOR_JWT}}"
 									}
 								],
 								"body": {
@@ -4800,7 +4950,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"try {\r",
 											"    var respData = pm.response.json();\r",
@@ -4814,7 +4963,8 @@
 											"\r",
 											"pm.test('New checkup record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
 											"\r"
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -4829,7 +4979,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
+										"value": "Bearer {{MODERATOR_JWT}}"
 									}
 								],
 								"body": {
@@ -5032,7 +5182,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"try {\r",
 											"    var respData = pm.response.json();\r",
@@ -5046,7 +5195,8 @@
 											"\r",
 											"pm.test('New consultation record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
 											"\r"
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -5061,7 +5211,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
+										"value": "Bearer {{MODERATOR_JWT}}"
 									}
 								],
 								"body": {
@@ -5268,7 +5418,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"try {\r",
 											"    var respData = pm.response.json();\r",
@@ -5282,7 +5431,8 @@
 											"\r",
 											"pm.test('New exercise record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
 											"\r"
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -5297,7 +5447,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
+										"value": "Bearer {{MODERATOR_JWT}}"
 									}
 								],
 								"body": {
@@ -5512,7 +5662,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"try {\r",
 											"    var respData = pm.response.json();\r",
@@ -5526,7 +5675,8 @@
 											"\r",
 											"pm.test('New goal record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
 											"\r"
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -5541,7 +5691,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
+										"value": "Bearer {{MODERATOR_JWT}}"
 									}
 								],
 								"body": {
@@ -5744,7 +5894,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"try {\r",
 											"    var respData = pm.response.json();\r",
@@ -5758,7 +5907,8 @@
 											"\r",
 											"pm.test('New infographics record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
 											"\r"
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -5773,7 +5923,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
+										"value": "Bearer {{MODERATOR_JWT}}"
 									}
 								],
 								"body": {
@@ -5980,7 +6130,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"try {\r",
 											"    var respData = pm.response.json();\r",
@@ -5994,7 +6143,8 @@
 											"\r",
 											"pm.test('New medication record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
 											"\r"
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -6009,7 +6159,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
+										"value": "Bearer {{MODERATOR_JWT}}"
 									}
 								],
 								"body": {
@@ -6212,7 +6362,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"try {\r",
 											"    var respData = pm.response.json();\r",
@@ -6226,7 +6375,8 @@
 											"\r",
 											"pm.test('New meditation record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
 											"\r"
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -6241,7 +6391,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
+										"value": "Bearer {{MODERATOR_JWT}}"
 									}
 								],
 								"body": {
@@ -6452,7 +6602,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"try {\r",
 											"    var respData = pm.response.json();\r",
@@ -6466,7 +6615,8 @@
 											"\r",
 											"pm.test('New message record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
 											"\r"
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -6481,7 +6631,7 @@
 									{
 										"key": "Authorization",
 										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
+										"value": "Bearer {{MODERATOR_JWT}}"
 									}
 								],
 								"body": {
@@ -6690,7 +6840,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"try {\r",
 									"    var respData = pm.response.json();\r",
@@ -6704,7 +6853,8 @@
 									"\r",
 									"pm.test('New careplan category record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
 									"\r"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -6719,7 +6869,7 @@
 							{
 								"key": "Authorization",
 								"type": "text",
-								"value": "Bearer {{USER_JWT}}"
+								"value": "Bearer {{MODERATOR_JWT}}"
 							}
 						],
 						"body": {
@@ -6901,7 +7051,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"try {\r",
 									"    var respData = pm.response.json();\r",
@@ -6915,7 +7064,8 @@
 									"\r",
 									"pm.test('New care plan record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
 									"\r"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -6930,7 +7080,7 @@
 							{
 								"key": "Authorization",
 								"type": "text",
-								"value": "Bearer {{USER_JWT}}"
+								"value": "Bearer {{MODERATOR_JWT}}"
 							}
 						],
 						"body": {
@@ -7132,7 +7282,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"try {\r",
 									"    var respData = pm.response.json();\r",
@@ -7146,7 +7295,8 @@
 									"\r",
 									"pm.test('New careplan schedule record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
 									"\r"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -7161,7 +7311,7 @@
 							{
 								"key": "Authorization",
 								"type": "text",
-								"value": "Bearer {{USER_JWT}}"
+								"value": "Bearer {{MODERATOR_JWT}}"
 							}
 						],
 						"body": {

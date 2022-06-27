@@ -23,9 +23,9 @@ export class ConsultationService {
 
     //#region Models
 
-    Consultation = ConsultationModel.Model();
+    Consultation = ConsultationModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 

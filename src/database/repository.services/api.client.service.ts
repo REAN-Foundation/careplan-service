@@ -12,7 +12,7 @@ import * as apikeyGenerator from 'uuid-apikey';
 
 export class ApiClientService {
 
-    ApiClient = ApiClientModel.Model();
+    ApiClient = ApiClientModel.Model;
 
     create = async (clientDomainModel: ApiClientCreateModel): Promise<ApiClientDto> => {
         try {

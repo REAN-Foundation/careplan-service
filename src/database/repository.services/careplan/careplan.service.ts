@@ -11,11 +11,11 @@ export class CareplanService {
 
     //#region Models
 
-    Careplan = CareplanModel.Model();
+    Careplan = CareplanModel.Model;
 
-    CareplanCategory = CareplanCategoryModel.Model();
+    CareplanCategory = CareplanCategoryModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 

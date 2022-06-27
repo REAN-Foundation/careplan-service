@@ -23,9 +23,9 @@ export class ActionPlanService {
 
     //#region Models
 
-    ActionPlan = ActionPlanModel.Model();
+    ActionPlan = ActionPlanModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 

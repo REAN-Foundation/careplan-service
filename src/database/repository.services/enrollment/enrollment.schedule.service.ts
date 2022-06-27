@@ -29,15 +29,15 @@ export class EnrollmentScheduleService {
 
     //#region Models
 
-    EnrollmentSchedule = EnrollmentScheduleModel.Model();
+    EnrollmentSchedule = EnrollmentScheduleModel.Model;
 
-    Enrollment = EnrollmentModel.Model();
+    Enrollment = EnrollmentModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
-    CareplanSchedule = CareplanScheduleModel.Model();
+    CareplanSchedule = CareplanScheduleModel.Model;
 
-    Careplan = CareplanModel.Model();
+    Careplan = CareplanModel.Model;
 
     //#endregion
 

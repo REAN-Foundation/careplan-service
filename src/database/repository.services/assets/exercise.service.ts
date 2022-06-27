@@ -23,9 +23,9 @@ export class ExerciseService {
 
     //#region Models
 
-    Exercise = ExerciseModel.Model();
+    Exercise = ExerciseModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 

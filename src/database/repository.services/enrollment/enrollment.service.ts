@@ -23,11 +23,11 @@ export class EnrollmentService {
 
     //#region Models
 
-    Enrollment = EnrollmentModel.Model();
+    Enrollment = EnrollmentModel.Model;
 
-    Careplan = CareplanModel.Model();
+    Careplan = CareplanModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 

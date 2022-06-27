@@ -1,4 +1,6 @@
-import { DatabaseConnector } from '../../database.connector';
+import * as db from '../../database.connector';
+import { DataTypes } from 'sequelize';
+const sequelize = db.default.sequelize;
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -8,81 +10,68 @@ export class CareplanModel {
     
     static ModelName  = 'Careplan';
 
-    static Schema = () => {
-        
-        const db = DatabaseConnector.db();
-        const Sequelize: any = db.Sequelize;
+    static Schema = {
+        id : {
+            type          : DataTypes.INTEGER,
+            allowNull     : false,
+            autoIncrement : true,
+            primaryKey    : true,
+        },
+        Code : {
+            type      : DataTypes.STRING(256),
+            allowNull : false,
+        },
+        CategoryId : {
+            type       : DataTypes.INTEGER,
+            allowNull  : false,
+            foreignKey : true,
+            unique     : false,
+        },
+        Name : {
+            type      : DataTypes.STRING(256),
+            allowNull : false,
+        },
+        Description : {
+            type      : DataTypes.TEXT,
+            allowNull : true,
+        },
+        Version : {
+            type         : DataTypes.STRING(32),
+            allowNull    : false,
+            defaultValue : '1.0.0',
+        },
+        OwnerUserId : {
+            type      : DataTypes.UUID,
+            allowNull : true
+        },
+        Tags : {
+            type         : DataTypes.TEXT,
+            allowNull    : false,
+            defaultValue : '[]',
+        },
+        IsActive : {
+            type         : DataTypes.BOOLEAN,
+            allowNull    : false,
+            defaultValue : true,
+        },
 
-        return {
-            id : {
-                type          : Sequelize.INTEGER,
-                allowNull     : false,
-                autoIncrement : true,
-                primaryKey    : true,
-            },
-            Code : {
-                type      : Sequelize.STRING(256),
-                allowNull : false,
-            },
-            CategoryId : {
-                type       : Sequelize.INTEGER,
-                allowNull  : false,
-                foreignKey : true,
-                unique     : false,
-            },
-            Name : {
-                type      : Sequelize.STRING(256),
-                allowNull : false,
-            },
-            Description : {
-                type      : Sequelize.TEXT,
-                allowNull : true,
-            },
-            Version : {
-                type         : Sequelize.STRING(32),
-                allowNull    : false,
-                defaultValue : '1.0.0',
-            },
-            OwnerUserId : {
-                type      : Sequelize.UUID,
-                allowNull : true
-            },
-            Tags : {
-                type         : Sequelize.TEXT,
-                allowNull    : false,
-                defaultValue : '[]',
-            },
-            IsActive : {
-                type         : Sequelize.BOOLEAN,
-                allowNull    : false,
-                defaultValue : true,
-            },
-
-            CreatedAt : Sequelize.DATE,
-            UpdatedAt : Sequelize.DATE,
-            DeletedAt : Sequelize.DATE,
-        };
-    }
-
-    static Model: any = () => {
-
-        const db = DatabaseConnector.db();
-        const sequelize = db.sequelize;
-        const schema = CareplanModel.Schema();
-
-        return sequelize.define(
-            CareplanModel.ModelName,
-            schema,
-            {
-                createdAt       : 'CreatedAt',
-                updatedAt       : 'UpdatedAt',
-                deletedAt       : 'DeletedAt',
-                freezeTableName : true,
-                timestamps      : true,
-                paranoid        : true,
-                tableName       : CareplanModel.TableName,
-            });
+        CreatedAt : DataTypes.DATE,
+        UpdatedAt : DataTypes.DATE,
+        DeletedAt : DataTypes.DATE,
     };
+    
+    static Model: any = sequelize.define(
+        CareplanModel.ModelName,
+        CareplanModel.Schema,
+        {
+            createdAt       : 'CreatedAt',
+            updatedAt       : 'UpdatedAt',
+            deletedAt       : 'DeletedAt',
+            freezeTableName : true,
+            timestamps      : true,
+            paranoid        : true,
+            tableName       : CareplanModel.TableName,
+        });
 
     static associate = (models) => {
         models.Careplan.belongsTo(models.CareplanCategory, {

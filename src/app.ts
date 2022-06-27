@@ -9,7 +9,8 @@ import { ConfigurationManager } from "./config/configuration.manager";
 import { Loader } from './startup/loader';
 import { Scheduler } from './startup/scheduler';
 import { DatabaseModelManager } from './database/database.model.manager';
-import { DatabaseConnector } from './database/database.connector';
+import * as db from './database/database.connector';
+import { DbClient } from './database/db.client';
 import { Seeder } from './startup/seeder';
 
 /////////////////////////////////////////////////////////////////////////
@@ -58,20 +59,19 @@ export default class Application {
 
     setupDatabaseConnection = async () => {
 
-        await DatabaseConnector.createDatabase();
-        await DatabaseConnector.initialize();
+        const sequelize = db.default.sequelize;
 
-        const connection = await DatabaseConnector.db();
+        await DbClient.createDatabase();
 
         if (process.env.NODE_ENV === 'test') {
             //Note: This is only for test environment
             //Drop all tables in db
-            await DatabaseModelManager.dropAll();
+            await DbClient.dropDatabase();
         }
     
         await DatabaseModelManager.setupAssociations(); //set associations
     
-        await connection.sequelize.sync({ alter: true });
+        await sequelize.sync({ alter: true });
     
     }
 

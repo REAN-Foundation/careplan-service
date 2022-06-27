@@ -23,9 +23,9 @@ export class AssessmentService {
 
     //#region Models
 
-    Assessment = AssessmentModel.Model();
+    Assessment = AssessmentModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 

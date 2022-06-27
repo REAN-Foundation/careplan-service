@@ -1,5 +1,7 @@
 import { ConsultationTypeList } from '../../../domain.types/assets/consultation.domain.types';
-import { DatabaseConnector } from '../../database.connector';
+import * as db from '../../database.connector';
+import { DataTypes } from 'sequelize';
+const sequelize = db.default.sequelize;
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -9,79 +11,67 @@ export class ConsultationModel {
 
     static ModelName = 'Consultation';
 
-    static Schema = () => {
+    static Schema = {
+        id : {
+            type          : DataTypes.INTEGER,
+            allowNull     : false,
+            autoIncrement : true,
+            primaryKey    : true
+        },
+        AssetCode : {
+            type      : DataTypes.STRING(256),
+            allowNull : false
+        },
+        Name : {
+            type      : DataTypes.STRING(256),
+            allowNull : false
+        },
+        Description : {
+            type      : DataTypes.TEXT,
+            allowNull : false
+        },
+        ConsultationType : {
+            type         : DataTypes.ENUM({ values: ConsultationTypeList }),
+            allowNull    : false,
+            defaultValue : 'Tele-consultation'
+        },
+        AssetCategory : {
+            type         : DataTypes.STRING(128),
+            allowNull    : false,
+            defaultValue : 'Consultation'
+        },
+        OwnerUserId : {
+            type      : DataTypes.UUID,
+            allowNull : true
+        },
+        Tags : {
+            type         : DataTypes.TEXT,
+            allowNull    : false,
+            defaultValue : []
+        },
+        Version : {
+            type         : DataTypes.STRING(128),
+            allowNull    : false,
+            defaultValue : 'V1'
+        },
 
-        const db = DatabaseConnector.db();
-        const Sequelize: any = db.Sequelize;
-
-        return {
-            id : {
-                type          : Sequelize.INTEGER,
-                allowNull     : false,
-                autoIncrement : true,
-                primaryKey    : true
-            },
-            AssetCode : {
-                type      : Sequelize.STRING(256),
-                allowNull : false
-            },
-            Name : {
-                type      : Sequelize.STRING(256),
-                allowNull : false
-            },
-            Description : {
-                type      : Sequelize.TEXT,
-                allowNull : false
-            },
-            ConsultationType : {
-                type         : Sequelize.ENUM(ConsultationTypeList),
-                allowNull    : false,
-                defaultValue : 'Tele-consultation'
-            },
-            AssetCategory : {
-                type         : Sequelize.STRING(128),
-                allowNull    : false,
-                defaultValue : 'Consultation'
-            },
-            OwnerUserId : {
-                type      : Sequelize.UUID,
-                allowNull : true
-            },
-            Tags : {
-                type         : Sequelize.TEXT,
-                allowNull    : false,
-                defaultValue : []
-            },
-            Version : {
-                type         : Sequelize.STRING(128),
-                allowNull    : false,
-                defaultValue : 'V1'
-            },
-
-            CreatedAt : Sequelize.DATE,
-            UpdatedAt : Sequelize.DATE,
-            DeletedAt : Sequelize.DATE
-        };
-    }
-
-    static Model: any = () => {
-
-        const db = DatabaseConnector.db();
-        const sequelize = db.sequelize;
-        const schema = ConsultationModel.Schema();
-
-        return sequelize.define(
-            ConsultationModel.ModelName,
-            schema, {
-                createdAt       : 'CreatedAt',
-                updatedAt       : 'UpdatedAt',
-                deletedAt       : 'DeletedAt',
-                freezeTableName : true,
-                timestamps      : true,
-                paranoid        : true,
-                tableName       : ConsultationModel.TableName,
-            });
+        CreatedAt : DataTypes.DATE,
+        UpdatedAt : DataTypes.DATE,
+        DeletedAt : DataTypes.DATE
     };
+
+    static Model: any = sequelize.define(
+        ConsultationModel.ModelName,
+        ConsultationModel.Schema,
+        {
+            createdAt       : 'CreatedAt',
+            updatedAt       : 'UpdatedAt',
+            deletedAt       : 'DeletedAt',
+            freezeTableName : true,
+            timestamps      : true,
+            paranoid        : true,
+            tableName       : ConsultationModel.TableName,
+        });
 
     static associate = (models) => {
 

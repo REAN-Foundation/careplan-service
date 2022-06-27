@@ -23,9 +23,9 @@ export class AppointmentService {
 
     //#region Models
 
-    Appointment = AppointmentModel.Model();
+    Appointment = AppointmentModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 

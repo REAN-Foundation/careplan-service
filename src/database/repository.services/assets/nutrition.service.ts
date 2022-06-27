@@ -23,9 +23,9 @@ export class NutritionService {
 
     //#region Models
 
-    Nutrition = NutritionModel.Model();
+    Nutrition = NutritionModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 

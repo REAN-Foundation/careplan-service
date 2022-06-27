@@ -13,13 +13,13 @@ import { DurationType } from '../../../domain.types/miscellaneous/time.types';
 
 export class UserService {
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
-    Role = RoleModel.Model();
+    Role = RoleModel.Model;
 
-    UserRole = UserRoleModel.Model();
+    UserRole = UserRoleModel.Model;
 
-    UserLoginSession = UserLoginSessionModel.Model();
+    UserLoginSession = UserLoginSessionModel.Model;
 
     create = async (createModel) => {
         try {

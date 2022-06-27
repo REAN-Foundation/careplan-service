@@ -1,6 +1,8 @@
-import {
-    DatabaseConnector
-} from '../../database.connector';
+import * as db from '../../database.connector';
+import { DataTypes } from 'sequelize';
+import { AssetTypeList } from '../../../domain.types/assets/asset.types';
+import { ProgressStatusList } from '../../../domain.types/miscellaneous/system.types';
+const sequelize = db.default.sequelize;
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -10,89 +12,77 @@ export class UserActivityResponseModel {
 
     static ModelName = 'UserActivityResponse';
 
-    static Schema = () => {
+    static Schema = {
+        id : {
+            type         : DataTypes.UUID,
+            allowNull    : false,
+            defaultValue : DataTypes.UUIDV4,
+            primaryKey   : true
+        },
+        UserId : {
+            type       : DataTypes.UUID,
+            allowNull  : false,
+            foreignKey : true,
+            unique     : false
+        },
+        EnrollmentScheduleId : {
+            type       : DataTypes.UUID,
+            allowNull  : false,
+            foreignKey : true,
+            unique     : false
+        },
+        CareplanScheduleId : {
+            type       : DataTypes.UUID,
+            allowNull  : false,
+            foreignKey : true,
+            unique     : false
+        },
+        CareplanId : {
+            type       : DataTypes.INTEGER,
+            allowNull  : false,
+            foreignKey : true,
+            unique     : false
+        },
+        AssetId : {
+            type      : DataTypes.INTEGER,
+            allowNull : false
+        },
+        AssetType : {
+            type      : DataTypes.ENUM({ values: AssetTypeList }),
+            allowNull : false
+        },
+        Response : {
+            type         : DataTypes.TEXT,
+            allowNull    : false,
+            defaultValue : '{}'
+        },
+        TimeResponded : {
+            type      : DataTypes.DATE,
+            allowNull : false
+        },
+        ProgressStatus : {
+            type         : DataTypes.ENUM({ values: ProgressStatusList }),
+            allowNull    : false,
+            defaultValue : 'Completed'
+        },
 
-        const db = DatabaseConnector.db();
-        const Sequelize: any = db.Sequelize;
-
-        return {
-            id : {
-                type         : Sequelize.UUID,
-                allowNull    : false,
-                defaultValue : Sequelize.UUIDV4,
-                primaryKey   : true
-            },
-            UserId : {
-                type       : Sequelize.UUID,
-                allowNull  : false,
-                foreignKey : true,
-                unique     : false
-            },
-            EnrollmentScheduleId : {
-                type       : Sequelize.UUID,
-                allowNull  : false,
-                foreignKey : true,
-                unique     : false
-            },
-            CareplanScheduleId : {
-                type       : Sequelize.UUID,
-                allowNull  : false,
-                foreignKey : true,
-                unique     : false
-            },
-            CareplanId : {
-                type       : Sequelize.INTEGER,
-                allowNull  : false,
-                foreignKey : true,
-                unique     : false
-            },
-            AssetId : {
-                type      : Sequelize.INTEGER,
-                allowNull : false
-            },
-            AssetType : {
-                type      : Sequelize.ENUM(["Action plan", "Animation", "Appointment", "Article", "Assessment", "Audio", "Biometrics", "Challenge", "Checkup", "Consultation", "Exercise", "Goal", "Infographics", "Medication", "Meditation", "Message", "Nutrition", "Physiotherapy", "Priority", "Reflection", "Reminder", "Video", "Web link", "Web newsfeed", "Word power"]),
-                allowNull : false
-            },
-            Response : {
-                type         : Sequelize.TEXT,
-                allowNull    : false,
-                defaultValue : '{}'
-            },
-            TimeResponded : {
-                type      : Sequelize.DATE,
-                allowNull : false
-            },
-            ProgressStatus : {
-                type         : Sequelize.ENUM(["Pending", "In-progress", "Completed", "Cancelled", "Delayed", "Unknown"]),
-                allowNull    : false,
-                defaultValue : 'Completed'
-            },
-
-            CreatedAt : Sequelize.DATE,
-            UpdatedAt : Sequelize.DATE,
-            DeletedAt : Sequelize.DATE
-        };
-    }
-
-    static Model: any = () => {
-
-        const db = DatabaseConnector.db();
-        const sequelize = db.sequelize;
-        const schema = UserActivityResponseModel.Schema();
-
-        return sequelize.define(
-            UserActivityResponseModel.ModelName,
-            schema, {
-                createdAt       : 'CreatedAt',
-                updatedAt       : 'UpdatedAt',
-                deletedAt       : 'DeletedAt',
-                freezeTableName : true,
-                timestamps      : true,
-                paranoid        : true,
-                tableName       : UserActivityResponseModel.TableName,
-            });
+        CreatedAt : DataTypes.DATE,
+        UpdatedAt : DataTypes.DATE,
+        DeletedAt : DataTypes.DATE
     };
+
+    static Model: any = sequelize.define(
+        UserActivityResponseModel.ModelName,
+        UserActivityResponseModel.Schema,
+        {
+            createdAt       : 'CreatedAt',
+            updatedAt       : 'UpdatedAt',
+            deletedAt       : 'DeletedAt',
+            freezeTableName : true,
+            timestamps      : true,
+            paranoid        : true,
+            tableName       : UserActivityResponseModel.TableName,
+        });
 
     static associate = (models) => {
 

@@ -9,7 +9,6 @@ import {
     ErrorHandler
 } from '../../../common/error.handler';
 import {
-    WebLinkCreateModel,
     WebLinkSearchFilters,
     WebLinkSearchResults
 } from '../../../domain.types/assets/web.link.domain.types';
@@ -23,15 +22,15 @@ export class WebLinkService {
 
     //#region Models
 
-    WebLink = WebLinkModel.Model();
+    WebLink = WebLinkModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 
     //#region Publics
 
-    create = async (createModel: WebLinkCreateModel) => {
+    create = async (createModel) => {
         try {
             var record = await this.WebLink.create(createModel);
             return await this.getById(record.id);

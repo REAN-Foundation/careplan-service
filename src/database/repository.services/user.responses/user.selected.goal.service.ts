@@ -26,11 +26,11 @@ export class UserSelectedGoalService {
 
     //#region Models
 
-    UserSelectedGoal = UserSelectedGoalModel.Model();
+    UserSelectedGoal = UserSelectedGoalModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
-    Careplan = CareplanModel.Model();
+    Careplan = CareplanModel.Model;
 
     //#endregion
 

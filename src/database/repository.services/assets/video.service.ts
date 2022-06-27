@@ -26,11 +26,11 @@ export class VideoService {
 
     //#region Models
 
-    Video = VideoModel.Model();
+    Video = VideoModel.Model;
 
-    FileResource = FileResourceModel.Model();
+    FileResource = FileResourceModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 

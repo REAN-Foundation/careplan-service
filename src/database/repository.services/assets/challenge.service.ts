@@ -23,9 +23,9 @@ export class ChallengeService {
 
     //#region Models
 
-    Challenge = ChallengeModel.Model();
+    Challenge = ChallengeModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 

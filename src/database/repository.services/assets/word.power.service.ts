@@ -23,9 +23,9 @@ export class WordPowerService {
 
     //#region Models
 
-    WordPower = WordPowerModel.Model();
+    WordPower = WordPowerModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 

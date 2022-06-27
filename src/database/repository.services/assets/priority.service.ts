@@ -23,9 +23,9 @@ export class PriorityService {
 
     //#region Models
 
-    Priority = PriorityModel.Model();
+    Priority = PriorityModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 

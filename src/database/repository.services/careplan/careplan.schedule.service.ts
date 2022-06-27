@@ -20,9 +20,9 @@ export class CareplanScheduleService {
 
     //#region Models
 
-    CareplanSchedule = CareplanScheduleModel.Model();
+    CareplanSchedule = CareplanScheduleModel.Model;
 
-    Careplan = CareplanModel.Model();
+    Careplan = CareplanModel.Model;
 
     //#endregion
 

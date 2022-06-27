@@ -26,11 +26,11 @@ export class AudioService {
 
     //#region Models
 
-    Audio = AudioModel.Model();
+    Audio = AudioModel.Model;
 
-    FileResource = FileResourceModel.Model();
+    FileResource = FileResourceModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 

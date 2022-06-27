@@ -36,7 +36,7 @@ export class DatabaseModelManager {
             const imported = await import(modelFilePath);
             const modelClass = imported[name];
             const modelName = modelClass.ModelName;
-            const model = modelClass.Model();
+            const model = modelClass.Model;
             models[modelName] = model;
             modelClasses[modelName] = modelClass;
         }

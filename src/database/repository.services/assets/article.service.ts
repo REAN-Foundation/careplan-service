@@ -15,11 +15,11 @@ export class ArticleService {
 
     //#region Models
 
-    Article = ArticleModel.Model();
+    Article = ArticleModel.Model;
 
-    FileResource = FileResourceModel.Model();
+    FileResource = FileResourceModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 

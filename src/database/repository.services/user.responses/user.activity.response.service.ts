@@ -32,15 +32,15 @@ export class UserActivityResponseService {
 
     //#region Models
 
-    UserActivityResponse = UserActivityResponseModel.Model();
+    UserActivityResponse = UserActivityResponseModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
-    EnrollmentSchedule = EnrollmentScheduleModel.Model();
+    EnrollmentSchedule = EnrollmentScheduleModel.Model;
 
-    CareplanSchedule = CareplanScheduleModel.Model();
+    CareplanSchedule = CareplanScheduleModel.Model;
 
-    Careplan = CareplanModel.Model();
+    Careplan = CareplanModel.Model;
 
     //#endregion
 

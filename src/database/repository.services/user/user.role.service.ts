@@ -23,11 +23,11 @@ export class UserRoleService {
 
     //#region Models
 
-    UserRole = UserRoleModel.Model();
+    UserRole = UserRoleModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
-    Role = RoleModel.Model();
+    Role = RoleModel.Model;
 
     //#endregion
 

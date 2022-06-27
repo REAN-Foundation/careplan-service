@@ -7,7 +7,7 @@ import { CareplanCategoryDto, CareplanCategorySearchFilters, CareplanCategorySea
 
 export class CareplanCategoryService {
 
-    CareplanCategory = CareplanCategoryModel.Model();
+    CareplanCategory = CareplanCategoryModel.Model;
 
     create = async (createModel: CareplanCategoryCreateModel): Promise < CareplanCategoryDto > => {
         try {

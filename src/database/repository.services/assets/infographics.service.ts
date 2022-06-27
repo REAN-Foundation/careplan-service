@@ -26,11 +26,11 @@ export class InfographicsService {
 
     //#region Models
 
-    Infographics = InfographicsModel.Model();
+    Infographics = InfographicsModel.Model;
 
-    FileResource = FileResourceModel.Model();
+    FileResource = FileResourceModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 

@@ -23,9 +23,9 @@ export class MeditationService {
 
     //#region Models
 
-    Meditation = MeditationModel.Model();
+    Meditation = MeditationModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 

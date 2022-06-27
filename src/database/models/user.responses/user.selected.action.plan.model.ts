@@ -1,6 +1,7 @@
-import {
-    DatabaseConnector
-} from '../../database.connector';
+import * as db from '../../database.connector';
+import { DataTypes } from 'sequelize';
+import { ProgressStatusList } from '../../../domain.types/miscellaneous/system.types';
+const sequelize = db.default.sequelize;
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -10,89 +11,77 @@ export class UserSelectedActionPlanModel {
 
     static ModelName = 'UserSelectedActionPlan';
 
-    static Schema = () => {
+    static Schema = {
+        id : {
+            type         : DataTypes.UUID,
+            allowNull    : false,
+            defaultValue : DataTypes.UUIDV4,
+            primaryKey   : true
+        },
+        Name : {
+            type      : DataTypes.STRING(256),
+            allowNull : false
+        },
+        Description : {
+            type      : DataTypes.TEXT,
+            allowNull : false
+        },
+        UserId : {
+            type       : DataTypes.UUID,
+            allowNull  : false,
+            foreignKey : true,
+            unique     : false
+        },
+        CareplanId : {
+            type       : DataTypes.INTEGER,
+            allowNull  : false,
+            foreignKey : true,
+            unique     : false
+        },
+        AssetId : {
+            type      : DataTypes.INTEGER,
+            allowNull : false
+        },
+        AssetType : {
+            type         : DataTypes.STRING(128),
+            allowNull    : false,
+            defaultValue : 'Action plan'
+        },
+        AdditionalDetails : {
+            type      : DataTypes.TEXT,
+            allowNull : true
+        },
+        StartDate : {
+            type      : DataTypes.DATE,
+            allowNull : false
+        },
+        EndDate : {
+            type      : DataTypes.DATE,
+            allowNull : false
+        },
+        ProgressStatus : {
+            type         : DataTypes.ENUM({ values: ProgressStatusList }),
+            allowNull    : false,
+            defaultValue : 'Pending'
+        },
 
-        const db = DatabaseConnector.db();
-        const Sequelize: any = db.Sequelize;
-
-        return {
-            id : {
-                type         : Sequelize.UUID,
-                allowNull    : false,
-                defaultValue : Sequelize.UUIDV4,
-                primaryKey   : true
-            },
-            Name : {
-                type      : Sequelize.STRING(256),
-                allowNull : false
-            },
-            Description : {
-                type      : Sequelize.TEXT,
-                allowNull : false
-            },
-            UserId : {
-                type       : Sequelize.UUID,
-                allowNull  : false,
-                foreignKey : true,
-                unique     : false
-            },
-            CareplanId : {
-                type       : Sequelize.INTEGER,
-                allowNull  : false,
-                foreignKey : true,
-                unique     : false
-            },
-            AssetId : {
-                type      : Sequelize.INTEGER,
-                allowNull : false
-            },
-            AssetType : {
-                type         : Sequelize.STRING(128),
-                allowNull    : false,
-                defaultValue : 'Action plan'
-            },
-            AdditionalDetails : {
-                type      : Sequelize.TEXT,
-                allowNull : true
-            },
-            StartDate : {
-                type      : Sequelize.DATE,
-                allowNull : false
-            },
-            EndDate : {
-                type      : Sequelize.DATE,
-                allowNull : false
-            },
-            ProgressStatus : {
-                type         : Sequelize.ENUM(["Pending", "In-progress", "Completed", "Cancelled", "Delayed", "Unknown"]),
-                allowNull    : false,
-                defaultValue : 'Pending'
-            },
-
-            CreatedAt : Sequelize.DATE,
-            UpdatedAt : Sequelize.DATE,
-            DeletedAt : Sequelize.DATE
-        };
-    }
-
-    static Model: any = () => {
-
-        const db = DatabaseConnector.db();
-        const sequelize = db.sequelize;
-        const schema = UserSelectedActionPlanModel.Schema();
-
-        return sequelize.define(
-            UserSelectedActionPlanModel.ModelName,
-            schema, {
-                createdAt       : 'CreatedAt',
-                updatedAt       : 'UpdatedAt',
-                deletedAt       : 'DeletedAt',
-                freezeTableName : true,
-                timestamps      : true,
-                paranoid        : true,
-                tableName       : UserSelectedActionPlanModel.TableName,
-            });
+        CreatedAt : DataTypes.DATE,
+        UpdatedAt : DataTypes.DATE,
+        DeletedAt : DataTypes.DATE
     };
+
+    static Model: any = sequelize.define(
+        UserSelectedActionPlanModel.ModelName,
+        UserSelectedActionPlanModel.Schema,
+        {
+            createdAt       : 'CreatedAt',
+            updatedAt       : 'UpdatedAt',
+            deletedAt       : 'DeletedAt',
+            freezeTableName : true,
+            timestamps      : true,
+            paranoid        : true,
+            tableName       : UserSelectedActionPlanModel.TableName,
+        });
 
     static associate = (models) => {
 

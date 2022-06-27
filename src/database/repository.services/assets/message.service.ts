@@ -23,9 +23,9 @@ export class MessageService {
 
     //#region Models
 
-    Message = MessageModel.Model();
+    Message = MessageModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 

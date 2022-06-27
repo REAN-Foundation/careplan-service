@@ -26,11 +26,11 @@ export class UserSelectedPriorityService {
 
     //#region Models
 
-    UserSelectedPriority = UserSelectedPriorityModel.Model();
+    UserSelectedPriority = UserSelectedPriorityModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
-    Careplan = CareplanModel.Model();
+    Careplan = CareplanModel.Model;
 
     //#endregion
 

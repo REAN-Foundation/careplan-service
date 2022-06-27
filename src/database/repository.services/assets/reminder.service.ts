@@ -23,9 +23,9 @@ export class ReminderService {
 
     //#region Models
 
-    Reminder = ReminderModel.Model();
+    Reminder = ReminderModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 
