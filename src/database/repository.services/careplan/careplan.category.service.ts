@@ -12,7 +12,7 @@ export class CareplanCategoryService {
     create = async (createModel: CareplanCategoryCreateModel): Promise < CareplanCategoryDto > => {
         try {
             var record = await this.CareplanCategory.create(createModel);
-            return await exports.getById(record.id);
+            return await this.getById(record.id);
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create careplan category!', error);
         }
