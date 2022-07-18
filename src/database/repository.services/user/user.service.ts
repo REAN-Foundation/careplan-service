@@ -23,7 +23,6 @@ export class UserService {
 
     create = async (createModel) => {
         try {
-            createModel.Password = Helper.hash(createModel.Password);
             var record = await this.User.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
