@@ -4,6 +4,7 @@ import { Helper } from '../common/helper';
 import { UserService } from '../database/repository.services/user/user.service';
 import { ErrorHandler } from '../common/error.handler';
 import { UserCreateModel } from '../domain.types/user/user.domain.types';
+import { ParticipantService } from '../database/repository.services/enrollment/participant.service';
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -66,6 +67,80 @@ export class UserHelper {
 
         var userCreateModel: UserCreateModel = await this.getUserCreateModel(requestBody);
         return { userCreateModel, password };
+    }
+
+    static getValidParticipantCreateModel = async (requestBody) => {
+
+        const participantService = new ParticipantService();
+
+        requestBody.CountryCode = requestBody.CountryCode ?? "+91";
+        var userWithPhone =
+            await participantService.getParticipantWithPhone(requestBody.CountryCode, requestBody.Phone);
+        if (userWithPhone) {
+            ErrorHandler.throwDuplicateUserError(`Participant with phone ${requestBody.CountryCode} ${requestBody.Phone.toString()} already exists!`);
+        }
+
+        var userWithEmail = await participantService.getParticipantWithEmail(requestBody.Email);
+        if (userWithEmail) {
+            ErrorHandler.throwDuplicateUserError(`Participant with email ${requestBody.Email} already exists!`);
+        }
+
+    }
+
+    static getValidParticipantUpdateModel = async (user, requestBody) => {
+
+        const participantService = new ParticipantService();
+
+        const updateModel: any = {};
+
+        if (Helper.hasProperty(requestBody, 'Prefix')) {
+            updateModel.Prefix = requestBody.Prefix;
+        }
+        if (Helper.hasProperty(requestBody, 'FirstName')) {
+            updateModel.FirstName = requestBody.FirstName;
+        }
+        if (Helper.hasProperty(requestBody, 'LastName')) {
+            updateModel.LastName = requestBody.LastName;
+        }
+        if (Helper.hasProperty(requestBody, 'CountryCode') && Helper.hasProperty(requestBody, 'Phone')) {
+            var userWithPhone =
+                await participantService.getParticipantWithPhone(requestBody.CountryCode, requestBody.Phone);
+            if (userWithPhone) {
+                ErrorHandler.throwDuplicateUserError(`Other participant with phone ${requestBody.CountryCode} ${requestBody.Phone.toString()} already exists!`);
+            }
+            updateModel.CountryCode = requestBody.CountryCode;
+            updateModel.Phone = requestBody.Phone;
+        }
+        else if (Helper.hasProperty(requestBody, 'Phone')) {
+            var userWithPhone = await participantService.getParticipantWithPhone(user.CountryCode, requestBody.Phone);
+            if (userWithPhone && user.id !== userWithPhone.id) {
+                ErrorHandler.throwDuplicateUserError(`Other participant with phone ${user.CountryCode} ${requestBody.Phone.toString()} already exists!`);
+            }
+            updateModel.Phone = requestBody.Phone;
+        }
+        else if (Helper.hasProperty(requestBody, 'CountryCode')) {
+            var userWithCountryCode =
+                await participantService.getParticipantWithPhone(requestBody.CountryCode, user.Phone);
+            if (userWithCountryCode && user.id !== userWithCountryCode.id) {
+                ErrorHandler.throwDuplicateUserError(`Other participant with phone ${requestBody.CountryCode} ${user.Phone.toString()} already exists!`);
+            }
+            updateModel.CountryCode = requestBody.CountryCode;
+        }
+        if (Helper.hasProperty(requestBody, 'Email')) {
+            var userWithEmail = await participantService.getParticipantWithEmail(requestBody.Email);
+            if (userWithEmail && user.id !== userWithEmail.id) {
+                ErrorHandler.throwDuplicateUserError(`Other participant with email ${requestBody.Email} already exists!`);
+            }
+            updateModel.Email = requestBody.Email;
+        }
+        if (Helper.hasProperty(requestBody, 'SystemId')) {
+            updateModel.SystemId = requestBody.SystemId;
+        }
+        if (Helper.hasProperty(requestBody, 'Gender')) {
+            updateModel.Gender = requestBody.Gender;
+        }
+
+        return updateModel;
     }
 
     static getValidUserUpdateModel = async (user, requestBody) => {
