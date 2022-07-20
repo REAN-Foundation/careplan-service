@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "456bf7cf-bd53-4984-9bc4-05ee825e0a1d",
+		"_postman_id": "b09ce4ff-a5d5-4b27-bf06-73e6968caff5",
 		"name": "careplan.service.workflow",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "15905052"
@@ -224,15 +224,15 @@
 									"}\r",
 									"\r",
 									"pm.test(\"Request is successfull\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.status(201);\r",
 									"    var jsonRes = pm.response.json();\r",
 									"    pm.expect(jsonRes.Status).to.eql('success');\r",
 									"});\r",
 									"\r",
-									"pm.test(\"User login: Access token is returned\", function () {\r",
+									"pm.test(\"User is created\", function () {\r",
 									"    var jsonRes = pm.response.json();\r",
-									"    pm.expect(jsonRes.Data).to.have.property('AccessToken');\r",
-									"    pm.expect(jsonRes.Data.AccessToken).to.not.be.null;\r",
+									"    pm.expect(jsonRes.Data).to.have.property('Phone');\r",
+									"    pm.expect(jsonRes.Data.Phone).to.not.be.null;\r",
 									"});\r",
 									""
 								],
@@ -265,7 +265,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"RoleId\": \"3\",\r\n    \"FirstName\": \"Cris\",\r\n    \"LastName\": \"evans\",\r\n    \"Gender\": \"Male\",\r\n    \"BiocubeId\": \"he\",\r\n    \"CountryCode\": \"+91\",\r\n    \"Email\": \"abcdef@xybz.com\",\r\n    \"Phone\": \"7309963207\",\r\n    \"UserName\": \"hecris\",\r\n    \"Password\": \"Apple@1234\"\r\n}\r\n"
+							"raw": "{\r\n    \"RoleId\": \"3\",\r\n    \"FirstName\": \"Cris\",\r\n    \"LastName\": \"evans\",\r\n    \"Gender\": \"Male\",\r\n    \"BiocubeId\": \"he\",\r\n    \"CountryCode\": \"+91\",\r\n    \"Email\": \"bbcdef@xybz.com\",\r\n    \"Phone\": \"7309963207\",\r\n    \"UserName\": \"hecris\",\r\n    \"Password\": \"Apple@1234\"\r\n}\r\n"
 						},
 						"url": {
 							"raw": "{{BASE_URL}}/users",
@@ -315,7 +315,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"    pm.environment.set(\"USER_PASSWORD\", \"123xyz@\");"
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -330,14 +330,14 @@
 								"type": "text"
 							},
 							{
-								"key": "Authorization",
-								"value": "Bearer {{USER_JWT}}",
+								"key": "x-api-key",
+								"value": "{{API_CLIENT_INTERNAL_KEY}}",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"UserName\": \"crisevans\",\r\n    \"Password\": \"Apple@123\"\r\n}\r\n"
+							"raw": "{\r\n    \"UserName\": \"moderator\",\r\n    \"Password\": \"123xyz@\"\r\n}\r\n"
 						},
 						"url": {
 							"raw": "{{BASE_URL}}/users/login-password",
@@ -350,6 +350,555 @@
 							]
 						},
 						"description": "User login with username/phone/email and password.\n\n'LoginRoleId' is the role id through which user wants to log into the system provided the user has the role."
+					},
+					"response": []
+				},
+				{
+					"name": "Generate otp",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"try {\r",
+									"    var jsonRes = pm.response.json();\r",
+									"}\r",
+									"catch (error) {\r",
+									"    console.log(error.message);\r",
+									"}\r",
+									"\r",
+									"// pm.test(\"Request is successfull\", function () {\r",
+									"//     pm.response.to.have.status(200);\r",
+									"//     var jsonRes = pm.response.json();\r",
+									"//     pm.expect(jsonRes.Status).to.eql('success');\r",
+									"// });\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{API_CLIENT_INTERNAL_KEY}}",
+								"description": "API key for client app authentication",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Phone\": \"7309963207\",\r\n    \"CountryCode\": \"+91\"\r\n}"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/users/generate-otp",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"users",
+								"generate-otp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User log-in with otp",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"try {\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.environment.set(\"USER_JWT\", jsonRes.Data.AccessToken);\r",
+									"}\r",
+									"catch (error) {\r",
+									"    console.log(error.message);\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Request is successfull\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.expect(jsonRes.Status).to.eql('success');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"User login: Access token is returned\", function () {\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.expect(jsonRes.Data).to.have.property('AccessToken');\r",
+									"    pm.expect(jsonRes.Data.AccessToken).to.not.be.null;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{API_CLIENT_INTERNAL_KEY}}",
+								"description": "API key for client app authentication",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Phone\": \"7309963207\",\r\n    \"CountryCode\": \"+91\",\r\n    \"Otp\": \"713139\"\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/users/login-otp",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"users",
+								"login-otp"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Participant management",
+			"item": [
+				{
+					"name": "create Participant",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"try {\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.environment.set(\"PARTICIPANT_USER_ID\", jsonRes.Data.id);\r",
+									"}\r",
+									"catch (error) {\r",
+									"    console.log(error.message);\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Request is successfull\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.expect(jsonRes.Status).to.eql('success');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Participant is created\", function () {\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.expect(jsonRes.Data).to.have.property('id');\r",
+									"    pm.expect(jsonRes.Data.Phone).to.not.be.null;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{API_CLIENT_INTERNAL_KEY}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"FirstName\": \"Robert\",\r\n    \"LastName\": \"crook\",\r\n    \"Gender\": \"Male\",\r\n    \"SystemId\": \"66fce627-18fb\",\r\n    \"CountryCode\": \"+91\",\r\n    \"Email\": \"nbdcrf@abz.com\",\r\n    \"Phone\": \"7329964202\",\r\n    \"Country\": \"India\"\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/participants",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"participants"
+							]
+						},
+						"description": "User login with username/phone/email and password.\n\n'LoginRoleId' is the role id through which user wants to log into the system provided the user has the role."
+					},
+					"response": []
+				},
+				{
+					"name": "Get participant by user id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"try {\r",
+									"    var jsonRes = pm.response.json();\r",
+									"}\r",
+									"catch (error) {\r",
+									"    console.log(error.message);\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Request is successfull\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.expect(jsonRes.Status).to.eql('success');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Patient is created\", function () {\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.expect(jsonRes.Data).to.have.property('id');\r",
+									"    pm.expect(jsonRes.Data.id).to.not.be.empty;\r",
+									"    pm.expect(jsonRes.Data.Phone).to.not.be.empty;\r",
+									"    pm.expect(jsonRes.Data).to.have.property('FirstName');\r",
+									"    pm.expect(jsonRes.Data.Gender).to.not.be.empty;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var password = \"Client-Test@123\";\r",
+									"pm.environment.set(\"API_CLIENT_PASSWORD\", password);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{API_CLIENT_INTERNAL_KEY}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/participants/{{PARTICIPANT_USER_ID}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"participants",
+								"{{PARTICIPANT_USER_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update participant details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"try {\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.environment.set(\"PATIENT_FIRST_NAME\", jsonRes.Data.FirstName);\r",
+									"    pm.environment.set(\"PATIENT_PHONE\", jsonRes.Data.Phone);\r",
+									"    pm.environment.set(\"PATIENT_GENDER\", jsonRes.Data.Gender);\r",
+									"    pm.environment.set(\"PATIENT_EMAIL\", jsonRes.Data.Email);\r",
+									"\r",
+									"    var phone = jsonRes.Data.Patient.User.Person.Phone;\r",
+									"\r",
+									"}\r",
+									"catch (error) {\r",
+									"    console.log(error.message);\r",
+									"}\r",
+									"\r",
+									"\r",
+									"pm.test(\"Request is successfull\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.expect(jsonRes.Status).to.eql('success');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Participant is updated\", function () {\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.expect(jsonRes.Data).to.have.property('id');\r",
+									"    pm.expect(jsonRes.Data.id).to.not.be.empty;\r",
+									"    pm.expect(jsonRes.Data.Phone).to.not.be.empty;\r",
+									"    pm.expect(jsonRes.Data).to.have.property('FirstName');\r",
+									"    pm.expect(jsonRes.Data.Gender).to.not.be.empty;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"//Randomly generated user details\r",
+									"\r",
+									"var first_names = ['Jerry', 'Tom', 'Garfield', 'Jerome', 'Hobbes', 'Calvin', 'Nate', 'Peanuts', 'John', 'Abigale', 'Erin'];\r",
+									"\r",
+									"var last_names = ['Smith', 'Johnson',  'Williams', 'Jones', 'Brown', 'Davis', 'Miller', 'Wilson', 'Moore', 'Taylor', 'Anderson', 'Thomas', 'Jackson', 'White', 'Harris', 'Martin', 'Thompson', 'Garcia', 'Martinez', 'Robinson', 'Clark', 'Rodriguez', 'Lewis', 'Lee', 'Walker', 'Hall'];\r",
+									"\r",
+									"var first = first_names[Math.floor(Math.random() * first_names.length)];\r",
+									"var last = last_names[Math.floor(Math.random() * last_names.length)];\r",
+									"var phonenumber = (Math.floor(Math.random() * 9000000000) + 1000000000).toString();\r",
+									"var random_postfix = (Math.floor(Math.random() * 90000) + 10000).toString();\r",
+									"var email = first + \".\" + random_postfix + \".\" + last + \"@gmail.com\";\r",
+									"var password = \"Test@123\";\r",
+									"\r",
+									"pm.environment.set(\"FIRST_NAME\", first);\r",
+									"pm.environment.set(\"LAST_NAME\", last);\r",
+									"pm.environment.set(\"EMAIL\", email);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text",
+								"description": "User login session token (JWT). Format : Bearer JWT_TOKEN"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{API_CLIENT_INTERNAL_KEY}}",
+								"type": "text",
+								"description": "API key for client app authentication"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"FirstName\": \"{{FIRST_NAME}}\",\r\n    \"LastName\": \"{{LAST_NAME}}\",\r\n    \"Gender\": \"Male\",\r\n    \"SystemId\": \"66fce627-18fb\"\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/participants/{{PARTICIPANT_USER_ID}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"participants",
+								"{{PARTICIPANT_USER_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search participant",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Request is successfull\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.expect(jsonRes.Status).to.eql('success');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"List of participants is returned\", function () {\r",
+									"\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.expect(jsonRes.Data).to.have.property('Items');\r",
+									"    pm.expect(jsonRes.Data.Items.length).to.be.greaterThan(0);\r",
+									"\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text",
+								"description": "User login session token (JWT). Format : Bearer JWT_TOKEN"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{API_CLIENT_INTERNAL_KEY}}",
+								"type": "text",
+								"description": "API key for client app authentication"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/participants/search?firstName=Robert",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"participants",
+								"search"
+							],
+							"query": [
+								{
+									"key": "phone",
+									"value": "{{PATIENT_PHONE_NUMBER}}",
+									"description": "Search by patient phone",
+									"disabled": true
+								},
+								{
+									"key": "email",
+									"value": "{{PATIENT_EMAIL}}",
+									"description": "Search by patient email",
+									"disabled": true
+								},
+								{
+									"key": "gender",
+									"value": "{{PATIENT_GENDER}}",
+									"description": "Search by patient gender",
+									"disabled": true
+								},
+								{
+									"key": "systemId",
+									"value": "66fce627-18fb",
+									"disabled": true
+								},
+								{
+									"key": "firstName",
+									"value": "Robert"
+								},
+								{
+									"key": "lastName",
+									"value": "Rai",
+									"disabled": true
+								},
+								{
+									"key": "country",
+									"value": "India",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Search addresses using query parameters."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete participant by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Request is successfull\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonRes = pm.response.json();",
+									"    pm.expect(jsonRes.Status).to.eql('success');",
+									"});",
+									"",
+									"pm.test(\"Participant is deleted\", function () {",
+									"",
+									"    var expectedValue = true;",
+									"    ",
+									"    var jsonRes = pm.response.json();",
+									"    pm.expect(jsonRes.Data).to.have.property('Deleted');",
+									"    pm.expect(jsonRes.Data.Deleted).equals(expectedValue);",
+									"",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{API_CLIENT_INTERNAL_KEY}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/participants/{{PARTICIPANT_USER_ID}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"participants",
+								"{{PARTICIPANT_USER_ID}}"
+							]
+						}
 					},
 					"response": []
 				}

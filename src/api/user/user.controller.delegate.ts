@@ -322,14 +322,13 @@ export class UserControllerDelegate {
 
     constructCurrentUser = (user, sessionId): CurrentUser => {
         return {
-            UserId          : user.id,
-            UserName        : user.UserName,
-            CurrentRoleId   : user.RoleId,
-            CurrentRoleName : user.Role.RoleName,
-            DisplayName     : Helper.constructPersonDisplayName(user.Prefix, user.FirstName, user.LastName),
-            SessionId       : sessionId,
-            Phone           : user.CountryCode + '-' + user.Phone,
-            Email           : user.Email
+            UserId        : user.id,
+            UserName      : user.UserName,
+            CurrentRoleId : user.RoleId,
+            DisplayName   : Helper.constructPersonDisplayName(user.Prefix, user.FirstName, user.LastName),
+            SessionId     : sessionId,
+            Phone         : user.CountryCode + '-' + user.Phone,
+            Email         : user.Email
         };
     }
 

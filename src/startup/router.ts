@@ -39,6 +39,7 @@ import { register as registerUserSelectedActionPlanRoutes } from "../api/user.re
 import { register as registerUserSelectedGoalRoutes       } from "../api/user.responses/user.selected.goal/user.selected.goal.routes";
 import { register as registerUserSelectedPriorityRoutes   } from "../api/user.responses/user.selected.priority/user.selected.priority.routes";
 import { register as registerUserRoleRoutes               } from "../api/user.role/user.role.routes";
+import { register as registerParticipantRoutes            } from "../api/enrollment/participant/participant.routes";
 
 ////////////////////////////////////////////////////////////////////////////////////
 
@@ -102,6 +103,7 @@ export class Router {
                 registerUserSelectedGoalRoutes(this._app);
                 registerUserSelectedPriorityRoutes(this._app);
                 registerUserRoleRoutes(this._app);
+                registerParticipantRoutes(this._app);
 
                 resolve(true);
 
