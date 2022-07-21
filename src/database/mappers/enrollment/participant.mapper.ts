@@ -12,6 +12,7 @@ export class ParticipantMapper {
         }
         const dto: ParticipantDto = {
             id          : enrollment.id,
+            DisplayId   : enrollment.DisplayId,
             Prefix      : enrollment.Prefix,
             FirstName   : enrollment.FirstName,
             LastName    : enrollment.LastName,

@@ -19,6 +19,7 @@ export class EnrollmentController extends BaseController {
 
     constructor() {
         super();
+        
         this._delegate = new EnrollmentControllerDelegate();
     }
 
@@ -26,7 +27,7 @@ export class EnrollmentController extends BaseController {
 
     create = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('Enrollment.Create', request, response);
+            await this.authorize('Enrollment.Create', request, response, false);
             const record = await this._delegate.create(request.body);
             const message = 'Enrollment added successfully!';
             ResponseHandler.success(request, response, message, 201, record);
@@ -37,7 +38,7 @@ export class EnrollmentController extends BaseController {
 
     getById = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('Enrollment.GetById', request, response);
+            await this.authorize('Enrollment.GetById', request, response, false);
             const record = await this._delegate.getById(request.params.id);
             const message = 'Enrollment retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, record);
@@ -48,7 +49,7 @@ export class EnrollmentController extends BaseController {
 
     search = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('Enrollment.Search', request, response);
+            await this.authorize('Enrollment.Search', request, response, false);
             const searchResults = await this._delegate.search(request.query);
             const message = 'Enrollment records retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, searchResults);
@@ -59,7 +60,7 @@ export class EnrollmentController extends BaseController {
 
     update = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('Enrollment.Update', request, response);
+            await this.authorize('Enrollment.Update', request, response, false);
             const updatedRecord = await this._delegate.update(request.params.id, request.body);
             const message = 'Enrollment updated successfully!';
             ResponseHandler.success(request, response, message, 200, updatedRecord);
@@ -70,7 +71,7 @@ export class EnrollmentController extends BaseController {
 
     delete = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('Enrollment.Delete', request, response);
+            await this.authorize('Enrollment.Delete', request, response, false);
             const result = await this._delegate.delete(request.params.id);
             const message = 'Enrollment deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);

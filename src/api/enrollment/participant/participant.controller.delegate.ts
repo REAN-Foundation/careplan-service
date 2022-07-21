@@ -144,6 +144,7 @@ export class ParticipantControllerDelegate {
         }
         return {
             id                  : record.id,
+            DisplayId           : record.DisplayId,
             Prefix              : record.Prefix,
             FirstName           : record.FirstName,
             LastName            : record.LastName,
@@ -167,6 +168,7 @@ export class ParticipantControllerDelegate {
         }
         return {
             id          : record.id,
+            DisplayId   : record.DisplayId,
             Prefix      : record.Prefix,
             FirstName   : record.FirstName,
             LastName    : record.LastName,
