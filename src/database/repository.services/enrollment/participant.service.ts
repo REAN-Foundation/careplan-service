@@ -47,6 +47,9 @@ export class ParticipantService {
                 include : []
             };
 
+            if (filters.DisplayId) {
+                search.where['DisplayId'] = filters.DisplayId;
+            }
             if (filters.Prefix) {
                 search.where['Prefix'] = filters.Prefix;
             }

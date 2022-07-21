@@ -16,6 +16,7 @@ export interface ParticipantModel {
 
 export interface ParticipantDto {
     id         : uuid;
+    DisplayId  : number;
     Prefix     : string;
     FirstName  : string;
     LastName   : string;
@@ -34,6 +35,7 @@ export interface ParticipantSearchFilters extends BaseSearchFilters {
     Phone?    : string;
     Email?    : string;
     SystemId? : string;
+    DisplayId?: number;
 }
 
 export interface ParticipantSearchResults extends BaseSearchResults {
