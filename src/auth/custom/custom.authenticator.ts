@@ -21,6 +21,8 @@ export class CustomAuthenticator implements IAuthenticator {
         request: express.Request
     ): Promise<AuthenticationResult> => {
         try {
+            request.authorizeRequest = true;
+
             var res: AuthenticationResult = {
                 Result        : true,
                 Message       : 'Authenticated',
@@ -69,6 +71,9 @@ export class CustomAuthenticator implements IAuthenticator {
 
     public authenticateClient = async (request: express.Request): Promise<AuthenticationResult> => {
         try {
+
+            request.authorizeRequest = false;
+
             var res: AuthenticationResult = {
                 Result        : true,
                 Message       : 'Authenticated',

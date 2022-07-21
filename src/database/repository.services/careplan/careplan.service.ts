@@ -159,7 +159,7 @@ export class CareplanService {
                     throw new Error('Unable to update care plan!');
                 }
             }
-            return await exports.getById(id);
+            return await this.getById(id);
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update care plan!', error);
         }
