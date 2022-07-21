@@ -12,7 +12,7 @@ export class CareplanCategoryService {
     create = async (createModel: CareplanCategoryCreateModel): Promise < CareplanCategoryDto > => {
         try {
             var record = await this.CareplanCategory.create(createModel);
-            return await exports.getById(record.id);
+            return await this.getById(record.id);
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create careplan category!', error);
         }
@@ -117,7 +117,7 @@ export class CareplanCategoryService {
                     throw new Error('Unable to update careplan category!');
                 }
             }
-            return await exports.getById(id);
+            return await this.getById(id);
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update careplan category!', error);
         }
