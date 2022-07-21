@@ -93,6 +93,9 @@ export class UserHelper {
 
         const updateModel: any = {};
 
+        if (Helper.hasProperty(requestBody, 'DisplayId')) {
+            updateModel.DisplayId = requestBody.DisplayId;
+        }
         if (Helper.hasProperty(requestBody, 'Prefix')) {
             updateModel.Prefix = requestBody.Prefix;
         }
