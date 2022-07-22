@@ -116,8 +116,8 @@ export class EnrollmentControllerDelegate {
         if (Helper.hasProperty(requestBody, 'CareplanId')) {
             updateModel.CareplanId = requestBody.CareplanId;
         }
-        if (Helper.hasProperty(requestBody, 'UserId')) {
-            updateModel.UserId = requestBody.UserId;
+        if (Helper.hasProperty(requestBody, 'ParticipantId')) {
+            updateModel.ParticipantId = requestBody.ParticipantId;
         }
         if (Helper.hasProperty(requestBody, 'StartDate')) {
             updateModel.StartDate = requestBody.StartDate;
@@ -135,7 +135,7 @@ export class EnrollmentControllerDelegate {
     getCreateModel = (requestBody): EnrollmentCreateModel => {
         return {
             CareplanId     : requestBody.CareplanId ? requestBody.CareplanId : null,
-            UserId         : requestBody.UserId ? requestBody.UserId : null,
+            ParticipantId  : requestBody.ParticipantId ? requestBody.ParticipantId : null,
             StartDate      : requestBody.StartDate ? requestBody.StartDate : null,
             EndDate        : requestBody.EndDate ? requestBody.EndDate : null,
             EnrollmentDate : requestBody.EnrollmentDate ? requestBody.EnrollmentDate : null
@@ -149,7 +149,7 @@ export class EnrollmentControllerDelegate {
         return {
             id             : record.id,
             CareplanId     : record.CareplanId,
-            UserId         : record.UserId,
+            ParticipantId  : record.ParticipantId,
             StartDate      : record.StartDate,
             EndDate        : record.EndDate,
             EnrollmentDate : record.EnrollmentDate,
@@ -164,7 +164,7 @@ export class EnrollmentControllerDelegate {
         return {
             id             : record.id,
             CareplanId     : record.CareplanId,
-            UserId         : record.UserId,
+            ParticipantId  : record.ParticipantId,
             StartDate      : record.StartDate,
             EndDate        : record.EndDate,
             EnrollmentDate : record.EnrollmentDate,
