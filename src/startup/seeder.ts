@@ -101,7 +101,8 @@ export class Seeder {
                 BirthDate   : null,
                 Prefix      : ""
             };
-    
+            
+            userDomainModel.Password = Helper.generateHashedPassword(u.Password);
             const user = await this._userService.create(userDomainModel);
             const userRole: UserRoleCreateModel = {
                 UserId : user.id,
