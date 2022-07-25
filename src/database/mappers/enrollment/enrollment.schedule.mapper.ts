@@ -13,7 +13,7 @@ export class EnrollmentScheduleMapper {
         const dto: EnrollmentScheduleDto = {
             id: enrollmentSchedule.id,
             EnrollmentId: enrollmentSchedule.EnrollmentId,
-            UserId: enrollmentSchedule.UserId,
+            ParticipantId: enrollmentSchedule.ParticipantId,
             CareplanScheduleId: enrollmentSchedule.CareplanScheduleId,
             AssetId: enrollmentSchedule.AssetId,
             AssetType: enrollmentSchedule.AssetType,

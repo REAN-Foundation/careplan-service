@@ -25,7 +25,7 @@ export class EnrollmentScheduleModel {
             foreignKey : true,
             unique     : false
         },
-        UserId : {
+        ParticipantId : {
             type       : DataTypes.UUID,
             allowNull  : false,
             foreignKey : true,
@@ -89,10 +89,10 @@ export class EnrollmentScheduleModel {
             as        : 'Enrollment'
         });
 
-        models.EnrollmentSchedule.belongsTo(models.User, {
-            sourceKey : 'UserId',
+        models.EnrollmentSchedule.belongsTo(models.Participant, {
+            sourceKey : 'ParticipantId',
             targetKey : 'id',
-            as        : 'User'
+            as        : 'Participant'
         });
 
         models.EnrollmentSchedule.belongsTo(models.CareplanSchedule, {
