@@ -55,7 +55,7 @@
     "pg-hstore": "^2.3.3",
     "readdirp": "^3.6.0",
     "reflect-metadata": "^0.1.13",
-    "sequelize": "^6.20.1",
+    "sequelize": "^6.21.2",
     "sequelize-typescript": "^2.1.0",
     "sharp": "^0.30.0",
     "sleep": "^6.3.0",
