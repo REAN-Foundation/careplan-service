@@ -8,7 +8,14 @@ import {
 } from "../miscellaneous/system.types";
 
 export interface EnrollmentScheduleCreateModel {
-    AssetType ?: AssetType;
+    EnrollmentId      : uuid;
+    ParticipantId     : uuid;
+    CareplanScheduleId: uuid;
+    AssetId           : number;
+    AssetType         : AssetType;
+    CareplanId        : number;
+    TimeSlot          : TimeSlot;
+    ScheduledDate     : Date;
 }
 
 export interface EnrollmentScheduleUpdateModel {
@@ -18,7 +25,7 @@ export interface EnrollmentScheduleUpdateModel {
 export interface EnrollmentScheduleDto {
     id                : uuid;
     EnrollmentId      : uuid;
-    UserId            : uuid;
+    ParticipantId     : uuid;
     CareplanScheduleId: uuid;
     AssetId           : number;
     AssetType         : AssetType;

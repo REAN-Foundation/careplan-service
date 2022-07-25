@@ -7,17 +7,18 @@ import { FileResourceCreateModel } from '../../domain.types/file.resource.domain
 import express from 'express';
 import * as mime from 'mime-types';
 import * as aws from 'aws-sdk';
-import { Logger } from '../../common/logger';
+import { IFileStorageService } from '../../modules/storage/interfaces/file.storage.service.interface';
+import { injectable, inject } from 'tsyringe';
 
 ///////////////////////////////////////////////////////////////////////////////////////
-
+@injectable()
 export class FileResourceControllerDelegate {
 
     //#region member variables and constructors
 
     _service: FileResourceService = null;
 
-    constructor() {
+    constructor( @inject('IFileStorageService') private _storageService: IFileStorageService ) {
         this._service = new FileResourceService();
     }
 
@@ -38,14 +39,7 @@ export class FileResourceControllerDelegate {
         filename = filename + '_' + timestamp + '.' + ext;
         var storageKey = 'uploaded/' + dateFolder + '/' + filename;
     
-        var s3 = getS3Client();
-        const params = {
-            Bucket : process.env.STORAGE_BUCKET,
-            Key    : storageKey,
-            Body   : request //Request stream piped directly
-        };
-        var stored = await s3.upload(params).promise();
-        Logger.instance().log(JSON.stringify(stored, null, 2));
+        await this._storageService.upload( storageKey,  originalFilename );
     
         var model: FileResourceCreateModel = {
             StorageKey       : storageKey,

@@ -5,9 +5,8 @@ import {
     CareplanModel
 } from '../../models/careplan/careplan.model';
 import {
-    UserModel
-} from '../../models/user/user.model';
-
+    ParticipantModel
+} from '../../../database/models/enrollment/participant.model';
 import {
     ErrorHandler
 } from '../../../common/error.handler';
@@ -27,7 +26,7 @@ export class EnrollmentService {
 
     Careplan = CareplanModel.Model;
 
-    User = UserModel.Model;
+    Participant = ParticipantModel.Model;
 
     //#endregion
 
@@ -54,9 +53,9 @@ export class EnrollmentService {
                     as       : 'Careplan',
                     //through: { attributes: [] }
                 }, {
-                    model    : this.User,
+                    model    : this.Participant,
                     required : false,
-                    as       : 'User',
+                    as       : 'Participant',
                     //through: { attributes: [] }
                 },
 
@@ -166,16 +165,16 @@ export class EnrollmentService {
         //    includeCareplan.where['Xyz'] = filters.Xyz;
         //}
         search.include.push(includeCareplanAsCareplan);
-        const includeUserAsUser = {
-            model    : this.User,
+        const includeParticipantAsParticipant = {
+            model    : this.Participant,
             required : false,
-            as       : 'User',
+            as       : 'Participant',
             where    : {}
         };
         //if (filters.Xyz != undefined) {
         //    includeUser.where['Xyz'] = filters.Xyz;
         //}
-        search.include.push(includeUserAsUser);
+        search.include.push(includeParticipantAsParticipant);
 
         return search;
     }

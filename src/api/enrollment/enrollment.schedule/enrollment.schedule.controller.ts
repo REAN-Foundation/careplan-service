@@ -24,17 +24,6 @@ export class EnrollmentScheduleController extends BaseController {
 
     //#endregion
 
-    create = async (request: express.Request, response: express.Response): Promise < void > => {
-        try {
-            await this.authorize('EnrollmentSchedule.Create', request, response, false);
-            const record = await this._delegate.create(request.body);
-            const message = 'Enrollment schedule added successfully!';
-            ResponseHandler.success(request, response, message, 201, record);
-        } catch (error) {
-            ResponseHandler.handleError(request, response, error);
-        }
-    }
-
     getById = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
             await this.authorize('EnrollmentSchedule.GetById', request, response, false);
@@ -56,27 +45,5 @@ export class EnrollmentScheduleController extends BaseController {
             ResponseHandler.handleError(request, response, error);
         }
     }
-
-    update = async (request: express.Request, response: express.Response): Promise < void > => {
-        try {
-            await this.authorize('EnrollmentSchedule.Update', request, response, false);
-            const updatedRecord = await this._delegate.update(request.params.id, request.body);
-            const message = 'Enrollment schedule updated successfully!';
-            ResponseHandler.success(request, response, message, 200, updatedRecord);
-        } catch (error) {
-            ResponseHandler.handleError(request, response, error);
-        }
-    }
-
-    delete = async (request: express.Request, response: express.Response): Promise < void > => {
-        try {
-            await this.authorize('EnrollmentSchedule.Delete', request, response, false);
-            const result = await this._delegate.delete(request.params.id);
-            const message = 'Enrollment schedule deleted successfully!';
-            ResponseHandler.success(request, response, message, 200, result);
-        } catch (error) {
-            ResponseHandler.handleError(request, response, error);
-        }
-    };
-
+    
 }

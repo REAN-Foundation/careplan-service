@@ -10,13 +10,13 @@ export class EnrollmentValidator {
     static validateCreateRequest = async (requestBody) => {
         try {
             const schema = joi.object({
-                CareplanId: joi.number().integer().optional(),
-                UserId: joi.string().guid({
-                    version: ['uuidv4']
+                CareplanId    : joi.number().integer().optional(),
+                ParticipantId : joi.string().guid({
+                    version : ['uuidv4']
                 }).optional(),
-                StartDate: joi.date().iso().optional(),
-                EndDate: joi.date().iso().optional(),
-                EnrollmentDate: joi.date().iso().optional()
+                StartDate      : joi.date().iso().optional(),
+                EndDate        : joi.date().iso().optional(),
+                EnrollmentDate : joi.date().iso().optional()
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -27,13 +27,13 @@ export class EnrollmentValidator {
     static validateUpdateRequest = async (requestBody) => {
         try {
             const schema = joi.object({
-                CareplanId: joi.number().integer().optional(),
-                UserId: joi.string().guid({
-                    version: ['uuidv4']
+                CareplanId    : joi.number().integer().optional(),
+                ParticipantId : joi.string().guid({
+                    version : ['uuidv4']
                 }).optional(),
-                StartDate: joi.date().iso().optional(),
-                EndDate: joi.date().iso().optional(),
-                EnrollmentDate: joi.date().iso().optional()
+                StartDate      : joi.date().iso().optional(),
+                EndDate        : joi.date().iso().optional(),
+                EnrollmentDate : joi.date().iso().optional()
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -44,8 +44,8 @@ export class EnrollmentValidator {
     static validateSearchRequest = async (query) => {
         try {
             const schema = joi.object({
-                careplanId: joi.number().integer().optional(),
-                progressStatus: joi.string().valid("Pending", "In-progress", "Completed", "Cancelled", "Delayed", "Unknown").optional()
+                careplanId     : joi.number().integer().optional(),
+                progressStatus : joi.string().valid("Pending", "In-progress", "Completed", "Cancelled", "Delayed", "Unknown").optional()
             });
             return await schema.validateAsync(query);
 

@@ -16,6 +16,7 @@ export class ParticipantModel {
             type         : DataTypes.UUID,
             allowNull    : false,
             defaultValue : DataTypes.UUIDV4,
+            unique       : true
         },
         DisplayId : {
             type          : DataTypes.INTEGER,

@@ -17,7 +17,6 @@ import {
     uuid
 } from '../../../domain.types/miscellaneous/system.types';
 import {
-    EnrollmentScheduleCreateModel,
     EnrollmentScheduleUpdateModel,
     EnrollmentScheduleSearchFilters,
     EnrollmentScheduleSearchResults
@@ -37,16 +36,6 @@ export class EnrollmentScheduleControllerDelegate {
 
     //#endregion
 
-    create = async (requestBody: any) => {
-        await validator.validateCreateRequest(requestBody);
-        var createModel: EnrollmentScheduleCreateModel = this.getCreateModel(requestBody);
-        const record = await this._service.create(createModel);
-        if (record === null) {
-            throw new ApiError('Unable to create enrollment schedule!', 400);
-        }
-        return this.getEnrichedDto(record);
-    }
-
     getById = async (id: uuid) => {
         const record = await this._service.getById(id);
         if (record === null) {
@@ -62,31 +51,6 @@ export class EnrollmentScheduleControllerDelegate {
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
         return searchResults;
-    }
-
-    update = async (id: uuid, requestBody: any) => {
-        await validator.validateUpdateRequest(requestBody);
-        const record = await this._service.getById(id);
-        if (record === null) {
-            ErrorHandler.throwNotFoundError('Enrollment schedule with id ' + id.toString() + ' cannot be found!');
-        }
-        const updateModel: EnrollmentScheduleUpdateModel = this.getUpdateModel(requestBody);
-        const updated = await this._service.update(id, updateModel);
-        if (updated == null) {
-            throw new ApiError('Unable to update enrollment schedule!', 400);
-        }
-        return this.getEnrichedDto(updated);
-    }
-
-    delete = async (id: uuid) => {
-        const record = await this._service.getById(id);
-        if (record == null) {
-            ErrorHandler.throwNotFoundError('Enrollment schedule with id ' + id.toString() + ' cannot be found!');
-        }
-        const enrollmentScheduleDeleted: boolean = await this._service.delete(id);
-        return {
-            Deleted : enrollmentScheduleDeleted
-        };
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -117,23 +81,6 @@ export class EnrollmentScheduleControllerDelegate {
         return filters;
     }
 
-    getUpdateModel = (requestBody): EnrollmentScheduleUpdateModel => {
-
-        const updateModel: EnrollmentScheduleUpdateModel = {};
-
-        if (Helper.hasProperty(requestBody, 'AssetType')) {
-            updateModel.AssetType = requestBody.AssetType;
-        }
-
-        return updateModel;
-    }
-
-    getCreateModel = (requestBody): EnrollmentScheduleCreateModel => {
-        return {
-            AssetType : requestBody.AssetType ? requestBody.AssetType : null
-        };
-    }
-
     getEnrichedDto = (record) => {
         if (record == null) {
             return null;
@@ -158,7 +105,7 @@ export class EnrollmentScheduleControllerDelegate {
         return {
             id                 : record.id,
             EnrollmentId       : record.EnrollmentId,
-            UserId             : record.UserId,
+            ParticipantId      : record.ParticipantId,
             CareplanScheduleId : record.CareplanScheduleId,
             AssetId            : record.AssetId,
             AssetType          : record.AssetType,

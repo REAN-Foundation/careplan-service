@@ -15,7 +15,7 @@ export class FileResourceController extends BaseController {
 
     constructor() {
         super();
-        this._delegate = new FileResourceControllerDelegate();
+        this._delegate = Loader.Container.resolve(FileResourceControllerDelegate);
     }
 
     //#endregion

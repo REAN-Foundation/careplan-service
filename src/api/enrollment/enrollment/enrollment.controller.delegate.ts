@@ -1,6 +1,10 @@
+/* eslint-disable key-spacing */
 import {
     EnrollmentService
 } from '../../../database/repository.services/enrollment/enrollment.service';
+import {
+    EnrollmentScheduleService
+} from '../../../database/repository.services/enrollment/enrollment.schedule.service';
 import {
     ErrorHandler
 } from '../../../common/error.handler';
@@ -17,11 +21,18 @@ import {
     uuid
 } from '../../../domain.types/miscellaneous/system.types';
 import {
+    CareplanScheduleControllerDelegate
+} from '../../careplan/careplan.schedule/careplan.schedule.controller.delegate';
+import {
     EnrollmentCreateModel,
     EnrollmentUpdateModel,
     EnrollmentSearchFilters,
     EnrollmentSearchResults
 } from '../../../domain.types/enrollment/enrollment.domain.types';
+import { EnrollmentScheduleCreateModel } from '../../../domain.types/enrollment/enrollment.schedule.domain.types';
+import { TimeHelper } from '../../../common/time.helper';
+import { DurationType } from '../../../domain.types/miscellaneous/time.types';
+import { Logger } from '../../../common/logger';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -31,8 +42,14 @@ export class EnrollmentControllerDelegate {
 
     _service: EnrollmentService = null;
 
+    _careplanScheduleDelegate: CareplanScheduleControllerDelegate = null;
+
+    _scheduleService: EnrollmentScheduleService = null;
+
     constructor() {
         this._service = new EnrollmentService();
+        this._careplanScheduleDelegate = new CareplanScheduleControllerDelegate();
+        this._scheduleService = new EnrollmentScheduleService();
     }
 
     //#endregion
@@ -44,6 +61,33 @@ export class EnrollmentControllerDelegate {
         if (record === null) {
             throw new ApiError('Unable to create enrollment!', 400);
         }
+
+        const careplanSchedule = await this._careplanScheduleDelegate.search({ careplanId : record.CareplanId });
+        const scheduleDate = TimeHelper.addDuration(
+            record.StartDate,
+            careplanSchedule.Items[0].Day - 1,
+            DurationType.Day
+        );
+
+        var enrollmentScheduleModel: EnrollmentScheduleCreateModel = {
+
+            EnrollmentId       : record.id,
+            ParticipantId      : record.ParticipantId,
+            CareplanId         : record.CareplanId,
+            CareplanScheduleId : careplanSchedule.Items[0].id,
+            AssetId            : careplanSchedule.Items[0].AssetId,
+            AssetType          : careplanSchedule.Items[0].AssetType,
+            TimeSlot           : careplanSchedule.Items[0].TimeSlot,
+            ScheduledDate      : scheduleDate
+        };
+
+        try {
+            const enrollmentScheduleRecord = await this._scheduleService.create(enrollmentScheduleModel);
+            Logger.instance().log(JSON.stringify(enrollmentScheduleRecord, null, 2));
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to create enrollment schedule!', error);
+        }
+
         return this.getEnrichedDto(record);
     }
 
@@ -116,8 +160,8 @@ export class EnrollmentControllerDelegate {
         if (Helper.hasProperty(requestBody, 'CareplanId')) {
             updateModel.CareplanId = requestBody.CareplanId;
         }
-        if (Helper.hasProperty(requestBody, 'UserId')) {
-            updateModel.UserId = requestBody.UserId;
+        if (Helper.hasProperty(requestBody, 'ParticipantId')) {
+            updateModel.ParticipantId = requestBody.ParticipantId;
         }
         if (Helper.hasProperty(requestBody, 'StartDate')) {
             updateModel.StartDate = requestBody.StartDate;
@@ -135,7 +179,7 @@ export class EnrollmentControllerDelegate {
     getCreateModel = (requestBody): EnrollmentCreateModel => {
         return {
             CareplanId     : requestBody.CareplanId ? requestBody.CareplanId : null,
-            UserId         : requestBody.UserId ? requestBody.UserId : null,
+            ParticipantId  : requestBody.ParticipantId ? requestBody.ParticipantId : null,
             StartDate      : requestBody.StartDate ? requestBody.StartDate : null,
             EndDate        : requestBody.EndDate ? requestBody.EndDate : null,
             EnrollmentDate : requestBody.EnrollmentDate ? requestBody.EnrollmentDate : null
@@ -149,7 +193,7 @@ export class EnrollmentControllerDelegate {
         return {
             id             : record.id,
             CareplanId     : record.CareplanId,
-            UserId         : record.UserId,
+            ParticipantId  : record.ParticipantId,
             StartDate      : record.StartDate,
             EndDate        : record.EndDate,
             EnrollmentDate : record.EnrollmentDate,
@@ -164,7 +208,7 @@ export class EnrollmentControllerDelegate {
         return {
             id             : record.id,
             CareplanId     : record.CareplanId,
-            UserId         : record.UserId,
+            ParticipantId  : record.ParticipantId,
             StartDate      : record.StartDate,
             EndDate        : record.EndDate,
             EnrollmentDate : record.EnrollmentDate,
