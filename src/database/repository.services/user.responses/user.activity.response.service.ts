@@ -2,8 +2,8 @@ import {
     UserActivityResponseModel
 } from '../../models/user.responses/user.activity.response.model';
 import {
-    UserModel
-} from '../../models/user/user.model';
+    ParticipantModel
+} from '../../models/enrollment/participant.model';
 import {
     EnrollmentScheduleModel
 } from '../../models/enrollment/enrollment.schedule.model';
@@ -34,7 +34,7 @@ export class UserActivityResponseService {
 
     UserActivityResponse = UserActivityResponseModel.Model;
 
-    User = UserModel.Model;
+    Participant = ParticipantModel.Model;
 
     EnrollmentSchedule = EnrollmentScheduleModel.Model;
 
@@ -62,9 +62,9 @@ export class UserActivityResponseService {
                     id : id
                 },
                 include : [{
-                    model    : this.User,
+                    model    : this.Participant,
                     required : false,
-                    as       : 'User',
+                    as       : 'Participant',
                     //through: { attributes: [] }
                 }, {
                     model    : this.EnrollmentSchedule,
@@ -173,6 +173,9 @@ export class UserActivityResponseService {
             include : []
         };
 
+        if (filters.ParticipantId) {
+            search.where['ParticipantId'] = filters.ParticipantId;
+        }
         if (filters.CareplanId) {
             search.where['CareplanId'] = filters.CareplanId;
         }
@@ -194,9 +197,9 @@ export class UserActivityResponseService {
             search.where['ProgressStatus'] = filters.ProgressStatus;
         }
         const includeUserAsUser = {
-            model    : this.User,
+            model    : this.Participant,
             required : false,
-            as       : 'User',
+            as       : 'Participant',
             where    : {}
         };
         //if (filters.Xyz != undefined) {

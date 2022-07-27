@@ -12,7 +12,7 @@ export class UserActivityResponseMapper {
         }
         const dto: UserActivityResponseDto = {
             id                   : userActivityResponse.id,
-            UserId               : userActivityResponse.UserId,
+            ParticipantId        : userActivityResponse.ParticipantId,
             EnrollmentScheduleId : userActivityResponse.EnrollmentScheduleId,
             CareplanScheduleId   : userActivityResponse.CareplanScheduleId,
             CareplanId           : userActivityResponse.CareplanId,

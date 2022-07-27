@@ -19,7 +19,7 @@ export class UserActivityResponseModel {
             defaultValue : DataTypes.UUIDV4,
             primaryKey   : true
         },
-        UserId : {
+        ParticipantId : {
             type       : DataTypes.UUID,
             allowNull  : false,
             foreignKey : true,
@@ -88,10 +88,10 @@ export class UserActivityResponseModel {
 
         //Add associations here...
 
-        models.UserActivityResponse.belongsTo(models.User, {
-            sourceKey : 'UserId',
+        models.UserActivityResponse.belongsTo(models.Participant, {
+            sourceKey : 'ParticipantId',
             targetKey : 'id',
-            as        : 'User'
+            as        : 'Participant'
         });
 
         models.UserActivityResponse.belongsTo(models.EnrollmentSchedule, {
