@@ -145,7 +145,7 @@ export class CareplanControllerDelegate {
             Description : requestBody.Description ? requestBody.Description : null,
             Version     : requestBody.Version ? requestBody.Version : '1.0.0',
             OwnerUserId : requestBody.OwnerUserId ? requestBody.OwnerUserId : null,
-            Tags        : requestBody.Tags ? requestBody.Tags : '[]'
+            Tags        : requestBody.Tags ? requestBody.Tags.toString() : '[]'
         };
     }
 

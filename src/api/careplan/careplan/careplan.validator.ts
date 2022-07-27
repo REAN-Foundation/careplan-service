@@ -13,10 +13,10 @@ export class CareplanValidator {
                 Name        : joi.string().max(256).optional(),
                 Description : joi.string().optional(),
                 Version     : joi.string().max(32).optional(),
-                OwnerUserId : joi.string().guid({
+                OwnerUserId : joi.string() .guid({
                     version : ['uuidv4']
                 }).optional(),
-                Tags : joi.string().optional()
+                Tags : joi.array().items(joi.string()).optional()
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -55,7 +55,7 @@ export class CareplanValidator {
                 OwnerUserId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
-                Tags : joi.string().optional()
+                Tags : joi.array().items(joi.string()).optional()
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
