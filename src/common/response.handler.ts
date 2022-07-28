@@ -23,8 +23,8 @@ export class ResponseHandler {
         const msg = error ? error.message : (message ? message : 'An error has occurred.');
 
         const errorStack = error ? error.stack : '';
-        const tmp = errorStack.split('\n');
-        const trace_path = tmp.map(x => x.trim());
+        const tmp = errorStack?.split('\n');
+        const trace_path = tmp?.map(x => x.trim());
 
         const responseObject: ResponseDto = {
             Status   : 'failure',

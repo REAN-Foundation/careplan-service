@@ -39,8 +39,10 @@ export class FileResourceControllerDelegate {
         filename = filename + '_' + timestamp + '.' + ext;
         var storageKey = 'uploaded/' + dateFolder + '/' + filename;
     
-        await this._storageService.upload( storageKey,  originalFilename );
-    
+        var key = await this._storageService.upload(request, storageKey);
+        if (!key) {
+            ErrorHandler.throwInternalServerError(`Unable to upload the file!`);
+        }
         var model: FileResourceCreateModel = {
             StorageKey       : storageKey,
             MimeType         : mimeType as string,
@@ -54,6 +56,7 @@ export class FileResourceControllerDelegate {
         if (record === null) {
             throw new ApiError('Unable to create file resource!', 400);
         }
+
         return this.getEnrichedDto(record);
     }
 
@@ -68,17 +71,13 @@ export class FileResourceControllerDelegate {
         var mimeType = mime.lookup(originalFilename);
     
         response.setHeader('Content-type', mimeType as string);
-        setResponseHeaders(response, originalFilename, mimeType, disposition);
-    
-        await this._service.incrementDownloadCount(id);
-    
-        var s3 = getS3Client();
-        const params = {
-            Bucket : process.env.STORAGE_BUCKET,
-            Key    : storageKey
-        };
-    
-        return s3.getObject(params).createReadStream();
+        setResponseHeaders(response, originalFilename, disposition);
+
+        var readStream = await this._storageService.download(storageKey);
+        if (!readStream) {
+            ErrorHandler.throwInternalServerError(`Unable to download the file!`);
+        }
+        return readStream;
     }
 
     getById = async (id: uuid) => {
@@ -144,12 +143,12 @@ function getS3Client() {
     return s3;
 }
 
-function setResponseHeaders(response, filename, mimeType, disposition = 'inline') {
+function setResponseHeaders(response, filename, disposition = 'inline') {
     if (disposition === 'inline') {
         response.setHeader('Content-disposition', 'inline');
     }
     else {
-        response.setHeader('Content-disposition', 'attachment; filename=' + filename);
+        response.setHeader('Content-disposition', 'attachment;filename=' + filename);
     }
 }
 

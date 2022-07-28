@@ -31,6 +31,10 @@ export class Helper {
         return null;
     };
     
+    static getStoragePath = () => {
+        return path.join(process.env.STORAGE, process.env.NODE_ENV);
+    }
+
     static compareHashedPassword = (password, hash) => {
         if (!password) {
             return false;

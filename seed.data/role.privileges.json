@@ -34,7 +34,7 @@
         ]
     },
     {
-        "Role": "ContentModerator",
+        "Role": "Moderator",
         "Privileges": [
             "User.Create",
             "User.GetById",
