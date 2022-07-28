@@ -10,13 +10,13 @@ export class UserSelectedPriorityValidator {
     static validateCreateRequest = async (requestBody) => {
         try {
             const schema = joi.object({
-                Name: joi.string().max(256).optional(),
-                Description: joi.string().optional(),
-                UserId: joi.string().guid({
-                    version: ['uuidv4']
+                Name        : joi.string().max(256).optional(),
+                Description : joi.string().optional(),
+                UserId      : joi.string().guid({
+                    version : ['uuidv4']
                 }).optional(),
-                CareplanId: joi.number().integer().optional(),
-                StartDate: joi.date().iso().optional()
+                CareplanId : joi.number().integer().optional(),
+                StartDate  : joi.date().iso().optional()
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -27,13 +27,13 @@ export class UserSelectedPriorityValidator {
     static validateUpdateRequest = async (requestBody) => {
         try {
             const schema = joi.object({
-                Name: joi.string().max(256).optional(),
-                Description: joi.string().optional(),
-                UserId: joi.string().guid({
-                    version: ['uuidv4']
+                Name        : joi.string().max(256).optional(),
+                Description : joi.string().optional(),
+                UserId      : joi.string().guid({
+                    version : ['uuidv4']
                 }).optional(),
-                CareplanId: joi.number().integer().optional(),
-                StartDate: joi.date().iso().optional()
+                CareplanId : joi.number().integer().optional(),
+                StartDate  : joi.date().iso().optional()
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -44,12 +44,12 @@ export class UserSelectedPriorityValidator {
     static validateSearchRequest = async (query) => {
         try {
             const schema = joi.object({
-                name: joi.string().max(256).optional(),
-                description: joi.string().optional(),
-                careplanId: joi.number().integer().optional(),
-                assetId: joi.number().integer().optional(),
-                assetType: joi.string().max(128).optional(),
-                startDate: joi.date().iso().optional()
+                name        : joi.string().max(256).optional(),
+                description : joi.string().optional(),
+                careplanId  : joi.number().integer().optional(),
+                assetId     : joi.number().integer().optional(),
+                assetType   : joi.string().max(128).optional(),
+                startDate   : joi.date().iso().optional()
             });
             return await schema.validateAsync(query);
 
