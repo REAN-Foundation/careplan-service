@@ -26,7 +26,13 @@ export class UserSelectedGoalModel {
             type      : DataTypes.TEXT,
             allowNull : false
         },
-        UserId : {
+        EnrollmentId : {
+            type       : DataTypes.UUID,
+            allowNull  : false,
+            foreignKey : true,
+            unique     : false
+        },
+        ParticipantId : {
             type       : DataTypes.UUID,
             allowNull  : false,
             foreignKey : true,
@@ -40,12 +46,16 @@ export class UserSelectedGoalModel {
         },
         AssetId : {
             type      : DataTypes.INTEGER,
-            allowNull : false
+            allowNull : true
         },
         AssetType : {
             type         : DataTypes.STRING(128),
-            allowNull    : false,
+            allowNull    : true,
             defaultValue : 'Goal'
+        },
+        AssetCode : {
+            type      : DataTypes.STRING(128),
+            allowNull : true,
         },
         AdditionalDetails : {
             type      : DataTypes.TEXT,
@@ -87,10 +97,16 @@ export class UserSelectedGoalModel {
 
         //Add associations here...
 
-        models.UserSelectedGoal.belongsTo(models.User, {
-            sourceKey : 'UserId',
+        models.UserSelectedGoal.belongsTo(models.Enrollment, {
+            sourceKey : 'EnrollmentId',
             targetKey : 'id',
-            as        : 'User'
+            as        : 'Enrollment'
+        });
+
+        models.UserSelectedGoal.belongsTo(models.Participant, {
+            sourceKey : 'ParticipantId',
+            targetKey : 'id',
+            as        : 'Participant'
         });
 
         models.UserSelectedGoal.belongsTo(models.Careplan, {

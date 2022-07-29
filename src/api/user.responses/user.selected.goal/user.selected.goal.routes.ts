@@ -20,5 +20,5 @@ export const register = (app: express.Application): void => {
     router.put('/:id', authenticator.authenticateUser, controller.update);
     router.delete('/:id', authenticator.authenticateUser, controller.delete);
 
-    app.use('/api/v1/user-selected-goals', router);
+    app.use('/api/v1/participant-selected-goals', router);
 };

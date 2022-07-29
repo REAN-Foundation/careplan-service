@@ -2,8 +2,8 @@ import {
     UserSelectedGoalModel
 } from '../../models/user.responses/user.selected.goal.model';
 import {
-    UserModel
-} from '../../models/user/user.model';
+    ParticipantModel
+} from '../../models/enrollment/participant.model';
 import {
     CareplanModel
 } from '../../models/careplan/careplan.model';
@@ -19,6 +19,7 @@ import {
 import {
     Op
 } from 'sequelize';
+import { EnrollmentModel } from '../../../database/models/enrollment/enrollment.model';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -28,7 +29,9 @@ export class UserSelectedGoalService {
 
     UserSelectedGoal = UserSelectedGoalModel.Model;
 
-    User = UserModel.Model;
+    Enrollment = EnrollmentModel.Model;
+
+    Participant = ParticipantModel.Model;
 
     Careplan = CareplanModel.Model;
 
@@ -52,16 +55,21 @@ export class UserSelectedGoalService {
                     id : id
                 },
                 include : [{
-                    model    : this.User,
+                    model    : this.Participant,
                     required : false,
-                    as       : 'User',
+                    as       : 'Participant',
                     //through: { attributes: [] }
                 }, {
                     model    : this.Careplan,
                     required : false,
                     as       : 'Careplan',
                     //through: { attributes: [] }
-                },
+                }, {
+                    model    : this.Enrollment,
+                    required : false,
+                    as       : 'Enrollment',
+                    //through: { attributes: [] }
+                }
 
                 ]
             });
@@ -153,6 +161,12 @@ export class UserSelectedGoalService {
             include : []
         };
 
+        if (filters.EnrollmentId) {
+            search.where['EnrollmentId'] = filters.EnrollmentId;
+        }
+        if (filters.ParticipantId) {
+            search.where['ParticipantId'] = filters.ParticipantId;
+        }
         if (filters.Name) {
             search.where['Name'] = {
                 [Op.like] : '%' + filters.Name + '%'
@@ -172,6 +186,9 @@ export class UserSelectedGoalService {
         if (filters.AssetType) {
             search.where['AssetType'] = filters.AssetType;
         }
+        if (filters.AssetCode) {
+            search.where['AssetCode'] = filters.AssetCode;
+        }
         if (filters.AdditionalDetails) {
             search.where['AdditionalDetails'] = {
                 [Op.like] : '%' + filters.AdditionalDetails + '%'
@@ -186,16 +203,26 @@ export class UserSelectedGoalService {
         if (filters.ProgressStatus) {
             search.where['ProgressStatus'] = filters.ProgressStatus;
         }
-        const includeUserAsUser = {
-            model    : this.User,
+        const includeEnrollmentAsEnrollment = {
+            model    : this.Enrollment,
             required : false,
-            as       : 'User',
+            as       : 'Enrollment',
             where    : {}
         };
         //if (filters.Xyz != undefined) {
         //    includeUser.where['Xyz'] = filters.Xyz;
         //}
-        search.include.push(includeUserAsUser);
+        search.include.push(includeEnrollmentAsEnrollment);
+        const includeParticipantAsParticipant = {
+            model    : this.Participant,
+            required : false,
+            as       : 'Participant',
+            where    : {}
+        };
+        //if (filters.Xyz != undefined) {
+        //    includeUser.where['Xyz'] = filters.Xyz;
+        //}
+        search.include.push(includeParticipantAsParticipant);
         const includeCareplanAsCareplan = {
             model    : this.Careplan,
             required : false,
