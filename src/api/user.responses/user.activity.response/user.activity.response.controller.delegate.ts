@@ -156,15 +156,15 @@ export class UserActivityResponseControllerDelegate {
 
     getCreateModel = (requestBody, enrollmentTask): UserActivityResponseCreateModel => {
         return {
-            ParticipantId        : requestBody.ParticipantId ? requestBody.ParticipantId : null,
-            EnrollmentTaskId : requestBody.EnrollmentTaskId ? requestBody.EnrollmentTaskId : null,
-            CareplanActivityId   : enrollmentTask.CareplanActivityId ? enrollmentTask.CareplanActivityId : null,
-            CareplanId           : enrollmentTask.CareplanId ? enrollmentTask.CareplanId : null ,
-            AssetId              : enrollmentTask.AssetId ? enrollmentTask.AssetId : null,
-            AssetType            : enrollmentTask.AssetType ? enrollmentTask.AssetType : null,
-            Response             : requestBody.Response ? requestBody.Response : '{}',
-            TimeResponded        : new Date(),
-            ProgressStatus       : requestBody.ProgressStatus ? requestBody.ProgressStatus : 'Completed'
+            ParticipantId      : requestBody.ParticipantId ? requestBody.ParticipantId : null,
+            EnrollmentTaskId   : requestBody.EnrollmentTaskId ? requestBody.EnrollmentTaskId : null,
+            CareplanActivityId : enrollmentTask.CareplanActivityId ? enrollmentTask.CareplanActivityId : null,
+            CareplanId         : enrollmentTask.CareplanId ? enrollmentTask.CareplanId : null ,
+            AssetId            : enrollmentTask.AssetId ? enrollmentTask.AssetId : null,
+            AssetType          : enrollmentTask.AssetType ? enrollmentTask.AssetType : null,
+            Response           : requestBody.Response ? requestBody.Response : '{}',
+            TimeResponded      : new Date(),
+            ProgressStatus     : requestBody.ProgressStatus ? requestBody.ProgressStatus : 'Completed'
         };
     }
 
@@ -173,16 +173,16 @@ export class UserActivityResponseControllerDelegate {
             return null;
         }
         return {
-            id                   : record.id,
-            ParticipantId        : record.ParticipantId,
-            EnrollmentTaskId : record.EnrollmentTaskId,
-            CareplanActivityId   : record.CareplanActivityId,
-            CareplanId           : record.CareplanId,
-            AssetId              : record.AssetId,
-            AssetType            : record.AssetType,
-            Response             : record.Response,
-            TimeResponded        : record.TimeResponded,
-            ProgressStatus       : record.ProgressStatus
+            id                 : record.id,
+            ParticipantId      : record.ParticipantId,
+            EnrollmentTaskId   : record.EnrollmentTaskId,
+            CareplanActivityId : record.CareplanActivityId,
+            CareplanId         : record.CareplanId,
+            AssetId            : record.AssetId,
+            AssetType          : record.AssetType,
+            Response           : record.Response,
+            TimeResponded      : record.TimeResponded,
+            ProgressStatus     : record.ProgressStatus
         };
     }
 
@@ -191,16 +191,16 @@ export class UserActivityResponseControllerDelegate {
             return null;
         }
         return {
-            id                   : record.id,
-            ParticipantId        : record.ParticipantId,
-            EnrollmentTaskId : record.EnrollmentTaskId,
-            CareplanActivityId   : record.CareplanActivityId,
-            CareplanId           : record.CareplanId,
-            AssetId              : record.AssetId,
-            AssetType            : record.AssetType,
-            Response             : record.Response,
-            TimeResponded        : record.TimeResponded,
-            ProgressStatus       : record.ProgressStatus
+            id                 : record.id,
+            ParticipantId      : record.ParticipantId,
+            EnrollmentTaskId   : record.EnrollmentTaskId,
+            CareplanActivityId : record.CareplanActivityId,
+            CareplanId         : record.CareplanId,
+            AssetId            : record.AssetId,
+            AssetType          : record.AssetType,
+            Response           : record.Response,
+            TimeResponded      : record.TimeResponded,
+            ProgressStatus     : record.ProgressStatus
         };
     }
 
