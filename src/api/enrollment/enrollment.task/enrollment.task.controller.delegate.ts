@@ -1,37 +1,30 @@
 import {
-    EnrollmentScheduleService
-} from '../../../database/repository.services/enrollment/enrollment.schedule.service';
+    EnrollmentTaskService
+} from '../../../database/repository.services/enrollment/enrollment.task.service';
 import {
     ErrorHandler
 } from '../../../common/error.handler';
 import {
-    Helper
-} from '../../../common/helper';
-import {
-    ApiError
-} from '../../../common/api.error';
-import {
-    EnrollmentScheduleValidator as validator
-} from './enrollment.schedule.validator';
+    EnrollmentTaskValidator as validator
+} from './enrollment.task.validator';
 import {
     uuid
 } from '../../../domain.types/miscellaneous/system.types';
 import {
-    EnrollmentScheduleUpdateModel,
-    EnrollmentScheduleSearchFilters,
-    EnrollmentScheduleSearchResults
-} from '../../../domain.types/enrollment/enrollment.schedule.domain.types';
+    EnrollmentTaskSearchFilters,
+    EnrollmentTaskSearchResults
+} from '../../../domain.types/enrollment/enrollment.task.domain.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-export class EnrollmentScheduleControllerDelegate {
+export class EnrollmentTaskControllerDelegate {
 
     //#region member variables and constructors
 
-    _service: EnrollmentScheduleService = null;
+    _service: EnrollmentTaskService = null;
 
     constructor() {
-        this._service = new EnrollmentScheduleService();
+        this._service = new EnrollmentTaskService();
     }
 
     //#endregion
@@ -46,8 +39,8 @@ export class EnrollmentScheduleControllerDelegate {
 
     search = async (query: any) => {
         await validator.validateSearchRequest(query);
-        var filters: EnrollmentScheduleSearchFilters = this.getSearchFilters(query);
-        var searchResults: EnrollmentScheduleSearchResults = await this._service.search(filters);
+        var filters: EnrollmentTaskSearchFilters = this.getSearchFilters(query);
+        var searchResults: EnrollmentTaskSearchResults = await this._service.search(filters);
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
         return searchResults;

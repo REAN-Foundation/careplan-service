@@ -1,6 +1,6 @@
 import {
-    EnrollmentScheduleModel
-} from '../../models/enrollment/enrollment.schedule.model';
+    EnrollmentTaskModel
+} from '../../models/enrollment/enrollment.task.model';
 import {
     EnrollmentModel
 } from '../../models/enrollment/enrollment.model';
@@ -18,18 +18,18 @@ import {
     ErrorHandler
 } from '../../../common/error.handler';
 import {
-    EnrollmentScheduleCreateModel,
-    EnrollmentScheduleSearchFilters,
-    EnrollmentScheduleSearchResults
-} from '../../../domain.types/enrollment/enrollment.schedule.domain.types';
+    EnrollmentTaskCreateModel,
+    EnrollmentTaskSearchFilters,
+    EnrollmentTaskSearchResults
+} from '../../../domain.types/enrollment/enrollment.task.domain.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-export class EnrollmentScheduleService {
+export class EnrollmentTaskService {
 
     //#region Models
 
-    EnrollmentSchedule = EnrollmentScheduleModel.Model;
+    EnrollmentTask = EnrollmentTaskModel.Model;
 
     Enrollment = EnrollmentModel.Model;
 
@@ -43,9 +43,9 @@ export class EnrollmentScheduleService {
 
     //#region Publics
 
-    create = async (createModel: EnrollmentScheduleCreateModel) => {
+    create = async (createModel: EnrollmentTaskCreateModel) => {
         try {
-            var record = await this.EnrollmentSchedule.create(createModel);
+            var record = await this.EnrollmentTask.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create enrollment schedule!', error);
@@ -54,7 +54,7 @@ export class EnrollmentScheduleService {
 
     getById = async (id) => {
         try {
-            const record = await this.EnrollmentSchedule.findOne({
+            const record = await this.EnrollmentTask.findOne({
                 where : {
                     id : id
                 },
@@ -90,14 +90,14 @@ export class EnrollmentScheduleService {
 
     exists = async (id): Promise < boolean > => {
         try {
-            const record = await this.EnrollmentSchedule.findByPk(id);
+            const record = await this.EnrollmentTask.findByPk(id);
             return record !== null;
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of enrollment schedule!', error);
         }
     }
 
-    search = async (filters: EnrollmentScheduleSearchFilters): Promise < EnrollmentScheduleSearchResults > => {
+    search = async (filters: EnrollmentTaskSearchFilters): Promise < EnrollmentTaskSearchResults > => {
         try {
 
             var search = this.getSearchModel(filters);
@@ -110,8 +110,8 @@ export class EnrollmentScheduleService {
                 limit
             } = this.addPaginationToSearch(search, filters);
 
-            const foundResults = await this.EnrollmentSchedule.findAndCountAll(search);
-            const searchResults: EnrollmentScheduleSearchResults = {
+            const foundResults = await this.EnrollmentTask.findAndCountAll(search);
+            const searchResults: EnrollmentTaskSearchResults = {
                 TotalCount     : foundResults.count,
                 RetrievedCount : foundResults.rows.length,
                 PageIndex      : pageIndex,

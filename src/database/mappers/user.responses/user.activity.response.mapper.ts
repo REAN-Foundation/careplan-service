@@ -11,16 +11,16 @@ export class UserActivityResponseMapper {
             return null;
         }
         const dto: UserActivityResponseDto = {
-            id                   : userActivityResponse.id,
-            ParticipantId        : userActivityResponse.ParticipantId,
-            EnrollmentScheduleId : userActivityResponse.EnrollmentScheduleId,
-            CareplanActivityId   : userActivityResponse.CareplanActivityId,
-            CareplanId           : userActivityResponse.CareplanId,
-            AssetId              : userActivityResponse.AssetId,
-            AssetType            : userActivityResponse.AssetType,
-            Response             : userActivityResponse.Response,
-            TimeResponded        : userActivityResponse.TimeResponded,
-            ProgressStatus       : userActivityResponse.ProgressStatus,
+            id                 : userActivityResponse.id,
+            ParticipantId      : userActivityResponse.ParticipantId,
+            EnrollmentTaskId   : userActivityResponse.EnrollmentTaskId,
+            CareplanActivityId : userActivityResponse.CareplanActivityId,
+            CareplanId         : userActivityResponse.CareplanId,
+            AssetId            : userActivityResponse.AssetId,
+            AssetType          : userActivityResponse.AssetType,
+            Response           : userActivityResponse.Response,
+            TimeResponded      : userActivityResponse.TimeResponded,
+            ProgressStatus     : userActivityResponse.ProgressStatus,
 
         };
         return dto;

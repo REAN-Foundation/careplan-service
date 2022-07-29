@@ -3,8 +3,8 @@ import {
     EnrollmentService
 } from '../../../database/repository.services/enrollment/enrollment.service';
 import {
-    EnrollmentScheduleService
-} from '../../../database/repository.services/enrollment/enrollment.schedule.service';
+    EnrollmentTaskService
+} from '../../../database/repository.services/enrollment/enrollment.task.service';
 import {
     ErrorHandler
 } from '../../../common/error.handler';
@@ -29,7 +29,7 @@ import {
     EnrollmentSearchFilters,
     EnrollmentSearchResults
 } from '../../../domain.types/enrollment/enrollment.domain.types';
-import { EnrollmentScheduleCreateModel } from '../../../domain.types/enrollment/enrollment.schedule.domain.types';
+import { EnrollmentTaskCreateModel } from '../../../domain.types/enrollment/enrollment.task.domain.types';
 import { TimeHelper } from '../../../common/time.helper';
 import { DurationType } from '../../../domain.types/miscellaneous/time.types';
 import { Logger } from '../../../common/logger';
@@ -44,12 +44,12 @@ export class EnrollmentControllerDelegate {
 
     _careplanActivityDelegate: CareplanActivityControllerDelegate = null;
 
-    _scheduleService: EnrollmentScheduleService = null;
+    _scheduleService: EnrollmentTaskService = null;
 
     constructor() {
         this._service = new EnrollmentService();
         this._careplanActivityDelegate = new CareplanActivityControllerDelegate();
-        this._scheduleService = new EnrollmentScheduleService();
+        this._scheduleService = new EnrollmentTaskService();
     }
 
     //#endregion
@@ -69,7 +69,7 @@ export class EnrollmentControllerDelegate {
             DurationType.Day
         );
 
-        var enrollmentScheduleModel: EnrollmentScheduleCreateModel = {
+        var enrollmentTaskModel: EnrollmentTaskCreateModel = {
 
             EnrollmentId       : record.id,
             ParticipantId      : record.ParticipantId,
@@ -82,8 +82,8 @@ export class EnrollmentControllerDelegate {
         };
 
         try {
-            const enrollmentScheduleRecord = await this._scheduleService.create(enrollmentScheduleModel);
-            Logger.instance().log(JSON.stringify(enrollmentScheduleRecord, null, 2));
+            const enrollmentTaskRecord = await this._scheduleService.create(enrollmentTaskModel);
+            Logger.instance().log(JSON.stringify(enrollmentTaskRecord, null, 2));
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create enrollment schedule!', error);
         }

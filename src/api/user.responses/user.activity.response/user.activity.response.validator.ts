@@ -13,7 +13,7 @@ export class UserActivityResponseValidator {
                 ParticipantId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
-                EnrollmentScheduleId : joi.string().guid({
+                EnrollmentTaskId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
                 Response       : joi.string().optional(),
@@ -31,7 +31,7 @@ export class UserActivityResponseValidator {
                 ParticipantId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
-                EnrollmentScheduleId : joi.string().guid({
+                EnrollmentTaskId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
                 Response       : joi.string().optional(),

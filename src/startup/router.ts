@@ -30,7 +30,7 @@ import { register as registerWebLinkRoutes          } from "../api/assets/web.li
 import { register as registerWebNewsFeedRoutes      } from "../api/assets/web.newsfeed/web.newsfeed.routes";
 import { register as registerWordPowerRoutes        } from "../api/assets/word.power/word.power.routes";
 import { register as registerEnrollmentRoutes       } from "../api/enrollment/enrollment/enrollment.routes";
-import { register as registerEnrollmentScheduleRoutes } from "../api/enrollment/enrollment.schedule/enrollment.schedule.routes";
+import { register as registerEnrollmentTaskRoutes } from "../api/enrollment/enrollment.task/enrollment.task.routes";
 import { register as registerFileREsourceRoutes       } from "../api/file.resource/file.resource.routes";
 import { register as registerTypesRoutes              } from "../api/types/types.routes";
 import { register as registerUserRoutes               } from "../api/user/user.routes";
@@ -94,7 +94,7 @@ export class Router {
                 registerWebNewsFeedRoutes(this._app);
                 registerWordPowerRoutes(this._app);
                 registerEnrollmentRoutes(this._app);
-                registerEnrollmentScheduleRoutes(this._app);
+                registerEnrollmentTaskRoutes(this._app);
                 registerFileREsourceRoutes(this._app);
                 registerTypesRoutes(this._app);
                 registerUserRoutes(this._app);

@@ -5,8 +5,8 @@ import {
     ParticipantModel
 } from '../../models/enrollment/participant.model';
 import {
-    EnrollmentScheduleModel
-} from '../../models/enrollment/enrollment.schedule.model';
+    EnrollmentTaskModel
+} from '../../models/enrollment/enrollment.task.model';
 import {
     CareplanActivityModel
 } from '../../models/careplan/careplan.activity.model';
@@ -36,7 +36,7 @@ export class UserActivityResponseService {
 
     Participant = ParticipantModel.Model;
 
-    EnrollmentSchedule = EnrollmentScheduleModel.Model;
+    EnrollmentTask = EnrollmentTaskModel.Model;
 
     CareplanActivity = CareplanActivityModel.Model;
 
@@ -67,9 +67,9 @@ export class UserActivityResponseService {
                     as       : 'Participant',
                     //through: { attributes: [] }
                 }, {
-                    model    : this.EnrollmentSchedule,
+                    model    : this.EnrollmentTask,
                     required : false,
-                    as       : 'EnrollmentSchedule',
+                    as       : 'EnrollmentTask',
                     //through: { attributes: [] }
                 }, {
                     model    : this.CareplanActivity,
@@ -206,16 +206,16 @@ export class UserActivityResponseService {
         //    includeUser.where['Xyz'] = filters.Xyz;
         //}
         search.include.push(includeUserAsUser);
-        const includeEnrollmentScheduleAsEnrollmentSchedule = {
-            model    : this.EnrollmentSchedule,
+        const includeEnrollmentTaskAsEnrollmentTask = {
+            model    : this.EnrollmentTask,
             required : false,
-            as       : 'EnrollmentSchedule',
+            as       : 'EnrollmentTask',
             where    : {}
         };
         //if (filters.Xyz != undefined) {
-        //    includeEnrollmentSchedule.where['Xyz'] = filters.Xyz;
+        //    includeEnrollmentTask.where['Xyz'] = filters.Xyz;
         //}
-        search.include.push(includeEnrollmentScheduleAsEnrollmentSchedule);
+        search.include.push(includeEnrollmentTaskAsEnrollmentTask);
         const includeCareplanActivityAsCareplanActivity = {
             model    : this.CareplanActivity,
             required : false,

@@ -12,8 +12,8 @@ describe('Enrollment schedule tests', function() {
     var agent = request.agent(infra.app);
 
     it('Create enrollment schedule', function(done) {
-        loadEnrollmentScheduleCreateModel();
-        const createModel = TestCache.EnrollmentScheduleCreateModel;
+        loadEnrollmentTaskCreateModel();
+        const createModel = TestCache.EnrollmentTaskCreateModel;
         agent
             .post(`/api/v1/enrollment-schedules/`)
             .set('Content-Type', 'application/json')
@@ -32,15 +32,15 @@ describe('Enrollment schedule tests', function() {
                 expect(response.body.Data).to.have.property('TimeSlot');
                 expect(response.body.Data).to.have.property('ScheduledDate');
 
-                expect(response.body.Data.id).to.equal(TestCache.EnrollmentScheduleCreateModel.id);
-                expect(response.body.Data.EnrollmentId).to.equal(TestCache.EnrollmentScheduleCreateModel.EnrollmentId);
-                expect(response.body.Data.UserId).to.equal(TestCache.EnrollmentScheduleCreateModel.UserId);
-                expect(response.body.Data.CareplanActivityId).to.equal(TestCache.EnrollmentScheduleCreateModel.CareplanActivityId);
-                expect(response.body.Data.AssetId).to.equal(TestCache.EnrollmentScheduleCreateModel.AssetId);
-                expect(response.body.Data.AssetType).to.equal(TestCache.EnrollmentScheduleCreateModel.AssetType);
-                expect(response.body.Data.CareplanId).to.equal(TestCache.EnrollmentScheduleCreateModel.CareplanId);
-                expect(response.body.Data.TimeSlot).to.equal(TestCache.EnrollmentScheduleCreateModel.TimeSlot);
-                expect(response.body.Data.ScheduledDate).to.equal(TestCache.EnrollmentScheduleCreateModel.ScheduledDate);
+                expect(response.body.Data.id).to.equal(TestCache.EnrollmentTaskCreateModel.id);
+                expect(response.body.Data.EnrollmentId).to.equal(TestCache.EnrollmentTaskCreateModel.EnrollmentId);
+                expect(response.body.Data.UserId).to.equal(TestCache.EnrollmentTaskCreateModel.UserId);
+                expect(response.body.Data.CareplanActivityId).to.equal(TestCache.EnrollmentTaskCreateModel.CareplanActivityId);
+                expect(response.body.Data.AssetId).to.equal(TestCache.EnrollmentTaskCreateModel.AssetId);
+                expect(response.body.Data.AssetType).to.equal(TestCache.EnrollmentTaskCreateModel.AssetType);
+                expect(response.body.Data.CareplanId).to.equal(TestCache.EnrollmentTaskCreateModel.CareplanId);
+                expect(response.body.Data.TimeSlot).to.equal(TestCache.EnrollmentTaskCreateModel.TimeSlot);
+                expect(response.body.Data.ScheduledDate).to.equal(TestCache.EnrollmentTaskCreateModel.ScheduledDate);
 
             })
             .expect(201, done);
@@ -63,23 +63,23 @@ describe('Enrollment schedule tests', function() {
                 expect(response.body.Data).to.have.property('TimeSlot');
                 expect(response.body.Data).to.have.property('ScheduledDate');
 
-                expect(response.body.Data.id).to.equal(TestCache.EnrollmentScheduleCreateModel.id);
-                expect(response.body.Data.EnrollmentId).to.equal(TestCache.EnrollmentScheduleCreateModel.EnrollmentId);
-                expect(response.body.Data.UserId).to.equal(TestCache.EnrollmentScheduleCreateModel.UserId);
-                expect(response.body.Data.CareplanActivityId).to.equal(TestCache.EnrollmentScheduleCreateModel.CareplanActivityId);
-                expect(response.body.Data.AssetId).to.equal(TestCache.EnrollmentScheduleCreateModel.AssetId);
-                expect(response.body.Data.AssetType).to.equal(TestCache.EnrollmentScheduleCreateModel.AssetType);
-                expect(response.body.Data.CareplanId).to.equal(TestCache.EnrollmentScheduleCreateModel.CareplanId);
-                expect(response.body.Data.TimeSlot).to.equal(TestCache.EnrollmentScheduleCreateModel.TimeSlot);
-                expect(response.body.Data.ScheduledDate).to.equal(TestCache.EnrollmentScheduleCreateModel.ScheduledDate);
+                expect(response.body.Data.id).to.equal(TestCache.EnrollmentTaskCreateModel.id);
+                expect(response.body.Data.EnrollmentId).to.equal(TestCache.EnrollmentTaskCreateModel.EnrollmentId);
+                expect(response.body.Data.UserId).to.equal(TestCache.EnrollmentTaskCreateModel.UserId);
+                expect(response.body.Data.CareplanActivityId).to.equal(TestCache.EnrollmentTaskCreateModel.CareplanActivityId);
+                expect(response.body.Data.AssetId).to.equal(TestCache.EnrollmentTaskCreateModel.AssetId);
+                expect(response.body.Data.AssetType).to.equal(TestCache.EnrollmentTaskCreateModel.AssetType);
+                expect(response.body.Data.CareplanId).to.equal(TestCache.EnrollmentTaskCreateModel.CareplanId);
+                expect(response.body.Data.TimeSlot).to.equal(TestCache.EnrollmentTaskCreateModel.TimeSlot);
+                expect(response.body.Data.ScheduledDate).to.equal(TestCache.EnrollmentTaskCreateModel.ScheduledDate);
 
             })
             .expect(200, done);
     });
 
     it('Search enrollment schedule records', function(done) {
-        loadEnrollmentScheduleQueryString();
-        const queryString = TestCache.EnrollmentScheduleQueryString;
+        loadEnrollmentTaskQueryString();
+        const queryString = TestCache.EnrollmentTaskQueryString;
         agent
             .get(`/api/v1/enrollment-schedules/search${queryString}`)
             .set('Content-Type', 'application/json')
@@ -99,8 +99,8 @@ describe('Enrollment schedule tests', function() {
     });
 
     it('Update enrollment schedule', function(done) {
-        loadEnrollmentScheduleUpdateModel();
-        const updateModel = TestCache.EnrollmentScheduleUpdateModel;
+        loadEnrollmentTaskUpdateModel();
+        const updateModel = TestCache.EnrollmentTaskUpdateModel;
         const id = `${TestCache.ENROLLMENT_SCHEDULE_ID}`
         agent
             .put(`/api/v1/enrollment-schedules/${TestCache.ENROLLMENT_SCHEDULE_ID}`)
@@ -118,15 +118,15 @@ describe('Enrollment schedule tests', function() {
                 expect(response.body.Data).to.have.property('TimeSlot');
                 expect(response.body.Data).to.have.property('ScheduledDate');
 
-                expect(response.body.Data.id).to.equal(TestCache.EnrollmentScheduleCreateModel.id);
-                expect(response.body.Data.EnrollmentId).to.equal(TestCache.EnrollmentScheduleCreateModel.EnrollmentId);
-                expect(response.body.Data.UserId).to.equal(TestCache.EnrollmentScheduleCreateModel.UserId);
-                expect(response.body.Data.CareplanActivityId).to.equal(TestCache.EnrollmentScheduleCreateModel.CareplanActivityId);
-                expect(response.body.Data.AssetId).to.equal(TestCache.EnrollmentScheduleCreateModel.AssetId);
-                expect(response.body.Data.AssetType).to.equal(TestCache.EnrollmentScheduleCreateModel.AssetType);
-                expect(response.body.Data.CareplanId).to.equal(TestCache.EnrollmentScheduleCreateModel.CareplanId);
-                expect(response.body.Data.TimeSlot).to.equal(TestCache.EnrollmentScheduleCreateModel.TimeSlot);
-                expect(response.body.Data.ScheduledDate).to.equal(TestCache.EnrollmentScheduleCreateModel.ScheduledDate);
+                expect(response.body.Data.id).to.equal(TestCache.EnrollmentTaskCreateModel.id);
+                expect(response.body.Data.EnrollmentId).to.equal(TestCache.EnrollmentTaskCreateModel.EnrollmentId);
+                expect(response.body.Data.UserId).to.equal(TestCache.EnrollmentTaskCreateModel.UserId);
+                expect(response.body.Data.CareplanActivityId).to.equal(TestCache.EnrollmentTaskCreateModel.CareplanActivityId);
+                expect(response.body.Data.AssetId).to.equal(TestCache.EnrollmentTaskCreateModel.AssetId);
+                expect(response.body.Data.AssetType).to.equal(TestCache.EnrollmentTaskCreateModel.AssetType);
+                expect(response.body.Data.CareplanId).to.equal(TestCache.EnrollmentTaskCreateModel.CareplanId);
+                expect(response.body.Data.TimeSlot).to.equal(TestCache.EnrollmentTaskCreateModel.TimeSlot);
+                expect(response.body.Data.ScheduledDate).to.equal(TestCache.EnrollmentTaskCreateModel.ScheduledDate);
 
             })
             .expect(200, done);
@@ -154,7 +154,7 @@ describe('Enrollment schedule tests', function() {
             .expect(404, done);
 
         //Recreate it again because we need it again
-        const createModel = TestCache.EnrollmentScheduleCreateModel;
+        const createModel = TestCache.EnrollmentTaskCreateModel;
         agent
             .post(`/api/v1/enrollment-schedules/`)
             .set('Content-Type', 'application/json')
@@ -173,15 +173,15 @@ describe('Enrollment schedule tests', function() {
                 expect(response.body.Data).to.have.property('TimeSlot');
                 expect(response.body.Data).to.have.property('ScheduledDate');
 
-                expect(response.body.Data.id).to.equal(TestCache.EnrollmentScheduleCreateModel.id);
-                expect(response.body.Data.EnrollmentId).to.equal(TestCache.EnrollmentScheduleCreateModel.EnrollmentId);
-                expect(response.body.Data.UserId).to.equal(TestCache.EnrollmentScheduleCreateModel.UserId);
-                expect(response.body.Data.CareplanActivityId).to.equal(TestCache.EnrollmentScheduleCreateModel.CareplanActivityId);
-                expect(response.body.Data.AssetId).to.equal(TestCache.EnrollmentScheduleCreateModel.AssetId);
-                expect(response.body.Data.AssetType).to.equal(TestCache.EnrollmentScheduleCreateModel.AssetType);
-                expect(response.body.Data.CareplanId).to.equal(TestCache.EnrollmentScheduleCreateModel.CareplanId);
-                expect(response.body.Data.TimeSlot).to.equal(TestCache.EnrollmentScheduleCreateModel.TimeSlot);
-                expect(response.body.Data.ScheduledDate).to.equal(TestCache.EnrollmentScheduleCreateModel.ScheduledDate);
+                expect(response.body.Data.id).to.equal(TestCache.EnrollmentTaskCreateModel.id);
+                expect(response.body.Data.EnrollmentId).to.equal(TestCache.EnrollmentTaskCreateModel.EnrollmentId);
+                expect(response.body.Data.UserId).to.equal(TestCache.EnrollmentTaskCreateModel.UserId);
+                expect(response.body.Data.CareplanActivityId).to.equal(TestCache.EnrollmentTaskCreateModel.CareplanActivityId);
+                expect(response.body.Data.AssetId).to.equal(TestCache.EnrollmentTaskCreateModel.AssetId);
+                expect(response.body.Data.AssetType).to.equal(TestCache.EnrollmentTaskCreateModel.AssetType);
+                expect(response.body.Data.CareplanId).to.equal(TestCache.EnrollmentTaskCreateModel.CareplanId);
+                expect(response.body.Data.TimeSlot).to.equal(TestCache.EnrollmentTaskCreateModel.TimeSlot);
+                expect(response.body.Data.ScheduledDate).to.equal(TestCache.EnrollmentTaskCreateModel.ScheduledDate);
 
             })
             .expect(201, done);
@@ -191,23 +191,23 @@ describe('Enrollment schedule tests', function() {
 
 ///////////////////////////////////////////////////////////////////////////
 
-function loadEnrollmentScheduleCreateModel() {
+function loadEnrollmentTaskCreateModel() {
     const model = {
         AssetType: "Message",
 
     };
-    TestCache.EnrollmentScheduleCreateModel = model;
+    TestCache.EnrollmentTaskCreateModel = model;
 }
 
-function loadEnrollmentScheduleUpdateModel() {
+function loadEnrollmentTaskUpdateModel() {
     const model = {
         AssetType: "Message",
 
     };
-    TestCache.EnrollmentScheduleUpdateModel = model;
+    TestCache.EnrollmentTaskUpdateModel = model;
 }
 
-function loadEnrollmentScheduleQueryString() {
+function loadEnrollmentTaskQueryString() {
     //This is raw query. Please modify to suit the test
     const queryString = '?assetId=xyz&assetType=xyz&careplanId=xyz&timeSlot=xyz'
     return queryString;

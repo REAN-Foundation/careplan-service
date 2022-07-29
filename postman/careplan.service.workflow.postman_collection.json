@@ -15512,7 +15512,7 @@
 											"    var jsonRes = pm.response.json();\r",
 											"    pm.expect(jsonRes.Data).to.have.property('id');\r",
 											"    pm.expect(jsonRes.Data).to.have.property('UserId');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('EnrollmentScheduleId');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('EnrollmentTaskId');\r",
 											"    pm.expect(jsonRes.Data).to.have.property('Response');\r",
 											"   \r",
 											"});\r",
@@ -15538,7 +15538,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n   \"UserId\": \"{{USER_ID}}\",\r\n\"EnrollmentScheduleId\": \"{{ENROLLMENT_SCHEDULE_ID}}\",\r\n\"Response\": \"{}\"\r\n\r\n}\r\n"
+									"raw": "{\r\n   \"UserId\": \"{{USER_ID}}\",\r\n\"EnrollmentTaskId\": \"{{ENROLLMENT_SCHEDULE_ID}}\",\r\n\"Response\": \"{}\"\r\n\r\n}\r\n"
 								},
 								"url": {
 									"raw": "{{BASE_URL}}/user-activity-responses",
@@ -15571,7 +15571,7 @@
 											"    var jsonRes = pm.response.json();\r",
 											"     pm.expect(jsonRes.Data).to.have.property('id');\r",
 											"    pm.expect(jsonRes.Data).to.have.property('UserId');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('EnrollmentScheduleId');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('EnrollmentTaskId');\r",
 											"    pm.expect(jsonRes.Data).to.have.property('Response');\r",
 											"   \r",
 											"});\r",
@@ -15705,7 +15705,7 @@
 											"    var jsonRes = pm.response.json();\r",
 											"     pm.expect(jsonRes.Data).to.have.property('id');\r",
 											"    pm.expect(jsonRes.Data).to.have.property('UserId');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('EnrollmentScheduleId');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('EnrollmentTaskId');\r",
 											"    pm.expect(jsonRes.Data).to.have.property('Response');\r",
 											" \r",
 											"});\r",
@@ -15731,7 +15731,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n\"UserId\": \"{{USER_ID}}\",\r\n\"EnrollmentScheduleId\": \"{{ENROLLMENT_SCHEDULE_ID}}\",\r\n\"Response\": \"{}\"\r\n\r\n}\r\n"
+									"raw": "{\r\n\"UserId\": \"{{USER_ID}}\",\r\n\"EnrollmentTaskId\": \"{{ENROLLMENT_SCHEDULE_ID}}\",\r\n\"Response\": \"{}\"\r\n\r\n}\r\n"
 								},
 								"url": {
 									"raw": "{{BASE_URL}}/user-activity-responses/{{USER_ACTIVITY_RESPONSE_ID}}",
@@ -15826,7 +15826,7 @@
 											"    var jsonRes = pm.response.json();\r",
 											"     pm.expect(jsonRes.Data).to.have.property('id');\r",
 											"    pm.expect(jsonRes.Data).to.have.property('UserId');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('EnrollmentScheduleId');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('EnrollmentTaskId');\r",
 											"    pm.expect(jsonRes.Data).to.have.property('Response');\r",
 											"   \r",
 											"});\r",
@@ -15852,7 +15852,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n\"UserId\": \"{{USER_ID}}\",\r\n\"EnrollmentScheduleId\": \"{{ENROLLMENT_SCHEDULE_ID}}\",\r\n\"Response\": \"{}\"\r\n\r\n}\r\n"
+									"raw": "{\r\n\"UserId\": \"{{USER_ID}}\",\r\n\"EnrollmentTaskId\": \"{{ENROLLMENT_SCHEDULE_ID}}\",\r\n\"Response\": \"{}\"\r\n\r\n}\r\n"
 								},
 								"url": {
 									"raw": "{{BASE_URL}}/user-activity-responses",

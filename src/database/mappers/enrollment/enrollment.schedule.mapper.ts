@@ -1,25 +1,25 @@
 import {
-    EnrollmentScheduleDto
-} from '../../../domain.types/enrollment/enrollment.schedule.domain.types';
+    EnrollmentTaskDto
+} from '../../../domain.types/enrollment/enrollment.task.domain.types';
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-export class EnrollmentScheduleMapper {
+export class EnrollmentTaskMapper {
 
-    static toDto = (enrollmentSchedule: any): EnrollmentScheduleDto => {
-        if (enrollmentSchedule == null) {
+    static toDto = (enrollmentTask: any): EnrollmentTaskDto => {
+        if (enrollmentTask == null) {
             return null;
         }
-        const dto: EnrollmentScheduleDto = {
-            id: enrollmentSchedule.id,
-            EnrollmentId: enrollmentSchedule.EnrollmentId,
-            ParticipantId: enrollmentSchedule.ParticipantId,
-            CareplanActivityId: enrollmentSchedule.CareplanActivityId,
-            AssetId: enrollmentSchedule.AssetId,
-            AssetType: enrollmentSchedule.AssetType,
-            CareplanId: enrollmentSchedule.CareplanId,
-            TimeSlot: enrollmentSchedule.TimeSlot,
-            ScheduledDate: enrollmentSchedule.ScheduledDate,
+        const dto: EnrollmentTaskDto = {
+            id                 : enrollmentTask.id,
+            EnrollmentId       : enrollmentTask.EnrollmentId,
+            ParticipantId      : enrollmentTask.ParticipantId,
+            CareplanActivityId : enrollmentTask.CareplanActivityId,
+            AssetId            : enrollmentTask.AssetId,
+            AssetType          : enrollmentTask.AssetType,
+            CareplanId         : enrollmentTask.CareplanId,
+            TimeSlot           : enrollmentTask.TimeSlot,
+            ScheduledDate      : enrollmentTask.ScheduledDate,
 
         };
         return dto;

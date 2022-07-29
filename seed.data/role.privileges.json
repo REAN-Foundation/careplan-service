@@ -246,11 +246,11 @@
             "Enrollment.Update",
             "Enrollment.Delete",
 
-            "EnrollmentSchedule.Create",
-            "EnrollmentSchedule.Search",
-            "EnrollmentSchedule.GetById",
-            "EnrollmentSchedule.Update",
-            "EnrollmentSchedule.Delete",
+            "EnrollmentTask.Create",
+            "EnrollmentTask.Search",
+            "EnrollmentTask.GetById",
+            "EnrollmentTask.Update",
+            "EnrollmentTask.Delete",
 
             "UserActivityResponse.Create",
             "UserActivityResponse.Search",

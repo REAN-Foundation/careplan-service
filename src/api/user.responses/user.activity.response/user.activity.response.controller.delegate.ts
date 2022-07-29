@@ -22,7 +22,7 @@ import {
     UserActivityResponseSearchFilters,
     UserActivityResponseSearchResults
 } from '../../../domain.types/user.responses/user.activity.response.domain.types';
-import { EnrollmentScheduleService } from '../../../database/repository.services/enrollment/enrollment.schedule.service';
+import { EnrollmentTaskService } from '../../../database/repository.services/enrollment/enrollment.task.service';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -32,19 +32,19 @@ export class UserActivityResponseControllerDelegate {
 
     _service: UserActivityResponseService = null;
 
-    _enrollmentScheduleService: EnrollmentScheduleService = null
+    _enrollmentTaskService: EnrollmentTaskService = null
 
     constructor() {
         this._service = new UserActivityResponseService();
-        this._enrollmentScheduleService = new EnrollmentScheduleService();
+        this._enrollmentTaskService = new EnrollmentTaskService();
     }
 
     //#endregion
 
     create = async (requestBody: any) => {
         await validator.validateCreateRequest(requestBody);
-        const enrollmentSchedule = await this._enrollmentScheduleService.getById(requestBody.EnrollmentScheduleId);
-        var createModel: UserActivityResponseCreateModel = this.getCreateModel(requestBody, enrollmentSchedule);
+        const enrollmentTask = await this._enrollmentTaskService.getById(requestBody.EnrollmentTaskId);
+        var createModel: UserActivityResponseCreateModel = this.getCreateModel(requestBody, enrollmentTask);
         const record = await this._service.create(createModel);
         if (record === null) {
             throw new ApiError('Unable to create user activity response!', 400);
@@ -141,8 +141,8 @@ export class UserActivityResponseControllerDelegate {
         if (Helper.hasProperty(requestBody, 'ParticipantId')) {
             updateModel.ParticipantId = requestBody.ParticipantId;
         }
-        if (Helper.hasProperty(requestBody, 'EnrollmentScheduleId')) {
-            updateModel.EnrollmentScheduleId = requestBody.EnrollmentScheduleId;
+        if (Helper.hasProperty(requestBody, 'EnrollmentTaskId')) {
+            updateModel.EnrollmentTaskId = requestBody.EnrollmentTaskId;
         }
         if (Helper.hasProperty(requestBody, 'Response')) {
             updateModel.Response = requestBody.Response;
@@ -154,14 +154,14 @@ export class UserActivityResponseControllerDelegate {
         return updateModel;
     }
 
-    getCreateModel = (requestBody, enrollmentSchedule): UserActivityResponseCreateModel => {
+    getCreateModel = (requestBody, enrollmentTask): UserActivityResponseCreateModel => {
         return {
             ParticipantId        : requestBody.ParticipantId ? requestBody.ParticipantId : null,
-            EnrollmentScheduleId : requestBody.EnrollmentScheduleId ? requestBody.EnrollmentScheduleId : null,
-            CareplanActivityId   : enrollmentSchedule.CareplanActivityId ? enrollmentSchedule.CareplanActivityId : null,
-            CareplanId           : enrollmentSchedule.CareplanId ? enrollmentSchedule.CareplanId : null ,
-            AssetId              : enrollmentSchedule.AssetId ? enrollmentSchedule.AssetId : null,
-            AssetType            : enrollmentSchedule.AssetType ? enrollmentSchedule.AssetType : null,
+            EnrollmentTaskId : requestBody.EnrollmentTaskId ? requestBody.EnrollmentTaskId : null,
+            CareplanActivityId   : enrollmentTask.CareplanActivityId ? enrollmentTask.CareplanActivityId : null,
+            CareplanId           : enrollmentTask.CareplanId ? enrollmentTask.CareplanId : null ,
+            AssetId              : enrollmentTask.AssetId ? enrollmentTask.AssetId : null,
+            AssetType            : enrollmentTask.AssetType ? enrollmentTask.AssetType : null,
             Response             : requestBody.Response ? requestBody.Response : '{}',
             TimeResponded        : new Date(),
             ProgressStatus       : requestBody.ProgressStatus ? requestBody.ProgressStatus : 'Completed'
@@ -175,7 +175,7 @@ export class UserActivityResponseControllerDelegate {
         return {
             id                   : record.id,
             ParticipantId        : record.ParticipantId,
-            EnrollmentScheduleId : record.EnrollmentScheduleId,
+            EnrollmentTaskId : record.EnrollmentTaskId,
             CareplanActivityId   : record.CareplanActivityId,
             CareplanId           : record.CareplanId,
             AssetId              : record.AssetId,
@@ -193,7 +193,7 @@ export class UserActivityResponseControllerDelegate {
         return {
             id                   : record.id,
             ParticipantId        : record.ParticipantId,
-            EnrollmentScheduleId : record.EnrollmentScheduleId,
+            EnrollmentTaskId : record.EnrollmentTaskId,
             CareplanActivityId   : record.CareplanActivityId,
             CareplanId           : record.CareplanId,
             AssetId              : record.AssetId,

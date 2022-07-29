@@ -10,7 +10,7 @@ import {
 
 export interface UserActivityResponseCreateModel {
     ParticipantId       : uuid;
-    EnrollmentScheduleId: uuid;
+    EnrollmentTaskId: uuid;
     CareplanActivityId  : uuid;
     CareplanId          : number;
     AssetId             : number;
@@ -22,7 +22,7 @@ export interface UserActivityResponseCreateModel {
 
 export interface UserActivityResponseUpdateModel {
     ParticipantId        ?: uuid;
-    EnrollmentScheduleId ?: uuid;
+    EnrollmentTaskId ?: uuid;
     Response             ?: string;
     ProgressStatus       ?: ProgressStatus;
 }
@@ -30,7 +30,7 @@ export interface UserActivityResponseUpdateModel {
 export interface UserActivityResponseDto {
     id                  : uuid;
     ParticipantId       : uuid;
-    EnrollmentScheduleId: uuid;
+    EnrollmentTaskId: uuid;
     CareplanActivityId  : uuid;
     CareplanId          : number;
     AssetId             : number;

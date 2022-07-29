@@ -5,7 +5,7 @@ import {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-export class EnrollmentScheduleValidator {
+export class EnrollmentTaskValidator {
 
     static validateCreateRequest = async (requestBody) => {
         try {
