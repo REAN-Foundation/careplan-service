@@ -1,6 +1,6 @@
 import {
-    UserSelectedGoalModel
-} from '../../models/user.responses/user.selected.goal.model';
+    ParticipantSelectedGoalModel
+} from '../../models/user.responses/participant.selected.goal.model';
 import {
     ParticipantModel
 } from '../../models/enrollment/participant.model';
@@ -12,26 +12,29 @@ import {
     ErrorHandler
 } from '../../../common/error.handler';
 import {
-    UserSelectedGoalCreateModel,
-    UserSelectedGoalSearchFilters,
-    UserSelectedGoalSearchResults
-} from '../../../domain.types/user.responses/user.selected.goal.domain.types';
+    ParticipantSelectedGoalCreateModel,
+    ParticipantSelectedGoalSearchFilters,
+    ParticipantSelectedGoalSearchResults
+} from '../../../domain.types/user.responses/participant.selected.goal.domain.types';
 import {
     Op
 } from 'sequelize';
-import { EnrollmentModel } from '../../../database/models/enrollment/enrollment.model';
+import { EnrollmentModel } from '../../models/enrollment/enrollment.model';
+import { ParticipantSelectedPriorityModel } from '../../../database/models/user.responses/participant.selected.priority.model';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-export class UserSelectedGoalService {
+export class ParticipantSelectedGoalService {
 
     //#region Models
 
-    UserSelectedGoal = UserSelectedGoalModel.Model;
+    ParticipantSelectedGoal = ParticipantSelectedGoalModel.Model;
 
     Enrollment = EnrollmentModel.Model;
 
     Participant = ParticipantModel.Model;
+
+    ParticipantSelectedPriority = ParticipantSelectedPriorityModel.Model;
 
     Careplan = CareplanModel.Model;
 
@@ -39,18 +42,18 @@ export class UserSelectedGoalService {
 
     //#region Publics
 
-    create = async (createModel: UserSelectedGoalCreateModel) => {
+    create = async (createModel: ParticipantSelectedGoalCreateModel) => {
         try {
-            var record = await this.UserSelectedGoal.create(createModel);
+            var record = await this.ParticipantSelectedGoal.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to create user selected goal!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to create participant selected goal!', error);
         }
     }
 
     getById = async (id) => {
         try {
-            const record = await this.UserSelectedGoal.findOne({
+            const record = await this.ParticipantSelectedGoal.findOne({
                 where : {
                     id : id
                 },
@@ -69,26 +72,32 @@ export class UserSelectedGoalService {
                     required : false,
                     as       : 'Enrollment',
                     //through: { attributes: [] }
+                }, {
+                    model    : this.ParticipantSelectedPriority,
+                    required : false,
+                    as       : 'ParticipantSelectedPriority',
+                    //through: { attributes: [] }
                 }
 
                 ]
             });
             return record;
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve user selected goal!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve participant selected goal!', error);
         }
     }
 
     exists = async (id): Promise < boolean > => {
         try {
-            const record = await this.UserSelectedGoal.findByPk(id);
+            const record = await this.ParticipantSelectedGoal.findByPk(id);
             return record !== null;
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of user selected goal!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of participant selected goal!', error);
         }
     }
 
-    search = async (filters: UserSelectedGoalSearchFilters): Promise < UserSelectedGoalSearchResults > => {
+    search = async (filters: ParticipantSelectedGoalSearchFilters):
+        Promise < ParticipantSelectedGoalSearchResults > => {
         try {
 
             var search = this.getSearchModel(filters);
@@ -101,8 +110,8 @@ export class UserSelectedGoalService {
                 limit
             } = this.addPaginationToSearch(search, filters);
 
-            const foundResults = await this.UserSelectedGoal.findAndCountAll(search);
-            const searchResults: UserSelectedGoalSearchResults = {
+            const foundResults = await this.ParticipantSelectedGoal.findAndCountAll(search);
+            const searchResults: ParticipantSelectedGoalSearchResults = {
                 TotalCount     : foundResults.count,
                 RetrievedCount : foundResults.rows.length,
                 PageIndex      : pageIndex,
@@ -115,38 +124,38 @@ export class UserSelectedGoalService {
             return searchResults;
 
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to search user selected goal records!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to search participant selected goal records!', error);
         }
     }
 
     update = async (id, updateModel) => {
         try {
             if (Object.keys(updateModel).length > 0) {
-                var res = await this.UserSelectedGoal.update(updateModel, {
+                var res = await this.ParticipantSelectedGoal.update(updateModel, {
                     where : {
                         id : id
                     }
                 });
                 if (res.length !== 1) {
-                    throw new Error('Unable to update user selected goal!');
+                    throw new Error('Unable to update participant selected goal!');
                 }
             }
             return await this.getById(id);
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to update user selected goal!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to update participant selected goal!', error);
         }
     }
 
     delete = async (id) => {
         try {
-            var result = await this.UserSelectedGoal.destroy({
+            var result = await this.ParticipantSelectedGoal.destroy({
                 where : {
                     id : id
                 }
             });
             return result === 1;
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to delete user selected goal!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to delete participant selected goal!', error);
         }
     }
 
@@ -166,6 +175,9 @@ export class UserSelectedGoalService {
         }
         if (filters.ParticipantId) {
             search.where['ParticipantId'] = filters.ParticipantId;
+        }
+        if (filters.SelectedPriorityId) {
+            search.where['SelectedPriorityId'] = filters.SelectedPriorityId;
         }
         if (filters.Name) {
             search.where['Name'] = {
@@ -223,6 +235,16 @@ export class UserSelectedGoalService {
         //    includeUser.where['Xyz'] = filters.Xyz;
         //}
         search.include.push(includeParticipantAsParticipant);
+        const includePriorityAsPriority = {
+            model    : this.ParticipantSelectedPriority,
+            required : false,
+            as       : 'ParticipantSelectedPriority',
+            where    : {}
+        };
+        //if (filters.Xyz != undefined) {
+        //    includeUser.where['Xyz'] = filters.Xyz;
+        //}
+        search.include.push(includePriorityAsPriority);
         const includeCareplanAsCareplan = {
             model    : this.Careplan,
             required : false,

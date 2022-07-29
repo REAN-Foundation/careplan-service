@@ -5,11 +5,11 @@ const sequelize = db.default.sequelize;
 
 ////////////////////////////////////////////////////////////////////////
 
-export class UserSelectedGoalModel {
+export class ParticipantSelectedGoalModel {
 
-    static TableName = 'user_selected_goals';
+    static TableName = 'participant_selected_goals';
 
-    static ModelName = 'UserSelectedGoal';
+    static ModelName = 'ParticipantSelectedGoal';
 
     static Schema = {
         id : {
@@ -33,6 +33,12 @@ export class UserSelectedGoalModel {
             unique     : false
         },
         ParticipantId : {
+            type       : DataTypes.UUID,
+            allowNull  : false,
+            foreignKey : true,
+            unique     : false
+        },
+        SelectedPriorityId : {
             type       : DataTypes.UUID,
             allowNull  : false,
             foreignKey : true,
@@ -81,8 +87,8 @@ export class UserSelectedGoalModel {
     };
 
     static Model: any = sequelize.define(
-        UserSelectedGoalModel.ModelName,
-        UserSelectedGoalModel.Schema,
+        ParticipantSelectedGoalModel.ModelName,
+        ParticipantSelectedGoalModel.Schema,
         {
             createdAt       : 'CreatedAt',
             updatedAt       : 'UpdatedAt',
@@ -90,26 +96,30 @@ export class UserSelectedGoalModel {
             freezeTableName : true,
             timestamps      : true,
             paranoid        : true,
-            tableName       : UserSelectedGoalModel.TableName,
+            tableName       : ParticipantSelectedGoalModel.TableName,
         });
 
     static associate = (models) => {
 
         //Add associations here...
 
-        models.UserSelectedGoal.belongsTo(models.Enrollment, {
+        models.ParticipantSelectedGoal.belongsTo(models.Enrollment, {
             sourceKey : 'EnrollmentId',
             targetKey : 'id',
             as        : 'Enrollment'
         });
 
-        models.UserSelectedGoal.belongsTo(models.Participant, {
+        models.ParticipantSelectedGoal.belongsTo(models.Participant, {
             sourceKey : 'ParticipantId',
             targetKey : 'id',
             as        : 'Participant'
         });
-
-        models.UserSelectedGoal.belongsTo(models.Careplan, {
+        models.ParticipantSelectedGoal.belongsTo(models.ParticipantSelectedPriority, {
+            sourceKey : 'SelectedPriorityId',
+            targetKey : 'id',
+            as        : 'ParticipantSelectedPriority'
+        });
+        models.ParticipantSelectedGoal.belongsTo(models.Careplan, {
             sourceKey : 'CareplanId',
             targetKey : 'id',
             as        : 'Careplan'
