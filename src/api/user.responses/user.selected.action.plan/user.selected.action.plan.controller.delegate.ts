@@ -22,6 +22,7 @@ import {
     UserSelectedActionPlanSearchFilters,
     UserSelectedActionPlanSearchResults
 } from '../../../domain.types/user.responses/user.selected.action.plan.domain.types';
+import { CareplanService } from '../../../database/repository.services/careplan/careplan.service';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -31,15 +32,19 @@ export class UserSelectedActionPlanControllerDelegate {
 
     _service: UserSelectedActionPlanService = null;
 
+    _careplanService: CareplanService = null;
+
     constructor() {
         this._service = new UserSelectedActionPlanService();
+        this._careplanService = new CareplanService();
     }
 
     //#endregion
 
     create = async (requestBody: any) => {
         await validator.validateCreateRequest(requestBody);
-        var createModel: UserSelectedActionPlanCreateModel = this.getCreateModel(requestBody);
+        const careplan = await this._careplanService.getById(requestBody.CareplanId);
+        var createModel: UserSelectedActionPlanCreateModel = this.getCreateModel(requestBody, careplan);
         const record = await this._service.create(createModel);
         if (record === null) {
             throw new ApiError('Unable to create user selected action plan!', 400);
@@ -97,6 +102,14 @@ export class UserSelectedActionPlanControllerDelegate {
 
         var filters = {};
 
+        var enrollmentId = query.enrollmentId ? query.enrollmentId : null;
+        if (enrollmentId != null) {
+            filters['EnrollmentId'] = enrollmentId;
+        }
+        var participantId = query.participantId ? query.participantId : null;
+        if (participantId != null) {
+            filters['ParticipantId'] = participantId;
+        }
         var name = query.name ? query.name : null;
         if (name != null) {
             filters['Name'] = name;
@@ -116,6 +129,10 @@ export class UserSelectedActionPlanControllerDelegate {
         var assetType = query.assetType ? query.assetType : null;
         if (assetType != null) {
             filters['AssetType'] = assetType;
+        }
+        var assetCode = query.assetCode ? query.assetCode : null;
+        if (assetCode != null) {
+            filters['AssetCode'] = assetCode;
         }
         var additionalDetails = query.additionalDetails ? query.additionalDetails : null;
         if (additionalDetails != null) {
@@ -147,8 +164,11 @@ export class UserSelectedActionPlanControllerDelegate {
         if (Helper.hasProperty(requestBody, 'Description')) {
             updateModel.Description = requestBody.Description;
         }
-        if (Helper.hasProperty(requestBody, 'UserId')) {
-            updateModel.UserId = requestBody.UserId;
+        if (Helper.hasProperty(requestBody, 'EnrollmentId')) {
+            updateModel.EnrollmentId = requestBody.EnrollmentId;
+        }
+        if (Helper.hasProperty(requestBody, 'ParticipantId')) {
+            updateModel.ParticipantId = requestBody.ParticipantId;
         }
         if (Helper.hasProperty(requestBody, 'CareplanId')) {
             updateModel.CareplanId = requestBody.CareplanId;
@@ -166,12 +186,16 @@ export class UserSelectedActionPlanControllerDelegate {
         return updateModel;
     }
 
-    getCreateModel = (requestBody): UserSelectedActionPlanCreateModel => {
+    getCreateModel = (requestBody, careplan): UserSelectedActionPlanCreateModel => {
         return {
             Name              : requestBody.Name ? requestBody.Name : null,
             Description       : requestBody.Description ? requestBody.Description : null,
-            UserId            : requestBody.UserId ? requestBody.UserId : null,
+            EnrollmentId      : requestBody.EnrollmentId ? requestBody.EnrollmentId : null,
+            ParticipantId     : requestBody.ParticipantId ? requestBody.ParticipantId : null,
             CareplanId        : requestBody.CareplanId ? requestBody.CareplanId : null,
+            AssetId           : careplan.AssetId ? careplan.AssetId : null,
+            AssetType         : careplan.AssetType ? careplan.AssetType : null,
+            AssetCode         : careplan.AssetCode ? careplan.AssetCode : null,
             AdditionalDetails : requestBody.AdditionalDetails ? requestBody.AdditionalDetails : null,
             StartDate         : requestBody.StartDate ? requestBody.StartDate : null,
             EndDate           : requestBody.EndDate ? requestBody.EndDate : null
@@ -186,10 +210,12 @@ export class UserSelectedActionPlanControllerDelegate {
             id                : record.id,
             Name              : record.Name,
             Description       : record.Description,
-            UserId            : record.UserId,
+            EnrollmentId      : record.EnrollmentId,
+            ParticipantId     : record.ParticipantId,
             CareplanId        : record.CareplanId,
             AssetId           : record.AssetId,
             AssetType         : record.AssetType,
+            AssetCode         : record.AssetCode,
             AdditionalDetails : record.AdditionalDetails,
             StartDate         : record.StartDate,
             EndDate           : record.EndDate,
@@ -205,10 +231,12 @@ export class UserSelectedActionPlanControllerDelegate {
             id                : record.id,
             Name              : record.Name,
             Description       : record.Description,
-            UserId            : record.UserId,
+            EnrollmentId      : record.EnrollmentId,
+            ParticipantId     : record.ParticipantId,
             CareplanId        : record.CareplanId,
             AssetId           : record.AssetId,
             AssetType         : record.AssetType,
+            AssetCode         : record.AssetCode,
             AdditionalDetails : record.AdditionalDetails,
             StartDate         : record.StartDate,
             EndDate           : record.EndDate,
