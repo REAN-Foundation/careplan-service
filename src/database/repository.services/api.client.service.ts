@@ -17,14 +17,15 @@ export class ApiClientService {
     create = async (clientDomainModel: ApiClientCreateModel): Promise<ApiClientDto> => {
         try {
             const entity = {
-                ClientName : clientDomainModel.ClientName,
-                ClientCode : clientDomainModel.ClientCode,
-                Phone      : clientDomainModel.Phone,
-                Email      : clientDomainModel.Email,
-                Password   : clientDomainModel.Password ?? null,
-                ApiKey     : clientDomainModel.ApiKey ?? apikeyGenerator.default.create().apiKey,
-                ValidFrom  : clientDomainModel.ValidFrom ?? null,
-                ValidTill  : clientDomainModel.ValidTill ?? null,
+                ClientName   : clientDomainModel.ClientName,
+                ClientCode   : clientDomainModel.ClientCode,
+                IsPrivileged : clientDomainModel.IsPrivileged,
+                Phone        : clientDomainModel.Phone,
+                Email        : clientDomainModel.Email,
+                Password     : clientDomainModel.Password ?? null,
+                ApiKey       : clientDomainModel.ApiKey ?? apikeyGenerator.default.create().apiKey,
+                ValidFrom    : clientDomainModel.ValidFrom ?? null,
+                ValidTill    : clientDomainModel.ValidTill ?? null,
             };
             entity.Password = Helper.hash(clientDomainModel.Password);
             const client = await this.ApiClient.create(entity);
@@ -219,8 +220,14 @@ export class ApiClientService {
             if (clientDomainModel.Phone != null) {
                 client.Phone = clientDomainModel.Phone;
             }
+            if (clientDomainModel.IsPrivileged != null) {
+                client.IsPrivileged = clientDomainModel.IsPrivileged;
+            }
             if (clientDomainModel.Email != null) {
                 client.Email = clientDomainModel.Email;
+            }
+            if (clientDomainModel.ValidFrom != null) {
+                client.ValidFrom = clientDomainModel.ValidFrom;
             }
             if (clientDomainModel.ValidTill != null) {
                 client.ValidTill = clientDomainModel.ValidTill;
@@ -261,7 +268,7 @@ export class ApiClientService {
             Email        : client.Email,
             IsActive     : active,
             CountryCode  : client.CountryCode,
-            IsPrivileged : false
+            IsPrivileged : client.IsPrivileged,
         };
         return dto;
     }

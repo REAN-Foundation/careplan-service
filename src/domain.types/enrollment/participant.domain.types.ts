@@ -8,7 +8,7 @@ export interface ParticipantModel {
     CountryCode: string;
     Phone      : string;
     Email      : string;
-    SystemId?  : string;
+    ParticipantReferenceId?  : string;
     Gender     : Gender;
     BirthDate  : Date;
     Country?   : string;
@@ -23,7 +23,7 @@ export interface ParticipantDto {
     CountryCode: string;
     Phone      : string;
     Email      : string;
-    SystemId   : string;
+    ParticipantReferenceId   : string;
     Gender     : Gender;
     BirthDate  : Date;
     Country    : string;
@@ -34,7 +34,7 @@ export interface ParticipantSearchFilters extends BaseSearchFilters {
     LastName? : string;
     Phone?    : string;
     Email?    : string;
-    SystemId? : string;
+    ParticipantReferenceId? : string;
     DisplayId?: number;
 }
 

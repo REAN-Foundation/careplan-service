@@ -1,8 +1,9 @@
 import express from 'express';
 import { ResponseHandler } from '../../common/response.handler';
 import { ErrorHandler } from '../../common/error.handler';
-import { TypesControllerDelegate } from './types.controller.delegate';
 import { BaseController } from '../base.controller';
+import { RoleService } from '../../database/repository.services/role.service';
+import { CareplanCategoryService } from '../../database/repository.services/careplan/careplan.category.service';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -10,11 +11,14 @@ export class TypesController extends BaseController {
 
     //#region member variables and constructors
 
-    _delegate: TypesControllerDelegate = null;
+    _roleService: RoleService = null;
+
+    _careplanCategoryService: CareplanCategoryService = null;
 
     constructor() {
         super();
-        this._delegate = new TypesControllerDelegate();
+        this._roleService = new RoleService();
+        this._careplanCategoryService = new CareplanCategoryService();
     }
 
     //#endregion
@@ -25,7 +29,7 @@ export class TypesController extends BaseController {
         try {
             await this.authorize('Types.GetRoleTypes', request, response, false);
 
-            const types = await this._delegate.getRoleTypes();
+            const types = await this._roleService.getAllRoles();
             if (types === null || types.length === 0) {
                 ErrorHandler.throwInternalServerError(`Unable to retrieve user role types!`);
             }
@@ -40,6 +44,19 @@ export class TypesController extends BaseController {
             
             ResponseHandler.success(request, response, 'User role types retrieved successfully!', 200, {
                 RoleTypes : roles,
+            });
+
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
+
+    getCareplanCategories = async (request: express.Request, response: express.Response): Promise<void> => {
+        try {
+            await this.authorize('Types.GetCareplanCategories', request, response, false);
+            const categories = await this._careplanCategoryService.getCareplanCategories();
+            ResponseHandler.success(request, response, 'Careplan categories retrieved successfully!', 200, {
+                CareplanCategories : categories,
             });
 
         } catch (error) {

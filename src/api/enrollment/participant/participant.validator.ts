@@ -8,16 +8,16 @@ export class ParticipantValidator {
     static validateCreateRequest = async (requestBody) => {
         try {
             const schema = joi.object({
-                Prefix      : joi.string().max(16).optional(),
-                FirstName   : joi.string().max(64).required(),
-                LastName    : joi.string().max(64).required(),
-                CountryCode : joi.string().max(10).required(),
-                Phone       : joi.string().max(16).min(6).required(),
-                Email       : joi.string().max(256).required(),
-                SystemId    : joi.string().max(256).optional(),
-                Gender      : joi.string().valid("Male", "Female", "Other").required(),
-                BirthDate   : joi.string().optional(),
-                Country     : joi.string().max(64).optional()
+                Prefix                 : joi.string().max(16).optional(),
+                FirstName              : joi.string().max(64).required(),
+                LastName               : joi.string().max(64).required(),
+                CountryCode            : joi.string().max(10).required(),
+                Phone                  : joi.string().max(16).min(6).required(),
+                Email                  : joi.string().max(256).required(),
+                ParticipantReferenceId : joi.string().max(256).optional(),
+                Gender                 : joi.string().valid("Male", "Female", "Other").required(),
+                BirthDate              : joi.string().optional(),
+                Country                : joi.string().max(64).optional()
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -28,15 +28,15 @@ export class ParticipantValidator {
     static validateSearchRequest = async (query) => {
         try {
             const schema = joi.object({
-                systemId      : joi.string().max(256).optional(),
-                prefix        : joi.string().max(16).optional(),
-                firstName     : joi.string().max(64).optional(),
-                lastName      : joi.string().max(64).optional(),
-                phone         : joi.string().max(16).min(6).optional(),
-                email         : joi.string().max(256).optional(),
-                gender        : joi.string().valid("Male", "Female", "Other").optional(),
-                country       : joi.string().max(64).optional(),
-                addedByUserId : joi.string().guid({
+                participantReferenceId : joi.string().max(256).optional(),
+                prefix                 : joi.string().max(16).optional(),
+                firstName              : joi.string().max(64).optional(),
+                lastName               : joi.string().max(64).optional(),
+                phone                  : joi.string().max(16).min(6).optional(),
+                email                  : joi.string().max(256).optional(),
+                gender                 : joi.string().valid("Male", "Female", "Other").optional(),
+                country                : joi.string().max(64).optional(),
+                addedByUserId          : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
                 lastUpdatedByUserId : joi.string().guid({
@@ -53,14 +53,14 @@ export class ParticipantValidator {
     static validateUpdateRequest = async (requestBody) => {
         try {
             const schema = joi.object({
-                FirstName   : joi.string().max(64).optional(),
-                LastName    : joi.string().max(64).optional(),
-                CountryCode : joi.string().max(10).optional(),
-                Phone       : joi.string().max(16).min(6).optional(),
-                Email       : joi.string().max(256).optional(),
-                SystemId    : joi.string().max(256).optional(),
-                Gender      : joi.string().valid("Male", "Female", "Other").optional(),
-                Country     : joi.string().max(64).optional(),
+                FirstName              : joi.string().max(64).optional(),
+                LastName               : joi.string().max(64).optional(),
+                CountryCode            : joi.string().max(10).optional(),
+                Phone                  : joi.string().max(16).min(6).optional(),
+                Email                  : joi.string().max(256).optional(),
+                ParticipantReferenceId : joi.string().max(256).optional(),
+                Gender                 : joi.string().valid("Male", "Female", "Other").optional(),
+                Country                : joi.string().max(64).optional(),
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {

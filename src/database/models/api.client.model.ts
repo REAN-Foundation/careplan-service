@@ -42,6 +42,11 @@ export class ApiClientModel {
             type      : DataTypes.STRING(512),
             allowNull : true
         },
+        IsPrivileged : {
+            type         : DataTypes.BOOLEAN,
+            allowNull    : false,
+            defaultValue : false
+        },
         ApiKey : {
             type      : DataTypes.STRING(256),
             allowNull : false

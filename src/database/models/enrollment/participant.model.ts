@@ -50,7 +50,7 @@ export class ParticipantModel {
             type      : DataTypes.STRING(256),
             allowNull : false
         },
-        SystemId : {
+        ParticipantReferenceId : {
             type      : DataTypes.STRING(64),
             allowNull : true
         },

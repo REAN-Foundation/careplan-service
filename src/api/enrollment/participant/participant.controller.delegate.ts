@@ -32,16 +32,16 @@ export class ParticipantControllerDelegate {
         const birthDate = requestBody.BirthDate ? Date.parse(requestBody.BirthDate) : null;
 
         const participantCreateModel: ParticipantModel = {
-            Prefix      : requestBody.Prefix ? requestBody.Prefix : 'Mr',
-            FirstName   : requestBody.FirstName ? requestBody.FirstName : null,
-            LastName    : requestBody.LastName ? requestBody.LastName : null,
-            CountryCode : requestBody.CountryCode ? requestBody.CountryCode : '+91',
-            Phone       : requestBody.Phone ? requestBody.Phone : null,
-            Email       : requestBody.Email ? requestBody.Email : null,
-            Country     : requestBody.Country ? requestBody.Country : null,
-            SystemId    : requestBody.SystemId ? requestBody.SystemId : null,
-            Gender      : requestBody.Gender ? requestBody.Gender : 'Male',
-            BirthDate   : new Date(birthDate),
+            Prefix                 : requestBody.Prefix ? requestBody.Prefix : 'Mr',
+            FirstName              : requestBody.FirstName ? requestBody.FirstName : null,
+            LastName               : requestBody.LastName ? requestBody.LastName : null,
+            CountryCode            : requestBody.CountryCode ? requestBody.CountryCode : '+91',
+            Phone                  : requestBody.Phone ? requestBody.Phone : null,
+            Email                  : requestBody.Email ? requestBody.Email : null,
+            Country                : requestBody.Country ? requestBody.Country : null,
+            ParticipantReferenceId : requestBody.ParticipantReferenceId ? requestBody.ParticipantReferenceId : null,
+            Gender                 : requestBody.Gender ? requestBody.Gender : 'Male',
+            BirthDate              : new Date(birthDate),
         };
 
         await UserHelper.getValidParticipantCreateModel(requestBody);
@@ -113,9 +113,9 @@ export class ParticipantControllerDelegate {
         if (lastName != null) {
             filters['LastName'] = lastName;
         }
-        var systemId = query.systemId ? query.systemId : null;
-        if (systemId != null) {
-            filters['SystemId'] = systemId;
+        var participantReferenceId = query.participantReferenceId ? query.participantReferenceId : null;
+        if (participantReferenceId != null) {
+            filters['ParticipantReferenceId'] = participantReferenceId;
         }
         var gender = query.gender ? query.gender : null;
         if (gender != null) {
@@ -143,20 +143,20 @@ export class ParticipantControllerDelegate {
             return null;
         }
         return {
-            id                  : record.id,
-            DisplayId           : record.DisplayId,
-            Prefix              : record.Prefix,
-            FirstName           : record.FirstName,
-            LastName            : record.LastName,
-            SystemId            : record.SystemId,
-            CountryCode         : record.CountryCode,
-            Phone               : record.Phone,
-            Email               : record.Email,
-            Gender              : record.Gender,
-            BirthDate           : record.BirthDate,
-            Country             : record.Country,
-            AddedByUserId       : record.AddedByUserId,
-            LastUpdatedByUserId : record.LastUpdatedByUserId
+            id                     : record.id,
+            DisplayId              : record.DisplayId,
+            Prefix                 : record.Prefix,
+            FirstName              : record.FirstName,
+            LastName               : record.LastName,
+            ParticipantReferenceId : record.ParticipantReferenceId,
+            CountryCode            : record.CountryCode,
+            Phone                  : record.Phone,
+            Email                  : record.Email,
+            Gender                 : record.Gender,
+            BirthDate              : record.BirthDate,
+            Country                : record.Country,
+            AddedByUserId          : record.AddedByUserId,
+            LastUpdatedByUserId    : record.LastUpdatedByUserId
         };
     }
 
@@ -167,18 +167,18 @@ export class ParticipantControllerDelegate {
             return null;
         }
         return {
-            id          : record.id,
-            DisplayId   : record.DisplayId,
-            Prefix      : record.Prefix,
-            FirstName   : record.FirstName,
-            LastName    : record.LastName,
-            CountryCode : record.CountryCode,
-            Phone       : record.Phone,
-            Email       : record.Email,
-            SystemId    : record.SystemId,
-            Gender      : record.Gender,
-            BirthDate   : record.BirthDate,
-            Country     : record.Country,
+            id                     : record.id,
+            DisplayId              : record.DisplayId,
+            Prefix                 : record.Prefix,
+            FirstName              : record.FirstName,
+            LastName               : record.LastName,
+            CountryCode            : record.CountryCode,
+            Phone                  : record.Phone,
+            Email                  : record.Email,
+            ParticipantReferenceId : record.ParticipantReferenceId,
+            Gender                 : record.Gender,
+            BirthDate              : record.BirthDate,
+            Country                : record.Country,
         };
     }
 

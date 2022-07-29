@@ -120,6 +120,7 @@ export class FileResourceControllerDelegate {
             MimeType         : record.MimeType,
             Public           : record.Public,
             OriginalFilename : record.OriginalFilename,
+            Url              : process.env.BASE_URL + `/api/v1/file-resources/download/${record.id}?disposition=attachment`,
             Tags             : record.Tags ? JSON.parse(record.Tags) : [],
             Size             : record.Size,
             UserId           : record.UserId,

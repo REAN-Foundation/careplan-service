@@ -136,8 +136,8 @@ export class UserHelper {
             }
             updateModel.Email = requestBody.Email;
         }
-        if (Helper.hasProperty(requestBody, 'SystemId')) {
-            updateModel.SystemId = requestBody.SystemId;
+        if (Helper.hasProperty(requestBody, 'ParticipantReferenceId')) {
+            updateModel.ParticipantReferenceId = requestBody.ParticipantReferenceId;
         }
         if (Helper.hasProperty(requestBody, 'Gender')) {
             updateModel.Gender = requestBody.Gender;
