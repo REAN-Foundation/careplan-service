@@ -7,11 +7,12 @@ import {
     uuid
 } from "../miscellaneous/system.types";
 
-export interface UserSelectedActionPlanCreateModel {
+export interface ParticipantSelectedActionPlanCreateModel {
     Name              ?: string;
     Description       ?: string;
     EnrollmentId      ?: uuid;
     ParticipantId     ?: uuid;
+    GoalId            ?: uuid;
     CareplanId        ?: number;
     AssetId           ?: number;
     AssetType         ?: string;
@@ -21,23 +22,25 @@ export interface UserSelectedActionPlanCreateModel {
     EndDate           ?: Date;
 }
 
-export interface UserSelectedActionPlanUpdateModel {
+export interface ParticipantSelectedActionPlanUpdateModel {
     Name              ?: string;
     Description       ?: string;
     EnrollmentId      ?: uuid;
     ParticipantId     ?: uuid;
+    GoalId            ?: uuid;
     CareplanId        ?: number;
     AdditionalDetails ?: string;
     StartDate         ?: Date;
     EndDate           ?: Date;
 }
 
-export interface UserSelectedActionPlanDto {
+export interface ParticipantSelectedActionPlanDto {
     id               : uuid;
     Name             : string;
     Description      : string;
     EnrollmentId     : uuid;
     ParticipantId    : uuid;
+    GoalId           : uuid;
     CareplanId       : number;
     AssetId          : number;
     AssetType        : string;
@@ -49,11 +52,12 @@ export interface UserSelectedActionPlanDto {
 
 }
 
-export interface UserSelectedActionPlanSearchFilters extends BaseSearchFilters {
+export interface ParticipantSelectedActionPlanSearchFilters extends BaseSearchFilters {
     Name              ?: string;
     Description       ?: string;
     EnrollmentId      ?: uuid;
     ParticipantId     ?: uuid;
+    GoalId            ?: uuid;
     CareplanId        ?: number;
     AssetId           ?: number;
     AssetType         ?: string;
@@ -64,6 +68,6 @@ export interface UserSelectedActionPlanSearchFilters extends BaseSearchFilters {
     ProgressStatus    ?: ProgressStatus;
 }
 
-export interface UserSelectedActionPlanSearchResults extends BaseSearchResults {
-    Items: UserSelectedActionPlanDto[];
+export interface ParticipantSelectedActionPlanSearchResults extends BaseSearchResults {
+    Items: ParticipantSelectedActionPlanDto[];
 }

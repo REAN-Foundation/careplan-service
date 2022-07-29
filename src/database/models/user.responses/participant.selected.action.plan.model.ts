@@ -5,11 +5,11 @@ const sequelize = db.default.sequelize;
 
 ////////////////////////////////////////////////////////////////////////
 
-export class UserSelectedActionPlanModel {
+export class ParticipantSelectedActionPlanModel {
 
-    static TableName = 'user_selected_action_plans';
+    static TableName = 'participant_selected_action_plans';
 
-    static ModelName = 'UserSelectedActionPlan';
+    static ModelName = 'ParticipantSelectedActionPlan';
 
     static Schema = {
         id : {
@@ -33,6 +33,12 @@ export class UserSelectedActionPlanModel {
             unique     : false
         },
         ParticipantId : {
+            type       : DataTypes.UUID,
+            allowNull  : false,
+            foreignKey : true,
+            unique     : false
+        },
+        GoalId : {
             type       : DataTypes.UUID,
             allowNull  : false,
             foreignKey : true,
@@ -81,8 +87,8 @@ export class UserSelectedActionPlanModel {
     };
 
     static Model: any = sequelize.define(
-        UserSelectedActionPlanModel.ModelName,
-        UserSelectedActionPlanModel.Schema,
+        ParticipantSelectedActionPlanModel.ModelName,
+        ParticipantSelectedActionPlanModel.Schema,
         {
             createdAt       : 'CreatedAt',
             updatedAt       : 'UpdatedAt',
@@ -90,25 +96,30 @@ export class UserSelectedActionPlanModel {
             freezeTableName : true,
             timestamps      : true,
             paranoid        : true,
-            tableName       : UserSelectedActionPlanModel.TableName,
+            tableName       : ParticipantSelectedActionPlanModel.TableName,
         });
 
     static associate = (models) => {
 
         //Add associations here...
 
-        models.UserSelectedActionPlan.belongsTo(models.Enrollment, {
+        models.ParticipantSelectedActionPlan.belongsTo(models.Enrollment, {
             sourceKey : 'EnrollmentId',
             targetKey : 'id',
             as        : 'Enrollment'
         });
-        models.UserSelectedActionPlan.belongsTo(models.Participant, {
+        models.ParticipantSelectedActionPlan.belongsTo(models.Participant, {
             sourceKey : 'ParticipantId',
             targetKey : 'id',
             as        : 'Participant'
         });
+        models.ParticipantSelectedActionPlan.belongsTo(models.ParticipantSelectedGoal, {
+            sourceKey : 'GoalId',
+            targetKey : 'id',
+            as        : 'ParticipantSelectedGoal'
+        });
 
-        models.UserSelectedActionPlan.belongsTo(models.Careplan, {
+        models.ParticipantSelectedActionPlan.belongsTo(models.Careplan, {
             sourceKey : 'CareplanId',
             targetKey : 'id',
             as        : 'Careplan'

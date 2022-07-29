@@ -1,6 +1,6 @@
 import {
-    UserSelectedActionPlanService
-} from '../../../database/repository.services/user.responses/user.selected.action.plan.service';
+    ParticipantSelectedActionPlanService
+} from '../../../database/repository.services/user.responses/participant.selected.action.plan.service';
 import {
     ErrorHandler
 } from '../../../common/error.handler';
@@ -11,31 +11,31 @@ import {
     ApiError
 } from '../../../common/api.error';
 import {
-    UserSelectedActionPlanValidator as validator
-} from './user.selected.action.plan.validator';
+    ParticipantSelectedActionPlanValidator as validator
+} from './participant.selected.action.plan.validator';
 import {
     uuid
 } from '../../../domain.types/miscellaneous/system.types';
 import {
-    UserSelectedActionPlanCreateModel,
-    UserSelectedActionPlanUpdateModel,
-    UserSelectedActionPlanSearchFilters,
-    UserSelectedActionPlanSearchResults
-} from '../../../domain.types/user.responses/user.selected.action.plan.domain.types';
+    ParticipantSelectedActionPlanCreateModel,
+    ParticipantSelectedActionPlanUpdateModel,
+    ParticipantSelectedActionPlanSearchFilters,
+    ParticipantSelectedActionPlanSearchResults
+} from '../../../domain.types/user.responses/participant.selected.action.plan.domain.types';
 import { CareplanService } from '../../../database/repository.services/careplan/careplan.service';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-export class UserSelectedActionPlanControllerDelegate {
+export class ParticipantSelectedActionPlanControllerDelegate {
 
     //#region member variables and constructors
 
-    _service: UserSelectedActionPlanService = null;
+    _service: ParticipantSelectedActionPlanService = null;
 
     _careplanService: CareplanService = null;
 
     constructor() {
-        this._service = new UserSelectedActionPlanService();
+        this._service = new ParticipantSelectedActionPlanService();
         this._careplanService = new CareplanService();
     }
 
@@ -44,10 +44,10 @@ export class UserSelectedActionPlanControllerDelegate {
     create = async (requestBody: any) => {
         await validator.validateCreateRequest(requestBody);
         const careplan = await this._careplanService.getById(requestBody.CareplanId);
-        var createModel: UserSelectedActionPlanCreateModel = this.getCreateModel(requestBody, careplan);
+        var createModel: ParticipantSelectedActionPlanCreateModel = this.getCreateModel(requestBody, careplan);
         const record = await this._service.create(createModel);
         if (record === null) {
-            throw new ApiError('Unable to create user selected action plan!', 400);
+            throw new ApiError('Unable to create participant selected action plan!', 400);
         }
         return this.getEnrichedDto(record);
     }
@@ -62,8 +62,8 @@ export class UserSelectedActionPlanControllerDelegate {
 
     search = async (query: any) => {
         await validator.validateSearchRequest(query);
-        var filters: UserSelectedActionPlanSearchFilters = this.getSearchFilters(query);
-        var searchResults: UserSelectedActionPlanSearchResults = await this._service.search(filters);
+        var filters: ParticipantSelectedActionPlanSearchFilters = this.getSearchFilters(query);
+        var searchResults: ParticipantSelectedActionPlanSearchResults = await this._service.search(filters);
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
         return searchResults;
@@ -73,12 +73,12 @@ export class UserSelectedActionPlanControllerDelegate {
         await validator.validateUpdateRequest(requestBody);
         const record = await this._service.getById(id);
         if (record === null) {
-            ErrorHandler.throwNotFoundError('User selected action plan with id ' + id.toString() + ' cannot be found!');
+            ErrorHandler.throwNotFoundError('Participant selected action plan with id ' + id.toString() + ' cannot be found!');
         }
-        const updateModel: UserSelectedActionPlanUpdateModel = this.getUpdateModel(requestBody);
+        const updateModel: ParticipantSelectedActionPlanUpdateModel = this.getUpdateModel(requestBody);
         const updated = await this._service.update(id, updateModel);
         if (updated == null) {
-            throw new ApiError('Unable to update user selected action plan!', 400);
+            throw new ApiError('Unable to update participant selected action plan!', 400);
         }
         return this.getEnrichedDto(updated);
     }
@@ -86,11 +86,11 @@ export class UserSelectedActionPlanControllerDelegate {
     delete = async (id: uuid) => {
         const record = await this._service.getById(id);
         if (record == null) {
-            ErrorHandler.throwNotFoundError('User selected action plan with id ' + id.toString() + ' cannot be found!');
+            ErrorHandler.throwNotFoundError('Participant selected action plan with id ' + id.toString() + ' cannot be found!');
         }
-        const userSelectedActionPlanDeleted: boolean = await this._service.delete(id);
+        const participantSelectedActionPlanDeleted: boolean = await this._service.delete(id);
         return {
-            Deleted : userSelectedActionPlanDeleted
+            Deleted : participantSelectedActionPlanDeleted
         };
     }
 
@@ -109,6 +109,10 @@ export class UserSelectedActionPlanControllerDelegate {
         var participantId = query.participantId ? query.participantId : null;
         if (participantId != null) {
             filters['ParticipantId'] = participantId;
+        }
+        var goalId = query.goalId ? query.goalId : null;
+        if (goalId != null) {
+            filters['GoalId'] = goalId;
         }
         var name = query.name ? query.name : null;
         if (name != null) {
@@ -154,9 +158,9 @@ export class UserSelectedActionPlanControllerDelegate {
         return filters;
     }
 
-    getUpdateModel = (requestBody): UserSelectedActionPlanUpdateModel => {
+    getUpdateModel = (requestBody): ParticipantSelectedActionPlanUpdateModel => {
 
-        const updateModel: UserSelectedActionPlanUpdateModel = {};
+        const updateModel: ParticipantSelectedActionPlanUpdateModel = {};
 
         if (Helper.hasProperty(requestBody, 'Name')) {
             updateModel.Name = requestBody.Name;
@@ -169,6 +173,9 @@ export class UserSelectedActionPlanControllerDelegate {
         }
         if (Helper.hasProperty(requestBody, 'ParticipantId')) {
             updateModel.ParticipantId = requestBody.ParticipantId;
+        }
+        if (Helper.hasProperty(requestBody, 'GoalId')) {
+            updateModel.GoalId = requestBody.GoalId;
         }
         if (Helper.hasProperty(requestBody, 'CareplanId')) {
             updateModel.CareplanId = requestBody.CareplanId;
@@ -186,12 +193,13 @@ export class UserSelectedActionPlanControllerDelegate {
         return updateModel;
     }
 
-    getCreateModel = (requestBody, careplan): UserSelectedActionPlanCreateModel => {
+    getCreateModel = (requestBody, careplan): ParticipantSelectedActionPlanCreateModel => {
         return {
             Name              : requestBody.Name ? requestBody.Name : null,
             Description       : requestBody.Description ? requestBody.Description : null,
             EnrollmentId      : requestBody.EnrollmentId ? requestBody.EnrollmentId : null,
             ParticipantId     : requestBody.ParticipantId ? requestBody.ParticipantId : null,
+            GoalId            : requestBody.GoalId ? requestBody.GoalId : null,
             CareplanId        : requestBody.CareplanId ? requestBody.CareplanId : null,
             AssetId           : careplan.AssetId ? careplan.AssetId : null,
             AssetType         : careplan.AssetType ? careplan.AssetType : null,
@@ -212,6 +220,7 @@ export class UserSelectedActionPlanControllerDelegate {
             Description       : record.Description,
             EnrollmentId      : record.EnrollmentId,
             ParticipantId     : record.ParticipantId,
+            GoalId            : record.GoalId,
             CareplanId        : record.CareplanId,
             AssetId           : record.AssetId,
             AssetType         : record.AssetType,
@@ -233,6 +242,7 @@ export class UserSelectedActionPlanControllerDelegate {
             Description       : record.Description,
             EnrollmentId      : record.EnrollmentId,
             ParticipantId     : record.ParticipantId,
+            GoalId            : record.GoalId,
             CareplanId        : record.CareplanId,
             AssetId           : record.AssetId,
             AssetType         : record.AssetType,

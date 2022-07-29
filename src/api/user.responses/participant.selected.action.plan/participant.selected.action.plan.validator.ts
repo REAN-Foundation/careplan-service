@@ -5,7 +5,7 @@ import {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-export class UserSelectedActionPlanValidator {
+export class ParticipantSelectedActionPlanValidator {
 
     static validateCreateRequest = async (requestBody) => {
         try {
@@ -18,7 +18,13 @@ export class UserSelectedActionPlanValidator {
                 ParticipantId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
+                GoalId : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
                 CareplanId        : joi.number().integer().optional(),
+                AssetId           : joi.number().integer().optional(),
+                AssetType         : joi.string().max(128).optional(),
+                AssetCode         : joi.string().max(128).optional(),
                 AdditionalDetails : joi.string().optional(),
                 StartDate         : joi.date().iso().optional(),
                 EndDate           : joi.date().iso().optional()
@@ -40,7 +46,13 @@ export class UserSelectedActionPlanValidator {
                 ParticipantId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
+                GoalId : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
                 CareplanId        : joi.number().integer().optional(),
+                AssetId           : joi.number().integer().optional(),
+                AssetType         : joi.string().max(128).optional(),
+                AssetCode         : joi.string().max(128).optional(),
                 AdditionalDetails : joi.string().optional(),
                 StartDate         : joi.date().iso().optional(),
                 EndDate           : joi.date().iso().optional()
@@ -56,6 +68,7 @@ export class UserSelectedActionPlanValidator {
             const schema = joi.object({
                 participantId     : joi.string().guid({ version: ['uuidv4'] }).optional(),
                 enrollmentId      : joi.string().guid({ version: ['uuidv4'] }).optional(),
+                goalId            : joi.string().guid({ version: ['uuidv4'] }).optional(),
                 name              : joi.string().max(256).optional(),
                 description       : joi.string().optional(),
                 careplanId        : joi.number().integer().optional(),
