@@ -1,9 +1,9 @@
 import {
-    UserSelectedPriorityModel
-} from '../../models/user.responses/user.selected.priority.model';
+    ParticipantSelectedPriorityModel
+} from '../../models/user.responses/participant.selected.priority.model';
 import {
-    UserModel
-} from '../../models/user/user.model';
+    ParticipantModel
+} from '../../models/enrollment/participant.model';
 import {
     CareplanModel
 } from '../../models/careplan/careplan.model';
@@ -12,23 +12,26 @@ import {
     ErrorHandler
 } from '../../../common/error.handler';
 import {
-    UserSelectedPriorityCreateModel,
-    UserSelectedPrioritySearchFilters,
-    UserSelectedPrioritySearchResults
-} from '../../../domain.types/user.responses/user.selected.priority.domain.types';
+    ParticipantSelectedPriorityCreateModel,
+    ParticipantSelectedPrioritySearchFilters,
+    ParticipantSelectedPrioritySearchResults
+} from '../../../domain.types/user.responses/participant.selected.priority.domain.types';
 import {
     Op
 } from 'sequelize';
+import { EnrollmentModel } from '../../models/enrollment/enrollment.model';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-export class UserSelectedPriorityService {
+export class ParticipantSelectedPriorityService {
 
     //#region Models
 
-    UserSelectedPriority = UserSelectedPriorityModel.Model;
+    ParticipantSelectedPriority = ParticipantSelectedPriorityModel.Model;
 
-    User = UserModel.Model;
+    Enrollment = EnrollmentModel.Model;
+
+    Participant = ParticipantModel.Model;
 
     Careplan = CareplanModel.Model;
 
@@ -36,51 +39,56 @@ export class UserSelectedPriorityService {
 
     //#region Publics
 
-    create = async (createModel: UserSelectedPriorityCreateModel) => {
+    create = async (createModel: ParticipantSelectedPriorityCreateModel) => {
         try {
-            var record = await this.UserSelectedPriority.create(createModel);
+            var record = await this.ParticipantSelectedPriority.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to create user selected priority!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to create participant selected priority!', error);
         }
     }
 
     getById = async (id) => {
         try {
-            const record = await this.UserSelectedPriority.findOne({
+            const record = await this.ParticipantSelectedPriority.findOne({
                 where : {
                     id : id
                 },
                 include : [{
-                    model    : this.User,
+                    model    : this.Participant,
                     required : false,
-                    as       : 'User',
+                    as       : 'Participant',
                     //through: { attributes: [] }
                 }, {
                     model    : this.Careplan,
                     required : false,
                     as       : 'Careplan',
                     //through: { attributes: [] }
-                },
-
+                }, {
+                    model    : this.Enrollment,
+                    required : false,
+                    as       : 'Enrollment',
+                    //through: { attributes: [] }
+                }
                 ]
             });
             return record;
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve user selected priority!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve participant selected priority!', error);
         }
     }
 
     exists = async (id): Promise < boolean > => {
         try {
-            const record = await this.UserSelectedPriority.findByPk(id);
+            const record = await this.ParticipantSelectedPriority.findByPk(id);
             return record !== null;
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of user selected priority!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of participant selected priority!', error);
         }
     }
 
-    search = async (filters: UserSelectedPrioritySearchFilters): Promise < UserSelectedPrioritySearchResults > => {
+    search = async (filters: ParticipantSelectedPrioritySearchFilters):
+        Promise < ParticipantSelectedPrioritySearchResults > => {
         try {
 
             var search = this.getSearchModel(filters);
@@ -93,8 +101,8 @@ export class UserSelectedPriorityService {
                 limit
             } = this.addPaginationToSearch(search, filters);
 
-            const foundResults = await this.UserSelectedPriority.findAndCountAll(search);
-            const searchResults: UserSelectedPrioritySearchResults = {
+            const foundResults = await this.ParticipantSelectedPriority.findAndCountAll(search);
+            const searchResults: ParticipantSelectedPrioritySearchResults = {
                 TotalCount     : foundResults.count,
                 RetrievedCount : foundResults.rows.length,
                 PageIndex      : pageIndex,
@@ -107,38 +115,38 @@ export class UserSelectedPriorityService {
             return searchResults;
 
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to search user selected priority records!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to search participant selected priority records!', error);
         }
     }
 
     update = async (id, updateModel) => {
         try {
             if (Object.keys(updateModel).length > 0) {
-                var res = await this.UserSelectedPriority.update(updateModel, {
+                var res = await this.ParticipantSelectedPriority.update(updateModel, {
                     where : {
                         id : id
                     }
                 });
                 if (res.length !== 1) {
-                    throw new Error('Unable to update user selected priority!');
+                    throw new Error('Unable to update participant selected priority!');
                 }
             }
             return await this.getById(id);
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to update user selected priority!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to update participant selected priority!', error);
         }
     }
 
     delete = async (id) => {
         try {
-            var result = await this.UserSelectedPriority.destroy({
+            var result = await this.ParticipantSelectedPriority.destroy({
                 where : {
                     id : id
                 }
             });
             return result === 1;
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to delete user selected priority!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to delete participant selected priority!', error);
         }
     }
 
@@ -153,6 +161,12 @@ export class UserSelectedPriorityService {
             include : []
         };
 
+        if (filters.EnrollmentId) {
+            search.where['EnrollmentId'] = filters.EnrollmentId;
+        }
+        if (filters.ParticipantId) {
+            search.where['ParticipantId'] = filters.ParticipantId;
+        }
         if (filters.Name) {
             search.where['Name'] = {
                 [Op.like] : '%' + filters.Name + '%'
@@ -172,19 +186,32 @@ export class UserSelectedPriorityService {
         if (filters.AssetType) {
             search.where['AssetType'] = filters.AssetType;
         }
+        if (filters.AssetCode) {
+            search.where['AssetCode'] = filters.AssetCode;
+        }
         if (filters.StartDate) {
             search.where['StartDate'] = filters.StartDate;
         }
-        const includeUserAsUser = {
-            model    : this.User,
+        const includeEnrollmentAsEnrollment = {
+            model    : this.Enrollment,
             required : false,
-            as       : 'User',
+            as       : 'Enrollment',
             where    : {}
         };
         //if (filters.Xyz != undefined) {
         //    includeUser.where['Xyz'] = filters.Xyz;
         //}
-        search.include.push(includeUserAsUser);
+        search.include.push(includeEnrollmentAsEnrollment);
+        const includeParticipantAsParticipant = {
+            model    : this.Participant,
+            required : false,
+            as       : 'Participant',
+            where    : {}
+        };
+        //if (filters.Xyz != undefined) {
+        //    includeUser.where['Xyz'] = filters.Xyz;
+        //}
+        search.include.push(includeParticipantAsParticipant);
         const includeCareplanAsCareplan = {
             model    : this.Careplan,
             required : false,
