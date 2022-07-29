@@ -106,11 +106,11 @@
             "Biometrics.Update",
             "Biometrics.Delete",
 
-            "CareplanSchedule.Create",
-            "CareplanSchedule.Search",
-            "CareplanSchedule.GetById",
-            "CareplanSchedule.Update",
-            "CareplanSchedule.Delete",
+            "CareplanActivity.Create",
+            "CareplanActivity.Search",
+            "CareplanActivity.GetById",
+            "CareplanActivity.Update",
+            "CareplanActivity.Delete",
 
             "Challenge.Create",
             "Challenge.Search",

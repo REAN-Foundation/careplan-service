@@ -8,8 +8,8 @@ import {
     ParticipantModel
 } from '../../models/enrollment/participant.model';
 import {
-    CareplanScheduleModel
-} from '../../models/careplan/careplan.schedule.model';
+    CareplanActivityModel
+} from '../../models/careplan/careplan.activity.model';
 import {
     CareplanModel
 } from '../../models/careplan/careplan.model';
@@ -35,7 +35,7 @@ export class EnrollmentScheduleService {
 
     Participant = ParticipantModel.Model;
 
-    CareplanSchedule = CareplanScheduleModel.Model;
+    CareplanActivity = CareplanActivityModel.Model;
 
     Careplan = CareplanModel.Model;
 
@@ -69,9 +69,9 @@ export class EnrollmentScheduleService {
                     as       : 'Participant',
                     //through: { attributes: [] }
                 }, {
-                    model    : this.CareplanSchedule,
+                    model    : this.CareplanActivity,
                     required : false,
-                    as       : 'CareplanSchedule',
+                    as       : 'CareplanActivity',
                     //through: { attributes: [] }
                 }, {
                     model    : this.Careplan,
@@ -171,16 +171,16 @@ export class EnrollmentScheduleService {
         //    includeUser.where['Xyz'] = filters.Xyz;
         //}
         search.include.push(includeUserAsUser);
-        const includeCareplanScheduleAsCareplanSchedule = {
-            model    : this.CareplanSchedule,
+        const includeCareplanActivityAsCareplanActivity = {
+            model    : this.CareplanActivity,
             required : false,
-            as       : 'CareplanSchedule',
+            as       : 'CareplanActivity',
             where    : {}
         };
         //if (filters.Xyz != undefined) {
-        //    includeCareplanSchedule.where['Xyz'] = filters.Xyz;
+        //    includeCareplanActivity.where['Xyz'] = filters.Xyz;
         //}
-        search.include.push(includeCareplanScheduleAsCareplanSchedule);
+        search.include.push(includeCareplanActivityAsCareplanActivity);
         const includeCareplanAsCareplan = {
             model    : this.Careplan,
             required : false,

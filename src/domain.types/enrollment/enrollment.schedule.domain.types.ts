@@ -10,7 +10,7 @@ import {
 export interface EnrollmentScheduleCreateModel {
     EnrollmentId      : uuid;
     ParticipantId     : uuid;
-    CareplanScheduleId: uuid;
+    CareplanActivityId: uuid;
     AssetId           : number;
     AssetType         : AssetType;
     CareplanId        : number;
@@ -26,7 +26,7 @@ export interface EnrollmentScheduleDto {
     id                : uuid;
     EnrollmentId      : uuid;
     ParticipantId     : uuid;
-    CareplanScheduleId: uuid;
+    CareplanActivityId: uuid;
     AssetId           : number;
     AssetType         : AssetType;
     CareplanId        : number;

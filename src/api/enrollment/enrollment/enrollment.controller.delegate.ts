@@ -21,8 +21,8 @@ import {
     uuid
 } from '../../../domain.types/miscellaneous/system.types';
 import {
-    CareplanScheduleControllerDelegate
-} from '../../careplan/careplan.schedule/careplan.schedule.controller.delegate';
+    CareplanActivityControllerDelegate
+} from '../../careplan/careplan.activity/careplan.activity.controller.delegate';
 import {
     EnrollmentCreateModel,
     EnrollmentUpdateModel,
@@ -42,13 +42,13 @@ export class EnrollmentControllerDelegate {
 
     _service: EnrollmentService = null;
 
-    _careplanScheduleDelegate: CareplanScheduleControllerDelegate = null;
+    _careplanActivityDelegate: CareplanActivityControllerDelegate = null;
 
     _scheduleService: EnrollmentScheduleService = null;
 
     constructor() {
         this._service = new EnrollmentService();
-        this._careplanScheduleDelegate = new CareplanScheduleControllerDelegate();
+        this._careplanActivityDelegate = new CareplanActivityControllerDelegate();
         this._scheduleService = new EnrollmentScheduleService();
     }
 
@@ -62,10 +62,10 @@ export class EnrollmentControllerDelegate {
             throw new ApiError('Unable to create enrollment!', 400);
         }
 
-        const careplanSchedule = await this._careplanScheduleDelegate.search({ careplanId : record.CareplanId });
+        const careplanActivity = await this._careplanActivityDelegate.search({ careplanId : record.CareplanId });
         const scheduleDate = TimeHelper.addDuration(
             record.StartDate,
-            careplanSchedule.Items[0].Day - 1,
+            careplanActivity.Items[0].Day - 1,
             DurationType.Day
         );
 
@@ -74,10 +74,10 @@ export class EnrollmentControllerDelegate {
             EnrollmentId       : record.id,
             ParticipantId      : record.ParticipantId,
             CareplanId         : record.CareplanId,
-            CareplanScheduleId : careplanSchedule.Items[0].id,
-            AssetId            : careplanSchedule.Items[0].AssetId,
-            AssetType          : careplanSchedule.Items[0].AssetType,
-            TimeSlot           : careplanSchedule.Items[0].TimeSlot,
+            CareplanActivityId : careplanActivity.Items[0].id,
+            AssetId            : careplanActivity.Items[0].AssetId,
+            AssetType          : careplanActivity.Items[0].AssetType,
+            TimeSlot           : careplanActivity.Items[0].TimeSlot,
             ScheduledDate      : scheduleDate
         };
 

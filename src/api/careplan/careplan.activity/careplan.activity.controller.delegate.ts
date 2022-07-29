@@ -1,6 +1,6 @@
 import {
-    CareplanScheduleService
-} from '../../../database/repository.services/careplan/careplan.schedule.service';
+    CareplanActivityService
+} from '../../../database/repository.services/careplan/careplan.activity.service';
 import {
     ErrorHandler
 } from '../../../common/error.handler';
@@ -11,35 +11,35 @@ import {
     ApiError
 } from '../../../common/api.error';
 import {
-    CareplanScheduleValidator as validator
-} from './careplan.schedule.validator';
+    CareplanActivityValidator as validator
+} from './careplan.activity.validator';
 import {
     uuid
 } from '../../../domain.types/miscellaneous/system.types';
 import {
-    CareplanScheduleCreateModel,
-    CareplanScheduleUpdateModel,
-    CareplanScheduleSearchFilters,
-    CareplanScheduleSearchResults
-} from '../../../domain.types/careplan/careplan.schedule.domain.types';
+    CareplanActivityCreateModel,
+    CareplanActivityUpdateModel,
+    CareplanActivitySearchFilters,
+    CareplanActivitySearchResults
+} from '../../../domain.types/careplan/careplan.activity.domain.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-export class CareplanScheduleControllerDelegate {
+export class CareplanActivityControllerDelegate {
 
     //#region member variables and constructors
 
-    _service: CareplanScheduleService = null;
+    _service: CareplanActivityService = null;
 
     constructor() {
-        this._service = new CareplanScheduleService();
+        this._service = new CareplanActivityService();
     }
 
     //#endregion
 
     create = async (requestBody: any) => {
         await validator.validateCreateRequest(requestBody);
-        var createModel: CareplanScheduleCreateModel = this.getCreateModel(requestBody);
+        var createModel: CareplanActivityCreateModel = this.getCreateModel(requestBody);
         const record = await this._service.create(createModel);
         if (record === null) {
             throw new ApiError('Unable to create careplan schedule!', 400);
@@ -57,8 +57,8 @@ export class CareplanScheduleControllerDelegate {
 
     search = async (query: any) => {
         await validator.validateSearchRequest(query);
-        var filters: CareplanScheduleSearchFilters = this.getSearchFilters(query);
-        var searchResults: CareplanScheduleSearchResults = await this._service.search(filters);
+        var filters: CareplanActivitySearchFilters = this.getSearchFilters(query);
+        var searchResults: CareplanActivitySearchResults = await this._service.search(filters);
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
         return searchResults;
@@ -70,7 +70,7 @@ export class CareplanScheduleControllerDelegate {
         if (record === null) {
             ErrorHandler.throwNotFoundError('Careplan schedule with id ' + id.toString() + ' cannot be found!');
         }
-        const updateModel: CareplanScheduleUpdateModel = this.getUpdateModel(requestBody);
+        const updateModel: CareplanActivityUpdateModel = this.getUpdateModel(requestBody);
         const updated = await this._service.update(id, updateModel);
         if (updated == null) {
             throw new ApiError('Unable to update careplan schedule!', 400);
@@ -83,9 +83,9 @@ export class CareplanScheduleControllerDelegate {
         if (record == null) {
             ErrorHandler.throwNotFoundError('Careplan schedule with id ' + id.toString() + ' cannot be found!');
         }
-        const careplanScheduleDeleted: boolean = await this._service.delete(id);
+        const careplanActivityDeleted: boolean = await this._service.delete(id);
         return {
-            Deleted : careplanScheduleDeleted
+            Deleted : careplanActivityDeleted
         };
     }
 
@@ -121,9 +121,9 @@ export class CareplanScheduleControllerDelegate {
         return filters;
     }
 
-    getUpdateModel = (requestBody): CareplanScheduleUpdateModel => {
+    getUpdateModel = (requestBody): CareplanActivityUpdateModel => {
 
-        const updateModel: CareplanScheduleUpdateModel = {};
+        const updateModel: CareplanActivityUpdateModel = {};
 
         if (Helper.hasProperty(requestBody, 'AssetId')) {
             updateModel.AssetId = requestBody.AssetId;
@@ -144,7 +144,7 @@ export class CareplanScheduleControllerDelegate {
         return updateModel;
     }
 
-    getCreateModel = (requestBody): CareplanScheduleCreateModel => {
+    getCreateModel = (requestBody): CareplanActivityCreateModel => {
         return {
             AssetId    : requestBody.AssetId ? requestBody.AssetId : null,
             AssetType  : requestBody.AssetType ? requestBody.AssetType : null,

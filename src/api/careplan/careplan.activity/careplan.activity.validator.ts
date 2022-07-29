@@ -5,7 +5,7 @@ import {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-export class CareplanScheduleValidator {
+export class CareplanActivityValidator {
 
     static validateCreateRequest = async (requestBody) => {
         try {

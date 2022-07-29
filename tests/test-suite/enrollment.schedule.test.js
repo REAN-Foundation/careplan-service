@@ -25,7 +25,7 @@ describe('Enrollment schedule tests', function() {
                 expect(response.body.Data).to.have.property('id');
                 expect(response.body.Data).to.have.property('EnrollmentId');
                 expect(response.body.Data).to.have.property('UserId');
-                expect(response.body.Data).to.have.property('CareplanScheduleId');
+                expect(response.body.Data).to.have.property('CareplanActivityId');
                 expect(response.body.Data).to.have.property('AssetId');
                 expect(response.body.Data).to.have.property('AssetType');
                 expect(response.body.Data).to.have.property('CareplanId');
@@ -35,7 +35,7 @@ describe('Enrollment schedule tests', function() {
                 expect(response.body.Data.id).to.equal(TestCache.EnrollmentScheduleCreateModel.id);
                 expect(response.body.Data.EnrollmentId).to.equal(TestCache.EnrollmentScheduleCreateModel.EnrollmentId);
                 expect(response.body.Data.UserId).to.equal(TestCache.EnrollmentScheduleCreateModel.UserId);
-                expect(response.body.Data.CareplanScheduleId).to.equal(TestCache.EnrollmentScheduleCreateModel.CareplanScheduleId);
+                expect(response.body.Data.CareplanActivityId).to.equal(TestCache.EnrollmentScheduleCreateModel.CareplanActivityId);
                 expect(response.body.Data.AssetId).to.equal(TestCache.EnrollmentScheduleCreateModel.AssetId);
                 expect(response.body.Data.AssetType).to.equal(TestCache.EnrollmentScheduleCreateModel.AssetType);
                 expect(response.body.Data.CareplanId).to.equal(TestCache.EnrollmentScheduleCreateModel.CareplanId);
@@ -56,7 +56,7 @@ describe('Enrollment schedule tests', function() {
                 expect(response.body.Data).to.have.property('id');
                 expect(response.body.Data).to.have.property('EnrollmentId');
                 expect(response.body.Data).to.have.property('UserId');
-                expect(response.body.Data).to.have.property('CareplanScheduleId');
+                expect(response.body.Data).to.have.property('CareplanActivityId');
                 expect(response.body.Data).to.have.property('AssetId');
                 expect(response.body.Data).to.have.property('AssetType');
                 expect(response.body.Data).to.have.property('CareplanId');
@@ -66,7 +66,7 @@ describe('Enrollment schedule tests', function() {
                 expect(response.body.Data.id).to.equal(TestCache.EnrollmentScheduleCreateModel.id);
                 expect(response.body.Data.EnrollmentId).to.equal(TestCache.EnrollmentScheduleCreateModel.EnrollmentId);
                 expect(response.body.Data.UserId).to.equal(TestCache.EnrollmentScheduleCreateModel.UserId);
-                expect(response.body.Data.CareplanScheduleId).to.equal(TestCache.EnrollmentScheduleCreateModel.CareplanScheduleId);
+                expect(response.body.Data.CareplanActivityId).to.equal(TestCache.EnrollmentScheduleCreateModel.CareplanActivityId);
                 expect(response.body.Data.AssetId).to.equal(TestCache.EnrollmentScheduleCreateModel.AssetId);
                 expect(response.body.Data.AssetType).to.equal(TestCache.EnrollmentScheduleCreateModel.AssetType);
                 expect(response.body.Data.CareplanId).to.equal(TestCache.EnrollmentScheduleCreateModel.CareplanId);
@@ -111,7 +111,7 @@ describe('Enrollment schedule tests', function() {
                 expect(response.body.Data).to.have.property('id');
                 expect(response.body.Data).to.have.property('EnrollmentId');
                 expect(response.body.Data).to.have.property('UserId');
-                expect(response.body.Data).to.have.property('CareplanScheduleId');
+                expect(response.body.Data).to.have.property('CareplanActivityId');
                 expect(response.body.Data).to.have.property('AssetId');
                 expect(response.body.Data).to.have.property('AssetType');
                 expect(response.body.Data).to.have.property('CareplanId');
@@ -121,7 +121,7 @@ describe('Enrollment schedule tests', function() {
                 expect(response.body.Data.id).to.equal(TestCache.EnrollmentScheduleCreateModel.id);
                 expect(response.body.Data.EnrollmentId).to.equal(TestCache.EnrollmentScheduleCreateModel.EnrollmentId);
                 expect(response.body.Data.UserId).to.equal(TestCache.EnrollmentScheduleCreateModel.UserId);
-                expect(response.body.Data.CareplanScheduleId).to.equal(TestCache.EnrollmentScheduleCreateModel.CareplanScheduleId);
+                expect(response.body.Data.CareplanActivityId).to.equal(TestCache.EnrollmentScheduleCreateModel.CareplanActivityId);
                 expect(response.body.Data.AssetId).to.equal(TestCache.EnrollmentScheduleCreateModel.AssetId);
                 expect(response.body.Data.AssetType).to.equal(TestCache.EnrollmentScheduleCreateModel.AssetType);
                 expect(response.body.Data.CareplanId).to.equal(TestCache.EnrollmentScheduleCreateModel.CareplanId);
@@ -166,7 +166,7 @@ describe('Enrollment schedule tests', function() {
                 expect(response.body.Data).to.have.property('id');
                 expect(response.body.Data).to.have.property('EnrollmentId');
                 expect(response.body.Data).to.have.property('UserId');
-                expect(response.body.Data).to.have.property('CareplanScheduleId');
+                expect(response.body.Data).to.have.property('CareplanActivityId');
                 expect(response.body.Data).to.have.property('AssetId');
                 expect(response.body.Data).to.have.property('AssetType');
                 expect(response.body.Data).to.have.property('CareplanId');
@@ -176,7 +176,7 @@ describe('Enrollment schedule tests', function() {
                 expect(response.body.Data.id).to.equal(TestCache.EnrollmentScheduleCreateModel.id);
                 expect(response.body.Data.EnrollmentId).to.equal(TestCache.EnrollmentScheduleCreateModel.EnrollmentId);
                 expect(response.body.Data.UserId).to.equal(TestCache.EnrollmentScheduleCreateModel.UserId);
-                expect(response.body.Data.CareplanScheduleId).to.equal(TestCache.EnrollmentScheduleCreateModel.CareplanScheduleId);
+                expect(response.body.Data.CareplanActivityId).to.equal(TestCache.EnrollmentScheduleCreateModel.CareplanActivityId);
                 expect(response.body.Data.AssetId).to.equal(TestCache.EnrollmentScheduleCreateModel.AssetId);
                 expect(response.body.Data.AssetType).to.equal(TestCache.EnrollmentScheduleCreateModel.AssetType);
                 expect(response.body.Data.CareplanId).to.equal(TestCache.EnrollmentScheduleCreateModel.CareplanId);

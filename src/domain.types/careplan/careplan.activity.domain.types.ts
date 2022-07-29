@@ -5,7 +5,7 @@ import {
 } from "../miscellaneous/base.search.types";
 import { uuid } from "../miscellaneous/system.types";
 
-export interface CareplanScheduleCreateModel {
+export interface CareplanActivityCreateModel {
     AssetId?   : number;
     AssetType? : AssetType;
     CareplanId?: number;
@@ -13,7 +13,7 @@ export interface CareplanScheduleCreateModel {
     TimeSlot?  : TimeSlot;
 }
 
-export interface CareplanScheduleUpdateModel {
+export interface CareplanActivityUpdateModel {
     AssetId?   : number;
     AssetType? : AssetType;
     CareplanId?: number;
@@ -21,7 +21,7 @@ export interface CareplanScheduleUpdateModel {
     TimeSlot?  : TimeSlot;
 }
 
-export interface CareplanScheduleDto {
+export interface CareplanActivityDto {
     id        : uuid;
     AssetId   : number;
     AssetType : AssetType;
@@ -31,7 +31,7 @@ export interface CareplanScheduleDto {
 
 }
 
-export interface CareplanScheduleSearchFilters extends BaseSearchFilters {
+export interface CareplanActivitySearchFilters extends BaseSearchFilters {
     AssetId?   : number;
     AssetType? : AssetType;
     CareplanId?: number;
@@ -39,6 +39,6 @@ export interface CareplanScheduleSearchFilters extends BaseSearchFilters {
     TimeSlot?  : TimeSlot;
 }
 
-export interface CareplanScheduleSearchResults extends BaseSearchResults {
-    Items: CareplanScheduleDto[];
+export interface CareplanActivitySearchResults extends BaseSearchResults {
+    Items: CareplanActivityDto[];
 }

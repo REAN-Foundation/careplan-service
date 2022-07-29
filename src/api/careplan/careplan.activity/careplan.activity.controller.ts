@@ -3,30 +3,30 @@ import {
     ResponseHandler
 } from '../../../common/response.handler';
 import {
-    CareplanScheduleControllerDelegate
-} from './careplan.schedule.controller.delegate';
+    CareplanActivityControllerDelegate
+} from './careplan.activity.controller.delegate';
 import {
     BaseController
 } from '../../base.controller';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-export class CareplanScheduleController extends BaseController {
+export class CareplanActivityController extends BaseController {
 
     //#region member variables and constructors
 
-    _delegate: CareplanScheduleControllerDelegate = null;
+    _delegate: CareplanActivityControllerDelegate = null;
 
     constructor() {
         super();
-        this._delegate = new CareplanScheduleControllerDelegate();
+        this._delegate = new CareplanActivityControllerDelegate();
     }
 
     //#endregion
 
     create = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('CareplanSchedule.Create', request, response);
+            await this.authorize('CareplanActivity.Create', request, response);
             const record = await this._delegate.create(request.body);
             const message = 'Careplan schedule added successfully!';
             ResponseHandler.success(request, response, message, 201, record);
@@ -37,7 +37,7 @@ export class CareplanScheduleController extends BaseController {
 
     getById = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('CareplanSchedule.GetById', request, response);
+            await this.authorize('CareplanActivity.GetById', request, response);
             const record = await this._delegate.getById(request.params.id);
             const message = 'Careplan schedule retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, record);
@@ -48,7 +48,7 @@ export class CareplanScheduleController extends BaseController {
 
     search = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('CareplanSchedule.Search', request, response);
+            await this.authorize('CareplanActivity.Search', request, response);
             const searchResults = await this._delegate.search(request.query);
             const message = 'Careplan schedule records retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, searchResults);
@@ -59,7 +59,7 @@ export class CareplanScheduleController extends BaseController {
 
     update = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('CareplanSchedule.Update', request, response);
+            await this.authorize('CareplanActivity.Update', request, response);
             const updatedRecord = await this._delegate.update(request.params.id, request.body);
             const message = 'Careplan schedule updated successfully!';
             ResponseHandler.success(request, response, message, 200, updatedRecord);
@@ -70,7 +70,7 @@ export class CareplanScheduleController extends BaseController {
 
     delete = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('CareplanSchedule.Delete', request, response);
+            await this.authorize('CareplanActivity.Delete', request, response);
             const result = await this._delegate.delete(request.params.id);
             const message = 'Careplan schedule deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);

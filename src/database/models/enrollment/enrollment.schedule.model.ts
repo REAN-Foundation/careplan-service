@@ -31,7 +31,7 @@ export class EnrollmentScheduleModel {
             foreignKey : true,
             unique     : false
         },
-        CareplanScheduleId : {
+        CareplanActivityId : {
             type       : DataTypes.UUID,
             allowNull  : false,
             foreignKey : true,
@@ -95,10 +95,10 @@ export class EnrollmentScheduleModel {
             as        : 'Participant'
         });
 
-        models.EnrollmentSchedule.belongsTo(models.CareplanSchedule, {
-            sourceKey : 'CareplanScheduleId',
+        models.EnrollmentSchedule.belongsTo(models.CareplanActivity, {
+            sourceKey : 'CareplanActivityId',
             targetKey : 'id',
-            as        : 'CareplanSchedule'
+            as        : 'CareplanActivity'
         });
 
         models.EnrollmentSchedule.belongsTo(models.Careplan, {

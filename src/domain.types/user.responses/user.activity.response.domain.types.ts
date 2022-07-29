@@ -11,7 +11,7 @@ import {
 export interface UserActivityResponseCreateModel {
     ParticipantId       : uuid;
     EnrollmentScheduleId: uuid;
-    CareplanScheduleId  : uuid;
+    CareplanActivityId  : uuid;
     CareplanId          : number;
     AssetId             : number;
     AssetType           : AssetType;
@@ -31,7 +31,7 @@ export interface UserActivityResponseDto {
     id                  : uuid;
     ParticipantId       : uuid;
     EnrollmentScheduleId: uuid;
-    CareplanScheduleId  : uuid;
+    CareplanActivityId  : uuid;
     CareplanId          : number;
     AssetId             : number;
     AssetType           : AssetType;

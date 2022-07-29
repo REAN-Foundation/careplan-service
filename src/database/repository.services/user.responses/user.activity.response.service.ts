@@ -8,8 +8,8 @@ import {
     EnrollmentScheduleModel
 } from '../../models/enrollment/enrollment.schedule.model';
 import {
-    CareplanScheduleModel
-} from '../../models/careplan/careplan.schedule.model';
+    CareplanActivityModel
+} from '../../models/careplan/careplan.activity.model';
 import {
     CareplanModel
 } from '../../models/careplan/careplan.model';
@@ -38,7 +38,7 @@ export class UserActivityResponseService {
 
     EnrollmentSchedule = EnrollmentScheduleModel.Model;
 
-    CareplanSchedule = CareplanScheduleModel.Model;
+    CareplanActivity = CareplanActivityModel.Model;
 
     Careplan = CareplanModel.Model;
 
@@ -72,9 +72,9 @@ export class UserActivityResponseService {
                     as       : 'EnrollmentSchedule',
                     //through: { attributes: [] }
                 }, {
-                    model    : this.CareplanSchedule,
+                    model    : this.CareplanActivity,
                     required : false,
-                    as       : 'CareplanSchedule',
+                    as       : 'CareplanActivity',
                     //through: { attributes: [] }
                 }, {
                     model    : this.Careplan,
@@ -216,16 +216,16 @@ export class UserActivityResponseService {
         //    includeEnrollmentSchedule.where['Xyz'] = filters.Xyz;
         //}
         search.include.push(includeEnrollmentScheduleAsEnrollmentSchedule);
-        const includeCareplanScheduleAsCareplanSchedule = {
-            model    : this.CareplanSchedule,
+        const includeCareplanActivityAsCareplanActivity = {
+            model    : this.CareplanActivity,
             required : false,
-            as       : 'CareplanSchedule',
+            as       : 'CareplanActivity',
             where    : {}
         };
         //if (filters.Xyz != undefined) {
-        //    includeCareplanSchedule.where['Xyz'] = filters.Xyz;
+        //    includeCareplanActivity.where['Xyz'] = filters.Xyz;
         //}
-        search.include.push(includeCareplanScheduleAsCareplanSchedule);
+        search.include.push(includeCareplanActivityAsCareplanActivity);
         const includeCareplanAsCareplan = {
             model    : this.Careplan,
             required : false,

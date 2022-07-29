@@ -14,7 +14,7 @@ export class EnrollmentScheduleMapper {
             id: enrollmentSchedule.id,
             EnrollmentId: enrollmentSchedule.EnrollmentId,
             ParticipantId: enrollmentSchedule.ParticipantId,
-            CareplanScheduleId: enrollmentSchedule.CareplanScheduleId,
+            CareplanActivityId: enrollmentSchedule.CareplanActivityId,
             AssetId: enrollmentSchedule.AssetId,
             AssetType: enrollmentSchedule.AssetType,
             CareplanId: enrollmentSchedule.CareplanId,

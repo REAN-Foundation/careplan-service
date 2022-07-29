@@ -14,7 +14,7 @@ export class UserActivityResponseMapper {
             id                   : userActivityResponse.id,
             ParticipantId        : userActivityResponse.ParticipantId,
             EnrollmentScheduleId : userActivityResponse.EnrollmentScheduleId,
-            CareplanScheduleId   : userActivityResponse.CareplanScheduleId,
+            CareplanActivityId   : userActivityResponse.CareplanActivityId,
             CareplanId           : userActivityResponse.CareplanId,
             AssetId              : userActivityResponse.AssetId,
             AssetType            : userActivityResponse.AssetType,

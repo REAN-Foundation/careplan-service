@@ -31,7 +31,7 @@ export class UserActivityResponseModel {
             foreignKey : true,
             unique     : false
         },
-        CareplanScheduleId : {
+        CareplanActivityId : {
             type       : DataTypes.UUID,
             allowNull  : false,
             foreignKey : true,
@@ -100,10 +100,10 @@ export class UserActivityResponseModel {
             as        : 'EnrollmentSchedule'
         });
 
-        models.UserActivityResponse.belongsTo(models.CareplanSchedule, {
-            sourceKey : 'CareplanScheduleId',
+        models.UserActivityResponse.belongsTo(models.CareplanActivity, {
+            sourceKey : 'CareplanActivityId',
             targetKey : 'id',
-            as        : 'CareplanSchedule'
+            as        : 'CareplanActivity'
         });
 
         models.UserActivityResponse.belongsTo(models.Careplan, {

@@ -1,22 +1,22 @@
 import {
-    CareplanScheduleDto
-} from '../../../domain.types/careplan/careplan.schedule.domain.types';
+    CareplanActivityDto
+} from '../../../domain.types/careplan/careplan.activity.domain.types';
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-export class CareplanScheduleMapper {
+export class CareplanActivityMapper {
 
-    static toDto = (careplanSchedule: any): CareplanScheduleDto => {
-        if (careplanSchedule == null) {
+    static toDto = (careplanActivity: any): CareplanActivityDto => {
+        if (careplanActivity == null) {
             return null;
         }
-        const dto: CareplanScheduleDto = {
-            id: careplanSchedule.id,
-            AssetId: careplanSchedule.AssetId,
-            AssetType: careplanSchedule.AssetType,
-            CareplanId: careplanSchedule.CareplanId,
-            Day: careplanSchedule.Day,
-            TimeSlot: careplanSchedule.TimeSlot,
+        const dto: CareplanActivityDto = {
+            id: careplanActivity.id,
+            AssetId: careplanActivity.AssetId,
+            AssetType: careplanActivity.AssetType,
+            CareplanId: careplanActivity.CareplanId,
+            Day: careplanActivity.Day,
+            TimeSlot: careplanActivity.TimeSlot,
 
         };
         return dto;
