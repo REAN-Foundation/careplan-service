@@ -10,8 +10,12 @@ import {
 export interface UserSelectedActionPlanCreateModel {
     Name              ?: string;
     Description       ?: string;
-    UserId            ?: uuid;
+    EnrollmentId      ?: uuid;
+    ParticipantId     ?: uuid;
     CareplanId        ?: number;
+    AssetId           ?: number;
+    AssetType         ?: string;
+    AssetCode         ?: string;
     AdditionalDetails ?: string;
     StartDate         ?: Date;
     EndDate           ?: Date;
@@ -20,7 +24,8 @@ export interface UserSelectedActionPlanCreateModel {
 export interface UserSelectedActionPlanUpdateModel {
     Name              ?: string;
     Description       ?: string;
-    UserId            ?: uuid;
+    EnrollmentId      ?: uuid;
+    ParticipantId     ?: uuid;
     CareplanId        ?: number;
     AdditionalDetails ?: string;
     StartDate         ?: Date;
@@ -31,10 +36,12 @@ export interface UserSelectedActionPlanDto {
     id               : uuid;
     Name             : string;
     Description      : string;
-    UserId           : uuid;
+    EnrollmentId     : uuid;
+    ParticipantId    : uuid;
     CareplanId       : number;
     AssetId          : number;
     AssetType        : string;
+    AssetCode        : string;
     AdditionalDetails: string;
     StartDate        : Date;
     EndDate          : Date;
@@ -45,9 +52,12 @@ export interface UserSelectedActionPlanDto {
 export interface UserSelectedActionPlanSearchFilters extends BaseSearchFilters {
     Name              ?: string;
     Description       ?: string;
+    EnrollmentId      ?: uuid;
+    ParticipantId     ?: uuid;
     CareplanId        ?: number;
     AssetId           ?: number;
     AssetType         ?: string;
+    AssetCode         ?: string;
     AdditionalDetails ?: string;
     StartDate         ?: Date;
     EndDate           ?: Date;
