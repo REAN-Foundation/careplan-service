@@ -1869,7 +1869,7 @@
 								"exec": [
 									"try {\r",
 									"    var jsonRes = pm.response.json();\r",
-									"    pm.environment.set(\"PARTICIPANT_USER_ID\", jsonRes.Data.id);\r",
+									"    pm.environment.set(\"PARTICIPANT_ID\", jsonRes.Data.id);\r",
 									"}\r",
 									"catch (error) {\r",
 									"    console.log(error.message);\r",
@@ -2039,13 +2039,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{BASE_URL}}/participants/{{PARTICIPANT_USER_ID}}",
+							"raw": "{{BASE_URL}}/participants/{{PARTICIPANT_ID}}",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
 								"participants",
-								"{{PARTICIPANT_USER_ID}}"
+								"{{PARTICIPANT_ID}}"
 							]
 						}
 					},
@@ -2245,13 +2245,13 @@
 							"raw": "{\r\n    \"FirstName\": \"{{FIRST_NAME}}\",\r\n    \"LastName\": \"{{LAST_NAME}}\",\r\n    \"Gender\": \"Male\",\r\n    \"ParticipantReferenceId\": \"66fce627-18fb\"\r\n}\r\n"
 						},
 						"url": {
-							"raw": "{{BASE_URL}}/participants/{{PARTICIPANT_USER_ID}}",
+							"raw": "{{BASE_URL}}/participants/{{PARTICIPANT_ID}}",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
 								"participants",
-								"{{PARTICIPANT_USER_ID}}"
+								"{{PARTICIPANT_ID}}"
 							]
 						}
 					},
@@ -2300,13 +2300,13 @@
 							}
 						],
 						"url": {
-							"raw": "{{BASE_URL}}/participants/{{PARTICIPANT_USER_ID}}",
+							"raw": "{{BASE_URL}}/participants/{{PARTICIPANT_ID}}",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
 								"participants",
-								"{{PARTICIPANT_USER_ID}}"
+								"{{PARTICIPANT_ID}}"
 							]
 						}
 					},
@@ -2321,7 +2321,7 @@
 								"exec": [
 									"try {\r",
 									"    var jsonRes = pm.response.json();\r",
-									"    pm.environment.set(\"PARTICIPANT_USER_ID\", jsonRes.Data.id);\r",
+									"    pm.environment.set(\"PARTICIPANT_ID\", jsonRes.Data.id);\r",
 									"}\r",
 									"catch (error) {\r",
 									"    console.log(error.message);\r",
@@ -2616,453 +2616,6 @@
 			]
 		},
 		{
-			"name": "Careplan category",
-			"item": [
-				{
-					"name": "Create",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"try {\r",
-									"    var respData = pm.response.json();\r",
-									"    pm.environment.set(\"CAREPLAN_CATEGORY_ID\", respData.Data.id);\r",
-									"}\r",
-									"catch (error) {\r",
-									"    console.log(error.message);\r",
-									"}\r",
-									"\r",
-									"pm.test('Request is successfull', function () {\r",
-									"    pm.response.to.have.status(201);\r",
-									"    var jsonRes = pm.response.json();\r",
-									"    pm.expect(jsonRes.Status).to.eql('success');\r",
-									"});\r",
-									"\r",
-									"pm.test('New careplan category record is created', function () {\r",
-									"    var jsonRes = pm.response.json();\r",
-									"    pm.expect(jsonRes.Data).to.have.property('id');\r",
-									"    pm.expect(jsonRes.Data).to.have.property('Type');\r",
-									"  \r",
-									"    pm.expect(jsonRes.Data.Type).equals(pm.environment.get(\"CAREPLAN_CATEGORY\"));\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"var rand = (Math.floor(Math.random() * 9000000000) + 1000000000).toString();\r",
-									"pm.environment.set(\"CAREPLAN_CATEGORY\", 'Sports Rehab - ' + rand);\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"type": "text",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"type": "text",
-								"value": "Bearer {{MODERATOR_JWT}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n   \"Type\": \"{{CAREPLAN_CATEGORY}}\"\r\n}\r\n"
-						},
-						"url": {
-							"raw": "{{BASE_URL}}/careplan-categories",
-							"host": [
-								"{{BASE_URL}}"
-							],
-							"path": [
-								"careplan-categories"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Try creating with same type - should fail",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"\r",
-									"pm.test('Request is failure', function () {\r",
-									"    pm.response.to.have.status(409);\r",
-									"    var jsonRes = pm.response.json();\r",
-									"    pm.expect(jsonRes.Status).to.eql('failure');\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"type": "text",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"type": "text",
-								"value": "Bearer {{MODERATOR_JWT}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n   \"Type\": \"{{CAREPLAN_CATEGORY}}\"\r\n}\r\n"
-						},
-						"url": {
-							"raw": "{{BASE_URL}}/careplan-categories",
-							"host": [
-								"{{BASE_URL}}"
-							],
-							"path": [
-								"careplan-categories"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get by id",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"\r",
-									"pm.test('Request is successfull', function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"    var jsonRes = pm.response.json();\r",
-									"    pm.expect(jsonRes.Status).to.eql('success');\r",
-									"});\r",
-									"\r",
-									"pm.test('Careplan category record is retrived', function () {\r",
-									"    var jsonRes = pm.response.json();\r",
-									"    pm.expect(jsonRes.Data).to.have.property('id');\r",
-									"    pm.expect(jsonRes.Data).to.have.property('Type');\r",
-									"    pm.expect(jsonRes.Data.Type).equals(pm.environment.get(\"CAREPLAN_CATEGORY\"));\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Content-Type",
-								"type": "text",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"type": "text",
-								"value": "Bearer {{MODERATOR_JWT}}"
-							}
-						],
-						"url": {
-							"raw": "{{BASE_URL}}/careplan-categories/{{CAREPLAN_CATEGORY_ID}}",
-							"host": [
-								"{{BASE_URL}}"
-							],
-							"path": [
-								"careplan-categories",
-								"{{CAREPLAN_CATEGORY_ID}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Search with filters",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"\r",
-									"pm.test('Request is successfull', function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"    var jsonRes = pm.response.json();\r",
-									"    pm.expect(jsonRes.Status).to.eql('success');\r",
-									"});\r",
-									"\r",
-									"pm.test('Careplan category search results are returned', function () {\r",
-									"    var jsonRes = pm.response.json();\r",
-									"    pm.expect(jsonRes.Data.Items.length).greaterThan(0);\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Content-Type",
-								"type": "text",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"type": "text",
-								"value": "Bearer {{MODERATOR_JWT}}"
-							}
-						],
-						"url": {
-							"raw": "{{BASE_URL}}/careplan-categories/search?type=sports",
-							"host": [
-								"{{BASE_URL}}"
-							],
-							"path": [
-								"careplan-categories",
-								"search"
-							],
-							"query": [
-								{
-									"key": "type",
-									"value": "sports"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"\r",
-									"pm.test('Request is successfull', function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"    var jsonRes = pm.response.json();\r",
-									"    pm.expect(jsonRes.Status).to.eql('success');\r",
-									"});\r",
-									"\r",
-									"pm.test('Careplan category record is updated', function () {\r",
-									"    var jsonRes = pm.response.json();\r",
-									"    pm.expect(jsonRes.Data).to.have.property('id');\r",
-									"    pm.expect(jsonRes.Data).to.have.property('Type');\r",
-									"    pm.expect(jsonRes.Data).to.have.property('Description');\r",
-									"  \r",
-									"    pm.expect(jsonRes.Data.Type).equals(pm.environment.get(\"CAREPLAN_CATEGORY\"));\r",
-									"    pm.expect(jsonRes.Data.Description).equals('Some other category...');\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"var rand = (Math.floor(Math.random() * 9000000000) + 1000000000).toString();\r",
-									"pm.environment.set(\"CAREPLAN_CATEGORY\", 'Sports Rehab - ' + rand);\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"type": "text",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"type": "text",
-								"value": "Bearer {{MODERATOR_JWT}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"Type\": \"{{CAREPLAN_CATEGORY}}\",\r\n    \"Description\": \"Some other category...\"\r\n}"
-						},
-						"url": {
-							"raw": "{{BASE_URL}}/careplan-categories/{{CAREPLAN_CATEGORY_ID}}",
-							"host": [
-								"{{BASE_URL}}"
-							],
-							"path": [
-								"careplan-categories",
-								"{{CAREPLAN_CATEGORY_ID}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test('Request is successfull', function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"    var jsonRes = pm.response.json();\r",
-									"    pm.expect(jsonRes.Status).to.eql('success');\r",
-									"});\r",
-									"\r",
-									"pm.test('Careplan category record is deleted', function () {\r",
-									"    var jsonRes = pm.response.json();\r",
-									"    pm.expect(jsonRes.Data).to.have.property('Deleted');\r",
-									"    pm.expect(jsonRes.Data.Deleted).equals(true);\r",
-									"});\r",
-									""
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Content-Type",
-								"type": "text",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"type": "text",
-								"value": "Bearer {{MODERATOR_JWT}}"
-							}
-						],
-						"url": {
-							"raw": "{{BASE_URL}}/careplan-categories/{{CAREPLAN_CATEGORY_ID}}",
-							"host": [
-								"{{BASE_URL}}"
-							],
-							"path": [
-								"careplan-categories",
-								"{{CAREPLAN_CATEGORY_ID}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create again",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"try {\r",
-									"    var respData = pm.response.json();\r",
-									"    pm.environment.set(\"CAREPLAN_CATEGORY_ID\", respData.Data.id);\r",
-									"}\r",
-									"catch (error) {\r",
-									"    console.log(error.message);\r",
-									"}\r",
-									"\r",
-									"pm.test('Request is successfull', function () {\r",
-									"    pm.response.to.have.status(201);\r",
-									"    var jsonRes = pm.response.json();\r",
-									"    pm.expect(jsonRes.Status).to.eql('success');\r",
-									"});\r",
-									"\r",
-									"pm.test('New careplan category record is created', function () {\r",
-									"    var jsonRes = pm.response.json();\r",
-									"    pm.expect(jsonRes.Data).to.have.property('id');\r",
-									"    pm.expect(jsonRes.Data).to.have.property('Type');\r",
-									"  \r",
-									"    pm.expect(jsonRes.Data.Type).equals(pm.environment.get(\"CAREPLAN_CATEGORY\"));\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"var rand = (Math.floor(Math.random() * 9000000000) + 1000000000).toString();\r",
-									"pm.environment.set(\"CAREPLAN_CATEGORY\", 'Sports Rehab - ' + rand);\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"type": "text",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"type": "text",
-								"value": "Bearer {{MODERATOR_JWT}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n   \"Type\": \"{{CAREPLAN_CATEGORY}}\"\r\n}\r\n"
-						},
-						"url": {
-							"raw": "{{BASE_URL}}/careplan-categories",
-							"host": [
-								"{{BASE_URL}}"
-							],
-							"path": [
-								"careplan-categories"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
 			"name": "Asset management",
 			"item": [
 				{
@@ -3318,7 +2871,7 @@
 											"    pm.expect(jsonRes.Data).to.have.property('Tags');\r",
 											"    pm.expect(jsonRes.Data).to.have.property('Version');\r",
 											"    \r",
-											"    pm.expect(jsonRes.Data.AssetCode).equals('ACTIONPLAN-HF-1');\r",
+											"    pm.expect(jsonRes.Data.AssetCode).equals('ACTIONPLAN-HF-2');\r",
 											"    pm.expect(jsonRes.Data.Name).equals('Join the gym');\r",
 											"    pm.expect(jsonRes.Data.Description).equals('Studies confirm that working out with a partner significantly increases time spent exercising. A study by the Society of Behavioral Medicine showed that working with a partner, especially in a team format, improved performance, doubling the workout time of those who exercised alone.');\r",
 											"    pm.expect(jsonRes.Data.Tags.length).equals(2);\r",
@@ -5685,7 +5238,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"try {\r",
 											"    var respData = pm.response.json();\r",
@@ -5718,12 +5270,13 @@
 											"    pm.expect(jsonRes.Data.AssetCategory).equals('Biometrics');\r",
 											"    pm.expect(jsonRes.Data.BiometricsType).equals('Blood pressure');\r",
 											"    pm.expect(jsonRes.Data.MeasurementUnit).equals('mmHg');\r",
-											"    pm.expect(jsonRes.Data.Version).equals('V1');\r",
+											"    pm.expect(jsonRes.Data.Version).equals('1.0');\r",
 											"\r",
 											"});\r",
 											"\r",
 											""
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -5927,7 +5480,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"\r",
 											"pm.test('Request is successfull', function () {\r",
@@ -5953,12 +5505,13 @@
 											"    pm.expect(jsonRes.Data.AssetCategory).equals('Biometrics');\r",
 											"    pm.expect(jsonRes.Data.BiometricsType).equals('Blood pressure');\r",
 											"    pm.expect(jsonRes.Data.MeasurementUnit).equals('mmHg');\r",
-											"    pm.expect(jsonRes.Data.Version).equals('V1');\r",
+											"    pm.expect(jsonRes.Data.Version).equals('1.0');\r",
 											"\r",
 											"});\r",
 											"\r",
 											""
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -6055,7 +5608,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"try {\r",
 											"    var respData = pm.response.json();\r",
@@ -6088,12 +5640,13 @@
 											"    pm.expect(jsonRes.Data.AssetCategory).equals('Biometrics');\r",
 											"    pm.expect(jsonRes.Data.BiometricsType).equals('Blood pressure');\r",
 											"    pm.expect(jsonRes.Data.MeasurementUnit).equals('mmHg');\r",
-											"    pm.expect(jsonRes.Data.Version).equals('V1');\r",
+											"    pm.expect(jsonRes.Data.Version).equals('1.0');\r",
 											"\r",
 											"});\r",
 											"\r",
 											""
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -8286,7 +7839,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"try {\r",
 											"    var respData = pm.response.json();\r",
@@ -8312,13 +7864,14 @@
 											"    pm.expect(jsonRes.Data).to.have.property('OwnerUserId');\r",
 											"    pm.expect(jsonRes.Data).to.have.property('Tags');\r",
 											"    pm.expect(jsonRes.Data).to.have.property('Version');\r",
-											"    pm.expect(jsonRes.Data.AssetCode).equals('INFOGRAPHICS-CC-2');\r",
+											"    pm.expect(jsonRes.Data.AssetCode).equals('INFOGRAPHICS-CC-1');\r",
 											"    pm.expect(jsonRes.Data.Name).equals('Know your condition!');\r",
 											"    pm.expect(jsonRes.Data.Version).equals('1.0');\r",
 											"});\r",
 											"\r",
 											""
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -8359,7 +7912,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"pm.test('Request is successfull', function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -8377,13 +7929,14 @@
 											"    pm.expect(jsonRes.Data).to.have.property('OwnerUserId');\r",
 											"    pm.expect(jsonRes.Data).to.have.property('Tags');\r",
 											"    pm.expect(jsonRes.Data).to.have.property('Version');\r",
-											"    pm.expect(jsonRes.Data.AssetCode).equals('INFOGRAPHICS-CC-2');\r",
+											"    pm.expect(jsonRes.Data.AssetCode).equals('INFOGRAPHICS-CC-1');\r",
 											"    pm.expect(jsonRes.Data.Name).equals('Know your condition!');\r",
 											"    pm.expect(jsonRes.Data.Version).equals('1.0');\r",
 											"});\r",
 											"\r",
 											""
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -8509,7 +8062,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"pm.test('Request is successfull', function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -8533,7 +8085,8 @@
 											"});\r",
 											"\r",
 											""
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -8553,7 +8106,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"AssetCode\": \"INFOGRAPHICS-CC-1\",\r\n    \"Name\": \"Know your condition!\",\r\n    \"Description\": \"Studies confirm that working out with a partner ...\",\r\n    \"Url\": \"http://watchlearnlive.heart.org/CVML_Player.php?moduleSelect=hrtflr\",\r\n    \"Tags\": [\"Maternity\", \"Neo-natal-care\"],\r\n    \"Version\": \"1.0\"\r\n\r\n}\r\n"
+									"raw": "{\r\n    \"AssetCode\": \"INFOGRAPHICS-CC-2\",\r\n    \"Name\": \"Know your condition!\",\r\n    \"Description\": \"Studies confirm that working out with a partner ...\",\r\n    \"Url\": \"http://watchlearnlive.heart.org/CVML_Player.php?moduleSelect=hrtflr\",\r\n    \"Tags\": [\"Maternity\", \"Neo-natal-care\"],\r\n    \"Version\": \"1.0\"\r\n\r\n}\r\n"
 								},
 								"url": {
 									"raw": "{{BASE_URL}}/assets/infographics/{{INFOGRAPHICS_ID}}",
@@ -8628,7 +8181,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"try {\r",
 											"    var respData = pm.response.json();\r",
@@ -8654,13 +8206,14 @@
 											"    pm.expect(jsonRes.Data).to.have.property('OwnerUserId');\r",
 											"    pm.expect(jsonRes.Data).to.have.property('Tags');\r",
 											"    pm.expect(jsonRes.Data).to.have.property('Version');\r",
-											"    pm.expect(jsonRes.Data.AssetCode).equals('INFOGRAPHICS-CC-2');\r",
+											"    pm.expect(jsonRes.Data.AssetCode).equals('INFOGRAPHICS-CC-1');\r",
 											"    pm.expect(jsonRes.Data.Name).equals('Know your condition!');\r",
 											"    pm.expect(jsonRes.Data.Version).equals('1.0');\r",
 											"});\r",
 											"\r",
 											""
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -8680,7 +8233,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"AssetCode\": \"INFOGRAPHICS-CC-1\",\r\n    \"Name\": \"Know your condition!\",\r\n    \"Description\": \"Studies confirm that working out with a partner ...\",\r\n    \"Url\": \"http://watchlearnlive.heart.org/CVML_Player.php?moduleSelect=hrtflr\",\r\n    \"Version\": \"1.0\"\r\n\r\n}\r\n"
+									"raw": "{\r\n    \"AssetCode\": \"INFOGRAPHICS-CC-1\",\r\n    \"Name\": \"Know your condition!\",\r\n    \"Description\": \"Studies confirm that working out with a partner ...\",\r\n    \"Url\": \"http://watchlearnlive.heart.org/CVML_Player.php?moduleSelect=hrtflr\",\r\n    \"Version\": \"1.0\"\r\n}"
 								},
 								"url": {
 									"raw": "{{BASE_URL}}/assets/infographics",
@@ -9646,16 +9199,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
-											"try {\r",
-											"    var respData = pm.response.json();\r",
-											"    pm.environment.set(\"MESSAGE_ID\", respData.Data.id);\r",
-											"}\r",
-											"catch (error) {\r",
-											"    console.log(error.message);\r",
-											"}\r",
-											"\r",
 											"pm.test('Request is successfull', function () {\r",
 											"    pm.response.to.have.status(200);\r",
 											"    var jsonRes = pm.response.json();\r",
@@ -9681,7 +9225,8 @@
 											"});\r",
 											"\r",
 											""
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -9719,15 +9264,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
-											"try {\r",
-											"    var respData = pm.response.json();\r",
-											"    pm.environment.set(\"MESSAGE_ID\", respData.Data.id);\r",
-											"}\r",
-											"catch (error) {\r",
-											"    console.log(error.message);\r",
-											"}\r",
 											"\r",
 											"pm.test('Request is successfull', function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -9741,7 +9278,8 @@
 											"});\r",
 											"\r",
 											""
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -9815,7 +9353,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"pm.test('Request is successfull', function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -9842,7 +9379,8 @@
 											"});\r",
 											"\r",
 											""
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -9862,7 +9400,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n\"AssetCode\": \"MESSAGE-CC-1\",\r\n\"Name\": \"Scheduling at the start of the day makes execution simpler!\",\r\n\"Description\": \"1) Write out your plan every day. 2) Plan at the same time every day. 3) Brainstorm a quick to-do list. 4) Divide your task list between Work and Life. ...\",\r\n\"MessageType\": \"Educational\",\r\n\"Tags\": [\"Maternity\", \"Neo-natal-care\"],\r\n\"Url\": \"https://www.appname.com/\",\r\n\"Version\": \"1.0\"\r\n\r\n}\r\n"
+									"raw": "{\r\n    \"AssetCode\": \"MESSAGE-CC-1\",\r\n    \"Name\": \"Scheduling at the start of the day makes execution simpler!\",\r\n    \"Description\": \"1) Write out your plan every day. 2) Plan at the same time every day. 3) Brainstorm a quick to-do list. 4) Divide your task list between Work and Life. ...\",\r\n    \"MessageType\": \"Educational\",\r\n    \"Tags\": [\r\n        \"Maternity\",\r\n        \"Neo-natal-care\"\r\n    ],\r\n    \"Url\": \"https://www.appname.com/\",\r\n    \"Version\": \"1.0\"\r\n}"
 								},
 								"url": {
 									"raw": "{{BASE_URL}}/assets/messages/{{MESSAGE_ID}}",
@@ -9937,7 +9475,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"try {\r",
 											"    var respData = pm.response.json();\r",
@@ -9972,7 +9509,8 @@
 											"});\r",
 											"\r",
 											""
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -13883,6 +13421,453 @@
 			]
 		},
 		{
+			"name": "Careplan category",
+			"item": [
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"try {\r",
+									"    var respData = pm.response.json();\r",
+									"    pm.environment.set(\"CAREPLAN_CATEGORY_ID\", respData.Data.id);\r",
+									"}\r",
+									"catch (error) {\r",
+									"    console.log(error.message);\r",
+									"}\r",
+									"\r",
+									"pm.test('Request is successfull', function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.expect(jsonRes.Status).to.eql('success');\r",
+									"});\r",
+									"\r",
+									"pm.test('New careplan category record is created', function () {\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.expect(jsonRes.Data).to.have.property('id');\r",
+									"    pm.expect(jsonRes.Data).to.have.property('Type');\r",
+									"  \r",
+									"    pm.expect(jsonRes.Data.Type).equals(pm.environment.get(\"CAREPLAN_CATEGORY\"));\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var rand = (Math.floor(Math.random() * 9000000000) + 1000000000).toString();\r",
+									"pm.environment.set(\"CAREPLAN_CATEGORY\", 'Sports Rehab - ' + rand);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{MODERATOR_JWT}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"Type\": \"{{CAREPLAN_CATEGORY}}\"\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/careplan-categories",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"careplan-categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Try creating with same type - should fail",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test('Request is failure', function () {\r",
+									"    pm.response.to.have.status(409);\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.expect(jsonRes.Status).to.eql('failure');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{MODERATOR_JWT}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"Type\": \"{{CAREPLAN_CATEGORY}}\"\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/careplan-categories",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"careplan-categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test('Request is successfull', function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.expect(jsonRes.Status).to.eql('success');\r",
+									"});\r",
+									"\r",
+									"pm.test('Careplan category record is retrived', function () {\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.expect(jsonRes.Data).to.have.property('id');\r",
+									"    pm.expect(jsonRes.Data).to.have.property('Type');\r",
+									"    pm.expect(jsonRes.Data.Type).equals(pm.environment.get(\"CAREPLAN_CATEGORY\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{MODERATOR_JWT}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/careplan-categories/{{CAREPLAN_CATEGORY_ID}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"careplan-categories",
+								"{{CAREPLAN_CATEGORY_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search with filters",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test('Request is successfull', function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.expect(jsonRes.Status).to.eql('success');\r",
+									"});\r",
+									"\r",
+									"pm.test('Careplan category search results are returned', function () {\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.expect(jsonRes.Data.Items.length).greaterThan(0);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{MODERATOR_JWT}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/careplan-categories/search?type=sports",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"careplan-categories",
+								"search"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "sports"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test('Request is successfull', function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.expect(jsonRes.Status).to.eql('success');\r",
+									"});\r",
+									"\r",
+									"pm.test('Careplan category record is updated', function () {\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.expect(jsonRes.Data).to.have.property('id');\r",
+									"    pm.expect(jsonRes.Data).to.have.property('Type');\r",
+									"    pm.expect(jsonRes.Data).to.have.property('Description');\r",
+									"  \r",
+									"    pm.expect(jsonRes.Data.Type).equals(pm.environment.get(\"CAREPLAN_CATEGORY\"));\r",
+									"    pm.expect(jsonRes.Data.Description).equals('Some other category...');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var rand = (Math.floor(Math.random() * 9000000000) + 1000000000).toString();\r",
+									"pm.environment.set(\"CAREPLAN_CATEGORY\", 'Sports Rehab - ' + rand);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{MODERATOR_JWT}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Type\": \"{{CAREPLAN_CATEGORY}}\",\r\n    \"Description\": \"Some other category...\"\r\n}"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/careplan-categories/{{CAREPLAN_CATEGORY_ID}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"careplan-categories",
+								"{{CAREPLAN_CATEGORY_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Request is successfull', function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.expect(jsonRes.Status).to.eql('success');\r",
+									"});\r",
+									"\r",
+									"pm.test('Careplan category record is deleted', function () {\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.expect(jsonRes.Data).to.have.property('Deleted');\r",
+									"    pm.expect(jsonRes.Data.Deleted).equals(true);\r",
+									"});\r",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{MODERATOR_JWT}}"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/careplan-categories/{{CAREPLAN_CATEGORY_ID}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"careplan-categories",
+								"{{CAREPLAN_CATEGORY_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create again",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"try {\r",
+									"    var respData = pm.response.json();\r",
+									"    pm.environment.set(\"CAREPLAN_CATEGORY_ID\", respData.Data.id);\r",
+									"}\r",
+									"catch (error) {\r",
+									"    console.log(error.message);\r",
+									"}\r",
+									"\r",
+									"pm.test('Request is successfull', function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.expect(jsonRes.Status).to.eql('success');\r",
+									"});\r",
+									"\r",
+									"pm.test('New careplan category record is created', function () {\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.expect(jsonRes.Data).to.have.property('id');\r",
+									"    pm.expect(jsonRes.Data).to.have.property('Type');\r",
+									"  \r",
+									"    pm.expect(jsonRes.Data.Type).equals(pm.environment.get(\"CAREPLAN_CATEGORY\"));\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var rand = (Math.floor(Math.random() * 9000000000) + 1000000000).toString();\r",
+									"pm.environment.set(\"CAREPLAN_CATEGORY\", 'Sports Rehab - ' + rand);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{MODERATOR_JWT}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"Type\": \"{{CAREPLAN_CATEGORY}}\"\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/careplan-categories",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"careplan-categories"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Care plan",
 			"item": [
 				{
@@ -13891,7 +13876,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"try {\r",
 									"    var respData = pm.response.json();\r",
@@ -13925,11 +13909,12 @@
 									"    pm.expect(jsonRes.Data.CategoryId).equals(expectedCategoryId);\r",
 									"    pm.expect(jsonRes.Data.Description).equals('This is maternity care plan specifically designed for remote areas with low resource settings.');\r",
 									"    pm.expect(jsonRes.Data.Tags.length).equals(3);\r",
-									"    pm.expect(jsonRes.Data.Version).equals('V1');\r",
+									"    pm.expect(jsonRes.Data.Version).equals('1.0');\r",
 									"});\r",
 									"\r",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -13949,7 +13934,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Code\": \"REAN-Maternity-2\",\r\n    \"CategoryId\": \"{{CAREPLAN_CATEGORY_ID}}\",\r\n    \"Name\": \"Maternity Care Plan for Remote Population\",\r\n    \"Description\": \"This is maternity care plan specifically designed for remote areas with low resource settings.\",\r\n    \"Tags\": [\"Maternity\",\"Child-Care\",\"Malnutrition\"],\r\n    \"Version\": \"V1\"\r\n\r\n}"
+							"raw": "{\r\n    \"Code\": \"REAN-Maternity-2\",\r\n    \"CategoryId\": \"{{CAREPLAN_CATEGORY_ID}}\",\r\n    \"Name\": \"Maternity Care Plan for Remote Population\",\r\n    \"Description\": \"This is maternity care plan specifically designed for remote areas with low resource settings.\",\r\n    \"Tags\": [\r\n        \"Maternity\",\r\n        \"Child-Care\",\r\n        \"Malnutrition\"\r\n    ],\r\n    \"Version\": \"1.0\"\r\n}"
 						},
 						"url": {
 							"raw": "{{BASE_URL}}/careplans",
@@ -13969,7 +13954,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"\r",
 									"pm.test('Request is successfull', function () {\r",
@@ -13992,9 +13976,10 @@
 									"    pm.expect(jsonRes.Data.Name).equals('Maternity Care Plan for Remote Population');\r",
 									"    pm.expect(jsonRes.Data.Description).equals('This is maternity care plan specifically designed for remote areas with low resource settings.');\r",
 									"    pm.expect(jsonRes.Data.Tags.length).equals(3);\r",
-									"    pm.expect(jsonRes.Data.Version).equals('V1');\r",
+									"    pm.expect(jsonRes.Data.Version).equals('1.0');\r",
 									"});"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -14031,7 +14016,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"\r",
 									"pm.test('Request is successfull', function () {\r",
@@ -14045,7 +14029,8 @@
 									"    pm.expect(jsonRes.Data.Items.length).greaterThan(0);\r",
 									"});\r",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -14064,7 +14049,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{BASE_URL}}/careplans/search?version=V1",
+							"raw": "{{BASE_URL}}/careplans/search",
 							"host": [
 								"{{BASE_URL}}"
 							],
@@ -14090,7 +14075,8 @@
 								},
 								{
 									"key": "version",
-									"value": "V1"
+									"value": "V1",
+									"disabled": true
 								},
 								{
 									"key": "ownerUserId",
@@ -14240,7 +14226,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"try {\r",
 									"    var respData = pm.response.json();\r",
@@ -14274,11 +14259,12 @@
 									"    pm.expect(jsonRes.Data.CategoryId).equals(expectedCategoryId);\r",
 									"    pm.expect(jsonRes.Data.Description).equals('This is maternity care plan specifically designed for remote areas with low resource settings.');\r",
 									"    pm.expect(jsonRes.Data.Tags.length).equals(3);\r",
-									"    pm.expect(jsonRes.Data.Version).equals('V1');\r",
+									"    pm.expect(jsonRes.Data.Version).equals('1.0');\r",
 									"});\r",
 									"\r",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -14298,7 +14284,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\"Code\": \"REAN-Maternity-2\",\r\n\"CategoryId\": \"{{CAREPLAN_CATEGORY_ID}}\",\r\n\"Name\": \"Maternity Care Plan for Remote Population\",\r\n\"Description\": \"This is maternity care plan specifically designed for remote areas with low resource settings.\",\r\n\"Tags\": [\"Maternity\",\"Child-Care\",\"Malnutrition\"],\r\n\"Version\": \"V1\"\r\n\r\n}"
+							"raw": "{\r\n    \"Code\": \"REAN-Maternity-2\",\r\n    \"CategoryId\": \"{{CAREPLAN_CATEGORY_ID}}\",\r\n    \"Name\": \"Maternity Care Plan for Remote Population\",\r\n    \"Description\": \"This is maternity care plan specifically designed for remote areas with low resource settings.\",\r\n    \"Tags\": [\r\n        \"Maternity\",\r\n        \"Child-Care\",\r\n        \"Malnutrition\"\r\n    ],\r\n    \"Version\": \"1.0\"\r\n}"
 						},
 						"url": {
 							"raw": "{{BASE_URL}}/careplans",
@@ -14730,7 +14716,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"try {\r",
 									"    var respData = pm.response.json();\r",
@@ -14750,7 +14735,7 @@
 									"    var jsonRes = pm.response.json();\r",
 									"    pm.expect(jsonRes.Data).to.have.property('id');\r",
 									"    pm.expect(jsonRes.Data).to.have.property('CareplanId');\r",
-									"    pm.expect(jsonRes.Data).to.have.property('UserId');\r",
+									"    pm.expect(jsonRes.Data).to.have.property('ParticipantId');\r",
 									"    pm.expect(jsonRes.Data).to.have.property('StartDate');\r",
 									"    pm.expect(jsonRes.Data).to.have.property('EndDate');\r",
 									"    pm.expect(jsonRes.Data).to.have.property('EnrollmentDate');\r",
@@ -14759,7 +14744,43 @@
 									"});\r",
 									"\r",
 									""
-								]
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var today = (new Date()).toISOString().split('T')[0];\r",
+									"pm.environment.set(\"TODAY\", today);\r",
+									"\r",
+									"Date.prototype.addDays = function(days) {\r",
+									"    var date = new Date(this.valueOf());\r",
+									"    date.setDate(date.getDate() + days);\r",
+									"    return date;\r",
+									"}\r",
+									"\r",
+									"function formatDate(date) {\r",
+									"    var d = new Date(date),\r",
+									"        month = '' + (d.getMonth() + 1),\r",
+									"        day = '' + d.getDate(),\r",
+									"        year = d.getFullYear();\r",
+									"\r",
+									"    if (month.length < 2) \r",
+									"        month = '0' + month;\r",
+									"    if (day.length < 2) \r",
+									"        day = '0' + day;\r",
+									"\r",
+									"    return [year, month, day].join('-');\r",
+									"}\r",
+									"\r",
+									"var toDate = formatDate((new Date()).addDays(365));\r",
+									"\r",
+									"pm.environment.set(\"TO_DATE\", toDate);\r",
+									""
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -14774,12 +14795,12 @@
 							{
 								"key": "x-api-key",
 								"type": "text",
-								"value": "{{API_CLIENT_INTERNAL_KEY}}"
+								"value": "{{API_KEY}}"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n   \"CareplanId\": \"{{CARE_PLAN_ID}}\",\r\n   \"UserId\": \"{{USER_ID}}\",\r\n   \"StartDate\": \"2022-06-29\",\r\n   \"EndDate\": \"2022-07-20\",\r\n   \"EnrollmentDate\": \"2022-06-29\"\r\n}"
+							"raw": "{\r\n    \"CareplanId\": \"{{CARE_PLAN_ID}}\",\r\n    \"ParticipantId\": \"{{PARTICIPANT_ID}}\",\r\n    \"StartDate\": \"{{TODAY}}\",\r\n    \"EndDate\": \"{{TO_DATE}}\",\r\n    \"EnrollmentDate\": \"{{TODAY}}\"\r\n}"
 						},
 						"url": {
 							"raw": "{{BASE_URL}}/enrollments",
@@ -14799,7 +14820,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"pm.test('Request is successfull', function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -14811,17 +14831,15 @@
 									"    var jsonRes = pm.response.json();\r",
 									"    pm.expect(jsonRes.Data).to.have.property('id');\r",
 									"    pm.expect(jsonRes.Data).to.have.property('CareplanId');\r",
-									"    pm.expect(jsonRes.Data).to.have.property('UserId');\r",
+									"    pm.expect(jsonRes.Data).to.have.property('ParticipantId');\r",
 									"    pm.expect(jsonRes.Data).to.have.property('StartDate');\r",
 									"    pm.expect(jsonRes.Data).to.have.property('EndDate');\r",
 									"    pm.expect(jsonRes.Data).to.have.property('EnrollmentDate');\r",
 									"    pm.expect(jsonRes.Data).to.have.property('ProgressStatus');\r",
-									"    \r",
-									"\r",
 									"});\r",
-									"\r",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -14836,7 +14854,7 @@
 							{
 								"key": "x-api-key",
 								"type": "text",
-								"value": "{{API_CLIENT_INTERNAL_KEY}}"
+								"value": "{{API_KEY}}"
 							}
 						],
 						"url": {
@@ -14858,7 +14876,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"pm.test('Request is successfull', function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -14872,7 +14889,8 @@
 									"});\r",
 									"\r",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -14887,7 +14905,7 @@
 							{
 								"key": "x-api-key",
 								"type": "text",
-								"value": "{{API_CLIENT_INTERNAL_KEY}}"
+								"value": "{{API_KEY}}"
 							}
 						],
 						"url": {
@@ -14925,7 +14943,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"pm.test('Request is successfull', function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -14937,7 +14954,7 @@
 									"    var jsonRes = pm.response.json();\r",
 									"    pm.expect(jsonRes.Data).to.have.property('id');\r",
 									"    pm.expect(jsonRes.Data).to.have.property('CareplanId');\r",
-									"    pm.expect(jsonRes.Data).to.have.property('UserId');\r",
+									"    pm.expect(jsonRes.Data).to.have.property('ParticipantId');\r",
 									"    pm.expect(jsonRes.Data).to.have.property('StartDate');\r",
 									"    pm.expect(jsonRes.Data).to.have.property('EndDate');\r",
 									"    pm.expect(jsonRes.Data).to.have.property('EnrollmentDate');\r",
@@ -14946,7 +14963,8 @@
 									"});\r",
 									"\r",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -14961,12 +14979,12 @@
 							{
 								"key": "x-api-key",
 								"type": "text",
-								"value": "{{API_CLIENT_INTERNAL_KEY}}"
+								"value": "{{API_KEY}}"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n   \"CareplanId\": \"{{CARE_PLAN_ID}}\",\r\n   \"UserId\": \"{{USER_ID}}\",\r\n   \"StartDate\": \"2022-06-29\",\r\n   \"EndDate\": \"2022-07-20\",\r\n   \"EnrollmentDate\": \"2022-06-29\"\r\n}"
+							"raw": "{\r\n   \"CareplanId\": \"{{CARE_PLAN_ID}}\",\r\n   \"ParticipantId\": \"{{PARTICIPANT_ID}}\",\r\n   \"StartDate\": \"2022-06-29\",\r\n   \"EndDate\": \"2022-07-20\",\r\n   \"EnrollmentDate\": \"2022-06-29\"\r\n}"
 						},
 						"url": {
 							"raw": "{{BASE_URL}}/enrollments/{{ENROLLMENT_ID}}",
@@ -14987,7 +15005,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"pm.test('Request is successfull', function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -15000,7 +15017,8 @@
 									"    pm.expect(jsonRes.Data).to.have.property('Deleted');\r",
 									"    pm.expect(jsonRes.Data.Deleted).equals(true);\r",
 									"});"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -15015,7 +15033,7 @@
 							{
 								"key": "x-api-key",
 								"type": "text",
-								"value": "{{API_CLIENT_INTERNAL_KEY}}"
+								"value": "{{API_KEY}}"
 							}
 						],
 						"url": {
@@ -15037,7 +15055,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"try {\r",
 									"    var respData = pm.response.json();\r",
@@ -15066,7 +15083,8 @@
 									"});\r",
 									"\r",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -15081,7 +15099,7 @@
 							{
 								"key": "x-api-key",
 								"type": "text",
-								"value": "{{API_CLIENT_INTERNAL_KEY}}"
+								"value": "{{API_KEY}}"
 							}
 						],
 						"body": {
@@ -15178,7 +15196,7 @@
 									"    pm.expect(jsonRes.Data).to.have.property('id');\r",
 									"    pm.expect(jsonRes.Data).to.have.property('EnrollmentId');\r",
 									"    pm.expect(jsonRes.Data).to.have.property('UserId');\r",
-									"    pm.expect(jsonRes.Data).to.have.property('CareplanActivityId');\r",
+									"    pm.expect(jsonRes.Data).to.have.property('CareplanScheduleId');\r",
 									"    pm.expect(jsonRes.Data).to.have.property('AssetId');\r",
 									"    pm.expect(jsonRes.Data).to.have.property('AssetType');\r",
 									"    pm.expect(jsonRes.Data).to.have.property('CareplanId');\r",
@@ -15308,7 +15326,7 @@
 									"    pm.expect(jsonRes.Data).to.have.property('id');\r",
 									"    pm.expect(jsonRes.Data).to.have.property('EnrollmentId');\r",
 									"    pm.expect(jsonRes.Data).to.have.property('UserId');\r",
-									"    pm.expect(jsonRes.Data).to.have.property('CareplanActivityId');\r",
+									"    pm.expect(jsonRes.Data).to.have.property('CareplanScheduleId');\r",
 									"    pm.expect(jsonRes.Data).to.have.property('AssetId');\r",
 									"    pm.expect(jsonRes.Data).to.have.property('AssetType');\r",
 									"    pm.expect(jsonRes.Data).to.have.property('CareplanId');\r",
@@ -15432,7 +15450,7 @@
 									"    pm.expect(jsonRes.Data).to.have.property('id');\r",
 									"    pm.expect(jsonRes.Data).to.have.property('EnrollmentId');\r",
 									"    pm.expect(jsonRes.Data).to.have.property('UserId');\r",
-									"    pm.expect(jsonRes.Data).to.have.property('CareplanActivityId');\r",
+									"    pm.expect(jsonRes.Data).to.have.property('CareplanScheduleId');\r",
 									"    pm.expect(jsonRes.Data).to.have.property('AssetId');\r",
 									"    pm.expect(jsonRes.Data).to.have.property('AssetType');\r",
 									"    pm.expect(jsonRes.Data).to.have.property('CareplanId');\r",
@@ -15512,7 +15530,7 @@
 											"    var jsonRes = pm.response.json();\r",
 											"    pm.expect(jsonRes.Data).to.have.property('id');\r",
 											"    pm.expect(jsonRes.Data).to.have.property('UserId');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('EnrollmentTaskId');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('EnrollmentScheduleId');\r",
 											"    pm.expect(jsonRes.Data).to.have.property('Response');\r",
 											"   \r",
 											"});\r",
@@ -15538,7 +15556,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n   \"UserId\": \"{{USER_ID}}\",\r\n\"EnrollmentTaskId\": \"{{ENROLLMENT_SCHEDULE_ID}}\",\r\n\"Response\": \"{}\"\r\n\r\n}\r\n"
+									"raw": "{\r\n   \"UserId\": \"{{USER_ID}}\",\r\n\"EnrollmentScheduleId\": \"{{ENROLLMENT_SCHEDULE_ID}}\",\r\n\"Response\": \"{}\"\r\n\r\n}\r\n"
 								},
 								"url": {
 									"raw": "{{BASE_URL}}/user-activity-responses",
@@ -15571,7 +15589,7 @@
 											"    var jsonRes = pm.response.json();\r",
 											"     pm.expect(jsonRes.Data).to.have.property('id');\r",
 											"    pm.expect(jsonRes.Data).to.have.property('UserId');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('EnrollmentTaskId');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('EnrollmentScheduleId');\r",
 											"    pm.expect(jsonRes.Data).to.have.property('Response');\r",
 											"   \r",
 											"});\r",
@@ -15705,7 +15723,7 @@
 											"    var jsonRes = pm.response.json();\r",
 											"     pm.expect(jsonRes.Data).to.have.property('id');\r",
 											"    pm.expect(jsonRes.Data).to.have.property('UserId');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('EnrollmentTaskId');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('EnrollmentScheduleId');\r",
 											"    pm.expect(jsonRes.Data).to.have.property('Response');\r",
 											" \r",
 											"});\r",
@@ -15731,7 +15749,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n\"UserId\": \"{{USER_ID}}\",\r\n\"EnrollmentTaskId\": \"{{ENROLLMENT_SCHEDULE_ID}}\",\r\n\"Response\": \"{}\"\r\n\r\n}\r\n"
+									"raw": "{\r\n\"UserId\": \"{{USER_ID}}\",\r\n\"EnrollmentScheduleId\": \"{{ENROLLMENT_SCHEDULE_ID}}\",\r\n\"Response\": \"{}\"\r\n\r\n}\r\n"
 								},
 								"url": {
 									"raw": "{{BASE_URL}}/user-activity-responses/{{USER_ACTIVITY_RESPONSE_ID}}",
@@ -15826,7 +15844,7 @@
 											"    var jsonRes = pm.response.json();\r",
 											"     pm.expect(jsonRes.Data).to.have.property('id');\r",
 											"    pm.expect(jsonRes.Data).to.have.property('UserId');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('EnrollmentTaskId');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('EnrollmentScheduleId');\r",
 											"    pm.expect(jsonRes.Data).to.have.property('Response');\r",
 											"   \r",
 											"});\r",
@@ -15852,7 +15870,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n\"UserId\": \"{{USER_ID}}\",\r\n\"EnrollmentTaskId\": \"{{ENROLLMENT_SCHEDULE_ID}}\",\r\n\"Response\": \"{}\"\r\n\r\n}\r\n"
+									"raw": "{\r\n\"UserId\": \"{{USER_ID}}\",\r\n\"EnrollmentScheduleId\": \"{{ENROLLMENT_SCHEDULE_ID}}\",\r\n\"Response\": \"{}\"\r\n\r\n}\r\n"
 								},
 								"url": {
 									"raw": "{{BASE_URL}}/user-activity-responses",
