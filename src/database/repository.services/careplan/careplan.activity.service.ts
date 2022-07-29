@@ -13,6 +13,7 @@ import {
     CareplanActivitySearchFilters,
     CareplanActivitySearchResults
 } from '../../../domain.types/careplan/careplan.activity.domain.types';
+import { uuid } from '../../../domain.types/miscellaneous/system.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -56,6 +57,27 @@ export class CareplanActivityService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve careplan schedule!', error);
         }
+    }
+
+    getRegistrationActivities = async (careplanId: uuid) => {
+        const records = await this.CareplanActivity.findAll({
+            where : {
+                CareplanId             : careplanId,
+                IsRegistrationActivity : true
+            }
+        });
+        return records;
+    }
+
+    getScheduledActivities = async (careplanId: uuid) => {
+        const records = await this.CareplanActivity.findAll({
+            where : {
+                CareplanId             : careplanId,
+                IsRegistrationActivity : false,
+            }
+        });
+        var sorted = records.sort((a,b) => a.Day - b.Day);
+        return sorted;
     }
 
     exists = async (id): Promise < boolean > => {
@@ -154,6 +176,9 @@ export class CareplanActivityService {
         }
         if (filters.TimeSlot) {
             search.where['TimeSlot'] = filters.TimeSlot;
+        }
+        if (filters.IsRegistrationActivity) {
+            search.where['IsRegistrationActivity'] = filters.IsRegistrationActivity;
         }
         const includeCareplanAsCareplan = {
             model    : this.Careplan,

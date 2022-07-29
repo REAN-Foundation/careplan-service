@@ -11,13 +11,13 @@ export class CareplanActivityMapper {
             return null;
         }
         const dto: CareplanActivityDto = {
-            id: careplanActivity.id,
-            AssetId: careplanActivity.AssetId,
-            AssetType: careplanActivity.AssetType,
-            CareplanId: careplanActivity.CareplanId,
-            Day: careplanActivity.Day,
-            TimeSlot: careplanActivity.TimeSlot,
-
+            id                     : careplanActivity.id,
+            AssetId                : careplanActivity.AssetId,
+            AssetType              : careplanActivity.AssetType,
+            CareplanId             : careplanActivity.CareplanId,
+            Day                    : careplanActivity.Day,
+            TimeSlot               : careplanActivity.TimeSlot,
+            IsRegistrationActivity : careplanActivity.IsRegistrationActivity,
         };
         return dto;
     };

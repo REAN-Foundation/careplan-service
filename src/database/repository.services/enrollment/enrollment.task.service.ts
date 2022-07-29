@@ -151,6 +151,9 @@ export class EnrollmentTaskService {
         if (filters.TimeSlot) {
             search.where['TimeSlot'] = filters.TimeSlot;
         }
+        if (filters.IsRegistrationActivity) {
+            search.where['IsRegistrationActivity'] = filters.IsRegistrationActivity;
+        }
         const includeEnrollmentAsEnrollment = {
             model    : this.Enrollment,
             required : false,

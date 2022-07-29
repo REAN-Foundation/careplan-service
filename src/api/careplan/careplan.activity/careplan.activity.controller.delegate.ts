@@ -117,6 +117,10 @@ export class CareplanActivityControllerDelegate {
         if (timeSlot != null) {
             filters['TimeSlot'] = timeSlot;
         }
+        var isRegistrationActivity = query.isRegistrationActivity ? query.isRegistrationActivity : null;
+        if (isRegistrationActivity != null) {
+            filters['IsRegistrationActivity'] = isRegistrationActivity;
+        }
 
         return filters;
     }
@@ -140,17 +144,20 @@ export class CareplanActivityControllerDelegate {
         if (Helper.hasProperty(requestBody, 'TimeSlot')) {
             updateModel.TimeSlot = requestBody.TimeSlot;
         }
-
+        if (Helper.hasProperty(requestBody, 'IsRegistrationActivity')) {
+            updateModel.IsRegistrationActivity = requestBody.IsRegistrationActivity;
+        }
         return updateModel;
     }
 
     getCreateModel = (requestBody): CareplanActivityCreateModel => {
         return {
-            AssetId    : requestBody.AssetId ? requestBody.AssetId : null,
-            AssetType  : requestBody.AssetType ? requestBody.AssetType : null,
-            CareplanId : requestBody.CareplanId ? requestBody.CareplanId : null,
-            Day        : requestBody.Day ? requestBody.Day : null,
-            TimeSlot   : requestBody.TimeSlot ? requestBody.TimeSlot : 'Unspecified'
+            AssetId                : requestBody.AssetId ? requestBody.AssetId : null,
+            AssetType              : requestBody.AssetType ? requestBody.AssetType : null,
+            CareplanId             : requestBody.CareplanId ? requestBody.CareplanId : null,
+            Day                    : requestBody.Day ? requestBody.Day : null,
+            TimeSlot               : requestBody.TimeSlot ? requestBody.TimeSlot : 'Unspecified',
+            IsRegistrationActivity : requestBody.IsRegistrationActivity ? requestBody.IsRegistrationActivity : false,
         };
     }
 
@@ -159,12 +166,13 @@ export class CareplanActivityControllerDelegate {
             return null;
         }
         return {
-            id         : record.id,
-            AssetId    : record.AssetId,
-            AssetType  : record.AssetType,
-            CareplanId : record.CareplanId,
-            Day        : record.Day,
-            TimeSlot   : record.TimeSlot
+            id                     : record.id,
+            AssetId                : record.AssetId,
+            AssetType              : record.AssetType,
+            CareplanId             : record.CareplanId,
+            Day                    : record.Day,
+            TimeSlot               : record.TimeSlot,
+            IsRegistrationActivity : record.IsRegistrationActivity
         };
     }
 
@@ -173,12 +181,13 @@ export class CareplanActivityControllerDelegate {
             return null;
         }
         return {
-            id         : record.id,
-            AssetId    : record.AssetId,
-            AssetType  : record.AssetType,
-            CareplanId : record.CareplanId,
-            Day        : record.Day,
-            TimeSlot   : record.TimeSlot
+            id                     : record.id,
+            AssetId                : record.AssetId,
+            AssetType              : record.AssetType,
+            CareplanId             : record.CareplanId,
+            Day                    : record.Day,
+            TimeSlot               : record.TimeSlot,
+            IsRegistrationActivity : record.IsRegistrationActivity
         };
     }
 

@@ -60,7 +60,12 @@ export class EnrollmentTaskModel {
             type      : DataTypes.DATE,
             allowNull : false
         },
-
+        IsRegistrationActivity : {
+            type         : DataTypes.BOOLEAN,
+            allowNull    : false,
+            defaultValue : false
+        },
+        
         CreatedAt : DataTypes.DATE,
         UpdatedAt : DataTypes.DATE,
         DeletedAt : DataTypes.DATE

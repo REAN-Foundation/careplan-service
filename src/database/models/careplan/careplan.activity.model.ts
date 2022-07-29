@@ -41,6 +41,11 @@ export class CareplanActivityModel {
             allowNull    : false,
             defaultValue : 'Unspecified'
         },
+        IsRegistrationActivity : {
+            type         : DataTypes.BOOLEAN,
+            allowNull    : false,
+            defaultValue : false
+        },
 
         CreatedAt : DataTypes.DATE,
         UpdatedAt : DataTypes.DATE,

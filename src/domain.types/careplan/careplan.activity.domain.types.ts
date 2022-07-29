@@ -6,37 +6,40 @@ import {
 import { uuid } from "../miscellaneous/system.types";
 
 export interface CareplanActivityCreateModel {
-    AssetId?   : number;
-    AssetType? : AssetType;
-    CareplanId?: number;
-    Day?       : number;
-    TimeSlot?  : TimeSlot;
+    AssetId?              : number;
+    AssetType?            : AssetType;
+    CareplanId?           : number;
+    Day?                  : number;
+    TimeSlot?             : TimeSlot;
+    IsRegistrationActivity: boolean;
 }
 
 export interface CareplanActivityUpdateModel {
-    AssetId?   : number;
-    AssetType? : AssetType;
-    CareplanId?: number;
-    Day?       : number;
-    TimeSlot?  : TimeSlot;
+    AssetId?               : number;
+    AssetType?             : AssetType;
+    CareplanId?            : number;
+    Day?                   : number;
+    TimeSlot?              : TimeSlot;
+    IsRegistrationActivity?: boolean;
 }
 
 export interface CareplanActivityDto {
-    id        : uuid;
-    AssetId   : number;
-    AssetType : AssetType;
-    CareplanId: number;
-    Day       : number;
-    TimeSlot  : TimeSlot;
-
+    id                    : uuid;
+    AssetId               : number;
+    AssetType             : AssetType;
+    CareplanId            : number;
+    Day                   : number;
+    TimeSlot              : TimeSlot;
+    IsRegistrationActivity: boolean;
 }
 
 export interface CareplanActivitySearchFilters extends BaseSearchFilters {
-    AssetId?   : number;
-    AssetType? : AssetType;
-    CareplanId?: number;
-    Day?       : number;
-    TimeSlot?  : TimeSlot;
+    AssetId?               : number;
+    AssetType?             : AssetType;
+    CareplanId?            : number;
+    Day?                   : number;
+    TimeSlot?              : TimeSlot;
+    IsRegistrationActivity?: boolean;
 }
 
 export interface CareplanActivitySearchResults extends BaseSearchResults {

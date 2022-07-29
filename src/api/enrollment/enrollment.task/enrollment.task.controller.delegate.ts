@@ -70,7 +70,10 @@ export class EnrollmentTaskControllerDelegate {
         if (timeSlot != null) {
             filters['TimeSlot'] = timeSlot;
         }
-
+        var isRegistrationActivity = query.isRegistrationActivity ? query.isRegistrationActivity : null;
+        if (isRegistrationActivity != null) {
+            filters['IsRegistrationActivity'] = isRegistrationActivity;
+        }
         return filters;
     }
 
@@ -79,15 +82,16 @@ export class EnrollmentTaskControllerDelegate {
             return null;
         }
         return {
-            id                 : record.id,
-            EnrollmentId       : record.EnrollmentId,
-            UserId             : record.UserId,
-            CareplanActivityId : record.CareplanActivityId,
-            AssetId            : record.AssetId,
-            AssetType          : record.AssetType,
-            CareplanId         : record.CareplanId,
-            TimeSlot           : record.TimeSlot,
-            ScheduledDate      : record.ScheduledDate
+            id                     : record.id,
+            EnrollmentId           : record.EnrollmentId,
+            UserId                 : record.UserId,
+            CareplanActivityId     : record.CareplanActivityId,
+            AssetId                : record.AssetId,
+            AssetType              : record.AssetType,
+            CareplanId             : record.CareplanId,
+            TimeSlot               : record.TimeSlot,
+            ScheduledDate          : record.ScheduledDate,
+            IsRegistrationActivity : record.IsRegistrationActivity
         };
     }
 
@@ -96,15 +100,16 @@ export class EnrollmentTaskControllerDelegate {
             return null;
         }
         return {
-            id                 : record.id,
-            EnrollmentId       : record.EnrollmentId,
-            ParticipantId      : record.ParticipantId,
-            CareplanActivityId : record.CareplanActivityId,
-            AssetId            : record.AssetId,
-            AssetType          : record.AssetType,
-            CareplanId         : record.CareplanId,
-            TimeSlot           : record.TimeSlot,
-            ScheduledDate      : record.ScheduledDate
+            id                     : record.id,
+            EnrollmentId           : record.EnrollmentId,
+            ParticipantId          : record.ParticipantId,
+            CareplanActivityId     : record.CareplanActivityId,
+            AssetId                : record.AssetId,
+            AssetType              : record.AssetType,
+            CareplanId             : record.CareplanId,
+            TimeSlot               : record.TimeSlot,
+            ScheduledDate          : record.ScheduledDate,
+            IsRegistrationActivity : record.IsRegistrationActivity
         };
     }
 

@@ -14,6 +14,7 @@ export interface EnrollmentTaskCreateModel {
     AssetId           : number;
     AssetType         : AssetType;
     CareplanId        : number;
+    IsRegistrationActivity : boolean;
     TimeSlot          : TimeSlot;
     ScheduledDate     : Date;
 }
@@ -32,6 +33,7 @@ export interface EnrollmentTaskDto {
     CareplanId        : number;
     TimeSlot          : TimeSlot;
     ScheduledDate     : Date;
+    IsRegistrationActivity : boolean,
 }
 
 export interface EnrollmentTaskSearchFilters extends BaseSearchFilters {
@@ -39,6 +41,7 @@ export interface EnrollmentTaskSearchFilters extends BaseSearchFilters {
     AssetType  ?: AssetType;
     CareplanId ?: number;
     TimeSlot   ?: TimeSlot;
+    IsRegistrationActivity? : boolean,
 }
 
 export interface EnrollmentTaskSearchResults extends BaseSearchResults {

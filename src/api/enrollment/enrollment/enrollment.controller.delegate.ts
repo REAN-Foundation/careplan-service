@@ -17,12 +17,7 @@ import {
 import {
     EnrollmentValidator as validator
 } from './enrollment.validator';
-import {
-    uuid
-} from '../../../domain.types/miscellaneous/system.types';
-import {
-    CareplanActivityControllerDelegate
-} from '../../careplan/careplan.activity/careplan.activity.controller.delegate';
+import { uuid } from '../../../domain.types/miscellaneous/system.types';
 import {
     EnrollmentCreateModel,
     EnrollmentUpdateModel,
@@ -33,6 +28,9 @@ import { EnrollmentTaskCreateModel } from '../../../domain.types/enrollment/enro
 import { TimeHelper } from '../../../common/time.helper';
 import { DurationType } from '../../../domain.types/miscellaneous/time.types';
 import { Logger } from '../../../common/logger';
+import { ParticipantService } from '../../../database/repository.services/enrollment/participant.service';
+import { CareplanService } from '../../../database/repository.services/careplan/careplan.service';
+import { CareplanActivityService } from '../../../database/repository.services/careplan/careplan.activity.service';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -42,51 +40,48 @@ export class EnrollmentControllerDelegate {
 
     _service: EnrollmentService = null;
 
-    _careplanActivityDelegate: CareplanActivityControllerDelegate = null;
+    _careplanActivityService: CareplanActivityService = null;
 
-    _scheduleService: EnrollmentTaskService = null;
+    _enrollmentTaskService: EnrollmentTaskService = null;
+
+    _participantService: ParticipantService = null;
+
+    _careplanService: CareplanService = null;
 
     constructor() {
         this._service = new EnrollmentService();
-        this._careplanActivityDelegate = new CareplanActivityControllerDelegate();
-        this._scheduleService = new EnrollmentTaskService();
+        this._careplanActivityService = new CareplanActivityService();
+        this._enrollmentTaskService = new EnrollmentTaskService();
+        this._participantService = new ParticipantService();
+        this._careplanService = new CareplanService();
     }
 
     //#endregion
 
     create = async (requestBody: any) => {
+
         await validator.validateCreateRequest(requestBody);
+
+        var participantId = requestBody.ParticipantId;
+        const participant = await this._participantService.getById(participantId);
+        if (!participant) {
+            ErrorHandler.throwNotFoundError(`Participant not found!`);
+        }
+
+        var careplanId = requestBody.CareplanId;
+        const careplan = await this._careplanService.getById(careplanId);
+        if (!careplan) {
+            ErrorHandler.throwNotFoundError(`Careplan not found!`);
+        }
+
         var createModel: EnrollmentCreateModel = this.getCreateModel(requestBody);
         const record = await this._service.create(createModel);
         if (record === null) {
             throw new ApiError('Unable to create enrollment!', 400);
         }
 
-        const careplanActivity = await this._careplanActivityDelegate.search({ careplanId : record.CareplanId });
-        const scheduleDate = TimeHelper.addDuration(
-            record.StartDate,
-            careplanActivity.Items[0].Day - 1,
-            DurationType.Day
-        );
-
-        var enrollmentTaskModel: EnrollmentTaskCreateModel = {
-
-            EnrollmentId       : record.id,
-            ParticipantId      : record.ParticipantId,
-            CareplanId         : record.CareplanId,
-            CareplanActivityId : careplanActivity.Items[0].id,
-            AssetId            : careplanActivity.Items[0].AssetId,
-            AssetType          : careplanActivity.Items[0].AssetType,
-            TimeSlot           : careplanActivity.Items[0].TimeSlot,
-            ScheduledDate      : scheduleDate
-        };
-
-        try {
-            const enrollmentTaskRecord = await this._scheduleService.create(enrollmentTaskModel);
-            Logger.instance().log(JSON.stringify(enrollmentTaskRecord, null, 2));
-        } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to create enrollment schedule!', error);
-        }
+        await this.generateRegistrationTasks(record);
+        await this.generateScheduledTasks(record);
 
         return this.getEnrichedDto(record);
     }
@@ -137,6 +132,87 @@ export class EnrollmentControllerDelegate {
 
     //#region Privates
 
+    generateRegistrationTasks = async(record) => {
+
+        try {
+
+            const registrationActivities =
+                await this._careplanActivityService.getRegistrationActivities(record.CareplanId);
+        
+            const enrollmentDate = record.EnrollmentDate;
+            var count = 0;
+            const timeOffset = 30; //seconds
+
+            for await (var act of registrationActivities) {
+
+                count++;
+                var dt = TimeHelper.addDuration(enrollmentDate, count * timeOffset, DurationType.Second);
+
+                var createModel: EnrollmentTaskCreateModel = {
+                    EnrollmentId       : record.id,
+                    ParticipantId      : record.ParticipantId,
+                    CareplanId         : record.CareplanId,
+                    CareplanActivityId : act.id,
+                    AssetId            : act.AssetId,
+                    AssetType          : act.AssetType,
+                    TimeSlot           : act.TimeSlot,
+                    IsRegistrationActivity : true,
+                    ScheduledDate      : dt
+                };
+
+                const activity = await this._enrollmentTaskService.create(createModel);
+                Logger.instance().log(`Registration activity: ${count} \n${JSON.stringify(activity, null, 2)}`);
+            }
+
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to create enrollment registration tasks!', error);
+        }
+
+    }
+
+    generateScheduledTasks = async(record) => {
+
+        try {
+
+            const scheduledActivities =
+                await this._careplanActivityService.getScheduledActivities(record.CareplanId);
+        
+            const startDate = record.StartDate;
+
+            const calculatedOffset =
+                (record.WeekOffset ? (record.WeekOffset * 7) : 0) + (record.DayOffset ? record.DayOffset : 0);
+            
+            const filtered = scheduledActivities.filter( (x) => x.Day >= calculatedOffset);
+
+            for await (var act of filtered) {
+
+                var daysToAdd =  act.Day - calculatedOffset;
+                if (daysToAdd < 0) {
+                    daysToAdd = 0;
+                }
+                const dt = TimeHelper.addDuration(startDate, daysToAdd, DurationType.Day);
+
+                var createModel: EnrollmentTaskCreateModel = {
+                    EnrollmentId       : record.id,
+                    ParticipantId      : record.ParticipantId,
+                    CareplanId         : record.CareplanId,
+                    CareplanActivityId : act.id,
+                    AssetId            : act.AssetId,
+                    AssetType          : act.AssetType,
+                    TimeSlot           : act.TimeSlot,
+                    IsRegistrationActivity : false,
+                    ScheduledDate      : dt
+                };
+
+                const activity = await this._enrollmentTaskService.create(createModel);
+                Logger.instance().log(`Scheduled activity for day: ${act.Day} \n${JSON.stringify(activity, null, 2)}`);
+            }
+
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to create enrollment scheduled tasks!', error);
+        }
+    }
+
     getSearchFilters = (query) => {
 
         var filters = {};
@@ -144,6 +220,10 @@ export class EnrollmentControllerDelegate {
         var careplanId = query.careplanId ? query.careplanId : null;
         if (careplanId != null) {
             filters['CareplanId'] = careplanId;
+        }
+        var participantId = query.participantId ? query.participantId : null;
+        if (participantId != null) {
+            filters['ParticipantId'] = participantId;
         }
         var progressStatus = query.progressStatus ? query.progressStatus : null;
         if (progressStatus != null) {
@@ -169,8 +249,11 @@ export class EnrollmentControllerDelegate {
         if (Helper.hasProperty(requestBody, 'EndDate')) {
             updateModel.EndDate = requestBody.EndDate;
         }
-        if (Helper.hasProperty(requestBody, 'EnrollmentDate')) {
-            updateModel.EnrollmentDate = requestBody.EnrollmentDate;
+        if (Helper.hasProperty(requestBody, 'WeekOffset')) {
+            updateModel.WeekOffset = requestBody.WeekOffset;
+        }
+        if (Helper.hasProperty(requestBody, 'DayOffset')) {
+            updateModel.DayOffset = requestBody.DayOffset;
         }
 
         return updateModel;
@@ -182,7 +265,9 @@ export class EnrollmentControllerDelegate {
             ParticipantId  : requestBody.ParticipantId ? requestBody.ParticipantId : null,
             StartDate      : requestBody.StartDate ? requestBody.StartDate : null,
             EndDate        : requestBody.EndDate ? requestBody.EndDate : null,
-            EnrollmentDate : requestBody.EnrollmentDate ? requestBody.EnrollmentDate : null
+            WeekOffset     : requestBody.WeekOffset ? requestBody.WeekOffset : 0,
+            DayOffset      : requestBody.DayOffset ? requestBody.DayOffset : 0,
+            EnrollmentDate : requestBody.EnrollmentDate ? requestBody.EnrollmentDate : new Date()
         };
     }
 
