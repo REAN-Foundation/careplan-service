@@ -10,8 +10,12 @@ import {
 export interface UserSelectedGoalCreateModel {
     Name              ?: string;
     Description       ?: string;
-    UserId            ?: uuid;
+    EnrollmentId      ?: uuid;
+    ParticipantId     ?: uuid;
     CareplanId        ?: number;
+    AssetId           ?: number;
+    AssetType         ?: string;
+    AssetCode         ?: string;
     AdditionalDetails ?: string;
     StartDate         ?: Date;
     EndDate           ?: Date;
@@ -20,7 +24,8 @@ export interface UserSelectedGoalCreateModel {
 export interface UserSelectedGoalUpdateModel {
     Name              ?: string;
     Description       ?: string;
-    UserId            ?: uuid;
+    EnrollmentId      ?: uuid;
+    ParticipantId     ?: uuid;
     CareplanId        ?: number;
     AdditionalDetails ?: string;
     StartDate         ?: Date;
@@ -31,10 +36,12 @@ export interface UserSelectedGoalDto {
     id               : uuid;
     Name             : string;
     Description      : string;
-    UserId           : uuid;
+    EnrollmentId     : uuid;
+    ParticipantId    : uuid;
     CareplanId       : number;
     AssetId          : number;
     AssetType        : string;
+    AssetCode        : string;
     AdditionalDetails: string;
     StartDate        : Date;
     EndDate          : Date;
@@ -44,9 +51,12 @@ export interface UserSelectedGoalDto {
 export interface UserSelectedGoalSearchFilters extends BaseSearchFilters {
     Name              ?: string;
     Description       ?: string;
+    EnrollmentId      ?: uuid;
+    ParticipantId     ?: uuid;
     CareplanId        ?: number;
     AssetId           ?: number;
     AssetType         ?: string;
+    AssetCode         ?: string;
     AdditionalDetails ?: string;
     StartDate         ?: Date;
     EndDate           ?: Date;

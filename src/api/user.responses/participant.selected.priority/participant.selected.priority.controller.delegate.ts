@@ -1,6 +1,6 @@
 import {
-    UserSelectedGoalService
-} from '../../../database/repository.services/user.responses/user.selected.goal.service';
+    ParticipantSelectedPriorityService
+} from '../../../database/repository.services/user.responses/participant.selected.priority.service';
 import {
     ErrorHandler
 } from '../../../common/error.handler';
@@ -11,31 +11,31 @@ import {
     ApiError
 } from '../../../common/api.error';
 import {
-    UserSelectedGoalValidator as validator
-} from './user.selected.goal.validator';
+    ParticipantSelectedPriorityValidator as validator
+} from './participant.selected.priority.validator';
 import {
     uuid
 } from '../../../domain.types/miscellaneous/system.types';
 import {
-    UserSelectedGoalCreateModel,
-    UserSelectedGoalUpdateModel,
-    UserSelectedGoalSearchFilters,
-    UserSelectedGoalSearchResults
-} from '../../../domain.types/user.responses/user.selected.goal.domain.types';
+    ParticipantSelectedPriorityCreateModel,
+    ParticipantSelectedPriorityUpdateModel,
+    ParticipantSelectedPrioritySearchFilters,
+    ParticipantSelectedPrioritySearchResults
+} from '../../../domain.types/user.responses/participant.selected.priority.domain.types';
 import { CareplanService } from '../../../database/repository.services/careplan/careplan.service';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-export class UserSelectedGoalControllerDelegate {
+export class ParticipantSelectedPriorityControllerDelegate {
 
     //#region member variables and constructors
 
-    _service: UserSelectedGoalService = null;
+    _service: ParticipantSelectedPriorityService = null;
 
     _careplanService: CareplanService = null;
 
     constructor() {
-        this._service = new UserSelectedGoalService();
+        this._service = new ParticipantSelectedPriorityService();
         this._careplanService = new CareplanService();
     }
 
@@ -44,10 +44,10 @@ export class UserSelectedGoalControllerDelegate {
     create = async (requestBody: any) => {
         await validator.validateCreateRequest(requestBody);
         const careplan = await this._careplanService.getById(requestBody.CareplanId);
-        var createModel: UserSelectedGoalCreateModel = this.getCreateModel(requestBody, careplan);
+        var createModel: ParticipantSelectedPriorityCreateModel = this.getCreateModel(requestBody, careplan);
         const record = await this._service.create(createModel);
         if (record === null) {
-            throw new ApiError('Unable to create user selected goal!', 400);
+            throw new ApiError('Unable to create participant selected priority!', 400);
         }
         return this.getEnrichedDto(record);
     }
@@ -55,15 +55,15 @@ export class UserSelectedGoalControllerDelegate {
     getById = async (id: uuid) => {
         const record = await this._service.getById(id);
         if (record === null) {
-            ErrorHandler.throwNotFoundError('User selected goal with id ' + id.toString() + ' cannot be found!');
+            ErrorHandler.throwNotFoundError('Participant selected priority with id ' + id.toString() + ' cannot be found!');
         }
         return this.getEnrichedDto(record);
     }
 
     search = async (query: any) => {
         await validator.validateSearchRequest(query);
-        var filters: UserSelectedGoalSearchFilters = this.getSearchFilters(query);
-        var searchResults: UserSelectedGoalSearchResults = await this._service.search(filters);
+        var filters: ParticipantSelectedPrioritySearchFilters = this.getSearchFilters(query);
+        var searchResults: ParticipantSelectedPrioritySearchResults = await this._service.search(filters);
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
         return searchResults;
@@ -73,12 +73,12 @@ export class UserSelectedGoalControllerDelegate {
         await validator.validateUpdateRequest(requestBody);
         const record = await this._service.getById(id);
         if (record === null) {
-            ErrorHandler.throwNotFoundError('User selected goal with id ' + id.toString() + ' cannot be found!');
+            ErrorHandler.throwNotFoundError('Participant selected priority with id ' + id.toString() + ' cannot be found!');
         }
-        const updateModel: UserSelectedGoalUpdateModel = this.getUpdateModel(requestBody);
+        const updateModel: ParticipantSelectedPriorityUpdateModel = this.getUpdateModel(requestBody);
         const updated = await this._service.update(id, updateModel);
         if (updated == null) {
-            throw new ApiError('Unable to update user selected goal!', 400);
+            throw new ApiError('Unable to update participant selected priority!', 400);
         }
         return this.getEnrichedDto(updated);
     }
@@ -86,11 +86,11 @@ export class UserSelectedGoalControllerDelegate {
     delete = async (id: uuid) => {
         const record = await this._service.getById(id);
         if (record == null) {
-            ErrorHandler.throwNotFoundError('User selected goal with id ' + id.toString() + ' cannot be found!');
+            ErrorHandler.throwNotFoundError('Participant selected priority with id ' + id.toString() + ' cannot be found!');
         }
-        const userSelectedGoalDeleted: boolean = await this._service.delete(id);
+        const participantSelectedPriorityDeleted: boolean = await this._service.delete(id);
         return {
-            Deleted : userSelectedGoalDeleted
+            Deleted : participantSelectedPriorityDeleted
         };
     }
 
@@ -134,29 +134,17 @@ export class UserSelectedGoalControllerDelegate {
         if (assetCode != null) {
             filters['AssetCode'] = assetCode;
         }
-        var additionalDetails = query.additionalDetails ? query.additionalDetails : null;
-        if (additionalDetails != null) {
-            filters['AdditionalDetails'] = additionalDetails;
-        }
         var startDate = query.startDate ? query.startDate : null;
         if (startDate != null) {
             filters['StartDate'] = startDate;
-        }
-        var endDate = query.endDate ? query.endDate : null;
-        if (endDate != null) {
-            filters['EndDate'] = endDate;
-        }
-        var progressStatus = query.progressStatus ? query.progressStatus : null;
-        if (progressStatus != null) {
-            filters['ProgressStatus'] = progressStatus;
         }
 
         return filters;
     }
 
-    getUpdateModel = (requestBody): UserSelectedGoalUpdateModel => {
+    getUpdateModel = (requestBody): ParticipantSelectedPriorityUpdateModel => {
 
-        const updateModel: UserSelectedGoalUpdateModel = {};
+        const updateModel: ParticipantSelectedPriorityUpdateModel = {};
 
         if (Helper.hasProperty(requestBody, 'Name')) {
             updateModel.Name = requestBody.Name;
@@ -173,32 +161,24 @@ export class UserSelectedGoalControllerDelegate {
         if (Helper.hasProperty(requestBody, 'CareplanId')) {
             updateModel.CareplanId = requestBody.CareplanId;
         }
-        if (Helper.hasProperty(requestBody, 'AdditionalDetails')) {
-            updateModel.AdditionalDetails = requestBody.AdditionalDetails;
-        }
         if (Helper.hasProperty(requestBody, 'StartDate')) {
             updateModel.StartDate = requestBody.StartDate;
-        }
-        if (Helper.hasProperty(requestBody, 'EndDate')) {
-            updateModel.EndDate = requestBody.EndDate;
         }
 
         return updateModel;
     }
 
-    getCreateModel = (requestBody, careplan): UserSelectedGoalCreateModel => {
+    getCreateModel = (requestBody, careplan): ParticipantSelectedPriorityCreateModel => {
         return {
-            Name              : requestBody.Name ? requestBody.Name : null,
-            Description       : requestBody.Description ? requestBody.Description : null,
-            EnrollmentId      : requestBody.EnrollmentId ? requestBody.EnrollmentId : null,
-            ParticipantId     : requestBody.ParticipantId ? requestBody.ParticipantId : null,
-            CareplanId        : requestBody.CareplanId ? requestBody.CareplanId : null,
-            AssetId           : careplan.AssetId ? careplan.AssetId : null,
-            AssetType         : careplan.AssetType ? careplan.AssetType : null,
-            AssetCode         : careplan.AssetCode ? careplan.AssetCode : null,
-            AdditionalDetails : requestBody.AdditionalDetails ? requestBody.AdditionalDetails : null,
-            StartDate         : requestBody.StartDate ? requestBody.StartDate : null,
-            EndDate           : requestBody.EndDate ? requestBody.EndDate : null
+            Name          : requestBody.Name ? requestBody.Name : null,
+            Description   : requestBody.Description ? requestBody.Description : null,
+            EnrollmentId  : requestBody.EnrollmentId ? requestBody.EnrollmentId : null,
+            ParticipantId : requestBody.ParticipantId ? requestBody.ParticipantId : null,
+            CareplanId    : requestBody.CareplanId ? requestBody.CareplanId : null,
+            AssetId       : careplan.AssetId ? careplan.AssetId : null,
+            AssetType     : careplan.AssetType ? careplan.AssetType : null,
+            AssetCode     : careplan.AssetCode ? careplan.AssetCode : null,
+            StartDate     : requestBody.StartDate ? requestBody.StartDate : null
         };
     }
 
@@ -207,19 +187,16 @@ export class UserSelectedGoalControllerDelegate {
             return null;
         }
         return {
-            id                : record.id,
-            Name              : record.Name,
-            Description       : record.Description,
-            EnrollmentId      : record.EnrollmentId,
-            ParticipantId     : record.ParticipantId,
-            CareplanId        : record.CareplanId,
-            AssetId           : record.AssetId,
-            AssetType         : record.AssetType,
-            AssetCode         : record.AssetCode,
-            AdditionalDetails : record.AdditionalDetails,
-            StartDate         : record.StartDate,
-            EndDate           : record.EndDate,
-            ProgressStatus    : record.ProgressStatus
+            id            : record.id,
+            Name          : record.Name,
+            Description   : record.Description,
+            EnrollmentId  : record.EnrollmentId,
+            ParticipantId : record.ParticipantId,
+            CareplanId    : record.CareplanId,
+            AssetId       : record.AssetId,
+            AssetType     : record.AssetType,
+            AssetCode     : record.AssetCode,
+            StartDate     : record.StartDate
         };
     }
 
@@ -228,19 +205,16 @@ export class UserSelectedGoalControllerDelegate {
             return null;
         }
         return {
-            id                : record.id,
-            Name              : record.Name,
-            Description       : record.Description,
-            EnrollmentId      : record.EnrollmentId,
-            ParticipantId     : record.ParticipantId,
-            CareplanId        : record.CareplanId,
-            AssetId           : record.AssetId,
-            AssetType         : record.AssetType,
-            AssetCode         : record.AssetCode,
-            AdditionalDetails : record.AdditionalDetails,
-            StartDate         : record.StartDate,
-            EndDate           : record.EndDate,
-            ProgressStatus    : record.ProgressStatus
+            id            : record.id,
+            Name          : record.Name,
+            Description   : record.Description,
+            EnrollmentId  : record.EnrollmentId,
+            ParticipantId : record.ParticipantId,
+            CareplanId    : record.CareplanId,
+            AssetId       : record.AssetId,
+            AssetType     : record.AssetType,
+            AssetCode     : record.AssetCode,
+            StartDate     : record.StartDate
         };
     }
 

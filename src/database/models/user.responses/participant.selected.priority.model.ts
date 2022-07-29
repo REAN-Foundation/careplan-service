@@ -4,11 +4,11 @@ const sequelize = db.default.sequelize;
 
 ////////////////////////////////////////////////////////////////////////
 
-export class UserSelectedPriorityModel {
+export class ParticipantSelectedPriorityModel {
 
-    static TableName = 'user_selected_priorities';
+    static TableName = 'participant_selected_priorities';
 
-    static ModelName = 'UserSelectedPriority';
+    static ModelName = 'ParticipantSelectedPriority';
 
     static Schema = {
         id : {
@@ -25,7 +25,13 @@ export class UserSelectedPriorityModel {
             type      : DataTypes.TEXT,
             allowNull : false
         },
-        UserId : {
+        EnrollmentId : {
+            type       : DataTypes.UUID,
+            allowNull  : false,
+            foreignKey : true,
+            unique     : false
+        },
+        ParticipantId : {
             type       : DataTypes.UUID,
             allowNull  : false,
             foreignKey : true,
@@ -39,12 +45,16 @@ export class UserSelectedPriorityModel {
         },
         AssetId : {
             type      : DataTypes.INTEGER,
-            allowNull : false
+            allowNull : true
         },
         AssetType : {
             type         : DataTypes.STRING(128),
-            allowNull    : false,
+            allowNull    : true,
             defaultValue : 'Priority'
+        },
+        AssetCode : {
+            type      : DataTypes.STRING(128),
+            allowNull : true,
         },
         StartDate : {
             type      : DataTypes.DATE,
@@ -57,8 +67,8 @@ export class UserSelectedPriorityModel {
     };
 
     static Model: any = sequelize.define(
-        UserSelectedPriorityModel.ModelName,
-        UserSelectedPriorityModel.Schema,
+        ParticipantSelectedPriorityModel.ModelName,
+        ParticipantSelectedPriorityModel.Schema,
         {
             createdAt       : 'CreatedAt',
             updatedAt       : 'UpdatedAt',
@@ -66,20 +76,24 @@ export class UserSelectedPriorityModel {
             freezeTableName : true,
             timestamps      : true,
             paranoid        : true,
-            tableName       : UserSelectedPriorityModel.TableName,
+            tableName       : ParticipantSelectedPriorityModel.TableName,
         });
 
     static associate = (models) => {
 
         //Add associations here...
 
-        models.UserSelectedPriority.belongsTo(models.User, {
-            sourceKey : 'UserId',
+        models.ParticipantSelectedPriority.belongsTo(models.Enrollment, {
+            sourceKey : 'EnrollmentId',
             targetKey : 'id',
-            as        : 'User'
+            as        : 'Enrollment'
         });
-
-        models.UserSelectedPriority.belongsTo(models.Careplan, {
+        models.ParticipantSelectedPriority.belongsTo(models.Participant, {
+            sourceKey : 'ParticipantId',
+            targetKey : 'id',
+            as        : 'Participant'
+        });
+        models.ParticipantSelectedPriority.belongsTo(models.Careplan, {
             sourceKey : 'CareplanId',
             targetKey : 'id',
             as        : 'Careplan'
