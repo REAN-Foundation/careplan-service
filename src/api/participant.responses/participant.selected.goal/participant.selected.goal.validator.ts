@@ -22,6 +22,9 @@ export class ParticipantSelectedGoalValidator {
                     version : ['uuidv4']
                 }).optional(),
                 CareplanId        : joi.number().integer().optional(),
+                AssetId    : joi.number().integer().optional(),
+                AssetType  : joi.string().max(128).optional(),
+                AssetCode  : joi.string().max(128).optional(),
                 AdditionalDetails : joi.string().optional(),
                 StartDate         : joi.date().iso().optional(),
                 EndDate           : joi.date().iso().optional()
@@ -47,6 +50,9 @@ export class ParticipantSelectedGoalValidator {
                     version : ['uuidv4']
                 }).optional(),
                 CareplanId        : joi.number().integer().optional(),
+                AssetId    : joi.number().integer().optional(),
+                AssetType  : joi.string().max(128).optional(),
+                AssetCode  : joi.string().max(128).optional(),
                 AdditionalDetails : joi.string().optional(),
                 StartDate         : joi.date().iso().optional(),
                 EndDate           : joi.date().iso().optional()

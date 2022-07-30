@@ -19,6 +19,9 @@ export class ParticipantSelectedPriorityValidator {
                     version : ['uuidv4']
                 }).optional(),
                 CareplanId : joi.number().integer().optional(),
+                AssetId    : joi.number().integer().optional(),
+                AssetType  : joi.string().max(128).optional(),
+                AssetCode  : joi.string().max(128).optional(),
                 StartDate  : joi.date().iso().optional()
             });
             return await schema.validateAsync(requestBody);
@@ -39,6 +42,9 @@ export class ParticipantSelectedPriorityValidator {
                     version : ['uuidv4']
                 }).optional(),
                 CareplanId : joi.number().integer().optional(),
+                AssetId    : joi.number().integer().optional(),
+                AssetType  : joi.string().max(128).optional(),
+                AssetCode  : joi.string().max(128).optional(),
                 StartDate  : joi.date().iso().optional()
             });
             return await schema.validateAsync(requestBody);

@@ -1,9 +1,15 @@
 import {
-    ParticipantSelectedActionPlanModel
-} from '../../models/user.responses/participant.selected.action.plan.model';
+    ParticipantActivityResponseModel
+} from '../../models/participant.responses/participant.activity.response.model';
 import {
     ParticipantModel
 } from '../../models/enrollment/participant.model';
+import {
+    EnrollmentScheduleModel
+} from '../../models/enrollment/enrollment.schedule.model';
+import {
+    CareplanScheduleModel
+} from '../../models/careplan/careplan.schedule.model';
 import {
     CareplanModel
 } from '../../models/careplan/careplan.model';
@@ -12,29 +18,27 @@ import {
     ErrorHandler
 } from '../../../common/error.handler';
 import {
-    ParticipantSelectedActionPlanCreateModel,
-    ParticipantSelectedActionPlanSearchFilters,
-    ParticipantSelectedActionPlanSearchResults
-} from '../../../domain.types/user.responses/participant.selected.action.plan.domain.types';
+    ParticipantActivityResponseCreateModel,
+    ParticipantActivityResponseSearchFilters,
+    ParticipantActivityResponseSearchResults
+} from '../../../domain.types/participant.responses/participant.activity.response.domain.types';
 import {
     Op
 } from 'sequelize';
-import { EnrollmentModel } from '../../models/enrollment/enrollment.model';
-import { ParticipantSelectedGoalModel } from '../../../database/models/user.responses/participant.selected.goal.model';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-export class ParticipantSelectedActionPlanService {
+export class ParticipantActivityResponseService {
 
     //#region Models
 
-    ParticipantSelectedActionPlan = ParticipantSelectedActionPlanModel.Model;
-
-    Enrollment = EnrollmentModel.Model;
+    ParticipantActivityResponse = ParticipantActivityResponseModel.Model;
 
     Participant = ParticipantModel.Model;
 
-    ParticipantSelectedGoal = ParticipantSelectedGoalModel.Model;
+    EnrollmentSchedule = EnrollmentScheduleModel.Model;
+
+    CareplanSchedule = CareplanScheduleModel.Model;
 
     Careplan = CareplanModel.Model;
 
@@ -42,18 +46,18 @@ export class ParticipantSelectedActionPlanService {
 
     //#region Publics
 
-    create = async (createModel: ParticipantSelectedActionPlanCreateModel) => {
+    create = async (createModel: ParticipantActivityResponseCreateModel) => {
         try {
-            var record = await this.ParticipantSelectedActionPlan.create(createModel);
+            var record = await this.ParticipantActivityResponse.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to get participant selected action plan!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to create participant activity response!', error);
         }
     }
 
     getById = async (id) => {
         try {
-            const record = await this.ParticipantSelectedActionPlan.findOne({
+            const record = await this.ParticipantActivityResponse.findOne({
                 where : {
                     id : id
                 },
@@ -63,41 +67,41 @@ export class ParticipantSelectedActionPlanService {
                     as       : 'Participant',
                     //through: { attributes: [] }
                 }, {
+                    model    : this.EnrollmentSchedule,
+                    required : false,
+                    as       : 'EnrollmentSchedule',
+                    //through: { attributes: [] }
+                }, {
+                    model    : this.CareplanSchedule,
+                    required : false,
+                    as       : 'CareplanSchedule',
+                    //through: { attributes: [] }
+                }, {
                     model    : this.Careplan,
                     required : false,
                     as       : 'Careplan',
                     //through: { attributes: [] }
-                }, {
-                    model    : this.Enrollment,
-                    required : false,
-                    as       : 'Enrollment',
-                    //through: { attributes: [] }
-                }, {
-                    model    : this.ParticipantSelectedGoal,
-                    required : false,
-                    as       : 'ParticipantSelectedGoal',
-                    //through: { attributes: [] }
-                }
+                },
 
                 ]
             });
             return record;
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve participant selected action plan!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve participant activity response!', error);
         }
     }
 
     exists = async (id): Promise < boolean > => {
         try {
-            const record = await this.ParticipantSelectedActionPlan.findByPk(id);
+            const record = await this.ParticipantActivityResponse.findByPk(id);
             return record !== null;
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of participant selected action plan!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of participant activity response!', error);
         }
     }
 
-    search = async (filters: ParticipantSelectedActionPlanSearchFilters):
-        Promise < ParticipantSelectedActionPlanSearchResults > => {
+    // eslint-disable-next-line max-len
+    search = async (filters: ParticipantActivityResponseSearchFilters): Promise < ParticipantActivityResponseSearchResults > => {
         try {
 
             var search = this.getSearchModel(filters);
@@ -110,8 +114,8 @@ export class ParticipantSelectedActionPlanService {
                 limit
             } = this.addPaginationToSearch(search, filters);
 
-            const foundResults = await this.ParticipantSelectedActionPlan.findAndCountAll(search);
-            const searchResults: ParticipantSelectedActionPlanSearchResults = {
+            const foundResults = await this.ParticipantActivityResponse.findAndCountAll(search);
+            const searchResults: ParticipantActivityResponseSearchResults = {
                 TotalCount     : foundResults.count,
                 RetrievedCount : foundResults.rows.length,
                 PageIndex      : pageIndex,
@@ -124,38 +128,38 @@ export class ParticipantSelectedActionPlanService {
             return searchResults;
 
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to search participant selected action plan records!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to search participant activity response records!', error);
         }
     }
 
     update = async (id, updateModel) => {
         try {
             if (Object.keys(updateModel).length > 0) {
-                var res = await this.ParticipantSelectedActionPlan.update(updateModel, {
+                var res = await this.ParticipantActivityResponse.update(updateModel, {
                     where : {
                         id : id
                     }
                 });
                 if (res.length !== 1) {
-                    throw new Error('Unable to update participant selected action plan!');
+                    throw new Error('Unable to update participant activity response!');
                 }
             }
             return await this.getById(id);
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to update participant selected action plan!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to update participant activity response!', error);
         }
     }
 
     delete = async (id) => {
         try {
-            var result = await this.ParticipantSelectedActionPlan.destroy({
+            var result = await this.ParticipantActivityResponse.destroy({
                 where : {
                     id : id
                 }
             });
             return result === 1;
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to delete participant selected action plan!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to delete participant activity response!', error);
         }
     }
 
@@ -170,24 +174,8 @@ export class ParticipantSelectedActionPlanService {
             include : []
         };
 
-        if (filters.EnrollmentId) {
-            search.where['EnrollmentId'] = filters.EnrollmentId;
-        }
         if (filters.ParticipantId) {
             search.where['ParticipantId'] = filters.ParticipantId;
-        }
-        if (filters.GoalId) {
-            search.where['GoalId'] = filters.GoalId;
-        }
-        if (filters.Name) {
-            search.where['Name'] = {
-                [Op.like] : '%' + filters.Name + '%'
-            };
-        }
-        if (filters.Description) {
-            search.where['Description'] = {
-                [Op.like] : '%' + filters.Description + '%'
-            };
         }
         if (filters.CareplanId) {
             search.where['CareplanId'] = filters.CareplanId;
@@ -198,34 +186,18 @@ export class ParticipantSelectedActionPlanService {
         if (filters.AssetType) {
             search.where['AssetType'] = filters.AssetType;
         }
-        if (filters.AssetCode) {
-            search.where['AssetCode'] = filters.AssetCode;
-        }
-        if (filters.AdditionalDetails) {
-            search.where['AdditionalDetails'] = {
-                [Op.like] : '%' + filters.AdditionalDetails + '%'
+        if (filters.Response) {
+            search.where['Response'] = {
+                [Op.like] : '%' + filters.Response + '%'
             };
         }
-        if (filters.StartDate) {
-            search.where['StartDate'] = filters.StartDate;
-        }
-        if (filters.EndDate) {
-            search.where['EndDate'] = filters.EndDate;
+        if (filters.TimeResponded) {
+            search.where['TimeResponded'] = filters.TimeResponded;
         }
         if (filters.ProgressStatus) {
             search.where['ProgressStatus'] = filters.ProgressStatus;
         }
-        const includeEnrollmentAsEnrollment = {
-            model    : this.Enrollment,
-            required : false,
-            as       : 'Enrollment',
-            where    : {}
-        };
-        //if (filters.Xyz != undefined) {
-        //    includeUser.where['Xyz'] = filters.Xyz;
-        //}
-        search.include.push(includeEnrollmentAsEnrollment);
-        const includeParticipantAsParticipant = {
+        const includeUserAsUser = {
             model    : this.Participant,
             required : false,
             as       : 'Participant',
@@ -234,17 +206,27 @@ export class ParticipantSelectedActionPlanService {
         //if (filters.Xyz != undefined) {
         //    includeUser.where['Xyz'] = filters.Xyz;
         //}
-        search.include.push(includeParticipantAsParticipant);
-        const includeGoalAsGoal = {
-            model    : this.ParticipantSelectedGoal,
+        search.include.push(includeUserAsUser);
+        const includeEnrollmentScheduleAsEnrollmentSchedule = {
+            model    : this.EnrollmentSchedule,
             required : false,
-            as       : 'ParticipantSelectedGoal',
+            as       : 'EnrollmentSchedule',
             where    : {}
         };
         //if (filters.Xyz != undefined) {
-        //    includeUser.where['Xyz'] = filters.Xyz;
+        //    includeEnrollmentSchedule.where['Xyz'] = filters.Xyz;
         //}
-        search.include.push(includeGoalAsGoal);
+        search.include.push(includeEnrollmentScheduleAsEnrollmentSchedule);
+        const includeCareplanScheduleAsCareplanSchedule = {
+            model    : this.CareplanSchedule,
+            required : false,
+            as       : 'CareplanSchedule',
+            where    : {}
+        };
+        //if (filters.Xyz != undefined) {
+        //    includeCareplanSchedule.where['Xyz'] = filters.Xyz;
+        //}
+        search.include.push(includeCareplanScheduleAsCareplanSchedule);
         const includeCareplanAsCareplan = {
             model    : this.Careplan,
             required : false,

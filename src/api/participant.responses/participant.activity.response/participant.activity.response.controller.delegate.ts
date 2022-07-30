@@ -1,6 +1,6 @@
 import {
     ParticipantActivityResponseService
-} from '../../../database/repository.services/user.responses/participant.activity.response.service';
+} from '../../../database/repository.services/participant.responses/participant.activity.response.service';
 import {
     ErrorHandler
 } from '../../../common/error.handler';
@@ -21,7 +21,7 @@ import {
     ParticipantActivityResponseUpdateModel,
     ParticipantActivityResponseSearchFilters,
     ParticipantActivityResponseSearchResults
-} from '../../../domain.types/user.responses/participant.activity.response.domain.types';
+} from '../../../domain.types/participant.responses/participant.activity.response.domain.types';
 import { EnrollmentScheduleService } from '../../../database/repository.services/enrollment/enrollment.schedule.service';
 
 ///////////////////////////////////////////////////////////////////////////////////////

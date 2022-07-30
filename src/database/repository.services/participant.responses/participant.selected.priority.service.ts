@@ -1,6 +1,6 @@
 import {
     ParticipantSelectedPriorityModel
-} from '../../models/user.responses/participant.selected.priority.model';
+} from '../../models/participant.responses/participant.selected.priority.model';
 import {
     ParticipantModel
 } from '../../models/enrollment/participant.model';
@@ -15,7 +15,7 @@ import {
     ParticipantSelectedPriorityCreateModel,
     ParticipantSelectedPrioritySearchFilters,
     ParticipantSelectedPrioritySearchResults
-} from '../../../domain.types/user.responses/participant.selected.priority.domain.types';
+} from '../../../domain.types/participant.responses/participant.selected.priority.domain.types';
 import {
     Op
 } from 'sequelize';

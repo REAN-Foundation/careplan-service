@@ -29,6 +29,9 @@ export interface ParticipantSelectedActionPlanUpdateModel {
     ParticipantId     ?: uuid;
     GoalId            ?: uuid;
     CareplanId        ?: number;
+    AssetId           ?: number;
+    AssetType         ?: string;
+    AssetCode         ?: string;
     AdditionalDetails ?: string;
     StartDate         ?: Date;
     EndDate           ?: Date;

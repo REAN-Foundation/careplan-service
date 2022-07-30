@@ -1,6 +1,6 @@
 import {
     ParticipantSelectedGoalService
-} from '../../../database/repository.services/user.responses/participant.selected.goal.service';
+} from '../../../database/repository.services/participant.responses/participant.selected.goal.service';
 import {
     ErrorHandler
 } from '../../../common/error.handler';
@@ -21,8 +21,7 @@ import {
     ParticipantSelectedGoalUpdateModel,
     ParticipantSelectedGoalSearchFilters,
     ParticipantSelectedGoalSearchResults
-} from '../../../domain.types/user.responses/participant.selected.goal.domain.types';
-import { CareplanService } from '../../../database/repository.services/careplan/careplan.service';
+} from '../../../domain.types/participant.responses/participant.selected.goal.domain.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -32,19 +31,15 @@ export class ParticipantSelectedGoalControllerDelegate {
 
     _service: ParticipantSelectedGoalService = null;
 
-    _careplanService: CareplanService = null;
-
     constructor() {
         this._service = new ParticipantSelectedGoalService();
-        this._careplanService = new CareplanService();
     }
 
     //#endregion
 
     create = async (requestBody: any) => {
         await validator.validateCreateRequest(requestBody);
-        const careplan = await this._careplanService.getById(requestBody.CareplanId);
-        var createModel: ParticipantSelectedGoalCreateModel = this.getCreateModel(requestBody, careplan);
+        var createModel: ParticipantSelectedGoalCreateModel = this.getCreateModel(requestBody);
         const record = await this._service.create(createModel);
         if (record === null) {
             throw new ApiError('Unable to create participant selected goal!', 400);
@@ -180,6 +175,15 @@ export class ParticipantSelectedGoalControllerDelegate {
         if (Helper.hasProperty(requestBody, 'CareplanId')) {
             updateModel.CareplanId = requestBody.CareplanId;
         }
+        if (Helper.hasProperty(requestBody, 'AssetId')) {
+            updateModel.AssetId = requestBody.AssetId;
+        }
+        if (Helper.hasProperty(requestBody, 'AssetType')) {
+            updateModel.AssetType = requestBody.AssetType;
+        }
+        if (Helper.hasProperty(requestBody, 'AssetCode')) {
+            updateModel.AssetCode = requestBody.AssetCode;
+        }
         if (Helper.hasProperty(requestBody, 'AdditionalDetails')) {
             updateModel.AdditionalDetails = requestBody.AdditionalDetails;
         }
@@ -193,7 +197,7 @@ export class ParticipantSelectedGoalControllerDelegate {
         return updateModel;
     }
 
-    getCreateModel = (requestBody, careplan): ParticipantSelectedGoalCreateModel => {
+    getCreateModel = (requestBody): ParticipantSelectedGoalCreateModel => {
         return {
             Name               : requestBody.Name ? requestBody.Name : null,
             Description        : requestBody.Description ? requestBody.Description : null,
@@ -201,9 +205,9 @@ export class ParticipantSelectedGoalControllerDelegate {
             ParticipantId      : requestBody.ParticipantId ? requestBody.ParticipantId : null,
             SelectedPriorityId : requestBody.SelectedPriorityId ? requestBody.SelectedPriorityId : null,
             CareplanId         : requestBody.CareplanId ? requestBody.CareplanId : null,
-            AssetId            : careplan.AssetId ? careplan.AssetId : null,
-            AssetType          : careplan.AssetType ? careplan.AssetType : null,
-            AssetCode          : careplan.AssetCode ? careplan.AssetCode : null,
+            AssetId            : requestBody.AssetId ? requestBody.AssetId : null,
+            AssetType          : requestBody.AssetType ? requestBody.AssetType : null,
+            AssetCode          : requestBody.AssetCode ? requestBody.AssetCode : null,
             AdditionalDetails  : requestBody.AdditionalDetails ? requestBody.AdditionalDetails : null,
             StartDate          : requestBody.StartDate ? requestBody.StartDate : null,
             EndDate            : requestBody.EndDate ? requestBody.EndDate : null

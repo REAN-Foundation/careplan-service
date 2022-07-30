@@ -1,12 +1,12 @@
 import {
     ParticipantSelectedPriorityDto
-} from '../../../domain.types/user.responses/participant.selected.priority.domain.types';
+} from '../../../domain.types/participant.responses/participant.selected.priority.domain.types';
 
 ///////////////////////////////////////////////////////////////////////////////////
 
 export class ParticipantSelectedPriorityMapper {
 
-    static toDto = (participantSelectedPriority: any): ParticipantSelectedPriorityDto => {
+    static toDto = (participantSelectedPriority: any): ParticipantSelectedPriorityDto | null => {
         if (participantSelectedPriority == null) {
             return null;
         }

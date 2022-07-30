@@ -1,12 +1,12 @@
 import {
     ParticipantSelectedActionPlanDto
-} from '../../../domain.types/user.responses/participant.selected.action.plan.domain.types';
+} from '../../../domain.types/participant.responses/participant.selected.action.plan.domain.types';
 
 ///////////////////////////////////////////////////////////////////////////////////
 
 export class ParticipantSelectedActionPlanMapper {
 
-    static toDto = (participantSelectedActionPlan: any): ParticipantSelectedActionPlanDto => {
+    static toDto = (participantSelectedActionPlan: any): ParticipantSelectedActionPlanDto | null => {
         if (participantSelectedActionPlan == null) {
             return null;
         }

@@ -1,12 +1,12 @@
 import {
     ParticipantSelectedGoalDto
-} from '../../../domain.types/user.responses/participant.selected.goal.domain.types';
+} from '../../../domain.types/participant.responses/participant.selected.goal.domain.types';
 
 ///////////////////////////////////////////////////////////////////////////////////
 
 export class ParticipantSelectedGoalMapper {
 
-    static toDto = (participantSelectedGoal: any): ParticipantSelectedGoalDto => {
+    static toDto = (participantSelectedGoal: any): ParticipantSelectedGoalDto | null => {
         if (participantSelectedGoal == null) {
             return null;
         }

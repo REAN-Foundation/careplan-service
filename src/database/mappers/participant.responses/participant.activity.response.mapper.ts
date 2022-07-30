@@ -1,12 +1,12 @@
 import {
     ParticipantActivityResponseDto
-} from '../../../domain.types/user.responses/participant.activity.response.domain.types';
+} from '../../../domain.types/participant.responses/participant.activity.response.domain.types';
 
 ///////////////////////////////////////////////////////////////////////////////////
 
 export class ParticipantActivityResponseMapper {
 
-    static toDto = (participantActivityResponse: any): ParticipantActivityResponseDto => {
+    static toDto = (participantActivityResponse: any): ParticipantActivityResponseDto | null => {
         if (participantActivityResponse == null) {
             return null;
         }

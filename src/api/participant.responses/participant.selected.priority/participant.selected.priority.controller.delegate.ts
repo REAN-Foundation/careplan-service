@@ -1,6 +1,6 @@
 import {
     ParticipantSelectedPriorityService
-} from '../../../database/repository.services/user.responses/participant.selected.priority.service';
+} from '../../../database/repository.services/participant.responses/participant.selected.priority.service';
 import {
     ErrorHandler
 } from '../../../common/error.handler';
@@ -21,8 +21,7 @@ import {
     ParticipantSelectedPriorityUpdateModel,
     ParticipantSelectedPrioritySearchFilters,
     ParticipantSelectedPrioritySearchResults
-} from '../../../domain.types/user.responses/participant.selected.priority.domain.types';
-import { CareplanService } from '../../../database/repository.services/careplan/careplan.service';
+} from '../../../domain.types/participant.responses/participant.selected.priority.domain.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -32,19 +31,15 @@ export class ParticipantSelectedPriorityControllerDelegate {
 
     _service: ParticipantSelectedPriorityService = null;
 
-    _careplanService: CareplanService = null;
-
     constructor() {
         this._service = new ParticipantSelectedPriorityService();
-        this._careplanService = new CareplanService();
     }
 
     //#endregion
 
     create = async (requestBody: any) => {
         await validator.validateCreateRequest(requestBody);
-        const careplan = await this._careplanService.getById(requestBody.CareplanId);
-        var createModel: ParticipantSelectedPriorityCreateModel = this.getCreateModel(requestBody, careplan);
+        var createModel: ParticipantSelectedPriorityCreateModel = this.getCreateModel(requestBody);
         const record = await this._service.create(createModel);
         if (record === null) {
             throw new ApiError('Unable to create participant selected priority!', 400);
@@ -161,6 +156,15 @@ export class ParticipantSelectedPriorityControllerDelegate {
         if (Helper.hasProperty(requestBody, 'CareplanId')) {
             updateModel.CareplanId = requestBody.CareplanId;
         }
+        if (Helper.hasProperty(requestBody, 'AssetId')) {
+            updateModel.AssetId = requestBody.AssetId;
+        }
+        if (Helper.hasProperty(requestBody, 'AssetType')) {
+            updateModel.AssetType = requestBody.AssetType;
+        }
+        if (Helper.hasProperty(requestBody, 'AssetCode')) {
+            updateModel.AssetCode = requestBody.AssetCode;
+        }
         if (Helper.hasProperty(requestBody, 'StartDate')) {
             updateModel.StartDate = requestBody.StartDate;
         }
@@ -168,16 +172,16 @@ export class ParticipantSelectedPriorityControllerDelegate {
         return updateModel;
     }
 
-    getCreateModel = (requestBody, careplan): ParticipantSelectedPriorityCreateModel => {
+    getCreateModel = (requestBody): ParticipantSelectedPriorityCreateModel => {
         return {
             Name          : requestBody.Name ? requestBody.Name : null,
             Description   : requestBody.Description ? requestBody.Description : null,
             EnrollmentId  : requestBody.EnrollmentId ? requestBody.EnrollmentId : null,
             ParticipantId : requestBody.ParticipantId ? requestBody.ParticipantId : null,
             CareplanId    : requestBody.CareplanId ? requestBody.CareplanId : null,
-            AssetId       : careplan.AssetId ? careplan.AssetId : null,
-            AssetType     : careplan.AssetType ? careplan.AssetType : null,
-            AssetCode     : careplan.AssetCode ? careplan.AssetCode : null,
+            AssetId       : requestBody.AssetId ? requestBody.AssetId : null,
+            AssetType     : requestBody.AssetType ? requestBody.AssetType : null,
+            AssetCode     : requestBody.AssetCode ? requestBody.AssetCode : null,
             StartDate     : requestBody.StartDate ? requestBody.StartDate : null
         };
     }

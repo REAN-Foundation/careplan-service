@@ -24,6 +24,9 @@ export interface ParticipantSelectedPriorityUpdateModel {
     EnrollmentId  ?: uuid;
     ParticipantId ?: uuid;
     CareplanId    ?: number;
+    AssetId       ?: number;
+    AssetType     ?: string;
+    AssetCode     ?: string;
     StartDate     ?: Date;
 }
 

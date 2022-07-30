@@ -1,6 +1,6 @@
 import {
     ParticipantSelectedGoalModel
-} from '../../models/user.responses/participant.selected.goal.model';
+} from '../../models/participant.responses/participant.selected.goal.model';
 import {
     ParticipantModel
 } from '../../models/enrollment/participant.model';
@@ -15,12 +15,12 @@ import {
     ParticipantSelectedGoalCreateModel,
     ParticipantSelectedGoalSearchFilters,
     ParticipantSelectedGoalSearchResults
-} from '../../../domain.types/user.responses/participant.selected.goal.domain.types';
+} from '../../../domain.types/participant.responses/participant.selected.goal.domain.types';
 import {
     Op
 } from 'sequelize';
 import { EnrollmentModel } from '../../models/enrollment/enrollment.model';
-import { ParticipantSelectedPriorityModel } from '../../../database/models/user.responses/participant.selected.priority.model';
+import { ParticipantSelectedPriorityModel } from '../../models/participant.responses/participant.selected.priority.model';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
