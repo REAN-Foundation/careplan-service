@@ -8,7 +8,7 @@ import {
     uuid
 } from "../miscellaneous/system.types";
 
-export interface UserActivityResponseCreateModel {
+export interface ParticipantActivityResponseCreateModel {
     ParticipantId       : uuid;
     EnrollmentScheduleId: uuid;
     CareplanScheduleId  : uuid;
@@ -20,14 +20,14 @@ export interface UserActivityResponseCreateModel {
     ProgressStatus      : ProgressStatus;
 }
 
-export interface UserActivityResponseUpdateModel {
+export interface ParticipantActivityResponseUpdateModel {
     ParticipantId        ?: uuid;
     EnrollmentScheduleId ?: uuid;
     Response             ?: string;
     ProgressStatus       ?: ProgressStatus;
 }
 
-export interface UserActivityResponseDto {
+export interface ParticipantActivityResponseDto {
     id                  : uuid;
     ParticipantId       : uuid;
     EnrollmentScheduleId: uuid;
@@ -41,7 +41,7 @@ export interface UserActivityResponseDto {
 
 }
 
-export interface UserActivityResponseSearchFilters extends BaseSearchFilters {
+export interface ParticipantActivityResponseSearchFilters extends BaseSearchFilters {
     CareplanId     ?: number;
     AssetId        ?: number;
     AssetType      ?: AssetType;
@@ -50,6 +50,6 @@ export interface UserActivityResponseSearchFilters extends BaseSearchFilters {
     ProgressStatus ?: ProgressStatus;
 }
 
-export interface UserActivityResponseSearchResults extends BaseSearchResults {
-    Items: UserActivityResponseDto[];
+export interface ParticipantActivityResponseSearchResults extends BaseSearchResults {
+    Items: ParticipantActivityResponseDto[];
 }

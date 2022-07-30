@@ -5,7 +5,7 @@ import {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-export class UserActivityResponseValidator {
+export class ParticipantActivityResponseValidator {
 
     static validateCreateRequest = async (requestBody) => {
         try {

@@ -1,6 +1,6 @@
 import {
-    UserActivityResponseModel
-} from '../../models/user.responses/user.activity.response.model';
+    ParticipantActivityResponseModel
+} from '../../models/user.responses/participant.activity.response.model';
 import {
     ParticipantModel
 } from '../../models/enrollment/participant.model';
@@ -18,21 +18,21 @@ import {
     ErrorHandler
 } from '../../../common/error.handler';
 import {
-    UserActivityResponseCreateModel,
-    UserActivityResponseSearchFilters,
-    UserActivityResponseSearchResults
-} from '../../../domain.types/user.responses/user.activity.response.domain.types';
+    ParticipantActivityResponseCreateModel,
+    ParticipantActivityResponseSearchFilters,
+    ParticipantActivityResponseSearchResults
+} from '../../../domain.types/user.responses/participant.activity.response.domain.types';
 import {
     Op
 } from 'sequelize';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-export class UserActivityResponseService {
+export class ParticipantActivityResponseService {
 
     //#region Models
 
-    UserActivityResponse = UserActivityResponseModel.Model;
+    ParticipantActivityResponse = ParticipantActivityResponseModel.Model;
 
     Participant = ParticipantModel.Model;
 
@@ -46,18 +46,18 @@ export class UserActivityResponseService {
 
     //#region Publics
 
-    create = async (createModel: UserActivityResponseCreateModel) => {
+    create = async (createModel: ParticipantActivityResponseCreateModel) => {
         try {
-            var record = await this.UserActivityResponse.create(createModel);
+            var record = await this.ParticipantActivityResponse.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to create user activity response!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to create participant activity response!', error);
         }
     }
 
     getById = async (id) => {
         try {
-            const record = await this.UserActivityResponse.findOne({
+            const record = await this.ParticipantActivityResponse.findOne({
                 where : {
                     id : id
                 },
@@ -87,20 +87,21 @@ export class UserActivityResponseService {
             });
             return record;
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve user activity response!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve participant activity response!', error);
         }
     }
 
     exists = async (id): Promise < boolean > => {
         try {
-            const record = await this.UserActivityResponse.findByPk(id);
+            const record = await this.ParticipantActivityResponse.findByPk(id);
             return record !== null;
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of user activity response!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of participant activity response!', error);
         }
     }
 
-    search = async (filters: UserActivityResponseSearchFilters): Promise < UserActivityResponseSearchResults > => {
+    // eslint-disable-next-line max-len
+    search = async (filters: ParticipantActivityResponseSearchFilters): Promise < ParticipantActivityResponseSearchResults > => {
         try {
 
             var search = this.getSearchModel(filters);
@@ -113,8 +114,8 @@ export class UserActivityResponseService {
                 limit
             } = this.addPaginationToSearch(search, filters);
 
-            const foundResults = await this.UserActivityResponse.findAndCountAll(search);
-            const searchResults: UserActivityResponseSearchResults = {
+            const foundResults = await this.ParticipantActivityResponse.findAndCountAll(search);
+            const searchResults: ParticipantActivityResponseSearchResults = {
                 TotalCount     : foundResults.count,
                 RetrievedCount : foundResults.rows.length,
                 PageIndex      : pageIndex,
@@ -127,38 +128,38 @@ export class UserActivityResponseService {
             return searchResults;
 
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to search user activity response records!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to search participant activity response records!', error);
         }
     }
 
     update = async (id, updateModel) => {
         try {
             if (Object.keys(updateModel).length > 0) {
-                var res = await this.UserActivityResponse.update(updateModel, {
+                var res = await this.ParticipantActivityResponse.update(updateModel, {
                     where : {
                         id : id
                     }
                 });
                 if (res.length !== 1) {
-                    throw new Error('Unable to update user activity response!');
+                    throw new Error('Unable to update participant activity response!');
                 }
             }
             return await this.getById(id);
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to update user activity response!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to update participant activity response!', error);
         }
     }
 
     delete = async (id) => {
         try {
-            var result = await this.UserActivityResponse.destroy({
+            var result = await this.ParticipantActivityResponse.destroy({
                 where : {
                     id : id
                 }
             });
             return result === 1;
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to delete user activity response!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to delete participant activity response!', error);
         }
     }
 

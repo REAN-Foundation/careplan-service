@@ -34,7 +34,7 @@ import { register as registerEnrollmentScheduleRoutes } from "../api/enrollment/
 import { register as registerFileREsourceRoutes       } from "../api/file.resource/file.resource.routes";
 import { register as registerTypesRoutes              } from "../api/types/types.routes";
 import { register as registerUserRoutes               } from "../api/user/user.routes";
-import { register as registerUserActivityResponseRoutes   } from "../api/user.responses/user.activity.response/user.activity.response.routes";
+import { register as registerParticipantActivityResponseRoutes   } from "../api/user.responses/participant.activity.response/participant.activity.response.routes";
 import { register as registerParticipantSelectedActionPlanRoutes } from "../api/user.responses/participant.selected.action.plan/participant.selected.action.plan.routes";
 import { register as registerParticipantSelectedGoalRoutes       } from "../api/user.responses/participant.selected.goal/participant.selected.goal.routes";
 import { register as registerParticipantSelectedPriorityRoutes   } from "../api/user.responses/participant.selected.priority/participant.selected.priority.routes";
@@ -98,7 +98,7 @@ export class Router {
                 registerFileREsourceRoutes(this._app);
                 registerTypesRoutes(this._app);
                 registerUserRoutes(this._app);
-                registerUserActivityResponseRoutes(this._app);
+                registerParticipantActivityResponseRoutes(this._app);
                 registerParticipantSelectedActionPlanRoutes(this._app);
                 registerParticipantSelectedGoalRoutes(this._app);
                 registerParticipantSelectedPriorityRoutes(this._app);

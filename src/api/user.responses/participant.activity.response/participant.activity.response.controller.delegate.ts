@@ -1,6 +1,6 @@
 import {
-    UserActivityResponseService
-} from '../../../database/repository.services/user.responses/user.activity.response.service';
+    ParticipantActivityResponseService
+} from '../../../database/repository.services/user.responses/participant.activity.response.service';
 import {
     ErrorHandler
 } from '../../../common/error.handler';
@@ -11,31 +11,31 @@ import {
     ApiError
 } from '../../../common/api.error';
 import {
-    UserActivityResponseValidator as validator
-} from './user.activity.response.validator';
+    ParticipantActivityResponseValidator as validator
+} from './participant.activity.response.validator';
 import {
     uuid
 } from '../../../domain.types/miscellaneous/system.types';
 import {
-    UserActivityResponseCreateModel,
-    UserActivityResponseUpdateModel,
-    UserActivityResponseSearchFilters,
-    UserActivityResponseSearchResults
-} from '../../../domain.types/user.responses/user.activity.response.domain.types';
+    ParticipantActivityResponseCreateModel,
+    ParticipantActivityResponseUpdateModel,
+    ParticipantActivityResponseSearchFilters,
+    ParticipantActivityResponseSearchResults
+} from '../../../domain.types/user.responses/participant.activity.response.domain.types';
 import { EnrollmentScheduleService } from '../../../database/repository.services/enrollment/enrollment.schedule.service';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-export class UserActivityResponseControllerDelegate {
+export class ParticipantActivityResponseControllerDelegate {
 
     //#region member variables and constructors
 
-    _service: UserActivityResponseService = null;
+    _service: ParticipantActivityResponseService = null;
 
     _enrollmentScheduleService: EnrollmentScheduleService = null
 
     constructor() {
-        this._service = new UserActivityResponseService();
+        this._service = new ParticipantActivityResponseService();
         this._enrollmentScheduleService = new EnrollmentScheduleService();
     }
 
@@ -44,10 +44,10 @@ export class UserActivityResponseControllerDelegate {
     create = async (requestBody: any) => {
         await validator.validateCreateRequest(requestBody);
         const enrollmentSchedule = await this._enrollmentScheduleService.getById(requestBody.EnrollmentScheduleId);
-        var createModel: UserActivityResponseCreateModel = this.getCreateModel(requestBody, enrollmentSchedule);
+        var createModel: ParticipantActivityResponseCreateModel = this.getCreateModel(requestBody, enrollmentSchedule);
         const record = await this._service.create(createModel);
         if (record === null) {
-            throw new ApiError('Unable to create user activity response!', 400);
+            throw new ApiError('Unable to create participant activity response!', 400);
         }
         return this.getEnrichedDto(record);
     }
@@ -55,15 +55,15 @@ export class UserActivityResponseControllerDelegate {
     getById = async (id: uuid) => {
         const record = await this._service.getById(id);
         if (record === null) {
-            ErrorHandler.throwNotFoundError('User activity response with id ' + id.toString() + ' cannot be found!');
+            ErrorHandler.throwNotFoundError('Participant activity response with id ' + id.toString() + ' cannot be found!');
         }
         return this.getEnrichedDto(record);
     }
 
     search = async (query: any) => {
         await validator.validateSearchRequest(query);
-        var filters: UserActivityResponseSearchFilters = this.getSearchFilters(query);
-        var searchResults: UserActivityResponseSearchResults = await this._service.search(filters);
+        var filters: ParticipantActivityResponseSearchFilters = this.getSearchFilters(query);
+        var searchResults: ParticipantActivityResponseSearchResults = await this._service.search(filters);
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
         return searchResults;
@@ -73,12 +73,12 @@ export class UserActivityResponseControllerDelegate {
         await validator.validateUpdateRequest(requestBody);
         const record = await this._service.getById(id);
         if (record === null) {
-            ErrorHandler.throwNotFoundError('User activity response with id ' + id.toString() + ' cannot be found!');
+            ErrorHandler.throwNotFoundError('Participant activity response with id ' + id.toString() + ' cannot be found!');
         }
-        const updateModel: UserActivityResponseUpdateModel = this.getUpdateModel(requestBody);
+        const updateModel: ParticipantActivityResponseUpdateModel = this.getUpdateModel(requestBody);
         const updated = await this._service.update(id, updateModel);
         if (updated == null) {
-            throw new ApiError('Unable to update user activity response!', 400);
+            throw new ApiError('Unable to update participant activity response!', 400);
         }
         return this.getEnrichedDto(updated);
     }
@@ -86,11 +86,11 @@ export class UserActivityResponseControllerDelegate {
     delete = async (id: uuid) => {
         const record = await this._service.getById(id);
         if (record == null) {
-            ErrorHandler.throwNotFoundError('User activity response with id ' + id.toString() + ' cannot be found!');
+            ErrorHandler.throwNotFoundError('Participant activity response with id ' + id.toString() + ' cannot be found!');
         }
-        const userActivityResponseDeleted: boolean = await this._service.delete(id);
+        const participantActivityResponseDeleted: boolean = await this._service.delete(id);
         return {
-            Deleted : userActivityResponseDeleted
+            Deleted : participantActivityResponseDeleted
         };
     }
 
@@ -134,9 +134,9 @@ export class UserActivityResponseControllerDelegate {
         return filters;
     }
 
-    getUpdateModel = (requestBody): UserActivityResponseUpdateModel => {
+    getUpdateModel = (requestBody): ParticipantActivityResponseUpdateModel => {
 
-        const updateModel: UserActivityResponseUpdateModel = {};
+        const updateModel: ParticipantActivityResponseUpdateModel = {};
 
         if (Helper.hasProperty(requestBody, 'ParticipantId')) {
             updateModel.ParticipantId = requestBody.ParticipantId;
@@ -154,7 +154,7 @@ export class UserActivityResponseControllerDelegate {
         return updateModel;
     }
 
-    getCreateModel = (requestBody, enrollmentSchedule): UserActivityResponseCreateModel => {
+    getCreateModel = (requestBody, enrollmentSchedule): ParticipantActivityResponseCreateModel => {
         return {
             ParticipantId        : requestBody.ParticipantId ? requestBody.ParticipantId : null,
             EnrollmentScheduleId : requestBody.EnrollmentScheduleId ? requestBody.EnrollmentScheduleId : null,

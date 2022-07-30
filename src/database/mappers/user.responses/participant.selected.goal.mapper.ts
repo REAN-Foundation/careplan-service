@@ -4,7 +4,7 @@ import {
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-export class UserSelectedGoalMapper {
+export class ParticipantSelectedGoalMapper {
 
     static toDto = (participantSelectedGoal: any): ParticipantSelectedGoalDto => {
         if (participantSelectedGoal == null) {

@@ -6,11 +6,11 @@ const sequelize = db.default.sequelize;
 
 ////////////////////////////////////////////////////////////////////////
 
-export class UserActivityResponseModel {
+export class ParticipantActivityResponseModel {
 
-    static TableName = 'user_activity_responses';
+    static TableName = 'participant_activity_responses';
 
-    static ModelName = 'UserActivityResponse';
+    static ModelName = 'ParticipantActivityResponse';
 
     static Schema = {
         id : {
@@ -72,8 +72,8 @@ export class UserActivityResponseModel {
     };
 
     static Model: any = sequelize.define(
-        UserActivityResponseModel.ModelName,
-        UserActivityResponseModel.Schema,
+        ParticipantActivityResponseModel.ModelName,
+        ParticipantActivityResponseModel.Schema,
         {
             createdAt       : 'CreatedAt',
             updatedAt       : 'UpdatedAt',
@@ -81,32 +81,32 @@ export class UserActivityResponseModel {
             freezeTableName : true,
             timestamps      : true,
             paranoid        : true,
-            tableName       : UserActivityResponseModel.TableName,
+            tableName       : ParticipantActivityResponseModel.TableName,
         });
 
     static associate = (models) => {
 
         //Add associations here...
 
-        models.UserActivityResponse.belongsTo(models.Participant, {
+        models.ParticipantActivityResponse.belongsTo(models.Participant, {
             sourceKey : 'ParticipantId',
             targetKey : 'id',
             as        : 'Participant'
         });
 
-        models.UserActivityResponse.belongsTo(models.EnrollmentSchedule, {
+        models.ParticipantActivityResponse.belongsTo(models.EnrollmentSchedule, {
             sourceKey : 'EnrollmentScheduleId',
             targetKey : 'id',
             as        : 'EnrollmentSchedule'
         });
 
-        models.UserActivityResponse.belongsTo(models.CareplanSchedule, {
+        models.ParticipantActivityResponse.belongsTo(models.CareplanSchedule, {
             sourceKey : 'CareplanScheduleId',
             targetKey : 'id',
             as        : 'CareplanSchedule'
         });
 
-        models.UserActivityResponse.belongsTo(models.Careplan, {
+        models.ParticipantActivityResponse.belongsTo(models.Careplan, {
             sourceKey : 'CareplanId',
             targetKey : 'id',
             as        : 'Careplan'
