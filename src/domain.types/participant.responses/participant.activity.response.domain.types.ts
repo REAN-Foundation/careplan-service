@@ -1,0 +1,55 @@
+import { AssetType } from "../assets/asset.types";
+import {
+    BaseSearchFilters,
+    BaseSearchResults
+} from "../miscellaneous/base.search.types";
+import {
+    ProgressStatus,
+    uuid
+} from "../miscellaneous/system.types";
+
+export interface ParticipantActivityResponseCreateModel {
+    ParticipantId       : uuid;
+    EnrollmentScheduleId: uuid;
+    CareplanScheduleId  : uuid;
+    CareplanId          : number;
+    AssetId             : number;
+    AssetType           : AssetType;
+    Response            : string;
+    TimeResponded       : Date;
+    ProgressStatus      : ProgressStatus;
+}
+
+export interface ParticipantActivityResponseUpdateModel {
+    ParticipantId        ?: uuid;
+    EnrollmentScheduleId ?: uuid;
+    Response             ?: string;
+    ProgressStatus       ?: ProgressStatus;
+}
+
+export interface ParticipantActivityResponseDto {
+    id                  : uuid;
+    ParticipantId       : uuid;
+    EnrollmentScheduleId: uuid;
+    CareplanScheduleId  : uuid;
+    CareplanId          : number;
+    AssetId             : number;
+    AssetType           : AssetType;
+    Response            : string;
+    TimeResponded       : Date;
+    ProgressStatus      : ProgressStatus;
+
+}
+
+export interface ParticipantActivityResponseSearchFilters extends BaseSearchFilters {
+    CareplanId     ?: number;
+    AssetId        ?: number;
+    AssetType      ?: AssetType;
+    Response       ?: string;
+    TimeResponded  ?: Date;
+    ProgressStatus ?: ProgressStatus;
+}
+
+export interface ParticipantActivityResponseSearchResults extends BaseSearchResults {
+    Items: ParticipantActivityResponseDto[];
+}
