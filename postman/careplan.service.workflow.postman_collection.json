@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "4a2978a1-594c-4f4a-af37-fbe5583ba546",
+		"_postman_id": "22cb4975-3599-4b7a-857c-f9c752694656",
 		"name": "careplan.service.workflow",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "5510218"
+		"_exporter_id": "15905052"
 	},
 	"item": [
 		{
@@ -3056,11 +3056,11 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"try {\r",
 											"    var respData = pm.response.json();\r",
 											"    pm.environment.set(\"ANIMATION_ID\", respData.Data.id);\r",
+											"    pm.environment.set(\"ASSET_CODE\", respData.Data.AssetCode);\r",
 											"}\r",
 											"catch (error) {\r",
 											"    console.log(error.message);\r",
@@ -3089,7 +3089,8 @@
 											"    pm.expect(jsonRes.Data.Version).equals('1.0');\r",
 											"});\r",
 											"                "
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -15124,31 +15125,38 @@
 			"name": "Enrollment schedule",
 			"item": [
 				{
-					"name": "Create",
+					"name": "Search with filters",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"try {\r",
 									"    var respData = pm.response.json();\r",
-									"    pm.environment.set(\"ENROLLMENT_SCHEDULE_ID\", respData.Data.id);\r",
+									"    pm.environment.set(\"ENROLLMENT_SCHEDULE_ID\", respData.Data.Items[0].id);\r",
+									"} catch {\r",
+									"    \r",
 									"}\r",
-									"catch (error) {\r",
-									"    console.log(error.message);\r",
-									"}\r",
+									"pm.test('Request is successfull', function () {\r",
+									"pm.globals.get(\"variable_key\");\r",
+									"    pm.response.to.have.status(200);\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.expect(jsonRes.Status).to.eql('success');\r",
+									"});\r",
 									"\r",
-									"pm.test('Request is successfull', function () {\r    pm.response.to.have.status(200);\r    var jsonRes = pm.response.json();\r    pm.expect(jsonRes.Status).to.eql('success');\r});\r",
+									"pm.test('Enrollment schedule record is retrived', function () {\r",
+									"    var jsonRes = pm.response.json();\r",
+									"    pm.expect(jsonRes.Data.Items.length).greaterThan(0);\r",
+									"});\r",
 									"\r",
-									"pm.test('New enrollment schedule record is created', function () {\r    var jsonRes = pm.response.json();\r    //pm.expect(jsonRes.Data).to.have.property('xyz');\r    //let expectedXyz = ;\r    //pm.expect(jsonRes.Data.xyz).equals(expectedXyz);\r});\r",
-									"\r"
-								]
+									""
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
 					"request": {
-						"method": "POST",
+						"method": "GET",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -15156,22 +15164,40 @@
 								"value": "application/json"
 							},
 							{
-								"key": "Authorization",
+								"key": "x-api-key",
 								"type": "text",
-								"value": "Bearer {{USER_JWT}}"
+								"value": "{{API_CLIENT_INTERNAL_KEY}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n   \"AssetType\": \"Message\"\r\n\r\n}\r\n"
-						},
 						"url": {
-							"raw": "{{BASE_URL}}/enrollment-schedules",
+							"raw": "{{BASE_URL}}/enrollment-schedules/search?assetType=Message",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"enrollment-schedules"
+								"enrollment-schedules",
+								"search"
+							],
+							"query": [
+								{
+									"key": "assetId",
+									"value": "xyz",
+									"disabled": true
+								},
+								{
+									"key": "assetType",
+									"value": "Message"
+								},
+								{
+									"key": "careplanId",
+									"value": "xyz",
+									"disabled": true
+								},
+								{
+									"key": "timeSlot",
+									"value": "xyz",
+									"disabled": true
+								}
 							]
 						}
 					},
@@ -15238,271 +15264,14 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "Search with filters",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test('Request is successfull', function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"    var jsonRes = pm.response.json();\r",
-									"    pm.expect(jsonRes.Status).to.eql('success');\r",
-									"});\r",
-									"\r",
-									"pm.test('Enrollment schedule record is retrived', function () {\r",
-									"    var jsonRes = pm.response.json();\r",
-									"    pm.expect(jsonRes.Data.Items.length).greaterThan(0);\r",
-									"});\r",
-									"\r",
-									""
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Content-Type",
-								"type": "text",
-								"value": "application/json"
-							},
-							{
-								"key": "x-api-key",
-								"type": "text",
-								"value": "{{API_CLIENT_INTERNAL_KEY}}"
-							}
-						],
-						"url": {
-							"raw": "{{BASE_URL}}/enrollment-schedules/search?assetId=xyz&assetType=xyz&careplanId=xyz&timeSlot=xyz",
-							"host": [
-								"{{BASE_URL}}"
-							],
-							"path": [
-								"enrollment-schedules",
-								"search"
-							],
-							"query": [
-								{
-									"key": "assetId",
-									"value": "xyz"
-								},
-								{
-									"key": "assetType",
-									"value": "xyz"
-								},
-								{
-									"key": "careplanId",
-									"value": "xyz"
-								},
-								{
-									"key": "timeSlot",
-									"value": "xyz"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test('Request is successfull', function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"    var jsonRes = pm.response.json();\r",
-									"    pm.expect(jsonRes.Status).to.eql('success');\r",
-									"});\r",
-									"\r",
-									"pm.test('Enrollment schedule record is updated', function () {\r",
-									"    var jsonRes = pm.response.json();\r",
-									"    pm.expect(jsonRes.Data).to.have.property('id');\r",
-									"    pm.expect(jsonRes.Data).to.have.property('EnrollmentId');\r",
-									"    pm.expect(jsonRes.Data).to.have.property('UserId');\r",
-									"    pm.expect(jsonRes.Data).to.have.property('CareplanScheduleId');\r",
-									"    pm.expect(jsonRes.Data).to.have.property('AssetId');\r",
-									"    pm.expect(jsonRes.Data).to.have.property('AssetType');\r",
-									"    pm.expect(jsonRes.Data).to.have.property('CareplanId');\r",
-									"    pm.expect(jsonRes.Data).to.have.property('TimeSlot');\r",
-									"    pm.expect(jsonRes.Data).to.have.property('ScheduledDate');\r",
-									"    \r",
-									"    pm.expect(jsonRes.Data.AssetType).equals('Message');\r",
-									"\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"type": "text",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"type": "text",
-								"value": "Bearer {{USER_JWT}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n\"AssetType\": \"Message\"\r\n\r\n}\r\n"
-						},
-						"url": {
-							"raw": "{{BASE_URL}}/enrollment-schedules/{{ENROLLMENT_SCHEDULE_ID}}",
-							"host": [
-								"{{BASE_URL}}"
-							],
-							"path": [
-								"enrollment-schedules",
-								"{{ENROLLMENT_SCHEDULE_ID}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"pm.test('Request is successfull', function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"    var jsonRes = pm.response.json();\r",
-									"    pm.expect(jsonRes.Status).to.eql('success');\r",
-									"});\r",
-									"\r",
-									"pm.test('Enrollment schedule record is deleted', function () {\r",
-									"    var jsonRes = pm.response.json();\r",
-									"    pm.expect(jsonRes.Data).to.have.property('Deleted');\r",
-									"    pm.expect(jsonRes.Data.Deleted).equals(true);\r",
-									"});"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Content-Type",
-								"type": "text",
-								"value": "application/json"
-							},
-							{
-								"key": "x-api-key",
-								"type": "text",
-								"value": "{{API_CLIENT_INTERNAL_KEY}}"
-							}
-						],
-						"url": {
-							"raw": "{{BASE_URL}}/enrollment-schedules/{{ENROLLMENT_SCHEDULE_ID}}",
-							"host": [
-								"{{BASE_URL}}"
-							],
-							"path": [
-								"enrollment-schedules",
-								"{{ENROLLMENT_SCHEDULE_ID}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create again",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"try {\r",
-									"    var respData = pm.response.json();\r",
-									"    pm.environment.set(\"ENROLLMENT_SCHEDULE_ID\", respData.Data.id);\r",
-									"}\r",
-									"catch (error) {\r",
-									"    console.log(error.message);\r",
-									"}\r",
-									"\r",
-									"pm.test('Request is successfull', function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"    var jsonRes = pm.response.json();\r",
-									"    pm.expect(jsonRes.Status).to.eql('success');\r",
-									"});\r",
-									"\r",
-									"pm.test('New enrollment schedule record is created', function () {\r",
-									"    var jsonRes = pm.response.json();\r",
-									"    pm.expect(jsonRes.Data).to.have.property('id');\r",
-									"    pm.expect(jsonRes.Data).to.have.property('EnrollmentId');\r",
-									"    pm.expect(jsonRes.Data).to.have.property('UserId');\r",
-									"    pm.expect(jsonRes.Data).to.have.property('CareplanScheduleId');\r",
-									"    pm.expect(jsonRes.Data).to.have.property('AssetId');\r",
-									"    pm.expect(jsonRes.Data).to.have.property('AssetType');\r",
-									"    pm.expect(jsonRes.Data).to.have.property('CareplanId');\r",
-									"    pm.expect(jsonRes.Data).to.have.property('TimeSlot');\r",
-									"    pm.expect(jsonRes.Data).to.have.property('ScheduledDate');\r",
-									"    \r",
-									"    pm.expect(jsonRes.Data.AssetType).equals('Message');\r",
-									"\r",
-									"});\r",
-									"\r",
-									""
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"type": "text",
-								"value": "application/json"
-							},
-							{
-								"key": "x-api-key",
-								"type": "text",
-								"value": "{{API_CLIENT_INTERNAL_KEY}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n   \"AssetType\": \"Message\"\r\n\r\n}\r\n"
-						},
-						"url": {
-							"raw": "{{BASE_URL}}/enrollment-schedules",
-							"host": [
-								"{{BASE_URL}}"
-							],
-							"path": [
-								"enrollment-schedules"
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		},
 		{
-			"name": "User responses",
+			"name": "Participant responses",
 			"item": [
 				{
-					"name": "User activity response",
+					"name": "Participant activity response",
 					"item": [
 						{
 							"name": "Create",
@@ -15510,7 +15279,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"try {\r",
 											"    var respData = pm.response.json();\r",
@@ -15536,7 +15304,8 @@
 											"});\r",
 											"\r",
 											""
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -15545,26 +15314,26 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
+										"key": "x-api-key",
+										"value": "{{API_CLIENT_INTERNAL_KEY}}",
+										"type": "text"
 									}
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n   \"UserId\": \"{{USER_ID}}\",\r\n\"EnrollmentScheduleId\": \"{{ENROLLMENT_SCHEDULE_ID}}\",\r\n\"Response\": \"{}\"\r\n\r\n}\r\n"
+									"raw": "{\r\n   \"ParticipantId\": \"{{PARTICIPANT_USER_ID}}\",\r\n\"EnrollmentScheduleId\": \"{{ENROLLMENT_SCHEDULE_ID}}\",\r\n\"Response\": \"{Answer : 116 mg/dL}\"\r\n}\r\n"
 								},
 								"url": {
-									"raw": "{{BASE_URL}}/user-activity-responses",
+									"raw": "{{BASE_URL}}/participant-activity-responses",
 									"host": [
 										"{{BASE_URL}}"
 									],
 									"path": [
-										"user-activity-responses"
+										"participant-activity-responses"
 									]
 								}
 							},
@@ -15576,7 +15345,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"\r",
 											"pm.test('Request is successfull', function () {\r",
@@ -15595,7 +15363,8 @@
 											"});\r",
 											"\r",
 											""
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -15604,22 +15373,22 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
+										"key": "x-api-key",
+										"value": "{{API_CLIENT_INTERNAL_KEY}}",
+										"type": "text"
 									}
 								],
 								"url": {
-									"raw": "{{BASE_URL}}/user-activity-responses/{{USER_ACTIVITY_RESPONSE_ID}}",
+									"raw": "{{BASE_URL}}/participant-activity-responses/{{USER_ACTIVITY_RESPONSE_ID}}",
 									"host": [
 										"{{BASE_URL}}"
 									],
 									"path": [
-										"user-activity-responses",
+										"participant-activity-responses",
 										"{{USER_ACTIVITY_RESPONSE_ID}}"
 									]
 								}
@@ -15632,7 +15401,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"\r",
 											"pm.test('Request is successfull', function () {\r",
@@ -15647,7 +15415,8 @@
 											"});\r",
 											"\r",
 											""
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -15656,48 +15425,58 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
+										"key": "x-api-key",
+										"value": "{{API_CLIENT_INTERNAL_KEY}}",
+										"type": "text"
 									}
 								],
 								"url": {
-									"raw": "{{BASE_URL}}/user-activity-responses/search?careplanId=xyz&assetId=xyz&assetType=xyz&response=xyz&timeResponded=xyz&progressStatus=xyz",
+									"raw": "{{BASE_URL}}/participant-activity-responses/search?participantId={{PARTICIPANT_USER_ID}}",
 									"host": [
 										"{{BASE_URL}}"
 									],
 									"path": [
-										"user-activity-responses",
+										"participant-activity-responses",
 										"search"
 									],
 									"query": [
 										{
 											"key": "careplanId",
-											"value": "xyz"
+											"value": "xyz",
+											"disabled": true
 										},
 										{
 											"key": "assetId",
-											"value": "xyz"
+											"value": "xyz",
+											"disabled": true
 										},
 										{
 											"key": "assetType",
-											"value": "xyz"
+											"value": "xyz",
+											"disabled": true
 										},
 										{
 											"key": "response",
-											"value": "xyz"
+											"value": "xyz",
+											"disabled": true
 										},
 										{
 											"key": "timeResponded",
-											"value": "xyz"
+											"value": "xyz",
+											"disabled": true
 										},
 										{
 											"key": "progressStatus",
-											"value": "xyz"
+											"value": "xyz",
+											"disabled": true
+										},
+										{
+											"key": "participantId",
+											"value": "{{PARTICIPANT_USER_ID}}"
 										}
 									]
 								}
@@ -15710,7 +15489,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"\r",
 											"pm.test('Request is successfull', function () {\r",
@@ -15729,7 +15507,8 @@
 											"});\r",
 											"\r",
 											""
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -15738,26 +15517,26 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
+										"key": "x-api-key",
+										"value": "{{API_CLIENT_INTERNAL_KEY}}",
+										"type": "text"
 									}
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n\"UserId\": \"{{USER_ID}}\",\r\n\"EnrollmentScheduleId\": \"{{ENROLLMENT_SCHEDULE_ID}}\",\r\n\"Response\": \"{}\"\r\n\r\n}\r\n"
+									"raw": "{\r\n\"ParticipantId\": \"{{PARTICIPANT_USER_ID}}\",\r\n\"EnrollmentScheduleId\": \"{{ENROLLMENT_SCHEDULE_ID}}\",\r\n\"Response\": \"{Answer: 99 F}\"\r\n\r\n}\r\n"
 								},
 								"url": {
-									"raw": "{{BASE_URL}}/user-activity-responses/{{USER_ACTIVITY_RESPONSE_ID}}",
+									"raw": "{{BASE_URL}}/participant-activity-responses/{{USER_ACTIVITY_RESPONSE_ID}}",
 									"host": [
 										"{{BASE_URL}}"
 									],
 									"path": [
-										"user-activity-responses",
+										"participant-activity-responses",
 										"{{USER_ACTIVITY_RESPONSE_ID}}"
 									]
 								}
@@ -15770,7 +15549,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"\r",
 											"\r",
@@ -15787,7 +15565,8 @@
 											"});\r",
 											"\r",
 											""
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -15796,22 +15575,26 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
+										"key": "x-api-key",
+										"value": "{{API_CLIENT_INTERNAL_KEY}}",
+										"type": "text"
 									}
 								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
 								"url": {
-									"raw": "{{BASE_URL}}/user-activity-responses/{{USER_ACTIVITY_RESPONSE_ID}}",
+									"raw": "{{BASE_URL}}/participant-activity-responses/{{USER_ACTIVITY_RESPONSE_ID}}",
 									"host": [
 										"{{BASE_URL}}"
 									],
 									"path": [
-										"user-activity-responses",
+										"participant-activity-responses",
 										"{{USER_ACTIVITY_RESPONSE_ID}}"
 									]
 								}
@@ -15824,7 +15607,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"try {\r",
 											"    var respData = pm.response.json();\r",
@@ -15850,7 +15632,8 @@
 											"});\r",
 											"\r",
 											""
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -15859,26 +15642,26 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
+										"key": "x-api-key",
+										"value": "{{API_CLIENT_INTERNAL_KEY}}",
+										"type": "text"
 									}
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n\"UserId\": \"{{USER_ID}}\",\r\n\"EnrollmentScheduleId\": \"{{ENROLLMENT_SCHEDULE_ID}}\",\r\n\"Response\": \"{}\"\r\n\r\n}\r\n"
+									"raw": "{\r\n   \"ParticipantId\": \"{{PARTICIPANT_USER_ID}}\",\r\n\"EnrollmentScheduleId\": \"{{ENROLLMENT_SCHEDULE_ID}}\",\r\n\"Response\": \"{Answer : 120 mg/dL}\"\r\n}\r\n"
 								},
 								"url": {
-									"raw": "{{BASE_URL}}/user-activity-responses",
+									"raw": "{{BASE_URL}}/participant-activity-responses",
 									"host": [
 										"{{BASE_URL}}"
 									],
 									"path": [
-										"user-activity-responses"
+										"participant-activity-responses"
 									]
 								}
 							},
@@ -15887,7 +15670,7 @@
 					]
 				},
 				{
-					"name": "User selected action plan",
+					"name": "Participant selected priority",
 					"item": [
 						{
 							"name": "Create",
@@ -15895,892 +15678,10 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"try {\r",
 											"    var respData = pm.response.json();\r",
-											"    pm.environment.set(\"USER_SELECTED_ACTION_PLAN_ID\", respData.Data.id);\r",
-											"}\r",
-											"catch (error) {\r",
-											"    console.log(error.message);\r",
-											"}\r",
-											"\r",
-											"pm.test('Request is successfull', function () {\r",
-											"    pm.response.to.have.status(200);\r",
-											"    var jsonRes = pm.response.json();\r",
-											"    pm.expect(jsonRes.Status).to.eql('success');\r",
-											"});\r",
-											"\r",
-											"pm.test('New user selected action plan record is created', function () {\r",
-											"    var jsonRes = pm.response.json();\r",
-											"     pm.expect(jsonRes.Data).to.have.property('id');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('UserId');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('CareplanId');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('Name');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('Description');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('AssetId');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('AssetType');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('AdditionalDetails');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('StartDate');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('EndDate');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('ProgressStatus');\r",
-											"   \r",
-											"    pm.expect(jsonRes.Data.Name).equals('Reduce Fasting Blood Glucose');\r",
-											"    pm.expect(jsonRes.Data.StartDate).equals('2022-01-01');\r",
-											"    pm.expect(jsonRes.Data.EndDate).equals('2023-01-01');\r",
-											"});\r",
-											"\r",
-											""
-										]
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n\"Name\": \"Reduce Fasting Blood Glucose\",\r\n\"Description\": \".....\",\r\n\"UserId\": \"{{USER_ID}}\",\r\n\"CareplanId\": \"{{CARE_PLAN_ID}}\",\r\n\"AdditionalDetails\": \"...\",\r\n\"StartDate\": \"2022-01-01\",\r\n\"EndDate\": \"2023-01-01\"\r\n\r\n}\r\n"
-								},
-								"url": {
-									"raw": "{{BASE_URL}}/user-selected-action-plans",
-									"host": [
-										"{{BASE_URL}}"
-									],
-									"path": [
-										"user-selected-action-plans"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Get by id",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"type": "text/javascript",
-										"exec": [
-											"\r",
-											"\r",
-											"pm.test('Request is successfull', function () {\r",
-											"    pm.response.to.have.status(200);\r",
-											"    var jsonRes = pm.response.json();\r",
-											"    pm.expect(jsonRes.Status).to.eql('success');\r",
-											"});\r",
-											"\r",
-											"pm.test('User selected action plan  is retrived', function () {\r",
-											"    var jsonRes = pm.response.json();\r",
-											"      pm.expect(jsonRes.Data).to.have.property('id');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('UserId');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('CareplanId');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('Name');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('Description');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('AssetId');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('AssetType');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('AdditionalDetails');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('StartDate');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('EndDate');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('ProgressStatus');\r",
-											"   \r",
-											"    pm.expect(jsonRes.Data.Name).equals('Reduce Fasting Blood Glucose');\r",
-											"    pm.expect(jsonRes.Data.StartDate).equals('2022-01-01');\r",
-											"    pm.expect(jsonRes.Data.EndDate).equals('2023-01-01');\r",
-											"});\r",
-											"\r",
-											""
-										]
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
-									}
-								],
-								"url": {
-									"raw": "{{BASE_URL}}/user-selected-action-plans/{{USER_SELECTED_ACTION_PLAN_ID}}",
-									"host": [
-										"{{BASE_URL}}"
-									],
-									"path": [
-										"user-selected-action-plans",
-										"{{USER_SELECTED_ACTION_PLAN_ID}}"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Search with filters",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"type": "text/javascript",
-										"exec": [
-											"\r",
-											"pm.test('Request is successfull', function () {\r",
-											"    pm.response.to.have.status(200);\r",
-											"    var jsonRes = pm.response.json();\r",
-											"    pm.expect(jsonRes.Status).to.eql('success');\r",
-											"});\r",
-											"\r",
-											"pm.test(' User selected action plans are retrived', function () {\r",
-											"    var jsonRes = pm.response.json();\r",
-											"    pm.expect(jsonRes.Data.Items.length).greaterThan(0);\r",
-											"});\r",
-											""
-										]
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
-									}
-								],
-								"url": {
-									"raw": "{{BASE_URL}}/user-selected-action-plans/search?name=xyz&description=xyz&careplanId=xyz&assetId=xyz&assetType=xyz&additionalDetails=xyz&startDate=xyz&endDate=xyz&progressStatus=xyz",
-									"host": [
-										"{{BASE_URL}}"
-									],
-									"path": [
-										"user-selected-action-plans",
-										"search"
-									],
-									"query": [
-										{
-											"key": "name",
-											"value": "xyz"
-										},
-										{
-											"key": "description",
-											"value": "xyz"
-										},
-										{
-											"key": "careplanId",
-											"value": "xyz"
-										},
-										{
-											"key": "assetId",
-											"value": "xyz"
-										},
-										{
-											"key": "assetType",
-											"value": "xyz"
-										},
-										{
-											"key": "additionalDetails",
-											"value": "xyz"
-										},
-										{
-											"key": "startDate",
-											"value": "xyz"
-										},
-										{
-											"key": "endDate",
-											"value": "xyz"
-										},
-										{
-											"key": "progressStatus",
-											"value": "xyz"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Update",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"type": "text/javascript",
-										"exec": [
-											"\r",
-											"pm.test('Request is successfull', function () {\r",
-											"    pm.response.to.have.status(200);\r",
-											"    var jsonRes = pm.response.json();\r",
-											"    pm.expect(jsonRes.Status).to.eql('success');\r",
-											"});\r",
-											"\r",
-											"pm.test('User selected action plan record is updated', function () {\r",
-											"    var jsonRes = pm.response.json();\r",
-											"     pm.expect(jsonRes.Data).to.have.property('id');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('UserId');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('CareplanId');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('Name');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('Description');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('AssetId');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('AssetType');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('AdditionalDetails');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('StartDate');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('EndDate');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('ProgressStatus');\r",
-											"   \r",
-											"    pm.expect(jsonRes.Data.Name).equals('Reduce Fasting Blood Glucose');\r",
-											"    pm.expect(jsonRes.Data.StartDate).equals('2022-01-01');\r",
-											"    pm.expect(jsonRes.Data.EndDate).equals('2023-01-01');\r",
-											"});\r",
-											"\r",
-											""
-										]
-									}
-								}
-							],
-							"request": {
-								"method": "PUT",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n\"Name\": \"Reduce Fasting Blood Glucose\",\r\n\"Description\": \".....\",\r\n\"UserId\": \"{{USER_ID}}\",\r\n\"CareplanId\": \"{{CARE_PLAN_ID}}\",\r\n\"AdditionalDetails\": \"...\",\r\n\"StartDate\": \"2022-01-01\",\r\n\"EndDate\": \"2023-01-01\"\r\n\r\n}\r\n"
-								},
-								"url": {
-									"raw": "{{BASE_URL}}/user-selected-action-plans/{{USER_SELECTED_ACTION_PLAN_ID}}",
-									"host": [
-										"{{BASE_URL}}"
-									],
-									"path": [
-										"user-selected-action-plans",
-										"{{USER_SELECTED_ACTION_PLAN_ID}}"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Delete",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"type": "text/javascript",
-										"exec": [
-											"\r",
-											"\r",
-											"pm.test('Request is successfull', function () {\r",
-											"    pm.response.to.have.status(200);\r",
-											"    var jsonRes = pm.response.json();\r",
-											"    pm.expect(jsonRes.Status).to.eql('success');\r",
-											"});\r",
-											"\r",
-											"pm.test('User selected action plan is deleted', function () {\r",
-											"    var jsonRes = pm.response.json();\r",
-											"    pm.expect(jsonRes.Data).to.have.property('Deleted');\r",
-											"    pm.expect(jsonRes.Data.Deleted).equals(true);\r",
-											"});\r",
-											"\r",
-											""
-										]
-									}
-								}
-							],
-							"request": {
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
-									}
-								],
-								"url": {
-									"raw": "{{BASE_URL}}/user-selected-action-plans/{{USER_SELECTED_ACTION_PLAN_ID}}",
-									"host": [
-										"{{BASE_URL}}"
-									],
-									"path": [
-										"user-selected-action-plans",
-										"{{USER_SELECTED_ACTION_PLAN_ID}}"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Create again",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"type": "text/javascript",
-										"exec": [
-											"try {\r",
-											"    var respData = pm.response.json();\r",
-											"    pm.environment.set(\"USER_SELECTED_ACTION_PLAN_ID\", respData.Data.id);\r",
-											"}\r",
-											"catch (error) {\r",
-											"    console.log(error.message);\r",
-											"}\r",
-											"\r",
-											"pm.test('Request is successfull', function () {\r",
-											"    pm.response.to.have.status(200);\r",
-											"    var jsonRes = pm.response.json();\r",
-											"    pm.expect(jsonRes.Status).to.eql('success');\r",
-											"});\r",
-											"\r",
-											"pm.test('New user selected action plan record is created', function () {\r",
-											"    var jsonRes = pm.response.json();\r",
-											"     pm.expect(jsonRes.Data).to.have.property('id');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('UserId');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('CareplanId');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('Name');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('Description');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('AssetId');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('AssetType');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('AdditionalDetails');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('StartDate');\r",
-											"       pm.expect(jsonRes.Data).to.have.property('EndDate');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('ProgressStatus');\r",
-											"   \r",
-											"   \r",
-											"    pm.expect(jsonRes.Data.UserId).equals('USER_ID');\r",
-											"    pm.expect(jsonRes.Data.Name).equals('Reduce Fasting Blood Glucose');\r",
-											"    pm.expect(jsonRes.Data.CareplanId).equals('CAREPLAN_ID');\r",
-											"     pm.expect(jsonRes.Data.StartDate).equals('2022-01-01');\r",
-											"    pm.expect(jsonRes.Data.EndDate).equals('2023-01-01');\r",
-											"});\r",
-											"\r",
-											""
-										]
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n   \"Name\": \"Reduce Fasting Blood Glucose\",\r\n\"Description\": \".....\",\r\n\"UserId\": \"{{USER_ID}}\",\r\n\"CareplanId\": \"{{CAREPLAN_ID}}\",\r\n\"AdditionalDetails\": \"...\",\r\n\"StartDate\": \"2022-01-01\",\r\n\"EndDate\": \"2023-01-01\"\r\n\r\n}\r\n"
-								},
-								"url": {
-									"raw": "{{BASE_URL}}/user-selected-action-plans",
-									"host": [
-										"{{BASE_URL}}"
-									],
-									"path": [
-										"user-selected-action-plans"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "User selected goal",
-					"item": [
-						{
-							"name": "Create",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"type": "text/javascript",
-										"exec": [
-											"try {\r",
-											"    var respData = pm.response.json();\r",
-											"    pm.environment.set(\"USER_SELECTED_GOAL_ID\", respData.Data.id);\r",
-											"}\r",
-											"catch (error) {\r",
-											"    console.log(error.message);\r",
-											"}\r",
-											"\r",
-											"pm.test('Request is successfull', function () {\r",
-											"    pm.response.to.have.status(200);\r",
-											"    var jsonRes = pm.response.json();\r",
-											"    pm.expect(jsonRes.Status).to.eql('success');\r",
-											"});\r",
-											"\r",
-											"pm.test('New user selected goal record is created', function () {\r",
-											"    var jsonRes = pm.response.json();\r",
-											"    pm.expect(jsonRes.Data).to.have.property('id');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('UserId');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('CareplanId');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('Name');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('Description');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('AssetId');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('AssetType');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('AdditionalDetails');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('StartDate');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('EndDate');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('ProgressStatus');\r",
-											"   \r",
-											"    pm.expect(jsonRes.Data.Name).equals('Blood Glucose');\r",
-											"    pm.expect(jsonRes.Data.StartDate).equals('2022-01-01');\r",
-											"    pm.expect(jsonRes.Data.EndDate).equals('2023-01-01');\r",
-											"});\r",
-											"\r",
-											""
-										]
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n   \"Name\": \"Blood Glucose\",\r\n\"Description\": \".....\",\r\n\"UserId\": \"{{USER_ID}}\",\r\n\"CareplanId\": \"{{CAREPLAN_ID}}\",\r\n\"AdditionalDetails\": \"...\",\r\n\"StartDate\": \"2022-01-01\",\r\n\"EndDate\": \"2023-01-01\"\r\n\r\n}\r\n"
-								},
-								"url": {
-									"raw": "{{BASE_URL}}/user-selected-goals",
-									"host": [
-										"{{BASE_URL}}"
-									],
-									"path": [
-										"user-selected-goals"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Get by id",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"type": "text/javascript",
-										"exec": [
-											"\r",
-											"pm.test('Request is successfull', function () {\r",
-											"    pm.response.to.have.status(200);\r",
-											"    var jsonRes = pm.response.json();\r",
-											"    pm.expect(jsonRes.Status).to.eql('success');\r",
-											"});\r",
-											"\r",
-											"pm.test('User selected goal record is retrived', function () {\r",
-											"    var jsonRes = pm.response.json();\r",
-											"    pm.expect(jsonRes.Data).to.have.property('id');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('UserId');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('CareplanId');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('Name');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('Description');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('AssetId');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('AssetType');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('AdditionalDetails');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('StartDate');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('EndDate');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('ProgressStatus');\r",
-											"   \r",
-											"    pm.expect(jsonRes.Data.Name).equals('Reduce Fasting Blood Glucose');\r",
-											"    pm.expect(jsonRes.Data.StartDate).equals('2022-01-01');\r",
-											"    pm.expect(jsonRes.Data.EndDate).equals('2023-01-01');\r",
-											"});\r",
-											"\r",
-											""
-										]
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
-									}
-								],
-								"url": {
-									"raw": "{{BASE_URL}}/user-selected-goals/{{USER_SELECTED_GOAL_ID}}",
-									"host": [
-										"{{BASE_URL}}"
-									],
-									"path": [
-										"user-selected-goals",
-										"{{USER_SELECTED_GOAL_ID}}"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Search with filters",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"type": "text/javascript",
-										"exec": [
-											"\r",
-											"\r",
-											"pm.test('Request is successfull', function () {\r",
-											"    pm.response.to.have.status(200);\r",
-											"    var jsonRes = pm.response.json();\r",
-											"    pm.expect(jsonRes.Status).to.eql('success');\r",
-											"});\r",
-											"\r",
-											"pm.test(' User selected goals are retrived', function () {\r",
-											"    var jsonRes = pm.response.json();\r",
-											"    pm.expect(jsonRes.Data.Items.length).greaterThan(0);\r",
-											"});\r",
-											""
-										]
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
-									}
-								],
-								"url": {
-									"raw": "{{BASE_URL}}/user-selected-goals/search?name=xyz&description=xyz&careplanId=xyz&assetId=xyz&assetType=xyz&additionalDetails=xyz&startDate=xyz&endDate=xyz&progressStatus=xyz",
-									"host": [
-										"{{BASE_URL}}"
-									],
-									"path": [
-										"user-selected-goals",
-										"search"
-									],
-									"query": [
-										{
-											"key": "name",
-											"value": "xyz"
-										},
-										{
-											"key": "description",
-											"value": "xyz"
-										},
-										{
-											"key": "careplanId",
-											"value": "xyz"
-										},
-										{
-											"key": "assetId",
-											"value": "xyz"
-										},
-										{
-											"key": "assetType",
-											"value": "xyz"
-										},
-										{
-											"key": "additionalDetails",
-											"value": "xyz"
-										},
-										{
-											"key": "startDate",
-											"value": "xyz"
-										},
-										{
-											"key": "endDate",
-											"value": "xyz"
-										},
-										{
-											"key": "progressStatus",
-											"value": "xyz"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Update",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"type": "text/javascript",
-										"exec": [
-											"\r",
-											"\r",
-											"pm.test('Request is successfull', function () {\r",
-											"    pm.response.to.have.status(200);\r",
-											"    var jsonRes = pm.response.json();\r",
-											"    pm.expect(jsonRes.Status).to.eql('success');\r",
-											"});\r",
-											"\r",
-											"pm.test('User selected goal record is updated', function () {\r",
-											"    var jsonRes = pm.response.json();\r",
-											"    pm.expect(jsonRes.Data).to.have.property('id');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('UserId');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('CareplanId');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('Name');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('Description');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('AssetId');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('AssetType');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('AdditionalDetails');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('StartDate');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('EndDate');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('ProgressStatus');\r",
-											"   \r",
-											"    pm.expect(jsonRes.Data.Name).equals('Reduce Fasting Blood Glucose');\r",
-											"    pm.expect(jsonRes.Data.StartDate).equals('2022-01-01');\r",
-											"    pm.expect(jsonRes.Data.EndDate).equals('2023-01-01');\r",
-											"});\r",
-											"\r",
-											""
-										]
-									}
-								}
-							],
-							"request": {
-								"method": "PUT",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n\"Name\": \"Blood Glucose\",\r\n\"Description\": \".....\",\r\n\"UserId\": \"{{USER_ID}}\",\r\n\"CareplanId\": \"{{CAREPLAN_ID}}\",\r\n\"AdditionalDetails\": \"...\",\r\n\"StartDate\": \"2022-01-01\",\r\n\"EndDate\": \"2023-01-01\"\r\n\r\n}\r\n"
-								},
-								"url": {
-									"raw": "{{BASE_URL}}/user-selected-goals/{{USER_SELECTED_GOAL_ID}}",
-									"host": [
-										"{{BASE_URL}}"
-									],
-									"path": [
-										"user-selected-goals",
-										"{{USER_SELECTED_GOAL_ID}}"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Delete",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"type": "text/javascript",
-										"exec": [
-											"\r",
-											"\r",
-											"pm.test('Request is successfull', function () {\r",
-											"    pm.response.to.have.status(200);\r",
-											"    var jsonRes = pm.response.json();\r",
-											"    pm.expect(jsonRes.Status).to.eql('success');\r",
-											"});\r",
-											"\r",
-											"pm.test('User selected goal is deleted', function () {\r",
-											"    var jsonRes = pm.response.json();\r",
-											"    pm.expect(jsonRes.Data).to.have.property('Deleted');\r",
-											"    pm.expect(jsonRes.Data.Deleted).equals(true);\r",
-											"});\r",
-											"\r",
-											""
-										]
-									}
-								}
-							],
-							"request": {
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
-									}
-								],
-								"url": {
-									"raw": "{{BASE_URL}}/user-selected-goals/{{USER_SELECTED_GOAL_ID}}",
-									"host": [
-										"{{BASE_URL}}"
-									],
-									"path": [
-										"user-selected-goals",
-										"{{USER_SELECTED_GOAL_ID}}"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Create again",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"type": "text/javascript",
-										"exec": [
-											"try {\r",
-											"    var respData = pm.response.json();\r",
-											"    pm.environment.set(\"USER_SELECTED_GOAL_ID\", respData.Data.id);\r",
-											"}\r",
-											"catch (error) {\r",
-											"    console.log(error.message);\r",
-											"}\r",
-											"\r",
-											"pm.test('Request is successfull', function () {\r",
-											"    pm.response.to.have.status(200);\r",
-											"    var jsonRes = pm.response.json();\r",
-											"    pm.expect(jsonRes.Status).to.eql('success');\r",
-											"});\r",
-											"\r",
-											"pm.test('New user selected goal record is created', function () {\r",
-											"    var jsonRes = pm.response.json();\r",
-											"    pm.expect(jsonRes.Data).to.have.property('id');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('UserId');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('CareplanId');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('Name');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('Description');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('AssetId');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('AssetType');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('AdditionalDetails');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('StartDate');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('EndDate');\r",
-											"    pm.expect(jsonRes.Data).to.have.property('ProgressStatus');\r",
-											"   \r",
-											"   \r",
-											"    pm.expect(jsonRes.Data.UserId).equals('USER_ID');\r",
-											"    pm.expect(jsonRes.Data.Name).equals('Reduce Fasting Blood Glucose');\r",
-											"    pm.expect(jsonRes.Data.CareplanId).equals('CAREPLAN_ID');\r",
-											"    pm.expect(jsonRes.Data.StartDate).equals('2022-01-01');\r",
-											"    pm.expect(jsonRes.Data.EndDate).equals('2023-01-01');\r",
-											"});\r",
-											"\r",
-											""
-										]
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n   \"Name\": \"Blood Glucose\",\r\n\"Description\": \".....\",\r\n\"UserId\": \"{{USER_ID}}\",\r\n\"CareplanId\": \"{{CAREPLAN_ID}}\",\r\n\"AdditionalDetails\": \"...\",\r\n\"StartDate\": \"2022-01-01\",\r\n\"EndDate\": \"2023-01-01\"\r\n\r\n}\r\n"
-								},
-								"url": {
-									"raw": "{{BASE_URL}}/user-selected-goals",
-									"host": [
-										"{{BASE_URL}}"
-									],
-									"path": [
-										"user-selected-goals"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "User selected priority",
-					"item": [
-						{
-							"name": "Create",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"type": "text/javascript",
-										"exec": [
-											"try {\r",
-											"    var respData = pm.response.json();\r",
-											"    pm.environment.set(\"USER_SELECTED_PRIORITYL_ID\", respData.Data.id);\r",
+											"    pm.environment.set(\"USER_SELECTED_PRIORITY_ID\", respData.Data.id);\r",
 											"}\r",
 											"catch (error) {\r",
 											"    console.log(error.message);\r",
@@ -16809,7 +15710,8 @@
 											"});\r",
 											"\r",
 											""
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -16818,26 +15720,26 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
+										"key": "x-api-key",
+										"value": "{{API_CLIENT_INTERNAL_KEY}}",
+										"type": "text"
 									}
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n   \"Name\": \"Stress management\",\r\n\"Description\": \".....\",\r\n\"UserId\": \"{{USER_ID}}\",\r\n\"CareplanId\": \"{{CAREPLAN_ID}}\",\r\n\"StartDate\": \"2022-01-01\"\r\n\r\n}\r\n"
+									"raw": "{\r\n\"Name\": \"Stress management\",\r\n\"Description\": \".....\",\r\n\"EnrollmentId\": \"{{ENROLLMENT_ID}}\",\r\n\"ParticipantId\": \"{{PARTICIPANT_USER_ID}}\",\r\n\"AssetId\": \"{{ANIMATION_ID}}\",\r\n\"AssetType\": \"Message\",\r\n\"AssetCode\": \"{{ASSET_CODE}}\",\r\n\"CareplanId\": \"{{CARE_PLAN_ID}}\",\r\n\"StartDate\": \"2022-01-01\"\r\n\r\n}\r\n"
 								},
 								"url": {
-									"raw": "{{BASE_URL}}/user-selected-priorities",
+									"raw": "{{BASE_URL}}/participant-selected-priorities",
 									"host": [
 										"{{BASE_URL}}"
 									],
 									"path": [
-										"user-selected-priorities"
+										"participant-selected-priorities"
 									]
 								}
 							},
@@ -16849,7 +15751,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"\r",
 											"pm.test('Request is successfull', function () {\r",
@@ -16875,7 +15776,8 @@
 											"});\r",
 											"\r",
 											""
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -16884,22 +15786,22 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
+										"key": "x-api-key",
+										"value": "{{API_CLIENT_INTERNAL_KEY}}",
+										"type": "text"
 									}
 								],
 								"url": {
-									"raw": "{{BASE_URL}}/user-selected-priorities/{{USER_SELECTED_PRIORITYL_ID}}",
+									"raw": "{{BASE_URL}}/participant-selected-priorities/{{USER_SELECTED_PRIORITYL_ID}}",
 									"host": [
 										"{{BASE_URL}}"
 									],
 									"path": [
-										"user-selected-priorities",
+										"participant-selected-priorities",
 										"{{USER_SELECTED_PRIORITYL_ID}}"
 									]
 								}
@@ -16912,7 +15814,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"\r",
 											"\r",
@@ -16927,7 +15828,8 @@
 											"    pm.expect(jsonRes.Data.Items.length).greaterThan(0);\r",
 											"});\r",
 											""
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -16936,22 +15838,22 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
+										"key": "x-api-key",
+										"value": "{{API_CLIENT_INTERNAL_KEY}}",
+										"type": "text"
 									}
 								],
 								"url": {
-									"raw": "{{BASE_URL}}/user-selected-priorities/search?name=Stress management",
+									"raw": "{{BASE_URL}}/participant-selected-priorities/search?name=Stress management",
 									"host": [
 										"{{BASE_URL}}"
 									],
 									"path": [
-										"user-selected-priorities",
+										"participant-selected-priorities",
 										"search"
 									],
 									"query": [
@@ -16995,7 +15897,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"\r",
 											"pm.test('Request is successfull', function () {\r",
@@ -17020,7 +15921,8 @@
 											"});\r",
 											"\r",
 											""
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -17029,26 +15931,26 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
+										"key": "x-api-key",
+										"value": "{{API_CLIENT_INTERNAL_KEY}}",
+										"type": "text"
 									}
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n\"Name\": \"Stress management\",\r\n\"Description\": \".....\",\r\n\"UserId\": \"{{USER_ID}}\",\r\n\"CareplanId\": \"{{CAREPLAN_ID}}\",\r\n\"StartDate\": \"2022-01-01\"\r\n\r\n}\r\n"
+									"raw": "{\r\n\"Name\": \"Stress management\",\r\n\"Description\": \"Sleep at least 6 hours a day\",\r\n\"EnrollmentId\": \"{{ENROLLMENT_ID}}\",\r\n\"ParticipantId\": \"{{PARTICIPANT_USER_ID}}\",\r\n\"AssetId\": \"{{ANIMATION_ID}}\",\r\n\"AssetType\": \"Message\",\r\n\"AssetCode\": \"{{ASSET_CODE}}\",\r\n\"CareplanId\": \"{{CARE_PLAN_ID}}\",\r\n\"StartDate\": \"2022-01-01\"\r\n\r\n}"
 								},
 								"url": {
-									"raw": "{{BASE_URL}}/user-selected-priorities/{{USER_SELECTED_PRIORITYL_ID}}",
+									"raw": "{{BASE_URL}}/participant-selected-priorities/{{USER_SELECTED_PRIORITYL_ID}}",
 									"host": [
 										"{{BASE_URL}}"
 									],
 									"path": [
-										"user-selected-priorities",
+										"participant-selected-priorities",
 										"{{USER_SELECTED_PRIORITYL_ID}}"
 									]
 								}
@@ -17061,7 +15963,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"\r",
 											"\r",
@@ -17078,7 +15979,8 @@
 											"});\r",
 											"\r",
 											""
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -17087,22 +15989,26 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
+										"key": "x-api-key",
+										"value": "{{API_CLIENT_INTERNAL_KEY}}",
+										"type": "text"
 									}
 								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
 								"url": {
-									"raw": "{{BASE_URL}}/user-selected-priorities/{{USER_SELECTED_PRIORITYL_ID}}",
+									"raw": "{{BASE_URL}}/participant-selected-priorities/{{USER_SELECTED_PRIORITYL_ID}}",
 									"host": [
 										"{{BASE_URL}}"
 									],
 									"path": [
-										"user-selected-priorities",
+										"participant-selected-priorities",
 										"{{USER_SELECTED_PRIORITYL_ID}}"
 									]
 								}
@@ -17115,7 +16021,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"try {\r",
 											"    var respData = pm.response.json();\r",
@@ -17149,7 +16054,8 @@
 											"});\r",
 											"\r",
 											""
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -17158,26 +16064,936 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									},
 									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{USER_JWT}}"
+										"key": "x-api-key",
+										"value": "{{API_CLIENT_INTERNAL_KEY}}",
+										"type": "text"
 									}
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n   \"Name\": \"Stress management\",\r\n\"Description\": \".....\",\r\n\"UserId\": \"{{USER_ID}}\",\r\n\"CareplanId\": \"{{CAREPLAN_ID}}\",\r\n\"StartDate\": \"2022-01-01\"\r\n\r\n}\r\n"
+									"raw": "{\r\n\"Name\": \"Stress management\",\r\n\"Description\": \".....\",\r\n\"EnrollmentId\": \"{{ENROLLMENT_ID}}\",\r\n\"ParticipantId\": \"{{PARTICIPANT_USER_ID}}\",\r\n\"AssetId\": \"{{ANIMATION_ID}}\",\r\n\"AssetType\": \"Message\",\r\n\"AssetCode\": \"{{ASSET_CODE}}\",\r\n\"CareplanId\": \"{{CARE_PLAN_ID}}\",\r\n\"StartDate\": \"2022-01-01\"\r\n\r\n}\r\n"
 								},
 								"url": {
-									"raw": "{{BASE_URL}}/user-selected-priorities",
+									"raw": "{{BASE_URL}}/participant-selected-priorities",
 									"host": [
 										"{{BASE_URL}}"
 									],
 									"path": [
-										"user-selected-priorities"
+										"participant-selected-priorities"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Participant selected goal",
+					"item": [
+						{
+							"name": "Create",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"try {\r",
+											"    var respData = pm.response.json();\r",
+											"    pm.environment.set(\"USER_SELECTED_GOAL_ID\", respData.Data.id);\r",
+											"}\r",
+											"catch (error) {\r",
+											"    console.log(error.message);\r",
+											"}\r",
+											"\r",
+											"pm.test('Request is successfull', function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    var jsonRes = pm.response.json();\r",
+											"    pm.expect(jsonRes.Status).to.eql('success');\r",
+											"});\r",
+											"\r",
+											"pm.test('New user selected goal record is created', function () {\r",
+											"    var jsonRes = pm.response.json();\r",
+											"    pm.expect(jsonRes.Data).to.have.property('id');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('UserId');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('CareplanId');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('Name');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('Description');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('AssetId');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('AssetType');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('AdditionalDetails');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('StartDate');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('EndDate');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('ProgressStatus');\r",
+											"   \r",
+											"    pm.expect(jsonRes.Data.Name).equals('Blood Glucose');\r",
+											"    pm.expect(jsonRes.Data.StartDate).equals('2022-01-01');\r",
+											"    pm.expect(jsonRes.Data.EndDate).equals('2023-01-01');\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "x-api-key",
+										"value": "{{API_CLIENT_INTERNAL_KEY}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \"Name\": \"Blood Glucose\",\r\n\"Description\": \".....\",\r\n\"EnrollmentId\": \"{{ENROLLMENT_ID}}\",\r\n\"ParticipantId\": \"{{PARTICIPANT_USER_ID}}\",\r\n\"SelectedPriorityId\": \"{{USER_SELECTED_PRIORITY_ID}}\",\r\n\"CareplanId\": \"{{CARE_PLAN_ID}}\",\r\n\"AssetId\": \"{{ANIMATION_ID}}\",\r\n\"AssetType\": \"Message\",\r\n\"AssetCode\": \"{{ASSET_CODE}}\",\r\n\"AdditionalDetails\": \"...\",\r\n\"StartDate\": \"2022-01-01\",\r\n\"EndDate\": \"2023-01-01\"\r\n\r\n}\r\n"
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/participant-selected-goals",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"participant-selected-goals"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get by id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"pm.test('Request is successfull', function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    var jsonRes = pm.response.json();\r",
+											"    pm.expect(jsonRes.Status).to.eql('success');\r",
+											"});\r",
+											"\r",
+											"pm.test('User selected goal record is retrived', function () {\r",
+											"    var jsonRes = pm.response.json();\r",
+											"    pm.expect(jsonRes.Data).to.have.property('id');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('UserId');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('CareplanId');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('Name');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('Description');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('AssetId');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('AssetType');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('AdditionalDetails');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('StartDate');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('EndDate');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('ProgressStatus');\r",
+											"   \r",
+											"    pm.expect(jsonRes.Data.Name).equals('Reduce Fasting Blood Glucose');\r",
+											"    pm.expect(jsonRes.Data.StartDate).equals('2022-01-01');\r",
+											"    pm.expect(jsonRes.Data.EndDate).equals('2023-01-01');\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "x-api-key",
+										"value": "{{API_CLIENT_INTERNAL_KEY}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{BASE_URL}}/participant-selected-goals/{{USER_SELECTED_GOAL_ID}}",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"participant-selected-goals",
+										"{{USER_SELECTED_GOAL_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Search with filters",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"\r",
+											"pm.test('Request is successfull', function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    var jsonRes = pm.response.json();\r",
+											"    pm.expect(jsonRes.Status).to.eql('success');\r",
+											"});\r",
+											"\r",
+											"pm.test(' User selected goals are retrived', function () {\r",
+											"    var jsonRes = pm.response.json();\r",
+											"    pm.expect(jsonRes.Data.Items.length).greaterThan(0);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "x-api-key",
+										"value": "{{API_CLIENT_INTERNAL_KEY}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{BASE_URL}}/participant-selected-goals/search?careplanId={{CARE_PLAN_ID}}",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"participant-selected-goals",
+										"search"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "xyz",
+											"disabled": true
+										},
+										{
+											"key": "description",
+											"value": "xyz",
+											"disabled": true
+										},
+										{
+											"key": "careplanId",
+											"value": "{{CARE_PLAN_ID}}"
+										},
+										{
+											"key": "assetId",
+											"value": "xyz",
+											"disabled": true
+										},
+										{
+											"key": "assetType",
+											"value": "xyz",
+											"disabled": true
+										},
+										{
+											"key": "additionalDetails",
+											"value": "xyz",
+											"disabled": true
+										},
+										{
+											"key": "startDate",
+											"value": "xyz",
+											"disabled": true
+										},
+										{
+											"key": "endDate",
+											"value": "xyz",
+											"disabled": true
+										},
+										{
+											"key": "progressStatus",
+											"value": "xyz",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"\r",
+											"pm.test('Request is successfull', function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    var jsonRes = pm.response.json();\r",
+											"    pm.expect(jsonRes.Status).to.eql('success');\r",
+											"});\r",
+											"\r",
+											"pm.test('User selected goal record is updated', function () {\r",
+											"    var jsonRes = pm.response.json();\r",
+											"    pm.expect(jsonRes.Data).to.have.property('id');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('UserId');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('CareplanId');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('Name');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('Description');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('AssetId');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('AssetType');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('AdditionalDetails');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('StartDate');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('EndDate');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('ProgressStatus');\r",
+											"   \r",
+											"    pm.expect(jsonRes.Data.Name).equals('Reduce Fasting Blood Glucose');\r",
+											"    pm.expect(jsonRes.Data.StartDate).equals('2022-01-01');\r",
+											"    pm.expect(jsonRes.Data.EndDate).equals('2023-01-01');\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "x-api-key",
+										"value": "{{API_CLIENT_INTERNAL_KEY}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \"Name\": \"Blood Glucose\",\r\n\"Description\": \"Control your sugar intake\",\r\n\"EnrollmentId\": \"{{ENROLLMENT_ID}}\",\r\n\"ParticipantId\": \"{{PARTICIPANT_USER_ID}}\",\r\n\"SelectedPriorityId\": \"{{USER_SELECTED_PRIORITY_ID}}\",\r\n\"CareplanId\": \"{{CARE_PLAN_ID}}\",\r\n\"AssetId\": \"{{ANIMATION_ID}}\",\r\n\"AssetType\": \"Message\",\r\n\"AssetCode\": \"{{ASSET_CODE}}\",\r\n\"AdditionalDetails\": \"...\",\r\n\"StartDate\": \"2022-01-01\",\r\n\"EndDate\": \"2023-01-01\"\r\n\r\n}"
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/participant-selected-goals/{{USER_SELECTED_GOAL_ID}}",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"participant-selected-goals",
+										"{{USER_SELECTED_GOAL_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"\r",
+											"pm.test('Request is successfull', function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    var jsonRes = pm.response.json();\r",
+											"    pm.expect(jsonRes.Status).to.eql('success');\r",
+											"});\r",
+											"\r",
+											"pm.test('User selected goal is deleted', function () {\r",
+											"    var jsonRes = pm.response.json();\r",
+											"    pm.expect(jsonRes.Data).to.have.property('Deleted');\r",
+											"    pm.expect(jsonRes.Data.Deleted).equals(true);\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "x-api-key",
+										"value": "{{API_CLIENT_INTERNAL_KEY}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/participant-selected-goals/{{USER_SELECTED_GOAL_ID}}",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"participant-selected-goals",
+										"{{USER_SELECTED_GOAL_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create again",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"try {\r",
+											"    var respData = pm.response.json();\r",
+											"    pm.environment.set(\"USER_SELECTED_GOAL_ID\", respData.Data.id);\r",
+											"}\r",
+											"catch (error) {\r",
+											"    console.log(error.message);\r",
+											"}\r",
+											"\r",
+											"pm.test('Request is successfull', function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    var jsonRes = pm.response.json();\r",
+											"    pm.expect(jsonRes.Status).to.eql('success');\r",
+											"});\r",
+											"\r",
+											"pm.test('New user selected goal record is created', function () {\r",
+											"    var jsonRes = pm.response.json();\r",
+											"    pm.expect(jsonRes.Data).to.have.property('id');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('UserId');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('CareplanId');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('Name');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('Description');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('AssetId');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('AssetType');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('AdditionalDetails');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('StartDate');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('EndDate');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('ProgressStatus');\r",
+											"   \r",
+											"   \r",
+											"    pm.expect(jsonRes.Data.UserId).equals('USER_ID');\r",
+											"    pm.expect(jsonRes.Data.Name).equals('Reduce Fasting Blood Glucose');\r",
+											"    pm.expect(jsonRes.Data.CareplanId).equals('CAREPLAN_ID');\r",
+											"    pm.expect(jsonRes.Data.StartDate).equals('2022-01-01');\r",
+											"    pm.expect(jsonRes.Data.EndDate).equals('2023-01-01');\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "x-api-key",
+										"value": "{{API_CLIENT_INTERNAL_KEY}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \"Name\": \"Blood Pressure\",\r\n\"Description\": \".....\",\r\n\"EnrollmentId\": \"{{ENROLLMENT_ID}}\",\r\n\"ParticipantId\": \"{{PARTICIPANT_USER_ID}}\",\r\n\"SelectedPriorityId\": \"{{USER_SELECTED_PRIORITY_ID}}\",\r\n\"CareplanId\": \"{{CARE_PLAN_ID}}\",\r\n\"AssetId\": \"{{ANIMATION_ID}}\",\r\n\"AssetType\": \"Message\",\r\n\"AssetCode\": \"{{ASSET_CODE}}\",\r\n\"AdditionalDetails\": \"...\",\r\n\"StartDate\": \"2022-01-01\",\r\n\"EndDate\": \"2023-01-01\"\r\n\r\n}\r\n"
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/participant-selected-goals",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"participant-selected-goals"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Participant selected action plan",
+					"item": [
+						{
+							"name": "Create",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"try {\r",
+											"    var respData = pm.response.json();\r",
+											"    pm.environment.set(\"USER_SELECTED_ACTION_PLAN_ID\", respData.Data.id);\r",
+											"}\r",
+											"catch (error) {\r",
+											"    console.log(error.message);\r",
+											"}\r",
+											"\r",
+											"pm.test('Request is successfull', function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    var jsonRes = pm.response.json();\r",
+											"    pm.expect(jsonRes.Status).to.eql('success');\r",
+											"});\r",
+											"\r",
+											"pm.test('New user selected action plan record is created', function () {\r",
+											"    var jsonRes = pm.response.json();\r",
+											"     pm.expect(jsonRes.Data).to.have.property('id');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('UserId');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('CareplanId');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('Name');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('Description');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('AssetId');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('AssetType');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('AdditionalDetails');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('StartDate');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('EndDate');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('ProgressStatus');\r",
+											"   \r",
+											"    pm.expect(jsonRes.Data.Name).equals('Reduce Fasting Blood Glucose');\r",
+											"    pm.expect(jsonRes.Data.StartDate).equals('2022-01-01');\r",
+											"    pm.expect(jsonRes.Data.EndDate).equals('2023-01-01');\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "x-api-key",
+										"value": "{{API_CLIENT_INTERNAL_KEY}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"Name\": \"Reduce Fasting Blood Glucose\",\r\n\"Description\": \".....\",\r\n\"EnrollmentId\": \"{{ENROLLMENT_ID}}\",\r\n\"ParticipantId\": \"{{PARTICIPANT_USER_ID}}\",\r\n\"GoalId\": \"{{USER_SELECTED_GOAL_ID}}\",\r\n\"CareplanId\": \"{{CARE_PLAN_ID}}\",\r\n\"AssetId\": \"{{ANIMATION_ID}}\",\r\n\"AssetType\": \"Message\",\r\n\"AssetCode\": \"{{ASSET_CODE}}\",\r\n\"AdditionalDetails\": \"...\",\r\n\"StartDate\": \"2022-01-01\",\r\n\"EndDate\": \"2024-01-01\"\r\n\r\n}\r\n"
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/participant-selected-action-plans",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"participant-selected-action-plans"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get by id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"\r",
+											"pm.test('Request is successfull', function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    var jsonRes = pm.response.json();\r",
+											"    pm.expect(jsonRes.Status).to.eql('success');\r",
+											"});\r",
+											"\r",
+											"pm.test('User selected action plan  is retrived', function () {\r",
+											"    var jsonRes = pm.response.json();\r",
+											"      pm.expect(jsonRes.Data).to.have.property('id');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('UserId');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('CareplanId');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('Name');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('Description');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('AssetId');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('AssetType');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('AdditionalDetails');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('StartDate');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('EndDate');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('ProgressStatus');\r",
+											"   \r",
+											"    pm.expect(jsonRes.Data.Name).equals('Reduce Fasting Blood Glucose');\r",
+											"    pm.expect(jsonRes.Data.StartDate).equals('2022-01-01');\r",
+											"    pm.expect(jsonRes.Data.EndDate).equals('2023-01-01');\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "x-api-key",
+										"value": "{{API_CLIENT_INTERNAL_KEY}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{BASE_URL}}/participant-selected-action-plans/{{USER_SELECTED_ACTION_PLAN_ID}}",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"participant-selected-action-plans",
+										"{{USER_SELECTED_ACTION_PLAN_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Search with filters",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"pm.test('Request is successfull', function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    var jsonRes = pm.response.json();\r",
+											"    pm.expect(jsonRes.Status).to.eql('success');\r",
+											"});\r",
+											"\r",
+											"pm.test(' User selected action plans are retrived', function () {\r",
+											"    var jsonRes = pm.response.json();\r",
+											"    pm.expect(jsonRes.Data.Items.length).greaterThan(0);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "x-api-key",
+										"value": "{{API_CLIENT_INTERNAL_KEY}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{BASE_URL}}/participant-selected-action-plans/search?careplanId=1",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"participant-selected-action-plans",
+										"search"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "xyz",
+											"disabled": true
+										},
+										{
+											"key": "description",
+											"value": "xyz",
+											"disabled": true
+										},
+										{
+											"key": "careplanId",
+											"value": "1"
+										},
+										{
+											"key": "assetId",
+											"value": "xyz",
+											"disabled": true
+										},
+										{
+											"key": "assetType",
+											"value": "xyz",
+											"disabled": true
+										},
+										{
+											"key": "additionalDetails",
+											"value": "xyz",
+											"disabled": true
+										},
+										{
+											"key": "startDate",
+											"value": "xyz",
+											"disabled": true
+										},
+										{
+											"key": "endDate",
+											"value": "xyz",
+											"disabled": true
+										},
+										{
+											"key": "progressStatus",
+											"value": "xyz",
+											"disabled": true
+										},
+										{
+											"key": "participantId",
+											"value": "{{PARTICIPANT_USER_ID}}",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"pm.test('Request is successfull', function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    var jsonRes = pm.response.json();\r",
+											"    pm.expect(jsonRes.Status).to.eql('success');\r",
+											"});\r",
+											"\r",
+											"pm.test('User selected action plan record is updated', function () {\r",
+											"    var jsonRes = pm.response.json();\r",
+											"     pm.expect(jsonRes.Data).to.have.property('id');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('UserId');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('CareplanId');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('Name');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('Description');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('AssetId');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('AssetType');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('AdditionalDetails');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('StartDate');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('EndDate');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('ProgressStatus');\r",
+											"   \r",
+											"    pm.expect(jsonRes.Data.Name).equals('Reduce Fasting Blood Glucose');\r",
+											"    pm.expect(jsonRes.Data.StartDate).equals('2022-01-01');\r",
+											"    pm.expect(jsonRes.Data.EndDate).equals('2023-01-01');\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "x-api-key",
+										"value": "{{API_CLIENT_INTERNAL_KEY}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"Name\": \"Reduce Fasting Blood Glucose\",\r\n\"Description\": \"We need to follow low carb and high protien diet\",\r\n\"EnrollmentId\": \"{{ENROLLMENT_ID}}\",\r\n\"ParticipantId\": \"{{PARTICIPANT_USER_ID}}\",\r\n\"GoalId\": \"{{USER_SELECTED_GOAL_ID}}\",\r\n\"CareplanId\": \"{{CARE_PLAN_ID}}\",\r\n\"AssetId\": \"{{ANIMATION_ID}}\",\r\n\"AssetType\": \"Message\",\r\n\"AssetCode\": \"{{ASSET_CODE}}\",\r\n\"AdditionalDetails\": \"...\",\r\n\"StartDate\": \"2022-01-01\",\r\n\"EndDate\": \"2024-01-01\"\r\n\r\n}"
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/participant-selected-action-plans/{{USER_SELECTED_ACTION_PLAN_ID}}",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"participant-selected-action-plans",
+										"{{USER_SELECTED_ACTION_PLAN_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"\r",
+											"pm.test('Request is successfull', function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    var jsonRes = pm.response.json();\r",
+											"    pm.expect(jsonRes.Status).to.eql('success');\r",
+											"});\r",
+											"\r",
+											"pm.test('User selected action plan is deleted', function () {\r",
+											"    var jsonRes = pm.response.json();\r",
+											"    pm.expect(jsonRes.Data).to.have.property('Deleted');\r",
+											"    pm.expect(jsonRes.Data.Deleted).equals(true);\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "x-api-key",
+										"value": "{{API_CLIENT_INTERNAL_KEY}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/participant-selected-action-plans/{{USER_SELECTED_ACTION_PLAN_ID}}",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"participant-selected-action-plans",
+										"{{USER_SELECTED_ACTION_PLAN_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create again",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"try {\r",
+											"    var respData = pm.response.json();\r",
+											"    pm.environment.set(\"USER_SELECTED_ACTION_PLAN_ID\", respData.Data.id);\r",
+											"}\r",
+											"catch (error) {\r",
+											"    console.log(error.message);\r",
+											"}\r",
+											"\r",
+											"pm.test('Request is successfull', function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    var jsonRes = pm.response.json();\r",
+											"    pm.expect(jsonRes.Status).to.eql('success');\r",
+											"});\r",
+											"\r",
+											"pm.test('New user selected action plan record is created', function () {\r",
+											"    var jsonRes = pm.response.json();\r",
+											"     pm.expect(jsonRes.Data).to.have.property('id');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('UserId');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('CareplanId');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('Name');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('Description');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('AssetId');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('AssetType');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('AdditionalDetails');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('StartDate');\r",
+											"       pm.expect(jsonRes.Data).to.have.property('EndDate');\r",
+											"    pm.expect(jsonRes.Data).to.have.property('ProgressStatus');\r",
+											"   \r",
+											"   \r",
+											"    pm.expect(jsonRes.Data.UserId).equals('USER_ID');\r",
+											"    pm.expect(jsonRes.Data.Name).equals('Reduce Fasting Blood Glucose');\r",
+											"    pm.expect(jsonRes.Data.CareplanId).equals('CAREPLAN_ID');\r",
+											"     pm.expect(jsonRes.Data.StartDate).equals('2022-01-01');\r",
+											"    pm.expect(jsonRes.Data.EndDate).equals('2023-01-01');\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "x-api-key",
+										"value": "{{API_CLIENT_INTERNAL_KEY}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"Name\": \"Reduce Fasting Blood Glucose\",\r\n\"Description\": \"Eat less carbs\",\r\n\"EnrollmentId\": \"{{ENROLLMENT_ID}}\",\r\n\"ParticipantId\": \"{{PARTICIPANT_USER_ID}}\",\r\n\"GoalId\": \"{{USER_SELECTED_GOAL_ID}}\",\r\n\"CareplanId\": \"{{CARE_PLAN_ID}}\",\r\n\"AssetId\": \"{{ANIMATION_ID}}\",\r\n\"AssetType\": \"Message\",\r\n\"AssetCode\": \"{{ASSET_CODE}}\",\r\n\"AdditionalDetails\": \"...\",\r\n\"StartDate\": \"2022-01-01\",\r\n\"EndDate\": \"2024-01-01\"\r\n\r\n}"
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/participant-selected-action-plans",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"participant-selected-action-plans"
 									]
 								}
 							},
