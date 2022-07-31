@@ -22,6 +22,7 @@ import {
     EnrollmentTaskSearchFilters,
     EnrollmentTaskSearchResults
 } from '../../../domain.types/enrollment/enrollment.task.domain.types';
+import { AssetHelper } from '../assets/asset.helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -58,30 +59,32 @@ export class EnrollmentTaskService {
                 where : {
                     id : id
                 },
-                include : [{
-                    model    : this.Enrollment,
-                    required : false,
-                    as       : 'Enrollment',
+                include : [
+                    {
+                        model    : this.Enrollment,
+                        required : false,
+                        as       : 'Enrollment',
                     //through: { attributes: [] }
-                }, {
-                    model    : this.Participant,
-                    required : false,
-                    as       : 'Participant',
+                    }, {
+                        model    : this.Participant,
+                        required : false,
+                        as       : 'Participant',
                     //through: { attributes: [] }
-                }, {
-                    model    : this.CareplanActivity,
-                    required : false,
-                    as       : 'CareplanActivity',
+                    }, {
+                        model    : this.CareplanActivity,
+                        required : false,
+                        as       : 'CareplanActivity',
                     //through: { attributes: [] }
-                }, {
-                    model    : this.Careplan,
-                    required : false,
-                    as       : 'Careplan',
+                    }, {
+                        model    : this.Careplan,
+                        required : false,
+                        as       : 'Careplan',
                     //through: { attributes: [] }
-                },
-
+                    },
                 ]
             });
+            const asset = await AssetHelper.getAsset(record.AssetId, record.AssetType);
+            record.Asset = asset;
             return record;
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve enrollment schedule!', error);

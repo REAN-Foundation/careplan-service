@@ -14301,7 +14301,7 @@
 			]
 		},
 		{
-			"name": "Careplan schedule",
+			"name": "Careplan activity",
 			"item": [
 				{
 					"name": "Create",
@@ -14325,7 +14325,7 @@
 									"    pm.expect(jsonRes.Status).to.eql('success');\r",
 									"});\r",
 									"\r",
-									"pm.test('New careplan schedule record is created', function () {\r",
+									"pm.test('New careplan activity record is created', function () {\r",
 									"\r",
 									"    var expectedAssetId = pm.environment.get(\"ACTION_PLAN_ID\");\r",
 									"    var expectedCareplanId = pm.environment.get(\"CARE_PLAN_ID\");\r",
@@ -14395,7 +14395,7 @@
 									"    pm.expect(jsonRes.Status).to.eql('success');\r",
 									"});\r",
 									"\r",
-									"pm.test('Careplan schedule record is retrived', function () {\r",
+									"pm.test('Careplan activity record is retrived', function () {\r",
 									"    var jsonRes = pm.response.json();\r",
 									"    pm.expect(jsonRes.Data).to.have.property('id');\r",
 									"    pm.expect(jsonRes.Data).to.have.property('AssetId');\r",
@@ -14453,7 +14453,7 @@
 									"    pm.expect(jsonRes.Status).to.eql('success');\r",
 									"});\r",
 									"\r",
-									"pm.test('Careplan schedule record is retrived', function () {\r",
+									"pm.test('Careplan activity record is retrived', function () {\r",
 									"    var jsonRes = pm.response.json();\r",
 									"    pm.expect(jsonRes.Data.Items.length).greaterThan(0);\r",
 									"});"
@@ -14528,7 +14528,7 @@
 									"    pm.expect(jsonRes.Status).to.eql('success');\r",
 									"});\r",
 									"\r",
-									"pm.test('Careplan schedule record is updated', function () {\r",
+									"pm.test('Careplan activity record is updated', function () {\r",
 									"    var jsonRes = pm.response.json();\r",
 									"    pm.expect(jsonRes.Data).to.have.property('id');\r",
 									"    pm.expect(jsonRes.Data).to.have.property('AssetId');\r",
@@ -14591,7 +14591,7 @@
 									"    pm.expect(jsonRes.Status).to.eql('success');\r",
 									"});\r",
 									"\r",
-									"pm.test('Careplan schedule record is deleted', function () {\r",
+									"pm.test('Careplan activity record is deleted', function () {\r",
 									"    var jsonRes = pm.response.json();\r",
 									"    pm.expect(jsonRes.Data).to.have.property('Deleted');\r",
 									"    pm.expect(jsonRes.Data.Deleted).equals(true);\r",
@@ -14650,7 +14650,7 @@
 									"    pm.expect(jsonRes.Status).to.eql('success');\r",
 									"});\r",
 									"\r",
-									"pm.test('New careplan schedule record is created', function () {\r",
+									"pm.test('New careplan activity record is created', function () {\r",
 									"\r",
 									"    var expectedAssetId = pm.environment.get(\"ACTION_PLAN_ID\");\r",
 									"    var expectedCareplanId = pm.environment.get(\"CARE_PLAN_ID\");\r",

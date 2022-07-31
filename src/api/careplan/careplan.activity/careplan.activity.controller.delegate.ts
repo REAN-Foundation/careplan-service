@@ -42,7 +42,7 @@ export class CareplanActivityControllerDelegate {
         var createModel: CareplanActivityCreateModel = this.getCreateModel(requestBody);
         const record = await this._service.create(createModel);
         if (record === null) {
-            throw new ApiError('Unable to create careplan schedule!', 400);
+            throw new ApiError('Unable to create careplan activity!', 400);
         }
         return this.getEnrichedDto(record);
     }
@@ -50,7 +50,7 @@ export class CareplanActivityControllerDelegate {
     getById = async (id: uuid) => {
         const record = await this._service.getById(id);
         if (record === null) {
-            ErrorHandler.throwNotFoundError('Careplan schedule with id ' + id.toString() + ' cannot be found!');
+            ErrorHandler.throwNotFoundError('Careplan activity with id ' + id.toString() + ' cannot be found!');
         }
         return this.getEnrichedDto(record);
     }
@@ -68,12 +68,12 @@ export class CareplanActivityControllerDelegate {
         await validator.validateUpdateRequest(requestBody);
         const record = await this._service.getById(id);
         if (record === null) {
-            ErrorHandler.throwNotFoundError('Careplan schedule with id ' + id.toString() + ' cannot be found!');
+            ErrorHandler.throwNotFoundError('Careplan activity with id ' + id.toString() + ' cannot be found!');
         }
         const updateModel: CareplanActivityUpdateModel = this.getUpdateModel(requestBody);
         const updated = await this._service.update(id, updateModel);
         if (updated == null) {
-            throw new ApiError('Unable to update careplan schedule!', 400);
+            throw new ApiError('Unable to update careplan activity!', 400);
         }
         return this.getEnrichedDto(updated);
     }
@@ -81,7 +81,7 @@ export class CareplanActivityControllerDelegate {
     delete = async (id: uuid) => {
         const record = await this._service.getById(id);
         if (record == null) {
-            ErrorHandler.throwNotFoundError('Careplan schedule with id ' + id.toString() + ' cannot be found!');
+            ErrorHandler.throwNotFoundError('Careplan activity with id ' + id.toString() + ' cannot be found!');
         }
         const careplanActivityDeleted: boolean = await this._service.delete(id);
         return {
@@ -170,6 +170,7 @@ export class CareplanActivityControllerDelegate {
             AssetId                : record.AssetId,
             AssetType              : record.AssetType,
             CareplanId             : record.CareplanId,
+            Asset                  : record.Asset,
             Day                    : record.Day,
             TimeSlot               : record.TimeSlot,
             IsRegistrationActivity : record.IsRegistrationActivity
@@ -185,6 +186,7 @@ export class CareplanActivityControllerDelegate {
             AssetId                : record.AssetId,
             AssetType              : record.AssetType,
             CareplanId             : record.CareplanId,
+            Asset                  : record.Asset,
             Day                    : record.Day,
             TimeSlot               : record.TimeSlot,
             IsRegistrationActivity : record.IsRegistrationActivity

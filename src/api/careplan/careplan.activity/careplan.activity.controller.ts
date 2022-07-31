@@ -28,7 +28,7 @@ export class CareplanActivityController extends BaseController {
         try {
             await this.authorize('CareplanActivity.Create', request, response);
             const record = await this._delegate.create(request.body);
-            const message = 'Careplan schedule added successfully!';
+            const message = 'Careplan activity added successfully!';
             ResponseHandler.success(request, response, message, 201, record);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
@@ -39,7 +39,7 @@ export class CareplanActivityController extends BaseController {
         try {
             await this.authorize('CareplanActivity.GetById', request, response);
             const record = await this._delegate.getById(request.params.id);
-            const message = 'Careplan schedule retrieved successfully!';
+            const message = 'Careplan activity retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, record);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
@@ -50,7 +50,7 @@ export class CareplanActivityController extends BaseController {
         try {
             await this.authorize('CareplanActivity.Search', request, response);
             const searchResults = await this._delegate.search(request.query);
-            const message = 'Careplan schedule records retrieved successfully!';
+            const message = 'Careplan activity records retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, searchResults);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
@@ -61,7 +61,7 @@ export class CareplanActivityController extends BaseController {
         try {
             await this.authorize('CareplanActivity.Update', request, response);
             const updatedRecord = await this._delegate.update(request.params.id, request.body);
-            const message = 'Careplan schedule updated successfully!';
+            const message = 'Careplan activity updated successfully!';
             ResponseHandler.success(request, response, message, 200, updatedRecord);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
@@ -72,7 +72,7 @@ export class CareplanActivityController extends BaseController {
         try {
             await this.authorize('CareplanActivity.Delete', request, response);
             const result = await this._delegate.delete(request.params.id);
-            const message = 'Careplan schedule deleted successfully!';
+            const message = 'Careplan activity deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);

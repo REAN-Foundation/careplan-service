@@ -7,11 +7,11 @@ const infra = require('../index');
 
 ///////////////////////////////////////////////////////////////////////////
 
-describe('Careplan schedule tests', function() {
+describe('Careplan activity tests', function() {
 
     var agent = request.agent(infra.app);
 
-    it('Create careplan schedule', function(done) {
+    it('Create careplan activity', function(done) {
         loadCareplanActivityCreateModel();
         const createModel = TestCache.CareplanActivityCreateModel;
         agent
@@ -40,7 +40,7 @@ describe('Careplan schedule tests', function() {
             .expect(201, done);
     });
 
-    it('Get careplan schedule by id', function(done) {
+    it('Get careplan activity by id', function(done) {
         const id = `${TestCache.CAREPLAN_SCHEDULE_ID}`
         agent
             .get(`/api/v1/careplan-schedules/${TestCache.CAREPLAN_SCHEDULE_ID}`)
@@ -65,7 +65,7 @@ describe('Careplan schedule tests', function() {
             .expect(200, done);
     });
 
-    it('Search careplan schedule records', function(done) {
+    it('Search careplan activity records', function(done) {
         loadCareplanActivityQueryString();
         const queryString = TestCache.CareplanActivityQueryString;
         agent
@@ -86,7 +86,7 @@ describe('Careplan schedule tests', function() {
             .expect(200, done);
     });
 
-    it('Update careplan schedule', function(done) {
+    it('Update careplan activity', function(done) {
         loadCareplanActivityUpdateModel();
         const updateModel = TestCache.CareplanActivityUpdateModel;
         const id = `${TestCache.CAREPLAN_SCHEDULE_ID}`
@@ -114,7 +114,7 @@ describe('Careplan schedule tests', function() {
             .expect(200, done);
     });
 
-    it('Delete careplan schedule', function(done) {
+    it('Delete careplan activity', function(done) {
         const id = `${TestCache.CAREPLAN_SCHEDULE_ID}`
 
         //Delete
