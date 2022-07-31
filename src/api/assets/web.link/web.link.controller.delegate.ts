@@ -22,6 +22,7 @@ import {
     WebLinkSearchFilters,
     WebLinkSearchResults
 } from '../../../domain.types/assets/web.link.domain.types';
+import { AssetHelper } from '../../../database/repository.services/assets/asset.helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -40,10 +41,11 @@ export class WebLinkControllerDelegate {
     create = async (requestBody: any) => {
         await validator.validateCreateRequest(requestBody);
         var createModel: WebLinkCreateModel = this.getCreateModel(requestBody);
-        const record = await this._service.create(createModel);
+        var record = await this._service.create(createModel);
         if (record === null) {
             throw new ApiError('Unable to create web link!', 400);
         }
+        record = await AssetHelper.updateAssetCode(record, this._service);
         return this.getEnrichedDto(record);
     }
 

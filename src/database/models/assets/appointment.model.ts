@@ -2,6 +2,7 @@ import { AppointmentTypeList } from '../../../domain.types/assets/appointment.do
 import * as db from '../../database.connector';
 import { DataTypes } from 'sequelize';
 const sequelize = db.default.sequelize;
+import { AssetType } from '../../../domain.types/assets/asset.types';
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -20,7 +21,12 @@ export class AppointmentModel {
         },
         AssetCode : {
             type      : DataTypes.STRING(256),
-            allowNull : false
+            allowNull : true
+        },
+        AssetType : {
+            type         : DataTypes.STRING(128),
+            allowNull    : false,
+            defaultValue : AssetType.Appointment
         },
         Name : {
             type      : DataTypes.STRING(256),

@@ -396,6 +396,10 @@ export class Helper {
         return compareSync(str, hashed);
     };
 
+    public static padInteger = (num: number, places: number, paddingCharacter: string) => {
+        return String(num).padStart(places, paddingCharacter);
+    }
+
     //Reference: https://github.com/zishon89us/node-cheat/blob/master/stackoverflow_answers/crypto-create-cipheriv.js#L2
 
     public static encrypt = (str: string) => {

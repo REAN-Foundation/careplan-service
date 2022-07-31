@@ -22,6 +22,7 @@ import {
     ConsultationSearchFilters,
     ConsultationSearchResults
 } from '../../../domain.types/assets/consultation.domain.types';
+import { AssetHelper } from '../../../database/repository.services/assets/asset.helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -40,10 +41,11 @@ export class ConsultationControllerDelegate {
     create = async (requestBody: any) => {
         await validator.validateCreateRequest(requestBody);
         var createModel: ConsultationCreateModel = this.getCreateModel(requestBody);
-        const record = await this._service.create(createModel);
+        var record = await this._service.create(createModel);
         if (record === null) {
             throw new ApiError('Unable to create consultation!', 400);
         }
+        record = await AssetHelper.updateAssetCode(record, this._service);
         return this.getEnrichedDto(record);
     }
 

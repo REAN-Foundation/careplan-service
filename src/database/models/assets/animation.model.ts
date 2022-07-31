@@ -1,5 +1,6 @@
 import * as db from '../../database.connector';
 import { DataTypes } from 'sequelize';
+import { AssetType } from '../../../domain.types/assets/asset.types';
 const sequelize = db.default.sequelize;
 
 ////////////////////////////////////////////////////////////////////////
@@ -19,7 +20,12 @@ export class AnimationModel {
         },
         AssetCode : {
             type      : DataTypes.STRING(256),
-            allowNull : false
+            allowNull : true
+        },
+        AssetType : {
+            type         : DataTypes.STRING(128),
+            allowNull    : false,
+            defaultValue : AssetType.Animation,
         },
         Name : {
             type      : DataTypes.STRING(256),

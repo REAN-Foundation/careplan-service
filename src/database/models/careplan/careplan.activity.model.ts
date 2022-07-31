@@ -34,7 +34,7 @@ export class CareplanActivityModel {
         },
         Day : {
             type      : DataTypes.INTEGER,
-            allowNull : false
+            allowNull : true
         },
         TimeSlot : {
             type         : DataTypes.ENUM({ values: TimeSlotList }),

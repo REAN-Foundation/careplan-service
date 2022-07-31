@@ -1,6 +1,7 @@
 import * as db from '../../database.connector';
 import { DataTypes } from 'sequelize';
 const sequelize = db.default.sequelize;
+import { AssetType } from '../../../domain.types/assets/asset.types';
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -19,7 +20,12 @@ export class CheckupModel {
         },
         AssetCode : {
             type      : DataTypes.STRING(256),
-            allowNull : false
+            allowNull : true
+        },
+        AssetType : {
+            type         : DataTypes.STRING(128),
+            allowNull    : false,
+            defaultValue : AssetType.Checkup
         },
         Name : {
             type      : DataTypes.STRING(256),
@@ -35,10 +41,8 @@ export class CheckupModel {
             defaultValue : 'Checkup'
         },
         OwnerUserId : {
-            type       : DataTypes.UUID,
-            allowNull  : false,
-            foreignKey : true,
-            unique     : false
+            type      : DataTypes.UUID,
+            allowNull : true,
         },
         Tags : {
             type         : DataTypes.TEXT,

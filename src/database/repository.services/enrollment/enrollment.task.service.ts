@@ -114,7 +114,7 @@ export class EnrollmentTaskService {
             } = this.addPaginationToSearch(search, filters);
 
             const foundResults = await this.EnrollmentTask.findAndCountAll(search);
-            const searchResults: EnrollmentTaskSearchResults = {
+            var searchResults: EnrollmentTaskSearchResults = {
                 TotalCount     : foundResults.count,
                 RetrievedCount : foundResults.rows.length,
                 PageIndex      : pageIndex,
@@ -124,6 +124,13 @@ export class EnrollmentTaskService {
                 Items          : foundResults.rows,
             };
 
+            var items = [];
+            for await (var record of searchResults.Items) {
+                const asset = await AssetHelper.getAsset(record.AssetId, record.AssetType);
+                record.Asset = asset;
+                items.push(record);
+            }
+            searchResults.Items = items;
             return searchResults;
 
         } catch (error) {

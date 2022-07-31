@@ -1,6 +1,7 @@
 import * as db from '../../database.connector';
 import { DataTypes } from 'sequelize';
 const sequelize = db.default.sequelize;
+import { AssetType } from '../../../domain.types/assets/asset.types';
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -19,9 +20,14 @@ export class WordPowerModel {
         },
         AssetCode : {
             type      : DataTypes.STRING(256),
-            allowNull : false
+            allowNull : true
         },
-        Word : {
+        AssetType : {
+            type         : DataTypes.STRING(128),
+            allowNull    : false,
+            defaultValue : AssetType.WordPower
+        },
+        Name : {
             type      : DataTypes.STRING(256),
             allowNull : false
         },

@@ -83,11 +83,13 @@ export class EnrollmentTaskControllerDelegate {
         }
         return {
             id                     : record.id,
+            ParticipantId          : record.ParticipantId,
             EnrollmentId           : record.EnrollmentId,
             UserId                 : record.UserId,
             CareplanActivityId     : record.CareplanActivityId,
             AssetId                : record.AssetId,
             AssetType              : record.AssetType,
+            Asset                  : record.Asset,
             CareplanId             : record.CareplanId,
             TimeSlot               : record.TimeSlot,
             ScheduledDate          : record.ScheduledDate,
@@ -106,6 +108,7 @@ export class EnrollmentTaskControllerDelegate {
             CareplanActivityId     : record.CareplanActivityId,
             AssetId                : record.AssetId,
             AssetType              : record.AssetType,
+            Asset                  : record.Asset,
             CareplanId             : record.CareplanId,
             TimeSlot               : record.TimeSlot,
             ScheduledDate          : record.ScheduledDate,

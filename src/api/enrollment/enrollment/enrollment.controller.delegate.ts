@@ -283,7 +283,9 @@ export class EnrollmentControllerDelegate {
             StartDate      : record.StartDate,
             EndDate        : record.EndDate,
             EnrollmentDate : record.EnrollmentDate,
-            ProgressStatus : record.ProgressStatus
+            WeekOffset     : record.WeekOffset,
+            DayOffset      : record.DayOffset,
+            ProgressStatus : record.ProgressStatus,
         };
     }
 
@@ -299,6 +301,8 @@ export class EnrollmentControllerDelegate {
             StartDate      : record.StartDate,
             EndDate        : record.EndDate,
             EnrollmentDate : record.EnrollmentDate,
+            WeekOffset     : record.WeekOffset,
+            DayOffset      : record.DayOffset,
             ProgressStatus : record.ProgressStatus
         };
     }

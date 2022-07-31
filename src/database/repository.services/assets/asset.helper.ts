@@ -24,8 +24,8 @@ import { WebLinkModel } from '../../models/assets/web.link.model';
 import { WebNewsfeedModel } from '../../models/assets/web.newsfeed.model';
 import { WordPowerModel } from '../../models/assets/word.power.model';
 import { ErrorHandler } from '../../../common/error.handler';
-import { uuid } from '../../../domain.types/miscellaneous/system.types';
-import { AssetType } from '../../../domain.types/assets/asset.types';
+import { AssetType, AssetTypeCodePrefixes } from '../../../domain.types/assets/asset.types';
+import { Helper } from '../../../common/helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -33,7 +33,7 @@ export class AssetHelper {
 
     //#region Publics
 
-    public static getAsset = async (id: uuid, assetType: AssetType) => {
+    public static getAsset = async (id: number, assetType: AssetType) => {
         try {
             
             switch (assetType) {
@@ -119,6 +119,42 @@ export class AssetHelper {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
         }
+    }
+
+    public static generateAssetCode = (id: number, assetType: AssetType, assetName: string) => {
+
+        let name = assetName;
+        name = name.toUpperCase();
+        let cleanedName = '';
+        const len = name.length;
+        for (let i = 0; i < len; i++) {
+            if (Helper.isAlpha(name.charAt(i))) {
+                if (!Helper.isAlphaVowel(name.charAt(i))) {
+                    cleanedName += name.charAt(i);
+                }
+            }
+        }
+
+        if (!AssetTypeCodePrefixes[assetType]) {
+            ErrorHandler.throwNotFoundError(`This asset type is not handled - ${assetType}`);
+        }
+
+        var shortened = cleanedName.substring(0, 12);
+
+        const code = AssetTypeCodePrefixes[assetType] + '-' + shortened + '-' + Helper.padInteger(id, 4, '0');
+        return code;
+    };
+
+    public static updateAssetCode = async (record, service) => {
+        if (!record.AssetCode) {
+            const assetCode = AssetHelper.generateAssetCode(record.id, record.AssetType, record.Name);
+            const updated = await service.update(record.id, { AssetCode: assetCode });
+            if (updated == null) {
+                ErrorHandler.throwInternalServerError('Unable to update asset!');
+            }
+            return updated;
+        }
+        return record;
     }
 
 }

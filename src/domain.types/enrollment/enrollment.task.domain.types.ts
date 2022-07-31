@@ -30,6 +30,7 @@ export interface EnrollmentTaskDto {
     CareplanActivityId: uuid;
     AssetId           : number;
     AssetType         : AssetType;
+    Asset?            : any;
     CareplanId        : number;
     TimeSlot          : TimeSlot;
     ScheduledDate     : Date;
