@@ -1,16 +1,16 @@
 import {
-    UserActivityResponseDto
-} from '../../../domain.types/user.responses/user.activity.response.domain.types';
+    ParticipantActivityResponseDto
+} from '../../../domain.types/participant.responses/participant.activity.response.domain.types';
 
 ///////////////////////////////////////////////////////////////////////////////////
 
 export class UserActivityResponseMapper {
 
-    static toDto = (userActivityResponse: any): UserActivityResponseDto => {
+    static toDto = (userActivityResponse: any): ParticipantActivityResponseDto => {
         if (userActivityResponse == null) {
             return null;
         }
-        const dto: UserActivityResponseDto = {
+        const dto: ParticipantActivityResponseDto = {
             id                 : userActivityResponse.id,
             ParticipantId      : userActivityResponse.ParticipantId,
             EnrollmentTaskId   : userActivityResponse.EnrollmentTaskId,
