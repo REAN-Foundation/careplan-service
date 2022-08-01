@@ -25,6 +25,10 @@ export class CareplanCategoryControllerDelegate {
 
     create = async (requestBody: any) => {
         await validator.validateCreateRequest(requestBody);
+        var exists = await this._service.existsByName(requestBody.Type);
+        if (exists) {
+            ErrorHandler.throwConflictError(`Category with same name exists!`);
+        }
         var createModel: CareplanCategoryCreateModel = this.getCreateModel(requestBody);
         const record: CareplanCategoryDto = await this._service.create(createModel);
         if (record === null) {

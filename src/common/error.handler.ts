@@ -42,7 +42,7 @@ export class ErrorHandler {
         throw new ApiError(message, 412);
     }
 
-    static throwInternalServerError = (message, error) => {
+    static throwInternalServerError = (message, error = null) => {
         throw new ApiError(message, 500, error);
     }
 

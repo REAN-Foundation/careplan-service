@@ -7,17 +7,18 @@ import { FileResourceCreateModel } from '../../domain.types/file.resource.domain
 import express from 'express';
 import * as mime from 'mime-types';
 import * as aws from 'aws-sdk';
-import { Logger } from '../../common/logger';
+import { IFileStorageService } from '../../modules/storage/interfaces/file.storage.service.interface';
+import { injectable, inject } from 'tsyringe';
 
 ///////////////////////////////////////////////////////////////////////////////////////
-
+@injectable()
 export class FileResourceControllerDelegate {
 
     //#region member variables and constructors
 
     _service: FileResourceService = null;
 
-    constructor() {
+    constructor( @inject('IFileStorageService') private _storageService: IFileStorageService ) {
         this._service = new FileResourceService();
     }
 
@@ -38,15 +39,10 @@ export class FileResourceControllerDelegate {
         filename = filename + '_' + timestamp + '.' + ext;
         var storageKey = 'uploaded/' + dateFolder + '/' + filename;
     
-        var s3 = getS3Client();
-        const params = {
-            Bucket : process.env.STORAGE_BUCKET,
-            Key    : storageKey,
-            Body   : request //Request stream piped directly
-        };
-        var stored = await s3.upload(params).promise();
-        Logger.instance().log(JSON.stringify(stored, null, 2));
-    
+        var key = await this._storageService.upload(request, storageKey);
+        if (!key) {
+            ErrorHandler.throwInternalServerError(`Unable to upload the file!`);
+        }
         var model: FileResourceCreateModel = {
             StorageKey       : storageKey,
             MimeType         : mimeType as string,
@@ -60,6 +56,7 @@ export class FileResourceControllerDelegate {
         if (record === null) {
             throw new ApiError('Unable to create file resource!', 400);
         }
+
         return this.getEnrichedDto(record);
     }
 
@@ -74,17 +71,13 @@ export class FileResourceControllerDelegate {
         var mimeType = mime.lookup(originalFilename);
     
         response.setHeader('Content-type', mimeType as string);
-        setResponseHeaders(response, originalFilename, mimeType, disposition);
-    
-        await this._service.incrementDownloadCount(id);
-    
-        var s3 = getS3Client();
-        const params = {
-            Bucket : process.env.STORAGE_BUCKET,
-            Key    : storageKey
-        };
-    
-        return s3.getObject(params).createReadStream();
+        setResponseHeaders(response, originalFilename, disposition);
+
+        var readStream = await this._storageService.download(storageKey);
+        if (!readStream) {
+            ErrorHandler.throwInternalServerError(`Unable to download the file!`);
+        }
+        return readStream;
     }
 
     getById = async (id: uuid) => {
@@ -127,6 +120,7 @@ export class FileResourceControllerDelegate {
             MimeType         : record.MimeType,
             Public           : record.Public,
             OriginalFilename : record.OriginalFilename,
+            Url              : process.env.BASE_URL + `/api/v1/file-resources/download/${record.id}?disposition=attachment`,
             Tags             : record.Tags ? JSON.parse(record.Tags) : [],
             Size             : record.Size,
             UserId           : record.UserId,
@@ -150,12 +144,12 @@ function getS3Client() {
     return s3;
 }
 
-function setResponseHeaders(response, filename, mimeType, disposition = 'inline') {
+function setResponseHeaders(response, filename, disposition = 'inline') {
     if (disposition === 'inline') {
         response.setHeader('Content-disposition', 'inline');
     }
     else {
-        response.setHeader('Content-disposition', 'attachment; filename=' + filename);
+        response.setHeader('Content-disposition', 'attachment;filename=' + filename);
     }
 }
 

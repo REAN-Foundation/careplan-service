@@ -9,20 +9,27 @@ import {
 } from "../miscellaneous/system.types";
 
 export interface UserActivityResponseCreateModel {
-    UserId               ?: uuid;
-    EnrollmentScheduleId ?: uuid;
-    Response             ?: string;
+    ParticipantId       : uuid;
+    EnrollmentScheduleId: uuid;
+    CareplanScheduleId  : uuid;
+    CareplanId          : number;
+    AssetId             : number;
+    AssetType           : AssetType;
+    Response            : string;
+    TimeResponded       : Date;
+    ProgressStatus      : ProgressStatus;
 }
 
 export interface UserActivityResponseUpdateModel {
-    UserId               ?: uuid;
+    ParticipantId        ?: uuid;
     EnrollmentScheduleId ?: uuid;
     Response             ?: string;
+    ProgressStatus       ?: ProgressStatus;
 }
 
 export interface UserActivityResponseDto {
     id                  : uuid;
-    UserId              : uuid;
+    ParticipantId       : uuid;
     EnrollmentScheduleId: uuid;
     CareplanScheduleId  : uuid;
     CareplanId          : number;

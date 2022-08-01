@@ -9,7 +9,7 @@ import {
 
 export interface EnrollmentCreateModel {
     CareplanId     ?: number;
-    UserId         ?: uuid;
+    ParticipantId  ?: uuid;
     StartDate      ?: Date;
     EndDate        ?: Date;
     EnrollmentDate ?: Date;
@@ -17,7 +17,7 @@ export interface EnrollmentCreateModel {
 
 export interface EnrollmentUpdateModel {
     CareplanId     ?: number;
-    UserId         ?: uuid;
+    ParticipantId  ?: uuid;
     StartDate      ?: Date;
     EndDate        ?: Date;
     EnrollmentDate ?: Date;
@@ -26,7 +26,7 @@ export interface EnrollmentUpdateModel {
 export interface EnrollmentDto {
     id            : uuid;
     CareplanId    : number;
-    UserId        : uuid;
+    ParticipantId : uuid;
     StartDate     : Date;
     EndDate       : Date;
     EnrollmentDate: Date;

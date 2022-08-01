@@ -63,9 +63,9 @@ export class ParticipantService {
                     [Op.like] : '%' + filters.LastName + '%'
                 };
             }
-            if (filters.SystemId) {
-                search.where['SystemId'] = {
-                    [Op.like] : '%' + filters.SystemId + '%'
+            if (filters.ParticipantReferenceId) {
+                search.where['ParticipantReferenceId'] = {
+                    [Op.like] : '%' + filters.ParticipantReferenceId + '%'
                 };
             }
             if (filters.Gender) {

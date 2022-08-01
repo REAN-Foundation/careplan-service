@@ -44,6 +44,7 @@ export class UserControllerDelegate {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { userCreateModel, password } =
             await UserHelper.getValidUserCreateModel(requestBody);
+
         const record: UserDto = await this._service.create(userCreateModel);
         if (record === null) {
             throw new ApiError('Unable to create user!', 400);

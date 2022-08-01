@@ -5,8 +5,8 @@ import {
     EnrollmentModel
 } from '../../models/enrollment/enrollment.model';
 import {
-    UserModel
-} from '../../models/user/user.model';
+    ParticipantModel
+} from '../../models/enrollment/participant.model';
 import {
     CareplanScheduleModel
 } from '../../models/careplan/careplan.schedule.model';
@@ -33,7 +33,7 @@ export class EnrollmentScheduleService {
 
     Enrollment = EnrollmentModel.Model;
 
-    User = UserModel.Model;
+    Participant = ParticipantModel.Model;
 
     CareplanSchedule = CareplanScheduleModel.Model;
 
@@ -64,9 +64,9 @@ export class EnrollmentScheduleService {
                     as       : 'Enrollment',
                     //through: { attributes: [] }
                 }, {
-                    model    : this.User,
+                    model    : this.Participant,
                     required : false,
-                    as       : 'User',
+                    as       : 'Participant',
                     //through: { attributes: [] }
                 }, {
                     model    : this.CareplanSchedule,
@@ -127,38 +127,7 @@ export class EnrollmentScheduleService {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search enrollment schedule records!', error);
         }
     }
-
-    update = async (id, updateModel) => {
-        try {
-            if (Object.keys(updateModel).length > 0) {
-                var res = await this.EnrollmentSchedule.update(updateModel, {
-                    where : {
-                        id : id
-                    }
-                });
-                if (res.length !== 1) {
-                    throw new Error('Unable to update enrollment schedule!');
-                }
-            }
-            return await this.getById(id);
-        } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to update enrollment schedule!', error);
-        }
-    }
-
-    delete = async (id) => {
-        try {
-            var result = await this.EnrollmentSchedule.destroy({
-                where : {
-                    id : id
-                }
-            });
-            return result === 1;
-        } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to delete enrollment schedule!', error);
-        }
-    }
-
+    
     //#endregion
 
     //#region Privates
@@ -193,9 +162,9 @@ export class EnrollmentScheduleService {
         //}
         search.include.push(includeEnrollmentAsEnrollment);
         const includeUserAsUser = {
-            model    : this.User,
+            model    : this.Participant,
             required : false,
-            as       : 'User',
+            as       : 'Participant',
             where    : {}
         };
         //if (filters.Xyz != undefined) {

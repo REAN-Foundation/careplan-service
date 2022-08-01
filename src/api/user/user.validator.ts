@@ -16,7 +16,6 @@ export class UserValidator {
                 CountryCode : joi.string().max(10).optional(),
                 Phone       : joi.string().max(16).min(6).required(),
                 Email       : joi.string().max(256).required(),
-                BiocubeId   : joi.string().max(32).required(),
                 Gender      : joi.string().valid("Male", "Female", "Other").required(),
                 BirthDate   : joi.string().optional(),
                 Password    : joi.string().max(512).required(),

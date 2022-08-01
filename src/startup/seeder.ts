@@ -8,6 +8,7 @@ import { UserRoleService } from '../database/repository.services/user/user.role.
 import { RolePrivilegeService } from '../database/repository.services/role.privilege.service';
 import { UserService } from '../database/repository.services/user/user.service';
 import { ApiClientService } from '../database/repository.services/api.client.service';
+import { CareplanCategoryService } from '../database/repository.services/careplan/careplan.category.service';
 import { RoleList } from '../domain.types/miscellaneous/role.types';
 import { UserCreateModel } from "../domain.types/user/user.domain.types";
 import { Gender } from "../domain.types/miscellaneous/system.types";
@@ -27,6 +28,8 @@ export class Seeder {
 
     _userRoleService: UserRoleService = new UserRoleService();
 
+    _careplanCategoryService: CareplanCategoryService = new CareplanCategoryService();
+
     // _fileResourceService: FileResourceService = null;
 
     public seed = async (): Promise<void> => {
@@ -36,6 +39,7 @@ export class Seeder {
             await this.seedRolePrivileges();
             await this.seedInternalClients();
             await this.seedDefaultUsers();
+            await this.seedDefaultCareplanCategories();
         } catch (error) {
             Logger.instance().log(error.message);
         }
@@ -101,7 +105,8 @@ export class Seeder {
                 BirthDate   : null,
                 Prefix      : ""
             };
-    
+            
+            userDomainModel.Password = Helper.generateHashedPassword(u.Password);
             const user = await this._userService.create(userDomainModel);
             const userRole: UserRoleCreateModel = {
                 UserId : user.id,
@@ -161,6 +166,35 @@ export class Seeder {
         }
 
         Logger.instance().log('Seeded default roles successfully!');
+    };
+
+    private seedDefaultCareplanCategories = async () => {
+
+        const defaultCareplanCategories = [
+            {
+                Type        : "Heart",
+                Description : "Category representing all heart related careplans"
+            },
+            {
+                Type        : "Maternity and Neonatal",
+                Description : "Category representing all maternity and neonatal related careplans"
+            },
+            {
+                Type        : "Post Injury Rehab",
+                Description : "Category representing all careplans which involve rehabilitation post injury/trauma."
+            },
+        ];
+
+        for await (var cc of defaultCareplanCategories) {
+
+            var exists = await this._careplanCategoryService.existsByName(cc.Type);
+            if (exists) {
+                continue;
+            }
+            await this._careplanCategoryService.create(cc);
+        }
+
+        Logger.instance().log('Seeded default careplan categories successfully!');
     };
 
 }

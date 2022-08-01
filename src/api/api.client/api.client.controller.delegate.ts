@@ -238,10 +238,10 @@ export class ApiClientControllerDelegate {
             ClientName   : record.ClientName,
             ClientCode   : record.ClientCode,
             IsPrivileged : record.IsPrivileged,
+            IsActive     : record.IsActive,
             CountryCode  : record.CountryCode,
             Phone        : record.Phone,
             Email        : record.Email,
-            ApiKey       : record.ApiKey,
             ValidFrom    : record.ValidFrom,
             ValidTill    : record.ValidTill
         };

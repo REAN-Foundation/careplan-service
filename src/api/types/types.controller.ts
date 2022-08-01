@@ -1,104 +1,87 @@
-// import express from 'express';
-// import { ApiError } from '../../common/api.error';
-// import { ResponseHandler } from '../../common/response.handler';
-// import { BloodGroupList, MaritalStatusList, SeverityList } from '../../domain.types/miscellaneous/system.types';
-// import { TypesControllerDelegate } from './types.controller.delegate';
-// import { Loader } from '../../startup/loader';
-// import { BaseController } from '../base.controller';
+import express from 'express';
+import { ResponseHandler } from '../../common/response.handler';
+import { ErrorHandler } from '../../common/error.handler';
+import { BaseController } from '../base.controller';
+import { RoleService } from '../../database/repository.services/role.service';
+import { CareplanCategoryService } from '../../database/repository.services/careplan/careplan.category.service';
 
-// ///////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////
 
-// export class TypesController extends BaseController {
+export class TypesController extends BaseController {
 
-//     //#region member variables and constructors
+    //#region member variables and constructors
 
-//     _delegate: TypesControllerDelegate = null;
+    _roleService: RoleService = null;
 
-//     constructor() {
-//         super();
-//         this._delegate = new TypesControllerDelegate();
-//     }
+    _careplanCategoryService: CareplanCategoryService = null;
 
-//     //#endregion
+    constructor() {
+        super();
+        this._roleService = new RoleService();
+        this._careplanCategoryService = new CareplanCategoryService();
+    }
 
-//     //#region Action methods
+    //#endregion
 
-//     getRoleTypes = async (request: express.Request, response: express.Response): Promise<void> => {
-//         try {
-//             await this.setContext('Types.GetPersonRoleTypes', request, response, false);
+    //#region Action methods
 
-//             const types = await this._delegate.getPersonRoleTypes();
-//             if (types === null || types.length === 0) {
-//                 throw new ApiError('Cannot get person role types!'. 400);
-//             }
+    getRoleTypes = async (request: express.Request, response: express.Response): Promise<void> => {
+        try {
+            await this.authorize('Types.GetRoleTypes', request, response, false);
 
-//             ResponseHandler.success(request, response, 'Person role types retrieved successfully!', 200, {
-//                 PersonRoleTypes : types,
-//             });
+            const types = await this._roleService.getAllRoles();
+            if (types === null || types.length === 0) {
+                ErrorHandler.throwInternalServerError(`Unable to retrieve user role types!`);
+            }
 
-//         } catch (error) {
-//             ResponseHandler.handleError(request, response, error);
-//         }
-//     };
-    
-//     getBloodGroups = async (request: express.Request, response: express.Response): Promise<void> => {
-//         try {
+            var roles = types.map(x => {
+                return {
+                    id          : x.id,
+                    RoleName    : x.RoleName,
+                    Description : x.Description
+                };
+            });
+            
+            ResponseHandler.success(request, response, 'User role types retrieved successfully!', 200, {
+                RoleTypes : roles,
+            });
 
-//             await this.setContext('Types.GetBloodGroups', request, response, false);
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
 
-//             ResponseHandler.success(request, response, 'Blood group types retrieved successfully!', 200, {
-//                 BloodGroups : BloodGroupList,
-//             });
-//         } catch (error) {
-//             ResponseHandler.handleError(request, response, error);
-//         }
-//     };
-    
-//     getMaritalStatuses = async (request: express.Request, response: express.Response): Promise<void> => {
-//         try {
+    getCareplanCategories = async (request: express.Request, response: express.Response): Promise<void> => {
+        try {
+            await this.authorize('Types.GetCareplanCategories', request, response, false);
+            const categories = await this._careplanCategoryService.getCareplanCategories();
+            ResponseHandler.success(request, response, 'Careplan categories retrieved successfully!', 200, {
+                CareplanCategories : categories,
+            });
 
-//             await this.setContext('Types.GetMaritalStatuses', request, response, false);
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
 
-//             ResponseHandler.success(request, response, 'Marital status types retrieved successfully!', 200, {
-//                 MaritalStatuses : MaritalStatusList,
-//             });
+    // getPriorityTypes = async (request: express.Request, response: express.Response): Promise<void> => {
+    //     try {
+    //         await this.setContext('HealthPriority.GetPrioritiesTypes', request, response);
 
-//         } catch (error) {
-//             ResponseHandler.handleError(request, response, error);
-//         }
-//     };
-    
-//     getSeverities = async (request: express.Request, response: express.Response): Promise<void> => {
-//         try {
+    //         const priorityTypes = await this._delegate.getPriorityTypes();
+    //         if (priorityTypes.length === 0) {
+    //             throw new ApiError('Cannot fetch priorities types!', 400);
+    //         }
 
-//             await this.setContext('Types.GetSeverities', request, response, false);
+    //         ResponseHandler.success(request, response, 'Fetched priority types successfully!', 201, {
+    //             PriorityTypes : priorityTypes,
+    //         });
 
-//             ResponseHandler.success(request, response, 'Severity types retrieved successfully!', 200, {
-//                 Severities : SeverityList,
-//             });
+    //     } catch (error) {
+    //         ResponseHandler.handleError(request, response, error);
+    //     }
+    // };
 
-//         } catch (error) {
-//             ResponseHandler.handleError(request, response, error);
-//         }
-//     };
+    //#endregion
 
-//     getPriorityTypes = async (request: express.Request, response: express.Response): Promise<void> => {
-//         try {
-//             await this.setContext('HealthPriority.GetPrioritiesTypes', request, response);
-
-//             const priorityTypes = await this._delegate.getPriorityTypes();
-//             if (priorityTypes.length === 0) {
-//                 throw new ApiError('Cannot fetch priorities types!', 400);
-//             }
-
-//             ResponseHandler.success(request, response, 'Fetched priority types successfully!', 201, {
-//                 PriorityTypes : priorityTypes,
-//             });
-
-//         } catch (error) {
-//             ResponseHandler.handleError(request, response, error);
-//         }
-//     };
-//     //#endregion
-
-// }
+}

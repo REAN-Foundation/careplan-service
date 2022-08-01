@@ -16,6 +16,7 @@ export class ParticipantModel {
             type         : DataTypes.UUID,
             allowNull    : false,
             defaultValue : DataTypes.UUIDV4,
+            unique       : true
         },
         DisplayId : {
             type          : DataTypes.INTEGER,
@@ -49,7 +50,7 @@ export class ParticipantModel {
             type      : DataTypes.STRING(256),
             allowNull : false
         },
-        SystemId : {
+        ParticipantReferenceId : {
             type      : DataTypes.STRING(64),
             allowNull : true
         },

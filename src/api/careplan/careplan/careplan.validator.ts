@@ -10,7 +10,7 @@ export class CareplanValidator {
             const schema = joi.object({
                 Code        : joi.string().max(256).optional(),
                 CategoryId  : joi.number().integer().optional(),
-                Name        : joi.string().max(256).optional(),
+                Name        : joi.string().max(256).required(),
                 Description : joi.string().optional(),
                 Version     : joi.string().max(32).optional(),
                 Tags        : joi.array().items(joi.string()).optional(),

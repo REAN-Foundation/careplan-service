@@ -28,7 +28,24 @@ export class AWSS3FileStorageService implements IFileStorageService {
         }
     };
     
-    upload = async (storageKey: string, localFilePath?: string): Promise<string> => {
+    upload = async (inputStream: any, storageKey: string): Promise<string> => {
+        try {
+            var s3 = this.getS3Client();
+            const params = {
+                Bucket : process.env.STORAGE_BUCKET,
+                Key    : storageKey,
+                Body   : inputStream //Request stream piped directly
+            };
+            var stored = await s3.upload(params).promise();
+            Logger.instance().log(JSON.stringify(stored, null, 2));
+            return storageKey;
+        }
+        catch (error) {
+            Logger.instance().log(error.message);
+        }
+    };
+
+    uploadLocally = async (storageKey: string, localFilePath: string): Promise<string> => {
 
         try {
             const fileContent = fs.readFileSync(localFilePath);
@@ -50,7 +67,22 @@ export class AWSS3FileStorageService implements IFileStorageService {
         }
     };
 
-    download = async (storageKey: string, localFilePath: string): Promise<string> => {
+    download = async (storageKey: string): Promise<any> => {
+        try {
+            const s3 = this.getS3Client();
+            const params = {
+                Bucket : process.env.STORAGE_BUCKET,
+                Key    : storageKey,
+            };
+            return s3.getObject(params).createReadStream();
+        }
+        catch (error) {
+            Logger.instance().log(error.message);
+            return null;
+        }
+    };
+
+    downloadLocally = async (storageKey: string, localFilePath: string): Promise<string> => {
         
         const s3 = this.getS3Client();
         const params = {

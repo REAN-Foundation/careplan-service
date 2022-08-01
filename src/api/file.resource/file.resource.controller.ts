@@ -15,7 +15,7 @@ export class FileResourceController extends BaseController {
 
     constructor() {
         super();
-        this._delegate = new FileResourceControllerDelegate();
+        this._delegate = Loader.Container.resolve(FileResourceControllerDelegate);
     }
 
     //#endregion
@@ -41,7 +41,10 @@ export class FileResourceController extends BaseController {
                 }
                 await this.authorize('FileResource.Download', request, response);
             }
-            const disposition = request.query.disposition as string;
+            var disposition = request.query.disposition as string;
+            if (!disposition) {
+                disposition = 'inline';
+            }
             const downloadStream = await this._delegate.download(request.params.id, disposition, response);
             downloadStream.pipe(response);
         } catch (error) {
