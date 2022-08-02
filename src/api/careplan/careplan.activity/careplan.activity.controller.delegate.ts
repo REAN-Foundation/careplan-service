@@ -22,6 +22,7 @@ import {
     CareplanActivitySearchFilters,
     CareplanActivitySearchResults
 } from '../../../domain.types/careplan/careplan.activity.domain.types';
+import { AssetHelper } from '../../../database/repository.services/assets/asset.helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -40,6 +41,7 @@ export class CareplanActivityControllerDelegate {
     create = async (requestBody: any) => {
         await validator.validateCreateRequest(requestBody);
         var createModel: CareplanActivityCreateModel = this.getCreateModel(requestBody);
+        await this.checkValidAssetType(createModel);
         const record = await this._service.create(createModel);
         if (record === null) {
             throw new ApiError('Unable to create careplan activity!', 400);
@@ -71,6 +73,7 @@ export class CareplanActivityControllerDelegate {
             ErrorHandler.throwNotFoundError('Careplan activity with id ' + id.toString() + ' cannot be found!');
         }
         const updateModel: CareplanActivityUpdateModel = this.getUpdateModel(requestBody);
+        await this.checkValidAssetType(updateModel, record);
         const updated = await this._service.update(id, updateModel);
         if (updated == null) {
             throw new ApiError('Unable to update careplan activity!', 400);
@@ -191,6 +194,18 @@ export class CareplanActivityControllerDelegate {
             TimeSlot               : record.TimeSlot,
             IsRegistrationActivity : record.IsRegistrationActivity
         };
+    }
+
+    private async checkValidAssetType(
+        model: CareplanActivityUpdateModel | CareplanActivityCreateModel, record?: any) {
+        var assetType = model.AssetType ?? record?.AssetType;
+        var assetId = model.AssetId ?? record?.AssetId;
+        if (assetType && assetId) {
+            const asset = await AssetHelper.getAsset(assetId, assetType);
+            if (!asset) {
+                ErrorHandler.throwNotFoundError(`Asset of type ${assetType} with id ${assetId} cannot be found!`);
+            }
+        }
     }
 
     //#endregion
