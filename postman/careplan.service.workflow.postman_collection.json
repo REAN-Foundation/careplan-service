@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "22cb4975-3599-4b7a-857c-f9c752694656",
+		"_postman_id": "7c87b21c-4b6f-4088-b5e2-84d0f0e2a077",
 		"name": "careplan.service.workflow",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "15905052"
@@ -299,7 +299,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"pm.environment.set(\"ADMIN_PASSWORD\", \"X*)#43%$QWY\");"
+									"pm.environment.set(\"MODERATOR_PASSWORD\", \"X*)#43%$QWY\");"
 								],
 								"type": "text/javascript"
 							}
