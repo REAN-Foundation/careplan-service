@@ -1,5 +1,7 @@
 export interface AuthenticationResult {
-    Result: boolean;
-    Message: string;
+    Result       : boolean;
+    Message      : string;
     HttpErrorCode: number;
+    ClientCode?  : string;
+    UserId?      : string;
 }

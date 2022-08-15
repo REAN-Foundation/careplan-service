@@ -14,8 +14,8 @@ export const register = (app: express.Application): void => {
     const authenticator = Loader.Authenticator;
     const controller = new EnrollmentTaskController();
 
-    router.get('/search', authenticator.authenticateClient, controller.search);
-    router.get('/:id', authenticator.authenticateClient, controller.getById);
+    router.get('/search', authenticator.authenticateClientOrUser, controller.search);
+    router.get('/:id', authenticator.authenticateClientOrUser, controller.getById);
 
     app.use('/api/v1/enrollment-tasks', router);
 };

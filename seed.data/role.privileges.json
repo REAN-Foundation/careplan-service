@@ -30,7 +30,10 @@
             "ApiClient.Update",
             "ApiClient.Delete",
             "ApiClient.GetApiKey",
-            "ApiClient.RenewApiKey"
+            "ApiClient.RenewApiKey",
+
+            "Careplan.Search",
+            "Careplan.GetById"
         ]
     },
     {
