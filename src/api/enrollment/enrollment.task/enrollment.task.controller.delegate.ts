@@ -54,6 +54,10 @@ export class EnrollmentTaskControllerDelegate {
 
         var filters = {};
 
+        var participantId = query.participantId ? query.participantId : null;
+        if (participantId != null) {
+            filters['ParticipantId'] = participantId;
+        }
         var assetId = query.assetId ? query.assetId : null;
         if (assetId != null) {
             filters['AssetId'] = assetId;

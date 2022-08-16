@@ -149,6 +149,9 @@ export class EnrollmentTaskService {
             include : []
         };
 
+        if (filters.ParticipantId) {
+            search.where['ParticipantId'] = filters.ParticipantId;
+        }
         if (filters.AssetId) {
             search.where['AssetId'] = filters.AssetId;
         }
