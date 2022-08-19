@@ -77,12 +77,6 @@ export class CheckupModel {
 
         //Add associations here...
 
-        models.Checkup.belongsTo(models.User, {
-            sourceKey : 'OwnerUserId',
-            targetKey : 'id',
-            as        : 'OwnerUser'
-        });
-
     };
 
 }

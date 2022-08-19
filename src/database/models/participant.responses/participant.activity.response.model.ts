@@ -54,7 +54,7 @@ export class ParticipantActivityResponseModel {
         Response : {
             type         : DataTypes.TEXT,
             allowNull    : false,
-            defaultValue : '{}'
+            defaultValue : '[]'
         },
         TimeResponded : {
             type      : DataTypes.DATE,

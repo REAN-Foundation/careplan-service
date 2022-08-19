@@ -145,7 +145,7 @@ export class ParticipantActivityResponseControllerDelegate {
             updateModel.EnrollmentTaskId = requestBody.EnrollmentTaskId;
         }
         if (Helper.hasProperty(requestBody, 'Response')) {
-            updateModel.Response = requestBody.Response;
+            updateModel.Response = JSON.stringify(requestBody.Response);
         }
         if (Helper.hasProperty(requestBody, 'ProgressStatus')) {
             updateModel.ProgressStatus = requestBody.ProgressStatus;
@@ -162,7 +162,7 @@ export class ParticipantActivityResponseControllerDelegate {
             CareplanId         : enrollmentTask.CareplanId ? enrollmentTask.CareplanId : null ,
             AssetId            : enrollmentTask.AssetId ? enrollmentTask.AssetId : null,
             AssetType          : enrollmentTask.AssetType ? enrollmentTask.AssetType : null,
-            Response           : requestBody.Response ? requestBody.Response : '{}',
+            Response           : requestBody.Response ? JSON.stringify(requestBody.Response) : JSON.stringify([]),
             TimeResponded      : new Date(),
             ProgressStatus     : requestBody.ProgressStatus ? requestBody.ProgressStatus : 'Completed'
         };
