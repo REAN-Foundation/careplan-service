@@ -7,7 +7,7 @@ const sequelize = db.default.sequelize;
 
 export class ParticipantSelectedGoalModel {
 
-    static TableName = 'participant_selected_goals';
+    static TableName = 'selected_goals';
 
     static ModelName = 'ParticipantSelectedGoal';
 
@@ -117,7 +117,7 @@ export class ParticipantSelectedGoalModel {
         models.ParticipantSelectedGoal.belongsTo(models.ParticipantSelectedPriority, {
             sourceKey : 'SelectedPriorityId',
             targetKey : 'id',
-            as        : 'ParticipantSelectedPriority'
+            as        : 'SelectedPriority'
         });
         models.ParticipantSelectedGoal.belongsTo(models.Careplan, {
             sourceKey : 'CareplanId',

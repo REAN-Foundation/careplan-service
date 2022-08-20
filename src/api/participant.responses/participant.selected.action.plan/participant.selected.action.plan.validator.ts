@@ -18,7 +18,7 @@ export class ParticipantSelectedActionPlanValidator {
                 ParticipantId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
-                GoalId : joi.string().guid({
+                SelectedGoalId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
                 CareplanId        : joi.number().integer().optional(),
@@ -46,7 +46,7 @@ export class ParticipantSelectedActionPlanValidator {
                 ParticipantId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
-                GoalId : joi.string().guid({
+                SelectedGoalId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
                 CareplanId        : joi.number().integer().optional(),
@@ -68,7 +68,7 @@ export class ParticipantSelectedActionPlanValidator {
             const schema = joi.object({
                 participantId     : joi.string().guid({ version: ['uuidv4'] }).optional(),
                 enrollmentId      : joi.string().guid({ version: ['uuidv4'] }).optional(),
-                goalId            : joi.string().guid({ version: ['uuidv4'] }).optional(),
+                selectedGoalId    : joi.string().guid({ version: ['uuidv4'] }).optional(),
                 name              : joi.string().max(256).optional(),
                 description       : joi.string().optional(),
                 careplanId        : joi.number().integer().optional(),

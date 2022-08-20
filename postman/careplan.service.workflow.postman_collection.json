@@ -16138,13 +16138,13 @@
 							}
 						],
 						"url": {
-							"raw": "{{BASE_URL}}/participant-activity-responses/{{USER_ACTIVITY_RESPONSE_ID}}",
+							"raw": "{{BASE_URL}}/participant-activity-responses/{{PARTICIPANT_ACTIVITY_RESPONSE_ID}}",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
 								"participant-activity-responses",
-								"{{USER_ACTIVITY_RESPONSE_ID}}"
+								"{{PARTICIPANT_ACTIVITY_RESPONSE_ID}}"
 							]
 						}
 					},
@@ -16168,7 +16168,6 @@
 									"    var jsonRes = pm.response.json();\r",
 									"    pm.expect(jsonRes.Data.Items.length).greaterThan(0);\r",
 									"});\r",
-									"\r",
 									""
 								],
 								"type": "text/javascript"
@@ -16286,13 +16285,13 @@
 							"raw": "{\r\n    \"ParticipantId\": \"{{PARTICIPANT_ID}}\",\r\n    \"EnrollmentTaskId\": \"{{ENROLLMENT_TASK_ID_1}}\",\r\n    \"Response\": \"{Answer: 99 F}\"\r\n}"
 						},
 						"url": {
-							"raw": "{{BASE_URL}}/participant-activity-responses/{{USER_ACTIVITY_RESPONSE_ID}}",
+							"raw": "{{BASE_URL}}/participant-activity-responses/{{PARTICIPANT_ACTIVITY_RESPONSE_ID}}",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
 								"participant-activity-responses",
-								"{{USER_ACTIVITY_RESPONSE_ID}}"
+								"{{PARTICIPANT_ACTIVITY_RESPONSE_ID}}"
 							]
 						}
 					},
@@ -16344,13 +16343,13 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{BASE_URL}}/participant-activity-responses/{{USER_ACTIVITY_RESPONSE_ID}}",
+							"raw": "{{BASE_URL}}/participant-activity-responses/{{PARTICIPANT_ACTIVITY_RESPONSE_ID}}",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
 								"participant-activity-responses",
-								"{{USER_ACTIVITY_RESPONSE_ID}}"
+								"{{PARTICIPANT_ACTIVITY_RESPONSE_ID}}"
 							]
 						}
 					},
@@ -17413,7 +17412,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"Name\": \"Reduce Fasting Blood Glucose\",\r\n    \"Description\": \".....\",\r\n    \"EnrollmentId\": \"{{ENROLLMENT_ID}}\",\r\n    \"ParticipantId\": \"{{PARTICIPANT_ID}}\",\r\n    \"GoalId\": \"{{SELECTED_GOAL_ID}}\",\r\n    \"CareplanId\": \"{{CARE_PLAN_ID}}\",\r\n    \"AssetId\": \"{{ACTION_PLAN_ID}}\",\r\n    \"AssetType\": \"Action plan\",\r\n    \"AssetCode\": \"{{ACTION_PLAN_ASSET_CODE}}\",\r\n    \"AdditionalDetails\": \"...\",\r\n    \"StartDate\": \"{{TODAY}}\",\r\n    \"EndDate\": \"{{TODAY_+_5days}}\"\r\n}"
+									"raw": "{\r\n    \"Name\": \"Reduce Fasting Blood Glucose\",\r\n    \"Description\": \".....\",\r\n    \"EnrollmentId\": \"{{ENROLLMENT_ID}}\",\r\n    \"ParticipantId\": \"{{PARTICIPANT_ID}}\",\r\n    \"SelectedGoalId\": \"{{SELECTED_GOAL_ID}}\",\r\n    \"CareplanId\": \"{{CARE_PLAN_ID}}\",\r\n    \"AssetId\": \"{{ACTION_PLAN_ID}}\",\r\n    \"AssetType\": \"Action plan\",\r\n    \"AssetCode\": \"{{ACTION_PLAN_ASSET_CODE}}\",\r\n    \"AdditionalDetails\": \"...\",\r\n    \"StartDate\": \"{{TODAY}}\",\r\n    \"EndDate\": \"{{TODAY_+_5days}}\"\r\n}"
 								},
 								"url": {
 									"raw": "{{BASE_URL}}/participant-selected-action-plans",
@@ -17650,7 +17649,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"Name\": \"Reduce Fasting Blood Glucose\",\r\n    \"Description\": \"We need to follow low carb and high protien diet\",\r\n    \"EnrollmentId\": \"{{ENROLLMENT_ID}}\",\r\n    \"ParticipantId\": \"{{PARTICIPANT_ID}}\",\r\n    \"GoalId\": \"{{SELECTED_GOAL_ID}}\",\r\n    \"CareplanId\": \"{{CARE_PLAN_ID}}\",\r\n    \"AssetId\": \"{{ACTION_PLAN_ID}}\",\r\n    \"AssetType\": \"Action plan\",\r\n    \"AssetCode\": \"{{ACTION_PLAN_ASSET_CODE}}\",\r\n    \"AdditionalDetails\": \"...\",\r\n    \"StartDate\": \"{{TODAY}}\",\r\n    \"EndDate\": \"{{TODAY_+_5days}}\"\r\n}"
+									"raw": "{\r\n    \"Name\": \"Reduce Fasting Blood Glucose\",\r\n    \"Description\": \"We need to follow low carb and high protien diet\",\r\n    \"EnrollmentId\": \"{{ENROLLMENT_ID}}\",\r\n    \"ParticipantId\": \"{{PARTICIPANT_ID}}\",\r\n    \"SelectedGoalId\": \"{{SELECTED_GOAL_ID}}\",\r\n    \"CareplanId\": \"{{CARE_PLAN_ID}}\",\r\n    \"AssetId\": \"{{ACTION_PLAN_ID}}\",\r\n    \"AssetType\": \"Action plan\",\r\n    \"AssetCode\": \"{{ACTION_PLAN_ASSET_CODE}}\",\r\n    \"AdditionalDetails\": \"...\",\r\n    \"StartDate\": \"{{TODAY}}\",\r\n    \"EndDate\": \"{{TODAY_+_5days}}\"\r\n}"
 								},
 								"url": {
 									"raw": "{{BASE_URL}}/participant-selected-action-plans/{{SELECTED_ACTION_PLAN_ID}}",
@@ -17788,7 +17787,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"Name\": \"Reduce Fasting Blood Glucose\",\r\n    \"Description\": \"Eat less carbs\",\r\n    \"EnrollmentId\": \"{{ENROLLMENT_ID}}\",\r\n    \"ParticipantId\": \"{{PARTICIPANT_ID}}\",\r\n    \"GoalId\": \"{{SELECTED_GOAL_ID}}\",\r\n    \"CareplanId\": \"{{CARE_PLAN_ID}}\",\r\n    \"AssetId\": \"{{ACTION_PLAN_ID}}\",\r\n    \"AssetType\": \"Action plan\",\r\n    \"AssetCode\": \"{{ACTION_PLAN_ASSET_CODE}}\",\r\n    \"AdditionalDetails\": \"...\",\r\n    \"StartDate\": \"{{TODAY}}\",\r\n    \"EndDate\": \"{{TODAY_+_5days}}\"\r\n}"
+									"raw": "{\r\n    \"Name\": \"Reduce Fasting Blood Glucose\",\r\n    \"Description\": \"Eat less carbs\",\r\n    \"EnrollmentId\": \"{{ENROLLMENT_ID}}\",\r\n    \"ParticipantId\": \"{{PARTICIPANT_ID}}\",\r\n    \"SelectedGoalId\": \"{{SELECTED_GOAL_ID}}\",\r\n    \"CareplanId\": \"{{CARE_PLAN_ID}}\",\r\n    \"AssetId\": \"{{ACTION_PLAN_ID}}\",\r\n    \"AssetType\": \"Action plan\",\r\n    \"AssetCode\": \"{{ACTION_PLAN_ASSET_CODE}}\",\r\n    \"AdditionalDetails\": \"...\",\r\n    \"StartDate\": \"{{TODAY}}\",\r\n    \"EndDate\": \"{{TODAY_+_5days}}\"\r\n}"
 								},
 								"url": {
 									"raw": "{{BASE_URL}}/participant-selected-action-plans",

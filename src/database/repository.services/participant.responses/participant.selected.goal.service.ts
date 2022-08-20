@@ -75,7 +75,7 @@ export class ParticipantSelectedGoalService {
                 }, {
                     model    : this.ParticipantSelectedPriority,
                     required : false,
-                    as       : 'ParticipantSelectedPriority',
+                    as       : 'SelectedPriority',
                     //through: { attributes: [] }
                 }
 
@@ -238,7 +238,7 @@ export class ParticipantSelectedGoalService {
         const includePriorityAsPriority = {
             model    : this.ParticipantSelectedPriority,
             required : false,
-            as       : 'ParticipantSelectedPriority',
+            as       : 'SelectedPriority',
             where    : {}
         };
         //if (filters.Xyz != undefined) {

@@ -75,7 +75,7 @@ export class ParticipantSelectedActionPlanService {
                 }, {
                     model    : this.ParticipantSelectedGoal,
                     required : false,
-                    as       : 'ParticipantSelectedGoal',
+                    as       : 'SelectedGoal',
                     //through: { attributes: [] }
                 }
 
@@ -238,7 +238,7 @@ export class ParticipantSelectedActionPlanService {
         const includeGoalAsGoal = {
             model    : this.ParticipantSelectedGoal,
             required : false,
-            as       : 'ParticipantSelectedGoal',
+            as       : 'SelectedGoal',
             where    : {}
         };
         //if (filters.Xyz != undefined) {

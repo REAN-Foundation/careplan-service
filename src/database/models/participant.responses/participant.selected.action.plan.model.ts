@@ -7,7 +7,7 @@ const sequelize = db.default.sequelize;
 
 export class ParticipantSelectedActionPlanModel {
 
-    static TableName = 'participant_selected_action_plans';
+    static TableName = 'selected_action_plans';
 
     static ModelName = 'ParticipantSelectedActionPlan';
 
@@ -38,7 +38,7 @@ export class ParticipantSelectedActionPlanModel {
             foreignKey : true,
             unique     : false
         },
-        GoalId : {
+        SelectedGoalId : {
             type       : DataTypes.UUID,
             allowNull  : false,
             foreignKey : true,
@@ -114,9 +114,9 @@ export class ParticipantSelectedActionPlanModel {
             as        : 'Participant'
         });
         models.ParticipantSelectedActionPlan.belongsTo(models.ParticipantSelectedGoal, {
-            sourceKey : 'GoalId',
+            sourceKey : 'SelectedGoalId',
             targetKey : 'id',
-            as        : 'ParticipantSelectedGoal'
+            as        : 'SelectedGoal'
         });
 
         models.ParticipantSelectedActionPlan.belongsTo(models.Careplan, {
