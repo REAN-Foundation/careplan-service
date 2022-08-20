@@ -16,13 +16,13 @@ export class ParticipantModel {
             type         : DataTypes.UUID,
             allowNull    : false,
             defaultValue : DataTypes.UUIDV4,
-            unique       : true
+            primaryKey   : true
         },
         DisplayId : {
             type          : DataTypes.INTEGER,
             allowNull     : false,
             autoIncrement : true,
-            primaryKey    : true
+            unique        : true
         },
         Prefix : {
             type         : DataTypes.STRING(16),
