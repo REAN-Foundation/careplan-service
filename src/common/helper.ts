@@ -30,7 +30,7 @@ export class Helper {
         }
         return null;
     };
-    
+
     static getStoragePath = () => {
         return path.join(process.env.STORAGE, process.env.NODE_ENV);
     }
@@ -42,7 +42,7 @@ export class Helper {
         // returns Boolean
         return bcrypt.compareSync(password.toString(), hash);
     }
-    
+
     static generateHashedPassword = (password) => {
         if (!password) {
             return null;
@@ -70,7 +70,7 @@ export class Helper {
     static hasProperty = (obj, prop) => {
         return Object.prototype.hasOwnProperty.call(obj, prop);
     }
-    
+
     static isUrl = (str) => {
         if (!str) {
             return false;
@@ -87,7 +87,7 @@ export class Helper {
         const txt = JSON.stringify(obj, null, '    ');
         fs.writeFileSync(filename, txt);
     }
-    
+
     static jsonToObj = (jsonPath) => {
 
         if (!fs.existsSync(jsonPath)) {
@@ -365,7 +365,7 @@ export class Helper {
         }
         return Promise.resolve();
     }
-    
+
     public static sleep = (miliseconds) => {
         return new Promise((resolve) => {
             setTimeout(resolve, miliseconds);
@@ -396,6 +396,10 @@ export class Helper {
         return compareSync(str, hashed);
     };
 
+    public static padInteger = (num: number, places: number, paddingCharacter: string) => {
+        return String(num).padStart(places, paddingCharacter);
+    }
+
     //Reference: https://github.com/zishon89us/node-cheat/blob/master/stackoverflow_answers/crypto-create-cipheriv.js#L2
 
     public static encrypt = (str: string) => {
@@ -424,7 +428,7 @@ export class Helper {
         if (phone == null) {
             return [];
         }
-        
+
         let phoneTemp = phone;
         phoneTemp = phoneTemp.trim();
         const countryCodes = Countries.map(x => x.PhoneCode);
@@ -440,12 +444,12 @@ export class Helper {
                 phoneTemp = phoneTemp.replace('-', '');
             }
         }
-    
+
         if (phonePrefix) {
             possiblePhoneNumbers.push(phonePrefix + phoneTemp);
             possiblePhoneNumbers.push(phonePrefix + "-" + phoneTemp);
             possiblePhoneNumbers.push(phoneTemp);
-    
+
         } else {
 
             var possibles = Countries.map(x => {
@@ -509,7 +513,7 @@ export class Helper {
 
         return downloadFolderPath;
     };
-    
+
     public static createTempDownloadFolder = async() => {
         var tempDownloadFolder = ConfigurationManager.DownloadTemporaryFolder();
         if (fs.existsSync(tempDownloadFolder)) {
@@ -518,7 +522,7 @@ export class Helper {
         await fs.promises.mkdir(tempDownloadFolder, { recursive: true });
         return tempDownloadFolder;
     };
-    
+
     public static createTempUploadFolder = async() => {
         var tempUploadFolder = ConfigurationManager.UploadTemporaryFolder();
         if (fs.existsSync(tempUploadFolder)) {
@@ -534,7 +538,7 @@ export class Helper {
         var ext = extension.startsWith('.') ? extension : '.' + extension;
         return tmp + ext;
     };
-    
+
     public static getMimeType = (pathOrExtension: string) => {
         var mimeType = mime.lookup(pathOrExtension);
         if (!mimeType) {
@@ -542,7 +546,7 @@ export class Helper {
         }
         return mimeType;
     };
-    
+
     public static getValueForEitherKeys = (obj: any, keys: string[]): string => {
         const existingKeys = Object.keys(obj);
         for (var key of keys) {

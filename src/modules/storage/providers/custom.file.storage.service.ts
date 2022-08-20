@@ -26,7 +26,7 @@ export class CustomFileStorageService implements IFileStorageService {
             return null;
         }
     };
-    
+
     upload = async (inputStream: any, storageKey: string): Promise<string> => {
         return new Promise((resolve, reject) => {
             try {
@@ -128,7 +128,7 @@ export class CustomFileStorageService implements IFileStorageService {
             return false;
         }
     };
-    
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getShareableLink(storageKey: string, _durationInMinutes: number): string {
         return path.join(this._storagePath, storageKey);

@@ -5,11 +5,11 @@ const sequelize = db.default.sequelize;
 
 ////////////////////////////////////////////////////////////////////////
 
-export class CareplanScheduleModel {
+export class CareplanActivityModel {
 
-    static TableName = 'careplan_schedules';
+    static TableName = 'careplan_activities';
 
-    static ModelName = 'CareplanSchedule';
+    static ModelName = 'CareplanActivity';
 
     static Schema = {
         id : {
@@ -34,12 +34,17 @@ export class CareplanScheduleModel {
         },
         Day : {
             type      : DataTypes.INTEGER,
-            allowNull : false
+            allowNull : true
         },
         TimeSlot : {
             type         : DataTypes.ENUM({ values: TimeSlotList }),
             allowNull    : false,
             defaultValue : 'Unspecified'
+        },
+        IsRegistrationActivity : {
+            type         : DataTypes.BOOLEAN,
+            allowNull    : false,
+            defaultValue : false
         },
 
         CreatedAt : DataTypes.DATE,
@@ -48,8 +53,8 @@ export class CareplanScheduleModel {
     };
 
     static Model: any = sequelize.define(
-        CareplanScheduleModel.ModelName,
-        CareplanScheduleModel.Schema,
+        CareplanActivityModel.ModelName,
+        CareplanActivityModel.Schema,
         {
             createdAt       : 'CreatedAt',
             updatedAt       : 'UpdatedAt',
@@ -57,14 +62,14 @@ export class CareplanScheduleModel {
             freezeTableName : true,
             timestamps      : true,
             paranoid        : true,
-            tableName       : CareplanScheduleModel.TableName,
+            tableName       : CareplanActivityModel.TableName,
         });
 
     static associate = (models) => {
 
         //Add associations here...
 
-        models.CareplanSchedule.belongsTo(models.Careplan, {
+        models.CareplanActivity.belongsTo(models.Careplan, {
             sourceKey : 'CareplanId',
             targetKey : 'id',
             as        : 'Careplan'

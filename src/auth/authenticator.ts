@@ -11,7 +11,7 @@ import { ApiError } from '../common/api.error';
 
 @injectable()
 export class Authenticator {
-    
+
     constructor(
         @inject('IAuthenticator') private _authenticator: IAuthenticator
     ) {}
@@ -48,6 +48,27 @@ export class Authenticator {
             const authResult = await this._authenticator.authenticateClient(request);
             if (authResult.Result === false){
                 ResponseHandler.failure(request, response, authResult.Message, authResult.HttpErrorCode);
+                return false;
+            }
+            next();
+        } catch (error) {
+            Logger.instance().log(error.message);
+            ResponseHandler.failure(request, response, 'Client authentication error: ' + error.message, 401);
+        }
+    };
+
+    public authenticateClientOrUser = async (
+        request: express.Request,
+        response: express.Response,
+        next: express.NextFunction
+    ): Promise<boolean> => {
+        try {
+            const clientAuthResult = await this._authenticator.authenticateClient(request);
+            const clientAuthenticated = clientAuthResult.Result;
+            const userAuthResult = await this._authenticator.authenticateUser(request);
+            const userAuthenticated = userAuthResult.Result;
+            if (!clientAuthenticated && !userAuthenticated) {
+                ResponseHandler.failure(request, response, 'Authentication failed', 401);
                 return false;
             }
             next();

@@ -25,13 +25,13 @@ export class ParticipantActivityResponseModel {
             foreignKey : true,
             unique     : false
         },
-        EnrollmentScheduleId : {
+        EnrollmentTaskId : {
             type       : DataTypes.UUID,
             allowNull  : false,
             foreignKey : true,
             unique     : false
         },
-        CareplanScheduleId : {
+        CareplanActivityId : {
             type       : DataTypes.UUID,
             allowNull  : false,
             foreignKey : true,
@@ -54,7 +54,7 @@ export class ParticipantActivityResponseModel {
         Response : {
             type         : DataTypes.TEXT,
             allowNull    : false,
-            defaultValue : '{}'
+            defaultValue : '[]'
         },
         TimeResponded : {
             type      : DataTypes.DATE,
@@ -94,16 +94,16 @@ export class ParticipantActivityResponseModel {
             as        : 'Participant'
         });
 
-        models.ParticipantActivityResponse.belongsTo(models.EnrollmentSchedule, {
-            sourceKey : 'EnrollmentScheduleId',
+        models.ParticipantActivityResponse.belongsTo(models.EnrollmentTask, {
+            sourceKey : 'EnrollmentTaskId',
             targetKey : 'id',
-            as        : 'EnrollmentSchedule'
+            as        : 'EnrollmentTask'
         });
 
-        models.ParticipantActivityResponse.belongsTo(models.CareplanSchedule, {
-            sourceKey : 'CareplanScheduleId',
+        models.ParticipantActivityResponse.belongsTo(models.CareplanActivity, {
+            sourceKey : 'CareplanActivityId',
             targetKey : 'id',
-            as        : 'CareplanSchedule'
+            as        : 'CareplanActivity'
         });
 
         models.ParticipantActivityResponse.belongsTo(models.Careplan, {

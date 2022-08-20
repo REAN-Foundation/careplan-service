@@ -7,40 +7,44 @@ import {
     uuid
 } from "../miscellaneous/system.types";
 
-export interface EnrollmentScheduleCreateModel {
+export interface EnrollmentTaskCreateModel {
     EnrollmentId      : uuid;
     ParticipantId     : uuid;
-    CareplanScheduleId: uuid;
+    CareplanActivityId: uuid;
     AssetId           : number;
     AssetType         : AssetType;
     CareplanId        : number;
+    IsRegistrationActivity : boolean;
     TimeSlot          : TimeSlot;
     ScheduledDate     : Date;
 }
 
-export interface EnrollmentScheduleUpdateModel {
+export interface EnrollmentTaskUpdateModel {
     AssetType ?: AssetType;
 }
 
-export interface EnrollmentScheduleDto {
+export interface EnrollmentTaskDto {
     id                : uuid;
     EnrollmentId      : uuid;
     ParticipantId     : uuid;
-    CareplanScheduleId: uuid;
+    CareplanActivityId: uuid;
     AssetId           : number;
     AssetType         : AssetType;
+    Asset?            : any;
     CareplanId        : number;
     TimeSlot          : TimeSlot;
     ScheduledDate     : Date;
+    IsRegistrationActivity : boolean,
 }
 
-export interface EnrollmentScheduleSearchFilters extends BaseSearchFilters {
+export interface EnrollmentTaskSearchFilters extends BaseSearchFilters {
     AssetId    ?: number;
     AssetType  ?: AssetType;
     CareplanId ?: number;
     TimeSlot   ?: TimeSlot;
+    IsRegistrationActivity? : boolean,
 }
 
-export interface EnrollmentScheduleSearchResults extends BaseSearchResults {
-    Items: EnrollmentScheduleDto[];
+export interface EnrollmentTaskSearchResults extends BaseSearchResults {
+    Items: EnrollmentTaskDto[];
 }

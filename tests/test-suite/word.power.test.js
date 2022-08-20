@@ -24,7 +24,7 @@ describe('Word power tests', function() {
                 expect(response.body.Data).to.have.property('id');
                 expect(response.body.Data).to.have.property('id');
                 expect(response.body.Data).to.have.property('AssetCode');
-                expect(response.body.Data).to.have.property('Word');
+                expect(response.body.Data).to.have.property('Name');
                 expect(response.body.Data).to.have.property('Description');
                 expect(response.body.Data).to.have.property('AdditionalResources');
                 expect(response.body.Data).to.have.property('AssetCategory');
@@ -34,7 +34,7 @@ describe('Word power tests', function() {
 
                 expect(response.body.Data.id).to.equal(TestCache.WordPowerCreateModel.id);
                 expect(response.body.Data.AssetCode).to.equal(TestCache.WordPowerCreateModel.AssetCode);
-                expect(response.body.Data.Word).to.equal(TestCache.WordPowerCreateModel.Word);
+                expect(response.body.Data.Name).to.equal(TestCache.WordPowerCreateModel.Name);
                 expect(response.body.Data.Description).to.equal(TestCache.WordPowerCreateModel.Description);
                 expect(response.body.Data.AdditionalResources).to.equal(TestCache.WordPowerCreateModel.AdditionalResources);
                 expect(response.body.Data.AssetCategory).to.equal(TestCache.WordPowerCreateModel.AssetCategory);
@@ -55,7 +55,7 @@ describe('Word power tests', function() {
             .expect(response => {
                 expect(response.body.Data).to.have.property('id');
                 expect(response.body.Data).to.have.property('AssetCode');
-                expect(response.body.Data).to.have.property('Word');
+                expect(response.body.Data).to.have.property('Name');
                 expect(response.body.Data).to.have.property('Description');
                 expect(response.body.Data).to.have.property('AdditionalResources');
                 expect(response.body.Data).to.have.property('AssetCategory');
@@ -65,7 +65,7 @@ describe('Word power tests', function() {
 
                 expect(response.body.Data.id).to.equal(TestCache.WordPowerCreateModel.id);
                 expect(response.body.Data.AssetCode).to.equal(TestCache.WordPowerCreateModel.AssetCode);
-                expect(response.body.Data.Word).to.equal(TestCache.WordPowerCreateModel.Word);
+                expect(response.body.Data.Name).to.equal(TestCache.WordPowerCreateModel.Name);
                 expect(response.body.Data.Description).to.equal(TestCache.WordPowerCreateModel.Description);
                 expect(response.body.Data.AdditionalResources).to.equal(TestCache.WordPowerCreateModel.AdditionalResources);
                 expect(response.body.Data.AssetCategory).to.equal(TestCache.WordPowerCreateModel.AssetCategory);
@@ -110,7 +110,7 @@ describe('Word power tests', function() {
             .expect(response => {
                 expect(response.body.Data).to.have.property('id');
                 expect(response.body.Data).to.have.property('AssetCode');
-                expect(response.body.Data).to.have.property('Word');
+                expect(response.body.Data).to.have.property('Name');
                 expect(response.body.Data).to.have.property('Description');
                 expect(response.body.Data).to.have.property('AdditionalResources');
                 expect(response.body.Data).to.have.property('AssetCategory');
@@ -120,7 +120,7 @@ describe('Word power tests', function() {
 
                 expect(response.body.Data.id).to.equal(TestCache.WordPowerCreateModel.id);
                 expect(response.body.Data.AssetCode).to.equal(TestCache.WordPowerCreateModel.AssetCode);
-                expect(response.body.Data.Word).to.equal(TestCache.WordPowerCreateModel.Word);
+                expect(response.body.Data.Name).to.equal(TestCache.WordPowerCreateModel.Name);
                 expect(response.body.Data.Description).to.equal(TestCache.WordPowerCreateModel.Description);
                 expect(response.body.Data.AdditionalResources).to.equal(TestCache.WordPowerCreateModel.AdditionalResources);
                 expect(response.body.Data.AssetCategory).to.equal(TestCache.WordPowerCreateModel.AssetCategory);
@@ -165,7 +165,7 @@ describe('Word power tests', function() {
                 expect(response.body.Data).to.have.property('id');
                 expect(response.body.Data).to.have.property('id');
                 expect(response.body.Data).to.have.property('AssetCode');
-                expect(response.body.Data).to.have.property('Word');
+                expect(response.body.Data).to.have.property('Name');
                 expect(response.body.Data).to.have.property('Description');
                 expect(response.body.Data).to.have.property('AdditionalResources');
                 expect(response.body.Data).to.have.property('AssetCategory');
@@ -175,7 +175,7 @@ describe('Word power tests', function() {
 
                 expect(response.body.Data.id).to.equal(TestCache.WordPowerCreateModel.id);
                 expect(response.body.Data.AssetCode).to.equal(TestCache.WordPowerCreateModel.AssetCode);
-                expect(response.body.Data.Word).to.equal(TestCache.WordPowerCreateModel.Word);
+                expect(response.body.Data.Name).to.equal(TestCache.WordPowerCreateModel.Name);
                 expect(response.body.Data.Description).to.equal(TestCache.WordPowerCreateModel.Description);
                 expect(response.body.Data.AdditionalResources).to.equal(TestCache.WordPowerCreateModel.AdditionalResources);
                 expect(response.body.Data.AssetCategory).to.equal(TestCache.WordPowerCreateModel.AssetCategory);
@@ -194,10 +194,9 @@ describe('Word power tests', function() {
 function loadWordPowerCreateModel() {
     const model = {
         AssetCode: "WORDPOWER-AB-1",
-        Word: "Nutrition",
+        Name: "Nutrition",
         Description: "Nutrition is the biochemical and physiological process by which an organism uses food to support its life. It includes ingestion, absorption, assimilation, biosynthesis, catabolism and excretion.",
         Version: "V1",
-
     };
     TestCache.WordPowerCreateModel = model;
 }
@@ -205,12 +204,11 @@ function loadWordPowerCreateModel() {
 function loadWordPowerUpdateModel() {
     const model = {
         AssetCode: "WORDPOWER-AB-1",
-        Word: "Nutrition",
+        Name: "Nutrition",
         Description: "Nutrition is the biochemical and physiological process by which an organism uses food to support its life. It includes ingestion, absorption, assimilation, biosynthesis, catabolism and excretion.",
         AdditionalResources: ['https://en.wikipedia.org/wiki/Nutrition', 'https://en.wikipedia.org/wiki/Micronutrient'],
         Tags: ['Maternity', 'Neo-natal-care'],
         Version: "V1",
-
     };
     TestCache.WordPowerUpdateModel = model;
 }

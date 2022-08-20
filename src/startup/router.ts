@@ -2,7 +2,7 @@ import express from "express";
 import { Logger } from "../common/logger";
 import { register as registerCareplanRoutes         } from "../api/careplan/careplan/careplan.routes";
 import { register as registerCareplanCategoryRoutes } from "../api/careplan/careplan.category/careplan.category.routes";
-import { register as registerCareplanScheduleRoutes } from "../api/careplan/careplan.schedule/careplan.schedule.routes";
+import { register as registerCareplanActivityRoutes } from "../api/careplan/careplan.activity/careplan.activity.routes";
 import { register as registerApiClientRoutes        } from "../api/api.client/api.client.routes";
 import { register as registerActionPlanRoutes       } from "../api/assets/action.plan/action.plan.routes";
 import { register as registerAnimationRoutes        } from "../api/assets/animation/animation.routes";
@@ -30,7 +30,7 @@ import { register as registerWebLinkRoutes          } from "../api/assets/web.li
 import { register as registerWebNewsFeedRoutes      } from "../api/assets/web.newsfeed/web.newsfeed.routes";
 import { register as registerWordPowerRoutes        } from "../api/assets/word.power/word.power.routes";
 import { register as registerEnrollmentRoutes       } from "../api/enrollment/enrollment/enrollment.routes";
-import { register as registerEnrollmentScheduleRoutes } from "../api/enrollment/enrollment.schedule/enrollment.schedule.routes";
+import { register as registerEnrollmentTaskRoutes } from "../api/enrollment/enrollment.task/enrollment.task.routes";
 import { register as registerFileREsourceRoutes       } from "../api/file.resource/file.resource.routes";
 import { register as registerTypesRoutes              } from "../api/types/types.routes";
 import { register as registerUserRoutes               } from "../api/user/user.routes";
@@ -66,7 +66,7 @@ export class Router {
                 registerCareplanCategoryRoutes(this._app);
                 registerApiClientRoutes(this._app);
                 registerCareplanCategoryRoutes(this._app);
-                registerCareplanScheduleRoutes(this._app);
+                registerCareplanActivityRoutes(this._app);
                 registerApiClientRoutes(this._app);
                 registerActionPlanRoutes(this._app);
                 registerAnimationRoutes(this._app);
@@ -94,7 +94,7 @@ export class Router {
                 registerWebNewsFeedRoutes(this._app);
                 registerWordPowerRoutes(this._app);
                 registerEnrollmentRoutes(this._app);
-                registerEnrollmentScheduleRoutes(this._app);
+                registerEnrollmentTaskRoutes(this._app);
                 registerFileREsourceRoutes(this._app);
                 registerTypesRoutes(this._app);
                 registerUserRoutes(this._app);
