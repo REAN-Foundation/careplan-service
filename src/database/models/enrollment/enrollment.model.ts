@@ -47,7 +47,16 @@ export class EnrollmentModel {
             allowNull    : false,
             defaultValue : 'Pending'
         },
-
+        DayOffset : {
+            type         : DataTypes.INTEGER,
+            allowNull    : false,
+            defaultValue : 0
+        },
+        WeekOffset : {
+            type         : DataTypes.INTEGER,
+            allowNull    : false,
+            defaultValue : 0
+        },
         CreatedAt : DataTypes.DATE,
         UpdatedAt : DataTypes.DATE,
         DeletedAt : DataTypes.DATE

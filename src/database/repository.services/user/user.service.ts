@@ -357,6 +357,43 @@ export class UserService {
         }
     }
 
+    getBySessionId = async (sessionId) => {
+        try {
+            var session = await this.UserLoginSession.findByPk(sessionId);
+            if (session == null) {
+                return null;
+            }
+            if (session.ValidTill < new Date()) {
+                return null;
+            }
+            if (session.IsActive === false) {
+                return null;
+            }
+
+            var user = await this.User.findOne({
+                where : {
+                    id : session.UserId
+                }
+            });
+
+            if (user) {
+                const userRole = await this.UserRole.findOne({
+                    where : {
+                        UserId : session.id
+                    }
+                });
+                if (userRole) {
+                    const role = await this.Role.findByPk(userRole.RoleId);
+                    user['Role'] = role;
+                }
+            }
+            return user;
+
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve user for the session!', error);
+        }
+    }
+
     resetPassword = async (userId, hashedPassword) => {
         try {
             var res = await this.User.update(

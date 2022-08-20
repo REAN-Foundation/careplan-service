@@ -16,7 +16,7 @@ export class ParticipantSelectedActionPlanMapper {
             Description       : participantSelectedActionPlan.Description,
             EnrollmentId      : participantSelectedActionPlan.EnrollmentId,
             ParticipantId     : participantSelectedActionPlan.ParticipantId,
-            GoalId            : participantSelectedActionPlan.GoalId,
+            SelectedGoalId    : participantSelectedActionPlan.SelectedGoalId,
             CareplanId        : participantSelectedActionPlan.CareplanId,
             AssetId           : participantSelectedActionPlan.AssetId,
             AssetType         : participantSelectedActionPlan.AssetType,

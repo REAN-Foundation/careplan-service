@@ -7,13 +7,13 @@ const infra = require('../index');
 
 ///////////////////////////////////////////////////////////////////////////
 
-describe('Careplan schedule tests', function() {
+describe('Careplan activity tests', function() {
 
     var agent = request.agent(infra.app);
 
-    it('Create careplan schedule', function(done) {
-        loadCareplanScheduleCreateModel();
-        const createModel = TestCache.CareplanScheduleCreateModel;
+    it('Create careplan activity', function(done) {
+        loadCareplanActivityCreateModel();
+        const createModel = TestCache.CareplanActivityCreateModel;
         agent
             .post(`/api/v1/careplan-schedules/`)
             .set('Content-Type', 'application/json')
@@ -29,18 +29,18 @@ describe('Careplan schedule tests', function() {
                 expect(response.body.Data).to.have.property('Day');
                 expect(response.body.Data).to.have.property('TimeSlot');
 
-                expect(response.body.Data.id).to.equal(TestCache.CareplanScheduleCreateModel.id);
-                expect(response.body.Data.AssetId).to.equal(TestCache.CareplanScheduleCreateModel.AssetId);
-                expect(response.body.Data.AssetType).to.equal(TestCache.CareplanScheduleCreateModel.AssetType);
-                expect(response.body.Data.CareplanId).to.equal(TestCache.CareplanScheduleCreateModel.CareplanId);
-                expect(response.body.Data.Day).to.equal(TestCache.CareplanScheduleCreateModel.Day);
-                expect(response.body.Data.TimeSlot).to.equal(TestCache.CareplanScheduleCreateModel.TimeSlot);
+                expect(response.body.Data.id).to.equal(TestCache.CareplanActivityCreateModel.id);
+                expect(response.body.Data.AssetId).to.equal(TestCache.CareplanActivityCreateModel.AssetId);
+                expect(response.body.Data.AssetType).to.equal(TestCache.CareplanActivityCreateModel.AssetType);
+                expect(response.body.Data.CareplanId).to.equal(TestCache.CareplanActivityCreateModel.CareplanId);
+                expect(response.body.Data.Day).to.equal(TestCache.CareplanActivityCreateModel.Day);
+                expect(response.body.Data.TimeSlot).to.equal(TestCache.CareplanActivityCreateModel.TimeSlot);
 
             })
             .expect(201, done);
     });
 
-    it('Get careplan schedule by id', function(done) {
+    it('Get careplan activity by id', function(done) {
         const id = `${TestCache.CAREPLAN_SCHEDULE_ID}`
         agent
             .get(`/api/v1/careplan-schedules/${TestCache.CAREPLAN_SCHEDULE_ID}`)
@@ -54,20 +54,20 @@ describe('Careplan schedule tests', function() {
                 expect(response.body.Data).to.have.property('Day');
                 expect(response.body.Data).to.have.property('TimeSlot');
 
-                expect(response.body.Data.id).to.equal(TestCache.CareplanScheduleCreateModel.id);
-                expect(response.body.Data.AssetId).to.equal(TestCache.CareplanScheduleCreateModel.AssetId);
-                expect(response.body.Data.AssetType).to.equal(TestCache.CareplanScheduleCreateModel.AssetType);
-                expect(response.body.Data.CareplanId).to.equal(TestCache.CareplanScheduleCreateModel.CareplanId);
-                expect(response.body.Data.Day).to.equal(TestCache.CareplanScheduleCreateModel.Day);
-                expect(response.body.Data.TimeSlot).to.equal(TestCache.CareplanScheduleCreateModel.TimeSlot);
+                expect(response.body.Data.id).to.equal(TestCache.CareplanActivityCreateModel.id);
+                expect(response.body.Data.AssetId).to.equal(TestCache.CareplanActivityCreateModel.AssetId);
+                expect(response.body.Data.AssetType).to.equal(TestCache.CareplanActivityCreateModel.AssetType);
+                expect(response.body.Data.CareplanId).to.equal(TestCache.CareplanActivityCreateModel.CareplanId);
+                expect(response.body.Data.Day).to.equal(TestCache.CareplanActivityCreateModel.Day);
+                expect(response.body.Data.TimeSlot).to.equal(TestCache.CareplanActivityCreateModel.TimeSlot);
 
             })
             .expect(200, done);
     });
 
-    it('Search careplan schedule records', function(done) {
-        loadCareplanScheduleQueryString();
-        const queryString = TestCache.CareplanScheduleQueryString;
+    it('Search careplan activity records', function(done) {
+        loadCareplanActivityQueryString();
+        const queryString = TestCache.CareplanActivityQueryString;
         agent
             .get(`/api/v1/careplan-schedules/search${queryString}`)
             .set('Content-Type', 'application/json')
@@ -86,9 +86,9 @@ describe('Careplan schedule tests', function() {
             .expect(200, done);
     });
 
-    it('Update careplan schedule', function(done) {
-        loadCareplanScheduleUpdateModel();
-        const updateModel = TestCache.CareplanScheduleUpdateModel;
+    it('Update careplan activity', function(done) {
+        loadCareplanActivityUpdateModel();
+        const updateModel = TestCache.CareplanActivityUpdateModel;
         const id = `${TestCache.CAREPLAN_SCHEDULE_ID}`
         agent
             .put(`/api/v1/careplan-schedules/${TestCache.CAREPLAN_SCHEDULE_ID}`)
@@ -103,18 +103,18 @@ describe('Careplan schedule tests', function() {
                 expect(response.body.Data).to.have.property('Day');
                 expect(response.body.Data).to.have.property('TimeSlot');
 
-                expect(response.body.Data.id).to.equal(TestCache.CareplanScheduleCreateModel.id);
-                expect(response.body.Data.AssetId).to.equal(TestCache.CareplanScheduleCreateModel.AssetId);
-                expect(response.body.Data.AssetType).to.equal(TestCache.CareplanScheduleCreateModel.AssetType);
-                expect(response.body.Data.CareplanId).to.equal(TestCache.CareplanScheduleCreateModel.CareplanId);
-                expect(response.body.Data.Day).to.equal(TestCache.CareplanScheduleCreateModel.Day);
-                expect(response.body.Data.TimeSlot).to.equal(TestCache.CareplanScheduleCreateModel.TimeSlot);
+                expect(response.body.Data.id).to.equal(TestCache.CareplanActivityCreateModel.id);
+                expect(response.body.Data.AssetId).to.equal(TestCache.CareplanActivityCreateModel.AssetId);
+                expect(response.body.Data.AssetType).to.equal(TestCache.CareplanActivityCreateModel.AssetType);
+                expect(response.body.Data.CareplanId).to.equal(TestCache.CareplanActivityCreateModel.CareplanId);
+                expect(response.body.Data.Day).to.equal(TestCache.CareplanActivityCreateModel.Day);
+                expect(response.body.Data.TimeSlot).to.equal(TestCache.CareplanActivityCreateModel.TimeSlot);
 
             })
             .expect(200, done);
     });
 
-    it('Delete careplan schedule', function(done) {
+    it('Delete careplan activity', function(done) {
         const id = `${TestCache.CAREPLAN_SCHEDULE_ID}`
 
         //Delete
@@ -136,7 +136,7 @@ describe('Careplan schedule tests', function() {
             .expect(404, done);
 
         //Recreate it again because we need it again
-        const createModel = TestCache.CareplanScheduleCreateModel;
+        const createModel = TestCache.CareplanActivityCreateModel;
         agent
             .post(`/api/v1/careplan-schedules/`)
             .set('Content-Type', 'application/json')
@@ -152,12 +152,12 @@ describe('Careplan schedule tests', function() {
                 expect(response.body.Data).to.have.property('Day');
                 expect(response.body.Data).to.have.property('TimeSlot');
 
-                expect(response.body.Data.id).to.equal(TestCache.CareplanScheduleCreateModel.id);
-                expect(response.body.Data.AssetId).to.equal(TestCache.CareplanScheduleCreateModel.AssetId);
-                expect(response.body.Data.AssetType).to.equal(TestCache.CareplanScheduleCreateModel.AssetType);
-                expect(response.body.Data.CareplanId).to.equal(TestCache.CareplanScheduleCreateModel.CareplanId);
-                expect(response.body.Data.Day).to.equal(TestCache.CareplanScheduleCreateModel.Day);
-                expect(response.body.Data.TimeSlot).to.equal(TestCache.CareplanScheduleCreateModel.TimeSlot);
+                expect(response.body.Data.id).to.equal(TestCache.CareplanActivityCreateModel.id);
+                expect(response.body.Data.AssetId).to.equal(TestCache.CareplanActivityCreateModel.AssetId);
+                expect(response.body.Data.AssetType).to.equal(TestCache.CareplanActivityCreateModel.AssetType);
+                expect(response.body.Data.CareplanId).to.equal(TestCache.CareplanActivityCreateModel.CareplanId);
+                expect(response.body.Data.Day).to.equal(TestCache.CareplanActivityCreateModel.Day);
+                expect(response.body.Data.TimeSlot).to.equal(TestCache.CareplanActivityCreateModel.TimeSlot);
 
             })
             .expect(201, done);
@@ -167,7 +167,7 @@ describe('Careplan schedule tests', function() {
 
 ///////////////////////////////////////////////////////////////////////////
 
-function loadCareplanScheduleCreateModel() {
+function loadCareplanActivityCreateModel() {
     const model = {
         AssetId: TestCache.ASSET_ID,
         AssetType: "Message",
@@ -176,10 +176,10 @@ function loadCareplanScheduleCreateModel() {
         TimeSlot: "Morning",
 
     };
-    TestCache.CareplanScheduleCreateModel = model;
+    TestCache.CareplanActivityCreateModel = model;
 }
 
-function loadCareplanScheduleUpdateModel() {
+function loadCareplanActivityUpdateModel() {
     const model = {
         AssetId: TestCache.ASSET_ID,
         AssetType: "Message",
@@ -188,10 +188,10 @@ function loadCareplanScheduleUpdateModel() {
         TimeSlot: "Morning",
 
     };
-    TestCache.CareplanScheduleUpdateModel = model;
+    TestCache.CareplanActivityUpdateModel = model;
 }
 
-function loadCareplanScheduleQueryString() {
+function loadCareplanActivityQueryString() {
     //This is raw query. Please modify to suit the test
     const queryString = '?assetId=xyz&assetType=xyz&careplanId=xyz&day=xyz&timeSlot=xyz'
     return queryString;

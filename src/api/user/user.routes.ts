@@ -23,5 +23,7 @@ export const register = (app: express.Application): void => {
     router.get('/search', authenticator.authenticateUser, controller.search);
     router.get('/:id', authenticator.authenticateUser, controller.getById);
 
+    router.get('/session/:sessionId', controller.getBySessionId);
+
     app.use('/api/v1/users', router);
 };

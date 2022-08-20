@@ -5,11 +5,11 @@ import {
     ParticipantModel
 } from '../../models/enrollment/participant.model';
 import {
-    EnrollmentScheduleModel
-} from '../../models/enrollment/enrollment.schedule.model';
+    EnrollmentTaskModel
+} from '../../models/enrollment/enrollment.task.model';
 import {
-    CareplanScheduleModel
-} from '../../models/careplan/careplan.schedule.model';
+    CareplanActivityModel
+} from '../../models/careplan/careplan.activity.model';
 import {
     CareplanModel
 } from '../../models/careplan/careplan.model';
@@ -36,9 +36,9 @@ export class ParticipantActivityResponseService {
 
     Participant = ParticipantModel.Model;
 
-    EnrollmentSchedule = EnrollmentScheduleModel.Model;
+    EnrollmentTask = EnrollmentTaskModel.Model;
 
-    CareplanSchedule = CareplanScheduleModel.Model;
+    CareplanActivity = CareplanActivityModel.Model;
 
     Careplan = CareplanModel.Model;
 
@@ -67,14 +67,14 @@ export class ParticipantActivityResponseService {
                     as       : 'Participant',
                     //through: { attributes: [] }
                 }, {
-                    model    : this.EnrollmentSchedule,
+                    model    : this.EnrollmentTask,
                     required : false,
-                    as       : 'EnrollmentSchedule',
+                    as       : 'EnrollmentTask',
                     //through: { attributes: [] }
                 }, {
-                    model    : this.CareplanSchedule,
+                    model    : this.CareplanActivity,
                     required : false,
-                    as       : 'CareplanSchedule',
+                    as       : 'CareplanActivity',
                     //through: { attributes: [] }
                 }, {
                     model    : this.Careplan,
@@ -207,26 +207,26 @@ export class ParticipantActivityResponseService {
         //    includeUser.where['Xyz'] = filters.Xyz;
         //}
         search.include.push(includeUserAsUser);
-        const includeEnrollmentScheduleAsEnrollmentSchedule = {
-            model    : this.EnrollmentSchedule,
+        const includeEnrollmentTaskAsEnrollmentTask = {
+            model    : this.EnrollmentTask,
             required : false,
-            as       : 'EnrollmentSchedule',
+            as       : 'EnrollmentTask',
             where    : {}
         };
         //if (filters.Xyz != undefined) {
-        //    includeEnrollmentSchedule.where['Xyz'] = filters.Xyz;
+        //    includeEnrollmentTask.where['Xyz'] = filters.Xyz;
         //}
-        search.include.push(includeEnrollmentScheduleAsEnrollmentSchedule);
-        const includeCareplanScheduleAsCareplanSchedule = {
-            model    : this.CareplanSchedule,
+        search.include.push(includeEnrollmentTaskAsEnrollmentTask);
+        const includeCareplanActivityAsCareplanActivity = {
+            model    : this.CareplanActivity,
             required : false,
-            as       : 'CareplanSchedule',
+            as       : 'CareplanActivity',
             where    : {}
         };
         //if (filters.Xyz != undefined) {
-        //    includeCareplanSchedule.where['Xyz'] = filters.Xyz;
+        //    includeCareplanActivity.where['Xyz'] = filters.Xyz;
         //}
-        search.include.push(includeCareplanScheduleAsCareplanSchedule);
+        search.include.push(includeCareplanActivityAsCareplanActivity);
         const includeCareplanAsCareplan = {
             model    : this.Careplan,
             required : false,

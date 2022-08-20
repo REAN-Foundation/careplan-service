@@ -10,8 +10,8 @@ import {
 
 export interface ParticipantActivityResponseCreateModel {
     ParticipantId       : uuid;
-    EnrollmentScheduleId: uuid;
-    CareplanScheduleId  : uuid;
+    EnrollmentTaskId    : uuid;
+    CareplanActivityId  : uuid;
     CareplanId          : number;
     AssetId             : number;
     AssetType           : AssetType;
@@ -22,7 +22,7 @@ export interface ParticipantActivityResponseCreateModel {
 
 export interface ParticipantActivityResponseUpdateModel {
     ParticipantId        ?: uuid;
-    EnrollmentScheduleId ?: uuid;
+    EnrollmentTaskId     ?: uuid;
     Response             ?: string;
     ProgressStatus       ?: ProgressStatus;
 }
@@ -30,8 +30,8 @@ export interface ParticipantActivityResponseUpdateModel {
 export interface ParticipantActivityResponseDto {
     id                  : uuid;
     ParticipantId       : uuid;
-    EnrollmentScheduleId: uuid;
-    CareplanScheduleId  : uuid;
+    EnrollmentTaskId    : uuid;
+    CareplanActivityId  : uuid;
     CareplanId          : number;
     AssetId             : number;
     AssetType           : AssetType;

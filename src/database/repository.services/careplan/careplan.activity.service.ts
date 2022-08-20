@@ -1,6 +1,6 @@
 import {
-    CareplanScheduleModel
-} from '../../models/careplan/careplan.schedule.model';
+    CareplanActivityModel
+} from '../../models/careplan/careplan.activity.model';
 import {
     CareplanModel
 } from '../../models/careplan/careplan.model';
@@ -9,18 +9,20 @@ import {
     ErrorHandler
 } from '../../../common/error.handler';
 import {
-    CareplanScheduleCreateModel,
-    CareplanScheduleSearchFilters,
-    CareplanScheduleSearchResults
-} from '../../../domain.types/careplan/careplan.schedule.domain.types';
+    CareplanActivityCreateModel,
+    CareplanActivitySearchFilters,
+    CareplanActivitySearchResults
+} from '../../../domain.types/careplan/careplan.activity.domain.types';
+import { uuid } from '../../../domain.types/miscellaneous/system.types';
+import { AssetHelper } from '../assets/asset.helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-export class CareplanScheduleService {
+export class CareplanActivityService {
 
     //#region Models
 
-    CareplanSchedule = CareplanScheduleModel.Model;
+    CareplanActivity = CareplanActivityModel.Model;
 
     Careplan = CareplanModel.Model;
 
@@ -28,46 +30,69 @@ export class CareplanScheduleService {
 
     //#region Publics
 
-    create = async (createModel: CareplanScheduleCreateModel) => {
+    create = async (createModel: CareplanActivityCreateModel) => {
         try {
-            var record = await this.CareplanSchedule.create(createModel);
+            var record = await this.CareplanActivity.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to create careplan schedule!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to create careplan activity!', error);
         }
     }
 
     getById = async (id) => {
         try {
-            const record = await this.CareplanSchedule.findOne({
+            var record = await this.CareplanActivity.findOne({
                 where : {
                     id : id
                 },
-                include : [{
-                    model    : this.Careplan,
-                    required : false,
-                    as       : 'Careplan',
-                    //through: { attributes: [] }
-                },
-
+                include : [
+                    {
+                        model    : this.Careplan,
+                        required : false,
+                        as       : 'Careplan',
+                        //through: { attributes: [] }
+                    },
                 ]
             });
+            const asset = await AssetHelper.getAsset(record.AssetId, record.AssetType);
+            record.Asset = asset;
             return record;
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve careplan schedule!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve careplan activity!', error);
         }
+    }
+
+    getRegistrationActivities = async (careplanId: uuid) => {
+        const records = await this.CareplanActivity.findAll({
+            where : {
+                CareplanId             : careplanId,
+                IsRegistrationActivity : true
+            }
+        });
+        return records;
+    }
+
+    getScheduledActivities = async (careplanId: uuid) => {
+        const records = await this.CareplanActivity.findAll({
+            where : {
+                CareplanId             : careplanId,
+                IsRegistrationActivity : false,
+            }
+        });
+        var sorted = records.sort((a,b) => a.Day - b.Day);
+        return sorted;
     }
 
     exists = async (id): Promise < boolean > => {
         try {
-            const record = await this.CareplanSchedule.findByPk(id);
+            const record = await this.CareplanActivity.findByPk(id);
             return record !== null;
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of careplan schedule!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of careplan activity!', error);
         }
     }
 
-    search = async (filters: CareplanScheduleSearchFilters): Promise < CareplanScheduleSearchResults > => {
+    search = async (filters: CareplanActivitySearchFilters): Promise < CareplanActivitySearchResults > => {
         try {
 
             var search = this.getSearchModel(filters);
@@ -80,8 +105,8 @@ export class CareplanScheduleService {
                 limit
             } = this.addPaginationToSearch(search, filters);
 
-            const foundResults = await this.CareplanSchedule.findAndCountAll(search);
-            const searchResults: CareplanScheduleSearchResults = {
+            const foundResults = await this.CareplanActivity.findAndCountAll(search);
+            const searchResults: CareplanActivitySearchResults = {
                 TotalCount     : foundResults.count,
                 RetrievedCount : foundResults.rows.length,
                 PageIndex      : pageIndex,
@@ -94,38 +119,38 @@ export class CareplanScheduleService {
             return searchResults;
 
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to search careplan schedule records!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to search careplan activity records!', error);
         }
     }
 
     update = async (id, updateModel) => {
         try {
             if (Object.keys(updateModel).length > 0) {
-                var res = await this.CareplanSchedule.update(updateModel, {
+                var res = await this.CareplanActivity.update(updateModel, {
                     where : {
                         id : id
                     }
                 });
                 if (res.length !== 1) {
-                    throw new Error('Unable to update careplan schedule!');
+                    throw new Error('Unable to update careplan activity!');
                 }
             }
             return await this.getById(id);
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to update careplan schedule!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to update careplan activity!', error);
         }
     }
 
     delete = async (id) => {
         try {
-            var result = await this.CareplanSchedule.destroy({
+            var result = await this.CareplanActivity.destroy({
                 where : {
                     id : id
                 }
             });
             return result === 1;
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to delete careplan schedule!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to delete careplan activity!', error);
         }
     }
 
@@ -154,6 +179,9 @@ export class CareplanScheduleService {
         }
         if (filters.TimeSlot) {
             search.where['TimeSlot'] = filters.TimeSlot;
+        }
+        if (filters.IsRegistrationActivity) {
+            search.where['IsRegistrationActivity'] = filters.IsRegistrationActivity;
         }
         const includeCareplanAsCareplan = {
             model    : this.Careplan,

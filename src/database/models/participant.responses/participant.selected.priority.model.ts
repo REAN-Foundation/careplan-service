@@ -6,7 +6,7 @@ const sequelize = db.default.sequelize;
 
 export class ParticipantSelectedPriorityModel {
 
-    static TableName = 'participant_selected_priorities';
+    static TableName = 'selected_priorities';
 
     static ModelName = 'ParticipantSelectedPriority';
 

@@ -3,6 +3,7 @@ import { ExerciseTypeList } from '../../../domain.types/assets/exercise.domain.t
 import * as db from '../../database.connector';
 import { DataTypes } from 'sequelize';
 const sequelize = db.default.sequelize;
+import { AssetType } from '../../../domain.types/assets/asset.types';
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -21,7 +22,12 @@ export class ExerciseModel {
         },
         AssetCode : {
             type      : DataTypes.STRING(256),
-            allowNull : false
+            allowNull : true
+        },
+        AssetType : {
+            type         : DataTypes.STRING(128),
+            allowNull    : false,
+            defaultValue : AssetType.Exercise
         },
         Name : {
             type      : DataTypes.STRING(256),

@@ -1,6 +1,6 @@
 import {
-    EnrollmentScheduleModel
-} from '../../models/enrollment/enrollment.schedule.model';
+    EnrollmentTaskModel
+} from '../../models/enrollment/enrollment.task.model';
 import {
     EnrollmentModel
 } from '../../models/enrollment/enrollment.model';
@@ -8,8 +8,8 @@ import {
     ParticipantModel
 } from '../../models/enrollment/participant.model';
 import {
-    CareplanScheduleModel
-} from '../../models/careplan/careplan.schedule.model';
+    CareplanActivityModel
+} from '../../models/careplan/careplan.activity.model';
 import {
     CareplanModel
 } from '../../models/careplan/careplan.model';
@@ -18,24 +18,25 @@ import {
     ErrorHandler
 } from '../../../common/error.handler';
 import {
-    EnrollmentScheduleCreateModel,
-    EnrollmentScheduleSearchFilters,
-    EnrollmentScheduleSearchResults
-} from '../../../domain.types/enrollment/enrollment.schedule.domain.types';
+    EnrollmentTaskCreateModel,
+    EnrollmentTaskSearchFilters,
+    EnrollmentTaskSearchResults
+} from '../../../domain.types/enrollment/enrollment.task.domain.types';
+import { AssetHelper } from '../assets/asset.helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-export class EnrollmentScheduleService {
+export class EnrollmentTaskService {
 
     //#region Models
 
-    EnrollmentSchedule = EnrollmentScheduleModel.Model;
+    EnrollmentTask = EnrollmentTaskModel.Model;
 
     Enrollment = EnrollmentModel.Model;
 
     Participant = ParticipantModel.Model;
 
-    CareplanSchedule = CareplanScheduleModel.Model;
+    CareplanActivity = CareplanActivityModel.Model;
 
     Careplan = CareplanModel.Model;
 
@@ -43,9 +44,9 @@ export class EnrollmentScheduleService {
 
     //#region Publics
 
-    create = async (createModel: EnrollmentScheduleCreateModel) => {
+    create = async (createModel: EnrollmentTaskCreateModel) => {
         try {
-            var record = await this.EnrollmentSchedule.create(createModel);
+            var record = await this.EnrollmentTask.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create enrollment schedule!', error);
@@ -54,34 +55,36 @@ export class EnrollmentScheduleService {
 
     getById = async (id) => {
         try {
-            const record = await this.EnrollmentSchedule.findOne({
+            const record = await this.EnrollmentTask.findOne({
                 where : {
                     id : id
                 },
-                include : [{
-                    model    : this.Enrollment,
-                    required : false,
-                    as       : 'Enrollment',
+                include : [
+                    {
+                        model    : this.Enrollment,
+                        required : false,
+                        as       : 'Enrollment',
                     //through: { attributes: [] }
-                }, {
-                    model    : this.Participant,
-                    required : false,
-                    as       : 'Participant',
+                    }, {
+                        model    : this.Participant,
+                        required : false,
+                        as       : 'Participant',
                     //through: { attributes: [] }
-                }, {
-                    model    : this.CareplanSchedule,
-                    required : false,
-                    as       : 'CareplanSchedule',
+                    }, {
+                        model    : this.CareplanActivity,
+                        required : false,
+                        as       : 'CareplanActivity',
                     //through: { attributes: [] }
-                }, {
-                    model    : this.Careplan,
-                    required : false,
-                    as       : 'Careplan',
+                    }, {
+                        model    : this.Careplan,
+                        required : false,
+                        as       : 'Careplan',
                     //through: { attributes: [] }
-                },
-
+                    },
                 ]
             });
+            const asset = await AssetHelper.getAsset(record.AssetId, record.AssetType);
+            record.Asset = asset;
             return record;
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve enrollment schedule!', error);
@@ -90,14 +93,14 @@ export class EnrollmentScheduleService {
 
     exists = async (id): Promise < boolean > => {
         try {
-            const record = await this.EnrollmentSchedule.findByPk(id);
+            const record = await this.EnrollmentTask.findByPk(id);
             return record !== null;
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of enrollment schedule!', error);
         }
     }
 
-    search = async (filters: EnrollmentScheduleSearchFilters): Promise < EnrollmentScheduleSearchResults > => {
+    search = async (filters: EnrollmentTaskSearchFilters): Promise < EnrollmentTaskSearchResults > => {
         try {
 
             var search = this.getSearchModel(filters);
@@ -110,8 +113,8 @@ export class EnrollmentScheduleService {
                 limit
             } = this.addPaginationToSearch(search, filters);
 
-            const foundResults = await this.EnrollmentSchedule.findAndCountAll(search);
-            const searchResults: EnrollmentScheduleSearchResults = {
+            const foundResults = await this.EnrollmentTask.findAndCountAll(search);
+            var searchResults: EnrollmentTaskSearchResults = {
                 TotalCount     : foundResults.count,
                 RetrievedCount : foundResults.rows.length,
                 PageIndex      : pageIndex,
@@ -121,6 +124,13 @@ export class EnrollmentScheduleService {
                 Items          : foundResults.rows,
             };
 
+            var items = [];
+            for await (var record of searchResults.Items) {
+                const asset = await AssetHelper.getAsset(record.AssetId, record.AssetType);
+                record.Asset = asset;
+                items.push(record);
+            }
+            searchResults.Items = items;
             return searchResults;
 
         } catch (error) {
@@ -139,6 +149,9 @@ export class EnrollmentScheduleService {
             include : []
         };
 
+        if (filters.ParticipantId) {
+            search.where['ParticipantId'] = filters.ParticipantId;
+        }
         if (filters.AssetId) {
             search.where['AssetId'] = filters.AssetId;
         }
@@ -150,6 +163,9 @@ export class EnrollmentScheduleService {
         }
         if (filters.TimeSlot) {
             search.where['TimeSlot'] = filters.TimeSlot;
+        }
+        if (filters.IsRegistrationActivity) {
+            search.where['IsRegistrationActivity'] = filters.IsRegistrationActivity;
         }
         const includeEnrollmentAsEnrollment = {
             model    : this.Enrollment,
@@ -171,16 +187,16 @@ export class EnrollmentScheduleService {
         //    includeUser.where['Xyz'] = filters.Xyz;
         //}
         search.include.push(includeUserAsUser);
-        const includeCareplanScheduleAsCareplanSchedule = {
-            model    : this.CareplanSchedule,
+        const includeCareplanActivityAsCareplanActivity = {
+            model    : this.CareplanActivity,
             required : false,
-            as       : 'CareplanSchedule',
+            as       : 'CareplanActivity',
             where    : {}
         };
         //if (filters.Xyz != undefined) {
-        //    includeCareplanSchedule.where['Xyz'] = filters.Xyz;
+        //    includeCareplanActivity.where['Xyz'] = filters.Xyz;
         //}
-        search.include.push(includeCareplanScheduleAsCareplanSchedule);
+        search.include.push(includeCareplanActivityAsCareplanActivity);
         const includeCareplanAsCareplan = {
             model    : this.Careplan,
             required : false,
