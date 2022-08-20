@@ -32,7 +32,7 @@ export class Helper {
     };
 
     static getStoragePath = () => {
-        return path.join(process.env.STORAGE, process.env.NODE_ENV);
+        return path.join(process.env.STORAGE_BUCKET, process.env.NODE_ENV);
     }
 
     static compareHashedPassword = (password, hash) => {
