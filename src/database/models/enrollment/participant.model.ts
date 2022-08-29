@@ -35,7 +35,7 @@ export class ParticipantModel {
         },
         LastName : {
             type      : DataTypes.STRING(64),
-            allowNull : false
+            allowNull : true
         },
         CountryCode : {
             type         : DataTypes.STRING(10),
@@ -48,7 +48,7 @@ export class ParticipantModel {
         },
         Email : {
             type      : DataTypes.STRING(256),
-            allowNull : false
+            allowNull : true
         },
         ParticipantReferenceId : {
             type      : DataTypes.STRING(64),

@@ -36,7 +36,7 @@ export class EnrollmentModel {
         },
         EndDate : {
             type      : DataTypes.DATE,
-            allowNull : false
+            allowNull : true
         },
         EnrollmentDate : {
             type      : DataTypes.DATE,
