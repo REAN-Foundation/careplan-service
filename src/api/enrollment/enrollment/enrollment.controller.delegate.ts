@@ -263,7 +263,7 @@ export class EnrollmentControllerDelegate {
         return {
             CareplanId     : requestBody.CareplanId ? requestBody.CareplanId : null,
             ParticipantId  : requestBody.ParticipantId ? requestBody.ParticipantId : null,
-            StartDate      : requestBody.StartDate ? requestBody.StartDate : null,
+            StartDate      : requestBody.StartDate ? requestBody.StartDate : new Date(),
             EndDate        : requestBody.EndDate ? requestBody.EndDate : null,
             WeekOffset     : requestBody.WeekOffset ? requestBody.WeekOffset : 0,
             DayOffset      : requestBody.DayOffset ? requestBody.DayOffset : 0,
