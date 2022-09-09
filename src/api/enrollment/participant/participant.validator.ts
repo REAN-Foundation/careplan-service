@@ -10,14 +10,14 @@ export class ParticipantValidator {
             const schema = joi.object({
                 Prefix                 : joi.string().max(16).optional(),
                 FirstName              : joi.string().max(64).required(),
-                LastName               : joi.string().max(64).optional(),
+                LastName               : joi.string().max(64).optional().allow(null),
                 CountryCode            : joi.string().max(10).required(),
                 Phone                  : joi.string().max(16).min(6).required(),
-                Email                  : joi.string().max(256).optional(),
+                Email                  : joi.string().max(256).optional().allow(null),
                 ParticipantReferenceId : joi.string().max(256).optional(),
                 Gender                 : joi.string().valid("Male", "Female", "Other").required(),
                 BirthDate              : joi.string().optional(),
-                Country                : joi.string().max(64).optional()
+                Country                : joi.string().max(64).optional().allow(null)
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
