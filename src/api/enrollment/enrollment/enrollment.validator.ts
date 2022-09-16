@@ -15,7 +15,9 @@ export class EnrollmentValidator {
                     version : ['uuidv4']
                 }).optional(),
                 StartDate      : joi.date().iso().optional(),
-                EndDate        : joi.date().iso().optional(),
+                EndDate        : joi.date().iso().optional().allow(null),
+                WeekOffset     : joi.number().optional(),
+                DayOffset      : joi.number().optional(),
                 EnrollmentDate : joi.date().iso().optional()
             });
             return await schema.validateAsync(requestBody);
@@ -31,9 +33,8 @@ export class EnrollmentValidator {
                 ParticipantId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
-                StartDate      : joi.date().iso().optional(),
-                EndDate        : joi.date().iso().optional(),
-                EnrollmentDate : joi.date().iso().optional()
+                StartDate : joi.date().iso().optional(),
+                EndDate   : joi.date().iso().optional()
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {

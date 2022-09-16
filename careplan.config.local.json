@@ -1,0 +1,25 @@
+{
+    "SystemIdentifier": "REAN Careplan Service",
+    "Auth" : {
+        "Authentication": "Custom",
+        "Authorization": "Custom"
+    },
+    "FileStorage" : {
+        "Provider": "Custom"
+    },
+    "Communication" : {
+        "SMS": {
+            "Provider": "Mock"
+        },
+        "Email": {
+            "Provider": "Mock"
+        }
+    },
+    "TemporaryFolders": {
+        "Upload": "./tmp/resources/uploads/",
+        "Download": "./tmp/resources/downloads/",
+        "CleanupFolderBeforeMinutes": 10
+    },
+    "MaxUploadFileSize": 104857600,
+    "JwtExpiresIn": 2592000
+}

@@ -12,6 +12,8 @@ export interface EnrollmentCreateModel {
     ParticipantId  ?: uuid;
     StartDate      ?: Date;
     EndDate        ?: Date;
+    WeekOffset     ?: number;
+    DayOffset      ?: number;
     EnrollmentDate ?: Date;
 }
 
@@ -20,6 +22,8 @@ export interface EnrollmentUpdateModel {
     ParticipantId  ?: uuid;
     StartDate      ?: Date;
     EndDate        ?: Date;
+    WeekOffset     ?: number;
+    DayOffset      ?: number;
     EnrollmentDate ?: Date;
 }
 
@@ -30,6 +34,8 @@ export interface EnrollmentDto {
     StartDate     : Date;
     EndDate       : Date;
     EnrollmentDate: Date;
+    WeekOffset   ?: number;
+    DayOffset    ?: number;
     ProgressStatus: ProgressStatus;
 }
 

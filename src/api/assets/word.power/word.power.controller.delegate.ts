@@ -22,6 +22,7 @@ import {
     WordPowerSearchFilters,
     WordPowerSearchResults
 } from '../../../domain.types/assets/word.power.domain.types';
+import { AssetHelper } from '../../../database/repository.services/assets/asset.helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -40,10 +41,11 @@ export class WordPowerControllerDelegate {
     create = async (requestBody: any) => {
         await validator.validateCreateRequest(requestBody);
         var createModel: WordPowerCreateModel = this.getCreateModel(requestBody);
-        const record = await this._service.create(createModel);
+        var record = await this._service.create(createModel);
         if (record === null) {
             throw new ApiError('Unable to create word power!', 400);
         }
+        record = await AssetHelper.updateAssetCode(record, this._service);
         return this.getEnrichedDto(record);
     }
 
@@ -101,9 +103,9 @@ export class WordPowerControllerDelegate {
         if (assetCode != null) {
             filters['AssetCode'] = assetCode;
         }
-        var word = query.word ? query.word : null;
-        if (word != null) {
-            filters['Word'] = word;
+        var name = query.name ? query.name : null;
+        if (name != null) {
+            filters['Name'] = name;
         }
         var description = query.description ? query.description : null;
         if (description != null) {
@@ -136,8 +138,8 @@ export class WordPowerControllerDelegate {
         if (Helper.hasProperty(requestBody, 'AssetCode')) {
             updateModel.AssetCode = requestBody.AssetCode;
         }
-        if (Helper.hasProperty(requestBody, 'Word')) {
-            updateModel.Word = requestBody.Word;
+        if (Helper.hasProperty(requestBody, 'Name')) {
+            updateModel.Name = requestBody.Name;
         }
         if (Helper.hasProperty(requestBody, 'Description')) {
             updateModel.Description = requestBody.Description;
@@ -158,7 +160,7 @@ export class WordPowerControllerDelegate {
     getCreateModel = (requestBody): WordPowerCreateModel => {
         return {
             AssetCode           : requestBody.AssetCode ? requestBody.AssetCode : null,
-            Word                : requestBody.Word ? requestBody.Word : null,
+            Name                : requestBody.Name ? requestBody.Name : null,
             Description         : requestBody.Description ? requestBody.Description : null,
             AdditionalResources : requestBody.AdditionalResources ?
                 JSON.stringify(requestBody.AdditionalResources) as string : JSON.stringify([]),
@@ -175,7 +177,7 @@ export class WordPowerControllerDelegate {
         return {
             id                  : record.id,
             AssetCode           : record.AssetCode,
-            Word                : record.Word,
+            Name                : record.Name,
             Description         : record.Description,
             AdditionalResources : JSON.parse(record.AdditionalResources),
             AssetCategory       : record.AssetCategory,
@@ -192,7 +194,7 @@ export class WordPowerControllerDelegate {
         return {
             id                  : record.id,
             AssetCode           : record.AssetCode,
-            Word                : record.Word,
+            Name                : record.Name,
             Description         : record.Description,
             AdditionalResources : JSON.parse(record.AdditionalResources),
             AssetCategory       : record.AssetCategory,

@@ -1,0 +1,25 @@
+{
+    "SystemIdentifier": "REAN Careplan Service",
+    "Auth" : {
+        "Authentication": "Custom",
+        "Authorization": "Custom"
+    },
+    "FileStorage" : {
+        "Provider": "AWS-S3"
+    },
+    "Communication" : {
+        "SMS": {
+            "Provider": "Twilio"
+        },
+        "Email": {
+            "Provider": "SendGrid"
+        }
+    },
+    "TemporaryFolders": {
+        "Upload": "./tmp/resources/uploads/",
+        "Download": "./tmp/resources/downloads/",
+        "CleanupFolderBeforeMinutes": 10
+    },
+    "MaxUploadFileSize": 104857600,
+    "JwtExpiresIn": 259200
+}

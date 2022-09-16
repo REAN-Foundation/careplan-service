@@ -13,8 +13,8 @@ export const register = (app: express.Application): void => {
     router.post('', authenticator.authenticateClient, controller.create);
     router.put('/:id', authenticator.authenticateClient, controller.update);
     router.delete('/:id', authenticator.authenticateClient, controller.delete);
-    router.get('/search', authenticator.authenticateClient, controller.search);
-    router.get('/:id', authenticator.authenticateClient, controller.getById);
+    router.get('/search', authenticator.authenticateClientOrUser, controller.search);
+    router.get('/:id', authenticator.authenticateClientOrUser, controller.getById);
 
     app.use('/api/v1/participants', router);
 };

@@ -1,26 +1,26 @@
 import {
-    UserActivityResponseDto
-} from '../../../domain.types/user.responses/user.activity.response.domain.types';
+    ParticipantActivityResponseDto
+} from '../../../domain.types/participant.responses/participant.activity.response.domain.types';
 
 ///////////////////////////////////////////////////////////////////////////////////
 
 export class UserActivityResponseMapper {
 
-    static toDto = (userActivityResponse: any): UserActivityResponseDto => {
+    static toDto = (userActivityResponse: any): ParticipantActivityResponseDto => {
         if (userActivityResponse == null) {
             return null;
         }
-        const dto: UserActivityResponseDto = {
-            id                   : userActivityResponse.id,
-            ParticipantId        : userActivityResponse.ParticipantId,
-            EnrollmentScheduleId : userActivityResponse.EnrollmentScheduleId,
-            CareplanScheduleId   : userActivityResponse.CareplanScheduleId,
-            CareplanId           : userActivityResponse.CareplanId,
-            AssetId              : userActivityResponse.AssetId,
-            AssetType            : userActivityResponse.AssetType,
-            Response             : userActivityResponse.Response,
-            TimeResponded        : userActivityResponse.TimeResponded,
-            ProgressStatus       : userActivityResponse.ProgressStatus,
+        const dto: ParticipantActivityResponseDto = {
+            id                 : userActivityResponse.id,
+            ParticipantId      : userActivityResponse.ParticipantId,
+            EnrollmentTaskId   : userActivityResponse.EnrollmentTaskId,
+            CareplanActivityId : userActivityResponse.CareplanActivityId,
+            CareplanId         : userActivityResponse.CareplanId,
+            AssetId            : userActivityResponse.AssetId,
+            AssetType          : userActivityResponse.AssetType,
+            Response           : userActivityResponse.Response,
+            TimeResponded      : userActivityResponse.TimeResponded,
+            ProgressStatus     : userActivityResponse.ProgressStatus,
 
         };
         return dto;

@@ -10,7 +10,7 @@ export interface CareplanCreateModel {
     Description?: string;
     Version?: string;
     OwnerUserId: uuid;
-    Tags?: string[];
+    Tags?: string;
     IsActive?: boolean;
 }
 
@@ -21,7 +21,7 @@ export interface CareplanUpdateModel {
     Description?: string;
     Version?: string;
     OwnerUserId?: uuid;
-    Tags?: string[];
+    Tags?: string;
     IsActive?: boolean;
 }
 

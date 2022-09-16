@@ -40,6 +40,17 @@ export class UserController extends BaseController {
         }
     }
 
+    getBySessionId = async (request: express.Request, response: express.Response): Promise <void> => {
+        try {
+            await this.authorize('User.GetBySessionId', request, response);
+            const record = await this._delegate.getBySessionId(request.params.sessionId);
+            const message = 'User retrieved successfully!';
+            ResponseHandler.success(request, response, message, 200, record);
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    }
+
     search = async (request: express.Request, response: express.Response): Promise <void> => {
         try {
             await this.authorize('User.Search', request, response);
@@ -73,7 +84,7 @@ export class UserController extends BaseController {
         }
     };
 
-    loginWithPassword = async (request: express.Request, response: express.Response): Promise <void> => {
+    loginWithPassword = async (request: express.Request, response: express.Response) => {
         try {
             this.authorize('User.LoginWithPassword', request, response, false);
             const result = await this._delegate.loginWithPassword(request.body);
