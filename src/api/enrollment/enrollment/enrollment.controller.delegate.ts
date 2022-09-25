@@ -139,14 +139,14 @@ export class EnrollmentControllerDelegate {
             const registrationActivities =
                 await this._careplanActivityService.getRegistrationActivities(record.CareplanId);
         
-            const enrollmentDate = record.EnrollmentDate;
+            const enrollmentDate = record.StartDate;
             var count = 0;
-            const timeOffset = 30; //seconds
+            const timeOffset = 15; //seconds
 
             for await (var act of registrationActivities) {
 
                 count++;
-                var dt = TimeHelper.addDuration(enrollmentDate, count * timeOffset, DurationType.Second);
+                const dt = TimeHelper.addDuration(enrollmentDate, 435 + act.Day * timeOffset, DurationType.Minute);
 
                 var createModel: EnrollmentTaskCreateModel = {
                     EnrollmentId       : record.id,
@@ -190,7 +190,17 @@ export class EnrollmentControllerDelegate {
                 if (daysToAdd < 0) {
                     daysToAdd = 0;
                 }
-                const dt = TimeHelper.addDuration(startDate, daysToAdd, DurationType.Day);
+                let addDate = daysToAdd / 3;
+                if (daysToAdd % 3 !== 0) {
+                    addDate = addDate + 1;
+                }
+                let dt = TimeHelper.addDuration(startDate, parseInt(addDate.toString()) - 1, DurationType.Day);
+
+                if (daysToAdd % 3 === 0) {
+                    dt = TimeHelper.addDuration(dt, 435 + 3 * 15, DurationType.Minute);
+                } else {
+                    dt = TimeHelper.addDuration(dt, 435 + (daysToAdd % 3) * 15, DurationType.Minute);
+                }
 
                 var createModel: EnrollmentTaskCreateModel = {
                     EnrollmentId       : record.id,
