@@ -48,7 +48,11 @@ export class PriorityValidator {
                 description   : joi.string().optional(),
                 assetCategory : joi.string().max(128).optional(),
                 tags          : joi.array().items(joi.string()).optional(),
-                version       : joi.string().max(128).optional()
+                version       : joi.string().max(128).optional(),
+                order         : joi.string().max(128).optional(),
+                orderBy       : joi.string().max(128).optional(),
+                itemsPerPage  : joi.number().max(128).optional(),
+                pageIndex     : joi.number().max(128).optional(),
             });
             return await schema.validateAsync(query);
 

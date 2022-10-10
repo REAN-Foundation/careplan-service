@@ -4,6 +4,7 @@ import { ErrorHandler } from '../../common/error.handler';
 import { BaseController } from '../base.controller';
 import { RoleService } from '../../database/repository.services/role.service';
 import { CareplanCategoryService } from '../../database/repository.services/careplan/careplan.category.service';
+import { AssetTypeList } from '../../domain.types/assets/asset.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -64,6 +65,18 @@ export class TypesController extends BaseController {
         }
     };
 
+    getAssetTypes = async (request: express.Request, response: express.Response): Promise<void> => {
+        try {
+            await this.authorize('Types.GetAssetTypes', request, response, false);
+            const assetTypes = AssetTypeList;
+            ResponseHandler.success(request, response, 'Asset types retrieved successfully!', 200, {
+                AssetTypes : assetTypes,
+            });
+
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
     // getPriorityTypes = async (request: express.Request, response: express.Response): Promise<void> => {
     //     try {
     //         await this.setContext('HealthPriority.GetPrioritiesTypes', request, response);
