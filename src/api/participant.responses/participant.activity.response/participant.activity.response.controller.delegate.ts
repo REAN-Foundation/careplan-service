@@ -22,7 +22,7 @@ import {
     ParticipantActivityResponseSearchFilters,
     ParticipantActivityResponseSearchResults
 } from '../../../domain.types/participant.responses/participant.activity.response.domain.types';
-import { EnrollmentScheduleService } from '../../../database/repository.services/enrollment/enrollment.schedule.service';
+import { EnrollmentTaskService } from '../../../database/repository.services/enrollment/enrollment.task.service';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -32,19 +32,19 @@ export class ParticipantActivityResponseControllerDelegate {
 
     _service: ParticipantActivityResponseService = null;
 
-    _enrollmentScheduleService: EnrollmentScheduleService = null
+    _enrollmentTaskService: EnrollmentTaskService = null
 
     constructor() {
         this._service = new ParticipantActivityResponseService();
-        this._enrollmentScheduleService = new EnrollmentScheduleService();
+        this._enrollmentTaskService = new EnrollmentTaskService();
     }
 
     //#endregion
 
     create = async (requestBody: any) => {
         await validator.validateCreateRequest(requestBody);
-        const enrollmentSchedule = await this._enrollmentScheduleService.getById(requestBody.EnrollmentScheduleId);
-        var createModel: ParticipantActivityResponseCreateModel = this.getCreateModel(requestBody, enrollmentSchedule);
+        const enrollmentTask = await this._enrollmentTaskService.getById(requestBody.EnrollmentTaskId);
+        var createModel: ParticipantActivityResponseCreateModel = this.getCreateModel(requestBody, enrollmentTask);
         const record = await this._service.create(createModel);
         if (record === null) {
             throw new ApiError('Unable to create participant activity response!', 400);
@@ -141,11 +141,11 @@ export class ParticipantActivityResponseControllerDelegate {
         if (Helper.hasProperty(requestBody, 'ParticipantId')) {
             updateModel.ParticipantId = requestBody.ParticipantId;
         }
-        if (Helper.hasProperty(requestBody, 'EnrollmentScheduleId')) {
-            updateModel.EnrollmentScheduleId = requestBody.EnrollmentScheduleId;
+        if (Helper.hasProperty(requestBody, 'EnrollmentTaskId')) {
+            updateModel.EnrollmentTaskId = requestBody.EnrollmentTaskId;
         }
         if (Helper.hasProperty(requestBody, 'Response')) {
-            updateModel.Response = requestBody.Response;
+            updateModel.Response = JSON.stringify(requestBody.Response);
         }
         if (Helper.hasProperty(requestBody, 'ProgressStatus')) {
             updateModel.ProgressStatus = requestBody.ProgressStatus;
@@ -154,17 +154,17 @@ export class ParticipantActivityResponseControllerDelegate {
         return updateModel;
     }
 
-    getCreateModel = (requestBody, enrollmentSchedule): ParticipantActivityResponseCreateModel => {
+    getCreateModel = (requestBody, enrollmentTask): ParticipantActivityResponseCreateModel => {
         return {
-            ParticipantId        : requestBody.ParticipantId ? requestBody.ParticipantId : null,
-            EnrollmentScheduleId : requestBody.EnrollmentScheduleId ? requestBody.EnrollmentScheduleId : null,
-            CareplanScheduleId   : enrollmentSchedule.CareplanScheduleId ? enrollmentSchedule.CareplanScheduleId : null,
-            CareplanId           : enrollmentSchedule.CareplanId ? enrollmentSchedule.CareplanId : null ,
-            AssetId              : enrollmentSchedule.AssetId ? enrollmentSchedule.AssetId : null,
-            AssetType            : enrollmentSchedule.AssetType ? enrollmentSchedule.AssetType : null,
-            Response             : requestBody.Response ? requestBody.Response : '{}',
-            TimeResponded        : new Date(),
-            ProgressStatus       : requestBody.ProgressStatus ? requestBody.ProgressStatus : 'Completed'
+            ParticipantId      : requestBody.ParticipantId ? requestBody.ParticipantId : null,
+            EnrollmentTaskId   : requestBody.EnrollmentTaskId ? requestBody.EnrollmentTaskId : null,
+            CareplanActivityId : enrollmentTask.CareplanActivityId ? enrollmentTask.CareplanActivityId : null,
+            CareplanId         : enrollmentTask.CareplanId ? enrollmentTask.CareplanId : null ,
+            AssetId            : enrollmentTask.AssetId ? enrollmentTask.AssetId : null,
+            AssetType          : enrollmentTask.AssetType ? enrollmentTask.AssetType : null,
+            Response           : requestBody.Response ? JSON.stringify(requestBody.Response) : JSON.stringify([]),
+            TimeResponded      : new Date(),
+            ProgressStatus     : requestBody.ProgressStatus ? requestBody.ProgressStatus : 'Completed'
         };
     }
 
@@ -173,16 +173,16 @@ export class ParticipantActivityResponseControllerDelegate {
             return null;
         }
         return {
-            id                   : record.id,
-            ParticipantId        : record.ParticipantId,
-            EnrollmentScheduleId : record.EnrollmentScheduleId,
-            CareplanScheduleId   : record.CareplanScheduleId,
-            CareplanId           : record.CareplanId,
-            AssetId              : record.AssetId,
-            AssetType            : record.AssetType,
-            Response             : record.Response,
-            TimeResponded        : record.TimeResponded,
-            ProgressStatus       : record.ProgressStatus
+            id                 : record.id,
+            ParticipantId      : record.ParticipantId,
+            EnrollmentTaskId   : record.EnrollmentTaskId,
+            CareplanActivityId : record.CareplanActivityId,
+            CareplanId         : record.CareplanId,
+            AssetId            : record.AssetId,
+            AssetType          : record.AssetType,
+            Response           : record.Response,
+            TimeResponded      : record.TimeResponded,
+            ProgressStatus     : record.ProgressStatus
         };
     }
 
@@ -191,16 +191,16 @@ export class ParticipantActivityResponseControllerDelegate {
             return null;
         }
         return {
-            id                   : record.id,
-            ParticipantId        : record.ParticipantId,
-            EnrollmentScheduleId : record.EnrollmentScheduleId,
-            CareplanScheduleId   : record.CareplanScheduleId,
-            CareplanId           : record.CareplanId,
-            AssetId              : record.AssetId,
-            AssetType            : record.AssetType,
-            Response             : record.Response,
-            TimeResponded        : record.TimeResponded,
-            ProgressStatus       : record.ProgressStatus
+            id                 : record.id,
+            ParticipantId      : record.ParticipantId,
+            EnrollmentTaskId   : record.EnrollmentTaskId,
+            CareplanActivityId : record.CareplanActivityId,
+            CareplanId         : record.CareplanId,
+            AssetId            : record.AssetId,
+            AssetType          : record.AssetType,
+            Response           : record.Response,
+            TimeResponded      : record.TimeResponded,
+            ProgressStatus     : record.ProgressStatus
         };
     }
 

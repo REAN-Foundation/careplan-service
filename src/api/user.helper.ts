@@ -80,11 +80,6 @@ export class UserHelper {
             ErrorHandler.throwDuplicateUserError(`Participant with phone ${requestBody.CountryCode} ${requestBody.Phone.toString()} already exists!`);
         }
 
-        var userWithEmail = await participantService.getParticipantWithEmail(requestBody.Email);
-        if (userWithEmail) {
-            ErrorHandler.throwDuplicateUserError(`Participant with email ${requestBody.Email} already exists!`);
-        }
-
     }
 
     static getValidParticipantUpdateModel = async (user, requestBody) => {

@@ -105,9 +105,9 @@ export class ParticipantSelectedActionPlanControllerDelegate {
         if (participantId != null) {
             filters['ParticipantId'] = participantId;
         }
-        var goalId = query.goalId ? query.goalId : null;
-        if (goalId != null) {
-            filters['GoalId'] = goalId;
+        var selectedGoalId = query.selectedGoalId ? query.selectedGoalId : null;
+        if (selectedGoalId != null) {
+            filters['SelectedGoalId'] = selectedGoalId;
         }
         var name = query.name ? query.name : null;
         if (name != null) {
@@ -169,8 +169,8 @@ export class ParticipantSelectedActionPlanControllerDelegate {
         if (Helper.hasProperty(requestBody, 'ParticipantId')) {
             updateModel.ParticipantId = requestBody.ParticipantId;
         }
-        if (Helper.hasProperty(requestBody, 'GoalId')) {
-            updateModel.GoalId = requestBody.GoalId;
+        if (Helper.hasProperty(requestBody, 'SelectedGoalId')) {
+            updateModel.SelectedGoalId = requestBody.SelectedGoalId;
         }
         if (Helper.hasProperty(requestBody, 'CareplanId')) {
             updateModel.CareplanId = requestBody.CareplanId;
@@ -203,7 +203,7 @@ export class ParticipantSelectedActionPlanControllerDelegate {
             Description       : requestBody.Description ? requestBody.Description : null,
             EnrollmentId      : requestBody.EnrollmentId ? requestBody.EnrollmentId : null,
             ParticipantId     : requestBody.ParticipantId ? requestBody.ParticipantId : null,
-            GoalId            : requestBody.GoalId ? requestBody.GoalId : null,
+            SelectedGoalId    : requestBody.SelectedGoalId ? requestBody.SelectedGoalId : null,
             CareplanId        : requestBody.CareplanId ? requestBody.CareplanId : null,
             AssetId           : requestBody.AssetId ? requestBody.AssetId : null,
             AssetType         : requestBody.AssetType ? requestBody.AssetType : null,
@@ -224,7 +224,7 @@ export class ParticipantSelectedActionPlanControllerDelegate {
             Description       : record.Description,
             EnrollmentId      : record.EnrollmentId,
             ParticipantId     : record.ParticipantId,
-            GoalId            : record.GoalId,
+            SelectedGoalId    : record.SelectedGoalId,
             CareplanId        : record.CareplanId,
             AssetId           : record.AssetId,
             AssetType         : record.AssetType,
@@ -246,7 +246,7 @@ export class ParticipantSelectedActionPlanControllerDelegate {
             Description       : record.Description,
             EnrollmentId      : record.EnrollmentId,
             ParticipantId     : record.ParticipantId,
-            GoalId            : record.GoalId,
+            SelectedGoalId    : record.SelectedGoalId,
             CareplanId        : record.CareplanId,
             AssetId           : record.AssetId,
             AssetType         : record.AssetType,

@@ -21,5 +21,5 @@
         "CleanupFolderBeforeMinutes": 10
     },
     "MaxUploadFileSize": 104857600,
-    "JwtExpiresIn": 2592000
+    "JwtExpiresIn": 259200
 }

@@ -2,6 +2,7 @@ import { MessageTypeList } from '../../../domain.types/assets/message.domain.typ
 import * as db from '../../database.connector';
 import { DataTypes } from 'sequelize';
 const sequelize = db.default.sequelize;
+import { AssetType } from '../../../domain.types/assets/asset.types';
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -20,7 +21,12 @@ export class MessageModel {
         },
         AssetCode : {
             type      : DataTypes.STRING(256),
-            allowNull : false
+            allowNull : true
+        },
+        AssetType : {
+            type         : DataTypes.STRING(128),
+            allowNull    : false,
+            defaultValue : AssetType.Message
         },
         Name : {
             type      : DataTypes.TEXT,

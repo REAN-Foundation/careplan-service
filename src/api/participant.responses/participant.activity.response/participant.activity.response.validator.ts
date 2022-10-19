@@ -13,10 +13,10 @@ export class ParticipantActivityResponseValidator {
                 ParticipantId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
-                EnrollmentScheduleId : joi.string().guid({
+                EnrollmentTaskId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
-                Response       : joi.string().optional(),
+                Response       : joi.any().optional(),
                 ProgressStatus : joi.string().optional()
             });
             return await schema.validateAsync(requestBody);
@@ -31,10 +31,10 @@ export class ParticipantActivityResponseValidator {
                 ParticipantId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
-                EnrollmentScheduleId : joi.string().guid({
+                EnrollmentTaskId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
-                Response       : joi.string().optional(),
+                Response       : joi.any().optional(),
                 ProgressStatus : joi.string().optional()
             });
             return await schema.validateAsync(requestBody);
@@ -50,7 +50,7 @@ export class ParticipantActivityResponseValidator {
                 careplanId     : joi.number().integer().optional(),
                 assetId        : joi.number().integer().optional(),
                 assetType      : joi.string().valid("Action plan", "Animation", "Appointment", "Article", "Assessment", "Audio", "Biometrics", "Challenge", "Checkup", "Consultation", "Exercise", "Goal", "Infographics", "Medication", "Meditation", "Message", "Nutrition", "Physiotherapy", "Priority", "Reflection", "Reminder", "Video", "Web link", "Web newsfeed", "Word power").optional(),
-                response       : joi.string().optional(),
+                response       : joi.any().optional(),
                 timeResponded  : joi.date().iso().optional(),
                 progressStatus : joi.string().valid("Pending", "In-progress", "Completed", "Cancelled", "Delayed", "Unknown").optional()
             });

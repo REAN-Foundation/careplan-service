@@ -24,8 +24,8 @@ describe('User activity response tests', function() {
                 expect(response.body.Data).to.have.property('id');
                 expect(response.body.Data).to.have.property('id');
                 expect(response.body.Data).to.have.property('UserId');
-                expect(response.body.Data).to.have.property('EnrollmentScheduleId');
-                expect(response.body.Data).to.have.property('CareplanScheduleId');
+                expect(response.body.Data).to.have.property('EnrollmentTaskId');
+                expect(response.body.Data).to.have.property('CareplanActivityId');
                 expect(response.body.Data).to.have.property('CareplanId');
                 expect(response.body.Data).to.have.property('AssetId');
                 expect(response.body.Data).to.have.property('AssetType');
@@ -35,8 +35,8 @@ describe('User activity response tests', function() {
 
                 expect(response.body.Data.id).to.equal(TestCache.UserActivityResponseCreateModel.id);
                 expect(response.body.Data.UserId).to.equal(TestCache.UserActivityResponseCreateModel.UserId);
-                expect(response.body.Data.EnrollmentScheduleId).to.equal(TestCache.UserActivityResponseCreateModel.EnrollmentScheduleId);
-                expect(response.body.Data.CareplanScheduleId).to.equal(TestCache.UserActivityResponseCreateModel.CareplanScheduleId);
+                expect(response.body.Data.EnrollmentTaskId).to.equal(TestCache.UserActivityResponseCreateModel.EnrollmentTaskId);
+                expect(response.body.Data.CareplanActivityId).to.equal(TestCache.UserActivityResponseCreateModel.CareplanActivityId);
                 expect(response.body.Data.CareplanId).to.equal(TestCache.UserActivityResponseCreateModel.CareplanId);
                 expect(response.body.Data.AssetId).to.equal(TestCache.UserActivityResponseCreateModel.AssetId);
                 expect(response.body.Data.AssetType).to.equal(TestCache.UserActivityResponseCreateModel.AssetType);
@@ -57,8 +57,8 @@ describe('User activity response tests', function() {
             .expect(response => {
                 expect(response.body.Data).to.have.property('id');
                 expect(response.body.Data).to.have.property('UserId');
-                expect(response.body.Data).to.have.property('EnrollmentScheduleId');
-                expect(response.body.Data).to.have.property('CareplanScheduleId');
+                expect(response.body.Data).to.have.property('EnrollmentTaskId');
+                expect(response.body.Data).to.have.property('CareplanActivityId');
                 expect(response.body.Data).to.have.property('CareplanId');
                 expect(response.body.Data).to.have.property('AssetId');
                 expect(response.body.Data).to.have.property('AssetType');
@@ -68,8 +68,8 @@ describe('User activity response tests', function() {
 
                 expect(response.body.Data.id).to.equal(TestCache.UserActivityResponseCreateModel.id);
                 expect(response.body.Data.UserId).to.equal(TestCache.UserActivityResponseCreateModel.UserId);
-                expect(response.body.Data.EnrollmentScheduleId).to.equal(TestCache.UserActivityResponseCreateModel.EnrollmentScheduleId);
-                expect(response.body.Data.CareplanScheduleId).to.equal(TestCache.UserActivityResponseCreateModel.CareplanScheduleId);
+                expect(response.body.Data.EnrollmentTaskId).to.equal(TestCache.UserActivityResponseCreateModel.EnrollmentTaskId);
+                expect(response.body.Data.CareplanActivityId).to.equal(TestCache.UserActivityResponseCreateModel.CareplanActivityId);
                 expect(response.body.Data.CareplanId).to.equal(TestCache.UserActivityResponseCreateModel.CareplanId);
                 expect(response.body.Data.AssetId).to.equal(TestCache.UserActivityResponseCreateModel.AssetId);
                 expect(response.body.Data.AssetType).to.equal(TestCache.UserActivityResponseCreateModel.AssetType);
@@ -114,8 +114,8 @@ describe('User activity response tests', function() {
             .expect(response => {
                 expect(response.body.Data).to.have.property('id');
                 expect(response.body.Data).to.have.property('UserId');
-                expect(response.body.Data).to.have.property('EnrollmentScheduleId');
-                expect(response.body.Data).to.have.property('CareplanScheduleId');
+                expect(response.body.Data).to.have.property('EnrollmentTaskId');
+                expect(response.body.Data).to.have.property('CareplanActivityId');
                 expect(response.body.Data).to.have.property('CareplanId');
                 expect(response.body.Data).to.have.property('AssetId');
                 expect(response.body.Data).to.have.property('AssetType');
@@ -125,8 +125,8 @@ describe('User activity response tests', function() {
 
                 expect(response.body.Data.id).to.equal(TestCache.UserActivityResponseCreateModel.id);
                 expect(response.body.Data.UserId).to.equal(TestCache.UserActivityResponseCreateModel.UserId);
-                expect(response.body.Data.EnrollmentScheduleId).to.equal(TestCache.UserActivityResponseCreateModel.EnrollmentScheduleId);
-                expect(response.body.Data.CareplanScheduleId).to.equal(TestCache.UserActivityResponseCreateModel.CareplanScheduleId);
+                expect(response.body.Data.EnrollmentTaskId).to.equal(TestCache.UserActivityResponseCreateModel.EnrollmentTaskId);
+                expect(response.body.Data.CareplanActivityId).to.equal(TestCache.UserActivityResponseCreateModel.CareplanActivityId);
                 expect(response.body.Data.CareplanId).to.equal(TestCache.UserActivityResponseCreateModel.CareplanId);
                 expect(response.body.Data.AssetId).to.equal(TestCache.UserActivityResponseCreateModel.AssetId);
                 expect(response.body.Data.AssetType).to.equal(TestCache.UserActivityResponseCreateModel.AssetType);
@@ -171,8 +171,8 @@ describe('User activity response tests', function() {
                 expect(response.body.Data).to.have.property('id');
                 expect(response.body.Data).to.have.property('id');
                 expect(response.body.Data).to.have.property('UserId');
-                expect(response.body.Data).to.have.property('EnrollmentScheduleId');
-                expect(response.body.Data).to.have.property('CareplanScheduleId');
+                expect(response.body.Data).to.have.property('EnrollmentTaskId');
+                expect(response.body.Data).to.have.property('CareplanActivityId');
                 expect(response.body.Data).to.have.property('CareplanId');
                 expect(response.body.Data).to.have.property('AssetId');
                 expect(response.body.Data).to.have.property('AssetType');
@@ -182,8 +182,8 @@ describe('User activity response tests', function() {
 
                 expect(response.body.Data.id).to.equal(TestCache.UserActivityResponseCreateModel.id);
                 expect(response.body.Data.UserId).to.equal(TestCache.UserActivityResponseCreateModel.UserId);
-                expect(response.body.Data.EnrollmentScheduleId).to.equal(TestCache.UserActivityResponseCreateModel.EnrollmentScheduleId);
-                expect(response.body.Data.CareplanScheduleId).to.equal(TestCache.UserActivityResponseCreateModel.CareplanScheduleId);
+                expect(response.body.Data.EnrollmentTaskId).to.equal(TestCache.UserActivityResponseCreateModel.EnrollmentTaskId);
+                expect(response.body.Data.CareplanActivityId).to.equal(TestCache.UserActivityResponseCreateModel.CareplanActivityId);
                 expect(response.body.Data.CareplanId).to.equal(TestCache.UserActivityResponseCreateModel.CareplanId);
                 expect(response.body.Data.AssetId).to.equal(TestCache.UserActivityResponseCreateModel.AssetId);
                 expect(response.body.Data.AssetType).to.equal(TestCache.UserActivityResponseCreateModel.AssetType);
@@ -202,7 +202,7 @@ describe('User activity response tests', function() {
 function loadUserActivityResponseCreateModel() {
     const model = {
         UserId: TestCache.USER_ID,
-        EnrollmentScheduleId: TestCache.ENROLLMENT_SCHEDULE_ID,
+        EnrollmentTaskId: TestCache.ENROLLMENT_SCHEDULE_ID,
         Response: "{}",
 
     };
@@ -212,7 +212,7 @@ function loadUserActivityResponseCreateModel() {
 function loadUserActivityResponseUpdateModel() {
     const model = {
         UserId: TestCache.USER_ID,
-        EnrollmentScheduleId: TestCache.ENROLLMENT_SCHEDULE_ID,
+        EnrollmentTaskId: TestCache.ENROLLMENT_SCHEDULE_ID,
         Response: "{}",
 
     };

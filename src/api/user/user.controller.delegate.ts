@@ -16,6 +16,7 @@ import { uuid } from '../../domain.types/miscellaneous/system.types';
 import { Loader } from '../../startup/loader';
 import { UserHelper } from '../user.helper';
 import { CurrentUser } from '../../domain.types/miscellaneous/current.user';
+import { ConfigurationManager } from '../../config/configuration.manager';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -112,10 +113,22 @@ export class UserControllerDelegate {
         const loginSession = await this._service.createUserLoginSession(user.id);
         const currentUser: CurrentUser = this.constructCurrentUser(user, loginSession.id);
         const accessToken = await Loader.Authorizer.generateUserSessionToken(currentUser);
+        const expiresIn: number = ConfigurationManager.JwtExpiresIn();
+        const validTill = new Date(Date.now() + expiresIn * 1000);
         return {
-            User        : currentUser,
-            AccessToken : accessToken
+            User             : currentUser,
+            AccessToken      : accessToken,
+            SessionValidTill : validTill
         };
+    }
+
+    getBySessionId = async (sessionId: uuid) => {
+        const { user, session } = await this._service.getBySessionId(sessionId);
+        if (user === null || session === null) {
+            ErrorHandler.throwNotFoundError('User associated with session ' + sessionId.toString() + ' cannot be found! Session may have expired!');
+        }
+        const currentUser: CurrentUser = this.constructCurrentUser(user, session.id);
+        return currentUser;
     }
 
     loginWithOtp = async (requestBody) => {
@@ -140,9 +153,12 @@ export class UserControllerDelegate {
         const currentUser: CurrentUser = this.constructCurrentUser(user, loginSession.id);
         const accessToken = await Loader.Authorizer.generateUserSessionToken(currentUser);
         currentUser['ImageUrl'] = user.ImageUrl ?? '';
+        const expiresIn: number = ConfigurationManager.JwtExpiresIn();
+        const validTill = new Date(Date.now() + expiresIn * 1000);
         return {
-            User        : currentUser,
-            AccessToken : accessToken
+            User             : currentUser,
+            AccessToken      : accessToken,
+            SessionValidTill : validTill
         };
     }
 

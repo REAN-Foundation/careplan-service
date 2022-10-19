@@ -6,11 +6,11 @@ import { TimeSlotList } from '../../../domain.types/assets/asset.types';
 
 ////////////////////////////////////////////////////////////////////////
 
-export class EnrollmentScheduleModel {
+export class EnrollmentTaskModel {
 
-    static TableName = 'enrollment_schedules';
+    static TableName = 'enrollment_tasks';
 
-    static ModelName = 'EnrollmentSchedule';
+    static ModelName = 'EnrollmentTask';
 
     static Schema = {
         id : {
@@ -31,7 +31,7 @@ export class EnrollmentScheduleModel {
             foreignKey : true,
             unique     : false
         },
-        CareplanScheduleId : {
+        CareplanActivityId : {
             type       : DataTypes.UUID,
             allowNull  : false,
             foreignKey : true,
@@ -60,15 +60,20 @@ export class EnrollmentScheduleModel {
             type      : DataTypes.DATE,
             allowNull : false
         },
-
+        IsRegistrationActivity : {
+            type         : DataTypes.BOOLEAN,
+            allowNull    : false,
+            defaultValue : false
+        },
+        
         CreatedAt : DataTypes.DATE,
         UpdatedAt : DataTypes.DATE,
         DeletedAt : DataTypes.DATE
     };
 
     static Model: any = sequelize.define(
-        EnrollmentScheduleModel.ModelName,
-        EnrollmentScheduleModel.Schema,
+        EnrollmentTaskModel.ModelName,
+        EnrollmentTaskModel.Schema,
         {
             createdAt       : 'CreatedAt',
             updatedAt       : 'UpdatedAt',
@@ -76,32 +81,32 @@ export class EnrollmentScheduleModel {
             freezeTableName : true,
             timestamps      : true,
             paranoid        : true,
-            tableName       : EnrollmentScheduleModel.TableName,
+            tableName       : EnrollmentTaskModel.TableName,
         });
 
     static associate = (models) => {
 
         //Add associations here...
 
-        models.EnrollmentSchedule.belongsTo(models.Enrollment, {
+        models.EnrollmentTask.belongsTo(models.Enrollment, {
             sourceKey : 'EnrollmentId',
             targetKey : 'id',
             as        : 'Enrollment'
         });
 
-        models.EnrollmentSchedule.belongsTo(models.Participant, {
+        models.EnrollmentTask.belongsTo(models.Participant, {
             sourceKey : 'ParticipantId',
             targetKey : 'id',
             as        : 'Participant'
         });
 
-        models.EnrollmentSchedule.belongsTo(models.CareplanSchedule, {
-            sourceKey : 'CareplanScheduleId',
+        models.EnrollmentTask.belongsTo(models.CareplanActivity, {
+            sourceKey : 'CareplanActivityId',
             targetKey : 'id',
-            as        : 'CareplanSchedule'
+            as        : 'CareplanActivity'
         });
 
-        models.EnrollmentSchedule.belongsTo(models.Careplan, {
+        models.EnrollmentTask.belongsTo(models.Careplan, {
             sourceKey : 'CareplanId',
             targetKey : 'id',
             as        : 'Careplan'
