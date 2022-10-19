@@ -18,6 +18,50 @@ import bcrypt from 'bcryptjs';
 
 export class Helper {
 
+    static getDefaultSearchFilters = (query) => {
+        var filters = {};
+        var dateFrom = query.dateFrom ? query.dateFrom : null;
+        if (dateFrom != null) {
+            filters['DateFrom'] = new Date(dateFrom);
+        }
+        var dateTo = query.dateTo ? query.dateTo : null;
+        if (dateTo != null) {
+            const to = exports.addDays(new Date(dateTo), 1);
+            filters['DateTo'] = to;
+        }
+        var pageIndex = query.pageIndex ? query.pageIndex : 0;
+        if (pageIndex != null) {
+            filters['PageIndex'] = parseInt(pageIndex);
+        }
+        var itemsPerPage = query.itemsPerPage ? query.itemsPerPage : 0;
+        if (itemsPerPage != null) {
+            filters['ItemsPerPage'] = parseInt(itemsPerPage);
+        }
+        var orderBy = query.orderBy ? query.orderBy : null;
+        if (orderBy != null) {
+            filters['OrderBy'] = orderBy;
+        }
+        var order = query.order ? query.order : null;
+        if (order != null) {
+            filters['Order'] = order;
+        }
+        return filters;
+    };
+
+    static setDefaultPagination = (filters) => {
+        let limit = 25;
+        if (filters.ItemsPerPage) {
+            limit = filters.ItemsPerPage;
+        }
+        let offset = 0;
+        let pageIndex = 0;
+        if (filters.PageIndex) {
+            pageIndex = filters.PageIndex < 0 ? 0 : filters.PageIndex;
+            offset = pageIndex * limit;
+        }
+        return { pageIndex, limit, offset };
+    };
+
     static getResourceOwner = (request: express.Request): string => {
         if (request.params.userId) {
             return request.params.userId;
@@ -33,7 +77,7 @@ export class Helper {
 
     static getStoragePath = () => {
         return path.join(process.env.STORAGE_BUCKET, process.env.NODE_ENV);
-    }
+    };
 
     static compareHashedPassword = (password, hash) => {
         if (!password) {
@@ -41,7 +85,7 @@ export class Helper {
         }
         // returns Boolean
         return bcrypt.compareSync(password.toString(), hash);
-    }
+    };
 
     static generateHashedPassword = (password) => {
         if (!password) {
@@ -49,13 +93,13 @@ export class Helper {
         }
         // hash password with bcrypt algorithm
         return bcrypt.hashSync(password.toString(), 10);
-    }
+    };
 
     static generateCryptoToken = async () => {
         const { randomBytes } = await import('crypto');
         const buffer = randomBytes(30);
         return buffer.toString('hex');
-    }
+    };
 
     static generateUserName = () => {
         return genpass.generate({
@@ -63,13 +107,13 @@ export class Helper {
             numbers   : false,
             lowercase : true,
             uppercase : false,
-            symbols   : false
+            symbols   : false,
         });
-    }
+    };
 
     static hasProperty = (obj, prop) => {
         return Object.prototype.hasOwnProperty.call(obj, prop);
-    }
+    };
 
     static isUrl = (str) => {
         if (!str) {
@@ -81,7 +125,7 @@ export class Helper {
         } catch (err) {
             return false;
         }
-    }
+    };
 
     static dumpJson(obj, filename) {
         const txt = JSON.stringify(obj, null, '    ');
@@ -89,7 +133,6 @@ export class Helper {
     }
 
     static jsonToObj = (jsonPath) => {
-
         if (!fs.existsSync(jsonPath)) {
             return null;
         }
@@ -105,20 +148,17 @@ export class Helper {
 
     static executeCommand = (command: string): Promise<string> => {
         return new Promise(function (resolve, reject) {
-            child_process.exec(
-                command,
-                function (error: Error, standardOutput: string, standardError: string) {
-                    if (error) {
-                        reject();
-                        return;
-                    }
-                    if (standardError) {
-                        reject(standardError);
-                        return;
-                    }
-                    resolve(standardOutput);
+            child_process.exec(command, function (error: Error, standardOutput: string, standardError: string) {
+                if (error) {
+                    reject();
+                    return;
                 }
-            );
+                if (standardError) {
+                    reject(standardError);
+                    return;
+                }
+                resolve(standardOutput);
+            });
         });
     };
 
@@ -330,14 +370,13 @@ export class Helper {
         if (phone.includes('-')) {
             const tokens = phone.split('-');
             let countryCode = tokens[0];
-            let phoneNumber = tokens.length > 2 ? tokens.slice(1, ).join() : tokens[1];
+            let phoneNumber = tokens.length > 2 ? tokens.slice(1).join() : tokens[1];
             countryCode = '+' + Helper.getDigitsOnly(countryCode);
             phoneNumber = Helper.getDigitsOnly(phoneNumber);
             return countryCode + '-' + phoneNumber;
-        }
-        else if (phone.startsWith('+')) {
-            var countryCodes = Countries.map(x => x.PhoneCode);
-            var countryCodesSorted = countryCodes.sort((a,b) => b.length - a.length);
+        } else if (phone.startsWith('+')) {
+            var countryCodes = Countries.map((x) => x.PhoneCode);
+            var countryCodesSorted = countryCodes.sort((a, b) => b.length - a.length);
             for (var cc of countryCodesSorted) {
                 if (phone.startsWith(cc)) {
                     var phoneNumber = phone.substring(cc.length);
@@ -359,7 +398,6 @@ export class Helper {
         }
         const validPhoneNumber = Helper.isStr(phoneNumber) && phoneNumber.length >= 9;
         if (!validPhoneNumber) {
-
             //throw new InputValidationError(['Invalid phone number']);
             return Promise.reject('Invalid phone number');
         }
@@ -398,7 +436,7 @@ export class Helper {
 
     public static padInteger = (num: number, places: number, paddingCharacter: string) => {
         return String(num).padStart(places, paddingCharacter);
-    }
+    };
 
     //Reference: https://github.com/zishon89us/node-cheat/blob/master/stackoverflow_answers/crypto-create-cipheriv.js#L2
 
@@ -424,18 +462,17 @@ export class Helper {
     };
 
     public static getPossiblePhoneNumbers = (phone) => {
-
         if (phone == null) {
             return [];
         }
 
         let phoneTemp = phone;
         phoneTemp = phoneTemp.trim();
-        const countryCodes = Countries.map(x => x.PhoneCode);
+        const countryCodes = Countries.map((x) => x.PhoneCode);
         const searchFors = countryCodes;
         const possiblePhoneNumbers = [phone];
 
-        let phonePrefix = "";
+        let phonePrefix = '';
 
         for (var s of searchFors) {
             if (phoneTemp.startsWith(s)) {
@@ -447,17 +484,15 @@ export class Helper {
 
         if (phonePrefix) {
             possiblePhoneNumbers.push(phonePrefix + phoneTemp);
-            possiblePhoneNumbers.push(phonePrefix + "-" + phoneTemp);
+            possiblePhoneNumbers.push(phonePrefix + '-' + phoneTemp);
             possiblePhoneNumbers.push(phoneTemp);
-
         } else {
-
-            var possibles = Countries.map(x => {
+            var possibles = Countries.map((x) => {
                 return x.PhoneCode + phoneTemp;
             });
             possiblePhoneNumbers.push(...possibles);
-            possibles = Countries.map(x => {
-                return x.PhoneCode + "-" + phoneTemp;
+            possibles = Countries.map((x) => {
+                return x.PhoneCode + '-' + phoneTemp;
             });
             possiblePhoneNumbers.push(...possibles);
 
@@ -468,7 +503,7 @@ export class Helper {
 
     public static getFileExtension = (filename: string) => {
         var ext = /^.+\.([^.]+)$/.exec(filename);
-        return ext == null ? "" : ext[1];
+        return ext == null ? '' : ext[1];
     };
 
     public static getFilenameFromFilePath = (filepath: string) => {
@@ -479,7 +514,7 @@ export class Helper {
         var tmp = (Math.floor(Math.random() * 9000000000) + 1000000000).toString();
         var displayId = tmp.slice(0, 4) + '-' + tmp.slice(4, 8);
         var identifier = displayId;
-        if (prefix != null){
+        if (prefix != null) {
             identifier = prefix + '-' + identifier;
         }
         return identifier;
@@ -503,8 +538,7 @@ export class Helper {
         return str;
     };
 
-    public static generateDownloadFolderPath = async() => {
-
+    public static generateDownloadFolderPath = async () => {
         var timestamp = TimeHelper.timestamp(new Date());
         var tempDownloadFolder = ConfigurationManager.DownloadTemporaryFolder();
         var downloadFolderPath = path.join(tempDownloadFolder, timestamp);
@@ -514,7 +548,7 @@ export class Helper {
         return downloadFolderPath;
     };
 
-    public static createTempDownloadFolder = async() => {
+    public static createTempDownloadFolder = async () => {
         var tempDownloadFolder = ConfigurationManager.DownloadTemporaryFolder();
         if (fs.existsSync(tempDownloadFolder)) {
             return tempDownloadFolder;
@@ -523,7 +557,7 @@ export class Helper {
         return tempDownloadFolder;
     };
 
-    public static createTempUploadFolder = async() => {
+    public static createTempUploadFolder = async () => {
         var tempUploadFolder = ConfigurationManager.UploadTemporaryFolder();
         if (fs.existsSync(tempUploadFolder)) {
             return tempUploadFolder;
