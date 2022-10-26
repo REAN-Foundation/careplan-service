@@ -19,7 +19,7 @@ export class EnrollmentModel {
             primaryKey   : true
         },
         CareplanId : {
-            type       : DataTypes.INTEGER,
+            type       : DataTypes.UUID,
             allowNull  : false,
             foreignKey : true,
             unique     : false

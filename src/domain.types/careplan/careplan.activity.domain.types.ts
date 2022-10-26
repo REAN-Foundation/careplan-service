@@ -8,7 +8,7 @@ import { uuid } from "../miscellaneous/system.types";
 export interface CareplanActivityCreateModel {
     AssetId?              : number;
     AssetType?            : AssetType;
-    CareplanId?           : number;
+    CareplanId?           : uuid;
     Day?                  : number;
     TimeSlot?             : TimeSlot;
     IsRegistrationActivity: boolean;
@@ -17,7 +17,7 @@ export interface CareplanActivityCreateModel {
 export interface CareplanActivityUpdateModel {
     AssetId?               : number;
     AssetType?             : AssetType;
-    CareplanId?            : number;
+    CareplanId?            : uuid;
     Day?                   : number;
     TimeSlot?              : TimeSlot;
     IsRegistrationActivity?: boolean;
@@ -27,7 +27,7 @@ export interface CareplanActivityDto {
     id                    : uuid;
     AssetId               : number;
     AssetType             : AssetType;
-    CareplanId            : number;
+    CareplanId            : uuid;
     Day                   : number;
     TimeSlot              : TimeSlot;
     IsRegistrationActivity: boolean;
@@ -36,7 +36,7 @@ export interface CareplanActivityDto {
 export interface CareplanActivitySearchFilters extends BaseSearchFilters {
     AssetId?               : number;
     AssetType?             : AssetType;
-    CareplanId?            : number;
+    CareplanId?            : uuid;
     Day?                   : number;
     TimeSlot?              : TimeSlot;
     IsRegistrationActivity?: boolean;

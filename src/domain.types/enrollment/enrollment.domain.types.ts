@@ -8,7 +8,7 @@ import {
 } from "../miscellaneous/system.types";
 
 export interface EnrollmentCreateModel {
-    CareplanId     ?: number;
+    CareplanId     ?: uuid;
     ParticipantId  ?: uuid;
     StartDate      ?: Date;
     EndDate        ?: Date;
@@ -18,7 +18,7 @@ export interface EnrollmentCreateModel {
 }
 
 export interface EnrollmentUpdateModel {
-    CareplanId     ?: number;
+    CareplanId     ?: uuid;
     ParticipantId  ?: uuid;
     StartDate      ?: Date;
     EndDate        ?: Date;
@@ -29,7 +29,7 @@ export interface EnrollmentUpdateModel {
 
 export interface EnrollmentDto {
     id            : uuid;
-    CareplanId    : number;
+    CareplanId    : uuid;
     ParticipantId : uuid;
     StartDate     : Date;
     EndDate       : Date;
@@ -40,7 +40,7 @@ export interface EnrollmentDto {
 }
 
 export interface EnrollmentSearchFilters extends BaseSearchFilters {
-    CareplanId     ?: number;
+    CareplanId     ?: uuid;
     ProgressStatus ?: ProgressStatus;
 }
 

@@ -38,8 +38,10 @@ export class EnrollmentTaskValidator {
                 participantId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
-                assetType              : joi.string().valid("Action plan", "Animation", "Appointment", "Article", "Assessment", "Audio", "Biometrics", "Challenge", "Checkup", "Consultation", "Exercise", "Goal", "Infographics", "Medication", "Meditation", "Message", "Nutrition", "Physiotherapy", "Priority", "Reflection", "Reminder", "Video", "Web link", "Web newsfeed", "Word power").optional(),
-                careplanId             : joi.number().integer().optional(),
+                assetType  : joi.string().valid("Action plan", "Animation", "Appointment", "Article", "Assessment", "Audio", "Biometrics", "Challenge", "Checkup", "Consultation", "Exercise", "Goal", "Infographics", "Medication", "Meditation", "Message", "Nutrition", "Physiotherapy", "Priority", "Reflection", "Reminder", "Video", "Web link", "Web newsfeed", "Word power").optional(),
+                careplanId : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
                 timeSlot               : joi.string().valid("Early morning", "Morning", "Afternoon", "Late afternoon", "Evening", "Night", "Late night", "Unspecified", "Whole day").optional(),
                 isRegistrationActivity : joi.boolean().optional(),
             });

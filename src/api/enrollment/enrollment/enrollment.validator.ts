@@ -10,7 +10,9 @@ export class EnrollmentValidator {
     static validateCreateRequest = async (requestBody) => {
         try {
             const schema = joi.object({
-                CareplanId    : joi.number().integer().optional(),
+                CareplanId : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
                 ParticipantId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
@@ -29,7 +31,9 @@ export class EnrollmentValidator {
     static validateUpdateRequest = async (requestBody) => {
         try {
             const schema = joi.object({
-                CareplanId    : joi.number().integer().optional(),
+                CareplanId : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
                 ParticipantId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
@@ -45,7 +49,9 @@ export class EnrollmentValidator {
     static validateSearchRequest = async (query) => {
         try {
             const schema = joi.object({
-                careplanId     : joi.number().integer().optional(),
+                careplanId : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
                 progressStatus : joi.string().valid("Pending", "In-progress", "Completed", "Cancelled", "Delayed", "Unknown").optional()
             });
             return await schema.validateAsync(query);

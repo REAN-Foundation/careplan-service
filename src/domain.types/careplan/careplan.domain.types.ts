@@ -3,7 +3,7 @@ import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.sear
 import { uuid } from "../miscellaneous/system.types";
 
 export interface CareplanCreateModel {
-    id?: number;
+    id?: uuid;
     Code: string;
     CategoryId: number;
     Name: string;
@@ -26,7 +26,7 @@ export interface CareplanUpdateModel {
 }
 
 export interface CareplanDto {
-    id?: number;
+    id?: uuid;
     Code: string;
     CategoryId: number;
     Name: string;

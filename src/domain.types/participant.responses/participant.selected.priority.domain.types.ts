@@ -11,7 +11,7 @@ export interface ParticipantSelectedPriorityCreateModel {
     Description   ?: string;
     EnrollmentId  ?: uuid;
     ParticipantId ?: uuid;
-    CareplanId    ?: number;
+    CareplanId    ?: uuid;
     AssetId       ?: number;
     AssetType     ?: string;
     AssetCode     ?: string;
@@ -23,7 +23,7 @@ export interface ParticipantSelectedPriorityUpdateModel {
     Description   ?: string;
     EnrollmentId  ?: uuid;
     ParticipantId ?: uuid;
-    CareplanId    ?: number;
+    CareplanId    ?: uuid;
     AssetId       ?: number;
     AssetType     ?: string;
     AssetCode     ?: string;
@@ -36,7 +36,7 @@ export interface ParticipantSelectedPriorityDto {
     Description   : string;
     EnrollmentId  : uuid;
     ParticipantId : uuid;
-    CareplanId    : number;
+    CareplanId    : uuid;
     AssetId       : number;
     AssetType     : string;
     AssetCode     : string;
@@ -49,7 +49,7 @@ export interface ParticipantSelectedPrioritySearchFilters extends BaseSearchFilt
     Description   ?: string;
     EnrollmentId  ?: uuid;
     ParticipantId ?: uuid;
-    CareplanId    ?: number;
+    CareplanId    ?: uuid;
     AssetId       ?: number;
     AssetType     ?: string;
     AssetCode     ?: string;

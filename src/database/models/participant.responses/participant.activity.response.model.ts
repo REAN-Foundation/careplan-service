@@ -38,7 +38,7 @@ export class ParticipantActivityResponseModel {
             unique     : false
         },
         CareplanId : {
-            type       : DataTypes.INTEGER,
+            type       : DataTypes.UUID,
             allowNull  : false,
             foreignKey : true,
             unique     : false
