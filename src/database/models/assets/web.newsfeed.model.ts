@@ -57,7 +57,7 @@ export class WebNewsfeedModel {
         Tags : {
             type         : DataTypes.TEXT,
             allowNull    : false,
-            defaultValue : []
+            defaultValue : '[]'
         },
         Version : {
             type         : DataTypes.STRING(128),

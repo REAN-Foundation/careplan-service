@@ -1,4 +1,4 @@
-import { Sequelize } from 'sequelize';
+import { Dialect, Sequelize } from 'sequelize';
 import { DbConfig } from './database.config';
 import { Logger } from '../common/logger';
 
@@ -13,14 +13,17 @@ Logger.instance().log('db host     : ' + config.host);
 
 const sequelize = new Sequelize(config.database, config.username, config.password, {
     host    : config.host,
-    dialect : 'mysql',
+    dialect : config.dialect as Dialect,
     pool    : {
         max     : config.pool.max,
         min     : config.pool.min,
         acquire : config.pool.acquire,
         idle    : config.pool.idle
     },
-    logging : false
+    // logging : (txt) => {
+    //     Logger.instance().log(txt);
+    // },
+    logging : false,
 });
 
 sequelize
