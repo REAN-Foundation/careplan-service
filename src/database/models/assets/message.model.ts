@@ -53,7 +53,7 @@ export class MessageModel {
         Tags : {
             type         : DataTypes.TEXT,
             allowNull    : false,
-            defaultValue : []
+            defaultValue : '[]'
         },
         Url : {
             type      : DataTypes.TEXT,

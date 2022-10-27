@@ -38,7 +38,7 @@ export class WordPowerModel {
         AdditionalResources : {
             type         : DataTypes.TEXT,
             allowNull    : false,
-            defaultValue : []
+            defaultValue : '[]'
         },
         AssetCategory : {
             type         : DataTypes.STRING(128),
@@ -52,7 +52,7 @@ export class WordPowerModel {
         Tags : {
             type         : DataTypes.TEXT,
             allowNull    : false,
-            defaultValue : []
+            defaultValue : '[]'
         },
         Version : {
             type         : DataTypes.STRING(128),
