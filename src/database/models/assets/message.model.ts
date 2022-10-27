@@ -19,6 +19,12 @@ export class MessageModel {
             defaultValue : DataTypes.UUIDV4,
             primaryKey   : true
         },
+        DisplayId : {
+            type          : DataTypes.INTEGER,
+            allowNull     : false,
+            autoIncrement : true,
+            unique        : true
+        },
         AssetCode : {
             type      : DataTypes.STRING(256),
             allowNull : true
