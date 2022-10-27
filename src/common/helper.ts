@@ -278,8 +278,8 @@ export class Helper {
         const d = new Date(date);
         const month = ('00' + (d.getMonth() + 1).toString()).slice(-2);
         const day = ('00' + d.getDate().toString()).slice(-2);
-        const year = d.getFullYear();
-        return [year, month, day].join('-');
+        const year = (d.getFullYear()).toString().slice(-2);
+        return [year, month, day].join('');
     };
 
     static isAlpha = (c) => {
@@ -512,7 +512,7 @@ export class Helper {
 
     public static generateDisplayId = (prefix = null) => {
         var tmp = (Math.floor(Math.random() * 9000000000) + 1000000000).toString();
-        var displayId = tmp.slice(0, 4) + '-' + tmp.slice(4, 8);
+        var displayId = tmp.slice(0, 4);
         var identifier = displayId;
         if (prefix != null) {
             identifier = prefix + '-' + identifier;

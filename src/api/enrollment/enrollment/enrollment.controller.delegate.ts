@@ -75,9 +75,16 @@ export class EnrollmentControllerDelegate {
         }
 
         var createModel: EnrollmentCreateModel = this.getCreateModel(requestBody);
-        const record = await this._service.create(createModel);
+        let record = await this._service.create(createModel);
         if (record === null) {
             throw new ApiError('Unable to create enrollment!', 400);
+        }
+
+        const date = await Helper.formatDate(new Date());
+        const displayId = await Helper.generateDisplayId(date);
+        record = await this._service.update(record.id, { DisplayId: displayId });
+        if (record == null) {
+            ErrorHandler.throwInternalServerError('Unable to update displayId!');
         }
 
         await this.generateRegistrationTasks(record);
@@ -287,6 +294,7 @@ export class EnrollmentControllerDelegate {
         }
         return {
             id             : record.id,
+            DisplayId      : record.DisplayId,
             CareplanId     : record.CareplanId,
             ParticipantId  : record.ParticipantId,
             Asset          : record.Asset,
