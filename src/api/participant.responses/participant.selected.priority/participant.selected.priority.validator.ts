@@ -21,7 +21,9 @@ export class ParticipantSelectedPriorityValidator {
                 CareplanId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
-                AssetId   : joi.number().integer().optional(),
+                AssetId : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
                 AssetType : joi.string().max(128).optional(),
                 AssetCode : joi.string().max(128).optional(),
                 StartDate : joi.date().iso().optional()
@@ -46,7 +48,9 @@ export class ParticipantSelectedPriorityValidator {
                 CareplanId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
-                AssetId   : joi.number().integer().optional(),
+                AssetId : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
                 AssetType : joi.string().max(128).optional(),
                 AssetCode : joi.string().max(128).optional(),
                 StartDate : joi.date().iso().optional()
@@ -67,7 +71,9 @@ export class ParticipantSelectedPriorityValidator {
                 careplanId    : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
-                assetId   : joi.number().integer().optional(),
+                assetId : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
                 assetType : joi.string().max(128).optional(),
                 assetCode : joi.string().max(128).optional(),
                 startDate : joi.date().iso().optional()

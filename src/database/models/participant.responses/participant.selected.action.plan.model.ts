@@ -51,7 +51,7 @@ export class ParticipantSelectedActionPlanModel {
             unique     : false
         },
         AssetId : {
-            type      : DataTypes.INTEGER,
+            type      : DataTypes.UUID,
             allowNull : true
         },
         AssetType : {

@@ -44,7 +44,7 @@ export class ParticipantSelectedPriorityModel {
             unique     : false
         },
         AssetId : {
-            type      : DataTypes.INTEGER,
+            type      : DataTypes.UUID,
             allowNull : true
         },
         AssetType : {

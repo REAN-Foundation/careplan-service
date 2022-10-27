@@ -34,7 +34,9 @@ export class EnrollmentTaskValidator {
     static validateSearchRequest = async (query) => {
         try {
             const schema = joi.object({
-                assetId       : joi.number().integer().optional(),
+                assetId : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
                 participantId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),

@@ -10,7 +10,9 @@ export class CareplanActivityValidator {
     static validateCreateRequest = async (requestBody) => {
         try {
             const schema = joi.object({
-                AssetId    : joi.number().integer().optional(),
+                AssetId : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
                 AssetType  : joi.string().valid("Action plan", "Animation", "Appointment", "Article", "Assessment", "Audio", "Biometrics", "Challenge", "Checkup", "Consultation", "Exercise", "Goal", "Infographics", "Medication", "Meditation", "Message", "Nutrition", "Physiotherapy", "Priority", "Reflection", "Reminder", "Video", "Web link", "Web newsfeed", "Word power").optional(),
                 CareplanId : joi.string().guid({
                     version : ['uuidv4']
@@ -28,7 +30,9 @@ export class CareplanActivityValidator {
     static validateUpdateRequest = async (requestBody) => {
         try {
             const schema = joi.object({
-                AssetId    : joi.number().integer().optional(),
+                AssetId : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
                 AssetType  : joi.string().valid("Action plan", "Animation", "Appointment", "Article", "Assessment", "Audio", "Biometrics", "Challenge", "Checkup", "Consultation", "Exercise", "Goal", "Infographics", "Medication", "Meditation", "Message", "Nutrition", "Physiotherapy", "Priority", "Reflection", "Reminder", "Video", "Web link", "Web newsfeed", "Word power").optional(),
                 CareplanId : joi.string().guid({
                     version : ['uuidv4']
@@ -46,7 +50,9 @@ export class CareplanActivityValidator {
     static validateSearchRequest = async (query) => {
         try {
             const schema = joi.object({
-                assetId    : joi.number().integer().optional(),
+                assetId : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
                 assetType  : joi.string().valid("Action plan", "Animation", "Appointment", "Article", "Assessment", "Audio", "Biometrics", "Challenge", "Checkup", "Consultation", "Exercise", "Goal", "Infographics", "Medication", "Meditation", "Message", "Nutrition", "Physiotherapy", "Priority", "Reflection", "Reminder", "Video", "Web link", "Web newsfeed", "Word power").optional(),
                 careplanId : joi.string().guid({
                     version : ['uuidv4']

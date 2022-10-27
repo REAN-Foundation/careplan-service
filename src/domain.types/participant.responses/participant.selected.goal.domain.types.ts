@@ -14,7 +14,7 @@ export interface ParticipantSelectedGoalCreateModel {
     ParticipantId      ?: uuid;
     SelectedPriorityId ?: uuid;
     CareplanId         ?: uuid;
-    AssetId            ?: number;
+    AssetId            ?: uuid;
     AssetType          ?: string;
     AssetCode          ?: string;
     AdditionalDetails  ?: string;
@@ -29,7 +29,7 @@ export interface ParticipantSelectedGoalUpdateModel {
     ParticipantId      ?: uuid;
     SelectedPriorityId ?: uuid;
     CareplanId         ?: uuid;
-    AssetId            ?: number;
+    AssetId            ?: uuid;
     AssetType          ?: string;
     AssetCode          ?: string;
     AdditionalDetails  ?: string;
@@ -45,7 +45,7 @@ export interface ParticipantSelectedGoalDto {
     ParticipantId      : uuid;
     SelectedPriorityId : uuid;
     CareplanId         : uuid;
-    AssetId            : number;
+    AssetId            : uuid;
     AssetType          : string;
     AssetCode          : string;
     AdditionalDetails  : string;
@@ -61,7 +61,7 @@ export interface ParticipantSelectedGoalSearchFilters extends BaseSearchFilters 
     ParticipantId      ?: uuid;
     SelectedPriorityId ?: uuid;
     CareplanId         ?: uuid;
-    AssetId            ?: number;
+    AssetId            ?: uuid;
     AssetType          ?: string;
     AssetCode          ?: string;
     AdditionalDetails  ?: string;

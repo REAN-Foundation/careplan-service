@@ -14,10 +14,10 @@ export class ConsultationModel {
 
     static Schema = {
         id : {
-            type          : DataTypes.INTEGER,
-            allowNull     : false,
-            autoIncrement : true,
-            primaryKey    : true
+            type         : DataTypes.UUID,
+            allowNull    : false,
+            defaultValue : DataTypes.UUIDV4,
+            primaryKey   : true
         },
         AssetCode : {
             type      : DataTypes.STRING(256),

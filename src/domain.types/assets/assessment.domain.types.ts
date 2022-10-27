@@ -27,7 +27,7 @@ export interface AssessmentUpdateModel {
 }
 
 export interface AssessmentDto {
-    id: number;
+    id: uuid;
     AssetCode: string;
     Name: string;
     Description: string;

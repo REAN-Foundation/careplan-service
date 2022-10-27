@@ -38,7 +38,7 @@ export class EnrollmentTaskModel {
             unique     : false
         },
         AssetId : {
-            type      : DataTypes.INTEGER,
+            type      : DataTypes.UUID,
             allowNull : false
         },
         AssetType : {

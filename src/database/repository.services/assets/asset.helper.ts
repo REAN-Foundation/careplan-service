@@ -33,7 +33,7 @@ export class AssetHelper {
 
     //#region Publics
 
-    public static getAsset = async (id: number, assetType: AssetType) => {
+    public static getAsset = async (id: string, assetType: AssetType) => {
         try {
             
             switch (assetType) {

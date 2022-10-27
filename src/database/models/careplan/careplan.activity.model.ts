@@ -19,7 +19,7 @@ export class CareplanActivityModel {
             primaryKey   : true
         },
         AssetId : {
-            type      : DataTypes.INTEGER,
+            type      : DataTypes.UUID,
             allowNull : false
         },
         AssetType : {

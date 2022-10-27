@@ -5,7 +5,7 @@ import { uuid } from "../miscellaneous/system.types";
 export interface CareplanCreateModel {
     id?: uuid;
     Code: string;
-    CategoryId: number;
+    CategoryId: uuid;
     Name: string;
     Description?: string;
     Version?: string;
@@ -16,7 +16,7 @@ export interface CareplanCreateModel {
 
 export interface CareplanUpdateModel {
     Code?: string;
-    CategoryId?: number;
+    CategoryId?: uuid;
     Name?: string;
     Description?: string;
     Version?: string;
@@ -28,7 +28,7 @@ export interface CareplanUpdateModel {
 export interface CareplanDto {
     id?: uuid;
     Code: string;
-    CategoryId: number;
+    CategoryId: uuid;
     Name: string;
     Description?: string;
     Version: string;
@@ -39,7 +39,7 @@ export interface CareplanDto {
 
 export interface CareplanSearchFilters extends BaseSearchFilters {
     Code?: string;
-    CategoryId?: number;
+    CategoryId?: uuid;
     Name?: string;
     Version?: string;
     OwnerUserId?: uuid;

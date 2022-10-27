@@ -24,7 +24,9 @@ export class ParticipantSelectedActionPlanValidator {
                 CareplanId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
-                AssetId           : joi.number().integer().optional(),
+                AssetId : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
                 AssetType         : joi.string().max(128).optional(),
                 AssetCode         : joi.string().max(128).optional(),
                 AdditionalDetails : joi.string().optional(),
@@ -54,7 +56,9 @@ export class ParticipantSelectedActionPlanValidator {
                 CareplanId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
-                AssetId           : joi.number().integer().optional(),
+                AssetId : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
                 AssetType         : joi.string().max(128).optional(),
                 AssetCode         : joi.string().max(128).optional(),
                 AdditionalDetails : joi.string().optional(),
@@ -78,7 +82,9 @@ export class ParticipantSelectedActionPlanValidator {
                 careplanId     : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
-                assetId           : joi.number().integer().optional(),
+                assetId : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
                 assetType         : joi.string().max(128).optional(),
                 assetCode         : joi.string().max(128).optional(),
                 additionalDetails : joi.string().optional(),
