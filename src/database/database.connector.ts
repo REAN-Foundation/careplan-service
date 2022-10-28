@@ -1,10 +1,14 @@
 import { Dialect, Sequelize } from 'sequelize';
 import { DbConfig } from './database.config';
 import { Logger } from '../common/logger';
+import { DbClient } from './db.client';
 
 ///////////////////////////////////////////////////////////////////////////////////
 
 const config = DbConfig.config;
+
+const dbClient = new DbClient();
+config.dialect = dbClient.getDialect(process.env.DATABASE_DIALECT);
 
 Logger.instance().log('environment : ' + process.env.NODE_ENV);
 Logger.instance().log('db name     : ' + config.database);
