@@ -68,11 +68,12 @@ export class EnrollmentControllerDelegate {
             ErrorHandler.throwNotFoundError(`Participant not found!`);
         }
 
-        var careplanId = requestBody.CareplanId;
-        const careplan = await this._careplanService.getById(careplanId);
-        if (!careplan) {
+        var planCode = requestBody.PlanCode;
+        const careplanId = await this._careplanService.exists(planCode);
+        if (!careplanId) {
             ErrorHandler.throwNotFoundError(`Careplan not found!`);
         }
+        requestBody.CareplanId = careplanId;
 
         var createModel: EnrollmentCreateModel = this.getCreateModel(requestBody);
         let record = await this._service.create(createModel);
@@ -279,6 +280,7 @@ export class EnrollmentControllerDelegate {
     getCreateModel = (requestBody): EnrollmentCreateModel => {
         return {
             CareplanId     : requestBody.CareplanId ? requestBody.CareplanId : null,
+            PlanCode       : requestBody.PlanCode ? requestBody.PlanCode : null,
             ParticipantId  : requestBody.ParticipantId ? requestBody.ParticipantId : null,
             StartDate      : requestBody.StartDate ? requestBody.StartDate : new Date(),
             EndDate        : requestBody.EndDate ? requestBody.EndDate : null,
@@ -314,6 +316,7 @@ export class EnrollmentControllerDelegate {
         return {
             id             : record.id,
             CareplanId     : record.CareplanId,
+            PlanCode       : record.PlanCode,
             ParticipantId  : record.ParticipantId,
             Asset          : record.Asset,
             StartDate      : record.StartDate,

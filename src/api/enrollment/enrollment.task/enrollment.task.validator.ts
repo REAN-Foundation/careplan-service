@@ -44,6 +44,9 @@ export class EnrollmentTaskValidator {
                 careplanId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
+                enrollmentId : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
                 timeSlot               : joi.string().valid("Early morning", "Morning", "Afternoon", "Late afternoon", "Evening", "Night", "Late night", "Unspecified", "Whole day").optional(),
                 isRegistrationActivity : joi.boolean().optional(),
             });

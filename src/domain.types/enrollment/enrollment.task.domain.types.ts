@@ -43,6 +43,7 @@ export interface EnrollmentTaskSearchFilters extends BaseSearchFilters {
     CareplanId ?: uuid;
     TimeSlot   ?: TimeSlot;
     IsRegistrationActivity? : boolean,
+    EnrollmentId? : string,
 }
 
 export interface EnrollmentTaskSearchResults extends BaseSearchResults {

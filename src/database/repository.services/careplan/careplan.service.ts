@@ -4,6 +4,7 @@ import { UserModel } from '../../models/user/user.model';
 import { ErrorHandler } from '../../../common/error.handler';
 import { CareplanCreateModel } from '../../../domain.types/careplan/careplan.domain.types';
 import { CareplanDto, CareplanSearchFilters, CareplanSearchResults } from '../../../domain.types/careplan/careplan.domain.types';
+import { uuid } from '../../../domain.types/miscellaneous/system.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -48,10 +49,16 @@ export class CareplanService {
         }
     }
 
-    exists = async (id): Promise<boolean> => {
+    exists = async (code): Promise<uuid> => {
         try {
-            const record = await this.Careplan.findByPk(id);
-            return record !== null;
+            const record = await this.Careplan.findOne(
+                {
+                    where : {
+                        Code : code
+                    }
+                }
+            );
+            return record.id;
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of care plan!', error);
         }

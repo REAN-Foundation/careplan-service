@@ -9,6 +9,7 @@ import {
 
 export interface EnrollmentCreateModel {
     CareplanId     ?: uuid;
+    PlanCode       ?: string;
     ParticipantId  ?: uuid;
     StartDate      ?: Date;
     EndDate        ?: Date;
@@ -30,6 +31,7 @@ export interface EnrollmentUpdateModel {
 export interface EnrollmentDto {
     id            : uuid;
     CareplanId    : uuid;
+    PlanCode?      : string;
     ParticipantId : uuid;
     StartDate     : Date;
     EndDate       : Date;

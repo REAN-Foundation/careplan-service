@@ -20,6 +20,7 @@ export class CareplanModel {
         Code : {
             type      : DataTypes.STRING(256),
             allowNull : false,
+            unique    : true,
         },
         CategoryId : {
             type       : DataTypes.UUID,

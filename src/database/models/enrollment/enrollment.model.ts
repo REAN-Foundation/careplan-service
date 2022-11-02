@@ -25,9 +25,14 @@ export class EnrollmentModel {
         },
         CareplanId : {
             type       : DataTypes.UUID,
-            allowNull  : false,
+            allowNull  : true,
             foreignKey : true,
             unique     : false
+        },
+        PlanCode : {
+            type      : DataTypes.STRING(64),
+            allowNull : false,
+            unique    : false
         },
         ParticipantId : {
             type       : DataTypes.UUID,

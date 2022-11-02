@@ -16,6 +16,7 @@ export class EnrollmentValidator {
                 ParticipantId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
+                PlanCode       : joi.string().max(64).required(),
                 StartDate      : joi.date().iso().optional(),
                 EndDate        : joi.date().iso().optional().allow(null),
                 WeekOffset     : joi.number().optional(),
