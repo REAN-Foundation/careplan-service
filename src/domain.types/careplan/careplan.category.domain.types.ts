@@ -1,8 +1,8 @@
-
+import { uuid } from "../miscellaneous/system.types";
 import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.search.types";
 
 export interface CareplanCategoryCreateModel {
-    id?: number;
+    id?: uuid;
     Type: string;
     Description?: string;
 }
@@ -13,7 +13,7 @@ export interface CareplanCategoryUpdateModel {
 }
 
 export interface CareplanCategoryDto {
-    id: number;
+    id: uuid;
     Type: string;
     Description?: string;
 }

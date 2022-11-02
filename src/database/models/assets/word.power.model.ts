@@ -13,10 +13,16 @@ export class WordPowerModel {
 
     static Schema = {
         id : {
+            type         : DataTypes.UUID,
+            allowNull    : false,
+            defaultValue : DataTypes.UUIDV4,
+            primaryKey   : true
+        },
+        DisplayId : {
             type          : DataTypes.INTEGER,
             allowNull     : false,
             autoIncrement : true,
-            primaryKey    : true
+            unique        : true
         },
         AssetCode : {
             type      : DataTypes.STRING(256),
@@ -38,7 +44,7 @@ export class WordPowerModel {
         AdditionalResources : {
             type         : DataTypes.TEXT,
             allowNull    : false,
-            defaultValue : []
+            defaultValue : '[]'
         },
         AssetCategory : {
             type         : DataTypes.STRING(128),
@@ -52,7 +58,7 @@ export class WordPowerModel {
         Tags : {
             type         : DataTypes.TEXT,
             allowNull    : false,
-            defaultValue : []
+            defaultValue : '[]'
         },
         Version : {
             type         : DataTypes.STRING(128),

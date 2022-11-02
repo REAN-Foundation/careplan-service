@@ -35,7 +35,7 @@ export default class Application {
     public static instance(): Application {
         return this._instance || (this._instance = new this());
     }
-    
+
     public app(): express.Application {
         return this._app;
     }
@@ -61,31 +61,32 @@ export default class Application {
 
         const sequelize = db.default.sequelize;
 
-        await DbClient.createDatabase();
+        const dbClient = new DbClient();
+        await dbClient.createDatabase();
 
         if (process.env.NODE_ENV === 'test') {
             //Note: This is only for test environment
             //Drop all tables in db
-            await DbClient.dropDatabase();
+            await dbClient.dropDatabase();
         }
-    
+
         await DatabaseModelManager.setupAssociations(); //set associations
-    
-        await sequelize.sync({ alter: true });
-    
+
+        await sequelize.sync({ alter: { drop: false } });
+
     }
 
     public start = async(): Promise<void> => {
         try {
             await this.warmUp();
-            
+
             process.on('exit', code => {
                 Logger.instance().log(`Process exited with code: ${code}`);
             });
 
             //Start listening
             await this.listen();
-            
+
         }
         catch (error){
             Logger.instance().log('An error occurred while starting reancare-api service.' + error.message);
@@ -102,7 +103,7 @@ export default class Application {
                 this._app.use(cors());
 
                 const MAX_UPLOAD_FILE_SIZE = ConfigurationManager.MaxUploadFileSize();
-            
+
                 this._app.use(fileUpload({
                     limits            : { fileSize: MAX_UPLOAD_FILE_SIZE },
                     preserveExtension : true,

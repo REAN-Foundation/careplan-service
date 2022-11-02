@@ -25,7 +25,7 @@ export interface ReminderUpdateModel {
 }
 
 export interface ReminderDto {
-    id: number;
+    id: uuid;
     AssetCode: string;
     Name: string;
     Description: string;

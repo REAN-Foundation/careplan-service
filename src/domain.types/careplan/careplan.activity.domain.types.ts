@@ -6,18 +6,18 @@ import {
 import { uuid } from "../miscellaneous/system.types";
 
 export interface CareplanActivityCreateModel {
-    AssetId?              : number;
+    AssetId?              : uuid;
     AssetType?            : AssetType;
-    CareplanId?           : number;
+    CareplanId?           : uuid;
     Day?                  : number;
     TimeSlot?             : TimeSlot;
     IsRegistrationActivity: boolean;
 }
 
 export interface CareplanActivityUpdateModel {
-    AssetId?               : number;
+    AssetId?               : uuid;
     AssetType?             : AssetType;
-    CareplanId?            : number;
+    CareplanId?            : uuid;
     Day?                   : number;
     TimeSlot?              : TimeSlot;
     IsRegistrationActivity?: boolean;
@@ -25,18 +25,18 @@ export interface CareplanActivityUpdateModel {
 
 export interface CareplanActivityDto {
     id                    : uuid;
-    AssetId               : number;
+    AssetId               : uuid;
     AssetType             : AssetType;
-    CareplanId            : number;
+    CareplanId            : uuid;
     Day                   : number;
     TimeSlot              : TimeSlot;
     IsRegistrationActivity: boolean;
 }
 
 export interface CareplanActivitySearchFilters extends BaseSearchFilters {
-    AssetId?               : number;
+    AssetId?               : uuid;
     AssetType?             : AssetType;
-    CareplanId?            : number;
+    CareplanId?            : uuid;
     Day?                   : number;
     TimeSlot?              : TimeSlot;
     IsRegistrationActivity?: boolean;

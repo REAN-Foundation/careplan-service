@@ -68,16 +68,24 @@ export class EnrollmentControllerDelegate {
             ErrorHandler.throwNotFoundError(`Participant not found!`);
         }
 
-        var careplanId = requestBody.CareplanId;
-        const careplan = await this._careplanService.getById(careplanId);
-        if (!careplan) {
+        var planCode = requestBody.PlanCode;
+        const careplanId = await this._careplanService.exists(planCode);
+        if (!careplanId) {
             ErrorHandler.throwNotFoundError(`Careplan not found!`);
         }
+        requestBody.CareplanId = careplanId;
 
         var createModel: EnrollmentCreateModel = this.getCreateModel(requestBody);
-        const record = await this._service.create(createModel);
+        let record = await this._service.create(createModel);
         if (record === null) {
             throw new ApiError('Unable to create enrollment!', 400);
+        }
+
+        const date = await Helper.formatDate(new Date());
+        const displayId = await Helper.generateDisplayId(date);
+        record = await this._service.update(record.id, { DisplayId: displayId });
+        if (record == null) {
+            ErrorHandler.throwInternalServerError('Unable to update displayId!');
         }
 
         await this.generateRegistrationTasks(record);
@@ -272,6 +280,7 @@ export class EnrollmentControllerDelegate {
     getCreateModel = (requestBody): EnrollmentCreateModel => {
         return {
             CareplanId     : requestBody.CareplanId ? requestBody.CareplanId : null,
+            PlanCode       : requestBody.PlanCode ? requestBody.PlanCode : null,
             ParticipantId  : requestBody.ParticipantId ? requestBody.ParticipantId : null,
             StartDate      : requestBody.StartDate ? requestBody.StartDate : new Date(),
             EndDate        : requestBody.EndDate ? requestBody.EndDate : null,
@@ -287,6 +296,7 @@ export class EnrollmentControllerDelegate {
         }
         return {
             id             : record.id,
+            DisplayId      : record.DisplayId,
             CareplanId     : record.CareplanId,
             ParticipantId  : record.ParticipantId,
             Asset          : record.Asset,
@@ -306,6 +316,7 @@ export class EnrollmentControllerDelegate {
         return {
             id             : record.id,
             CareplanId     : record.CareplanId,
+            PlanCode       : record.PlanCode,
             ParticipantId  : record.ParticipantId,
             Asset          : record.Asset,
             StartDate      : record.StartDate,

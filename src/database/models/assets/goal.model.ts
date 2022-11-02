@@ -13,10 +13,16 @@ export class GoalModel {
 
     static Schema = {
         id : {
+            type         : DataTypes.UUID,
+            allowNull    : false,
+            defaultValue : DataTypes.UUIDV4,
+            primaryKey   : true
+        },
+        DisplayId : {
             type          : DataTypes.INTEGER,
             allowNull     : false,
             autoIncrement : true,
-            primaryKey    : true
+            unique        : true
         },
         AssetCode : {
             type      : DataTypes.STRING(256),
@@ -47,7 +53,7 @@ export class GoalModel {
         Tags : {
             type         : DataTypes.TEXT,
             allowNull    : false,
-            defaultValue : []
+            defaultValue : '[]'
         },
         Version : {
             type         : DataTypes.STRING(128),

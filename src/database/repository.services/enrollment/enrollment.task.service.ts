@@ -167,6 +167,9 @@ export class EnrollmentTaskService {
         if (filters.IsRegistrationActivity) {
             search.where['IsRegistrationActivity'] = filters.IsRegistrationActivity;
         }
+        if (filters.EnrollmentId) {
+            search.where['EnrollmentId'] = filters.EnrollmentId;
+        }
         const includeEnrollmentAsEnrollment = {
             model    : this.Enrollment,
             required : false,

@@ -38,13 +38,13 @@ export class ParticipantSelectedPriorityModel {
             unique     : false
         },
         CareplanId : {
-            type       : DataTypes.INTEGER,
+            type       : DataTypes.UUID,
             allowNull  : false,
             foreignKey : true,
             unique     : false
         },
         AssetId : {
-            type      : DataTypes.INTEGER,
+            type      : DataTypes.UUID,
             allowNull : true
         },
         AssetType : {
