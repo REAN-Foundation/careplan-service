@@ -1,15 +1,18 @@
-import { MysqlClient as client } from './mysql.client';
+import { MysqlClient } from './mysql.client';
+import { PostgresqlClient } from './postgresql.client';
 import { Logger } from '../common/logger';
 import { execSync } from 'child_process';
-
 ////////////////////////////////////////////////////////////////////////
 
 export class DbClient {
 
+    private client = this.getClient();
+
     //Creates DB if does not exist
-    public static createDatabase = async () => {
+    public createDatabase = async () => {
         try {
-            await client.createDb();
+            //const client = this.getClient();
+            await this.client.createDb();
             return true;
         } catch (error) {
             Logger.instance().log(error.message);
@@ -18,9 +21,9 @@ export class DbClient {
     };
 
     //Drops DB if exists
-    public static dropDatabase = async () => {
+    public dropDatabase = async () => {
         try {
-            await client.dropDb();
+            await this.client.dropDb();
             return true;
         } catch (error) {
             Logger.instance().log(error.message);
@@ -29,9 +32,9 @@ export class DbClient {
     };
 
     //Drops DB if exists
-    public static executeQuery = async (query: string) => {
+    public executeQuery = async (query: string) => {
         try {
-            await client.executeQuery(query);
+            await this.client.executeQuery(query);
             return true;
         } catch (error) {
             Logger.instance().log(error.message);
@@ -39,7 +42,7 @@ export class DbClient {
         return false;
     };
 
-    public static migrate = async () => {
+    public migrate = async () => {
         try {
             const output = execSync('npx sequelize-cli db:migrate');
 
@@ -53,6 +56,35 @@ export class DbClient {
         }
         return false;
     };
+
+    public getDialect(flavour) {
+
+        let dialect = 'postgres';
+
+        if (flavour === 'mysql') {
+            dialect = flavour;
+        }
+        else if (flavour === 'postgres') {
+            dialect = flavour;
+        } else {
+            throw new Error('Please give DATABASE_DIALECT either mysql or postgres');
+        }
+
+        return dialect;
+    }
+
+    private getClient() {
+
+        const flavour = this.getDialect(process.env.DATABASE_DIALECT);
+
+        if (flavour === 'mysql') {
+            return MysqlClient;
+        }
+        if (flavour === 'postgres') {
+            return PostgresqlClient;
+        }
+        return MysqlClient;
+    }
 
 }
 

@@ -97,7 +97,7 @@ export class ConsultationControllerDelegate {
 
     getSearchFilters = (query) => {
 
-        var filters = {};
+        var filters = Helper.getDefaultSearchFilters(query);
 
         var assetCode = query.assetCode ? query.assetCode : null;
         if (assetCode != null) {

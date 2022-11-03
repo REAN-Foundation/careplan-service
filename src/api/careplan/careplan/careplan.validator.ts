@@ -8,8 +8,10 @@ export class CareplanValidator {
     static validateCreateRequest = async (requestBody) => {
         try {
             const schema = joi.object({
-                Code        : joi.string().max(256).optional(),
-                CategoryId  : joi.number().integer().optional(),
+                Code       : joi.string().max(256).optional(),
+                CategoryId : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
                 Name        : joi.string().max(256).required(),
                 Description : joi.string().optional(),
                 Version     : joi.string().max(32).optional(),
@@ -28,8 +30,10 @@ export class CareplanValidator {
     static validateSearchRequest = async (query) => {
         try {
             const schema = joi.object({
-                code        : joi.string().max(256).optional(),
-                categoryId  : joi.number().integer().optional(),
+                code       : joi.string().max(256).optional(),
+                categoryId : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
                 name        : joi.string().max(256).optional(),
                 version     : joi.string().max(32).optional(),
                 tags        : joi.array().items(joi.string()).optional(),
@@ -48,8 +52,10 @@ export class CareplanValidator {
     static validateUpdateRequest = async (requestBody) => {
         try {
             const schema = joi.object({
-                Code        : joi.string().max(256).optional(),
-                CategoryId  : joi.number().integer().optional(),
+                Code       : joi.string().max(256).optional(),
+                CategoryId : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
                 Name        : joi.string().max(256).optional(),
                 Description : joi.string().optional(),
                 Version     : joi.string().max(32).optional(),

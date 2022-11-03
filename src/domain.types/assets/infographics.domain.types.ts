@@ -27,7 +27,7 @@ export interface InfographicsUpdateModel {
 }
 
 export interface InfographicsDto {
-    id            : number;
+    id            : uuid;
     AssetCode     : string;
     Name          : string;
     Description   : string;

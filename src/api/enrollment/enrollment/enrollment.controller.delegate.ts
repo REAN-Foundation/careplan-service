@@ -68,16 +68,24 @@ export class EnrollmentControllerDelegate {
             ErrorHandler.throwNotFoundError(`Participant not found!`);
         }
 
-        var careplanId = requestBody.CareplanId;
-        const careplan = await this._careplanService.getById(careplanId);
-        if (!careplan) {
+        var planCode = requestBody.PlanCode;
+        const careplanId = await this._careplanService.exists(planCode);
+        if (!careplanId) {
             ErrorHandler.throwNotFoundError(`Careplan not found!`);
         }
+        requestBody.CareplanId = careplanId;
 
         var createModel: EnrollmentCreateModel = this.getCreateModel(requestBody);
-        const record = await this._service.create(createModel);
+        let record = await this._service.create(createModel);
         if (record === null) {
             throw new ApiError('Unable to create enrollment!', 400);
+        }
+
+        const date = await Helper.formatDate(new Date());
+        const displayId = await Helper.generateDisplayId(date);
+        record = await this._service.update(record.id, { DisplayId: displayId });
+        if (record == null) {
+            ErrorHandler.throwInternalServerError('Unable to update displayId!');
         }
 
         await this.generateRegistrationTasks(record);
@@ -139,14 +147,14 @@ export class EnrollmentControllerDelegate {
             const registrationActivities =
                 await this._careplanActivityService.getRegistrationActivities(record.CareplanId);
         
-            const enrollmentDate = record.EnrollmentDate;
+            const enrollmentDate = record.StartDate;
             var count = 0;
-            const timeOffset = 30; //seconds
+            const timeOffset = 15; //seconds
 
             for await (var act of registrationActivities) {
 
                 count++;
-                var dt = TimeHelper.addDuration(enrollmentDate, count * timeOffset, DurationType.Second);
+                const dt = TimeHelper.addDuration(enrollmentDate, 435 + act.Day * timeOffset, DurationType.Minute);
 
                 var createModel: EnrollmentTaskCreateModel = {
                     EnrollmentId       : record.id,
@@ -190,7 +198,17 @@ export class EnrollmentControllerDelegate {
                 if (daysToAdd < 0) {
                     daysToAdd = 0;
                 }
-                const dt = TimeHelper.addDuration(startDate, daysToAdd, DurationType.Day);
+                let addDate = daysToAdd / 3;
+                if (daysToAdd % 3 !== 0) {
+                    addDate = addDate + 1;
+                }
+                let dt = TimeHelper.addDuration(startDate, parseInt(addDate.toString()) - 1, DurationType.Day);
+
+                if (daysToAdd % 3 === 0) {
+                    dt = TimeHelper.addDuration(dt, 435 + 3 * 15, DurationType.Minute);
+                } else {
+                    dt = TimeHelper.addDuration(dt, 435 + (daysToAdd % 3) * 15, DurationType.Minute);
+                }
 
                 var createModel: EnrollmentTaskCreateModel = {
                     EnrollmentId       : record.id,
@@ -262,6 +280,7 @@ export class EnrollmentControllerDelegate {
     getCreateModel = (requestBody): EnrollmentCreateModel => {
         return {
             CareplanId     : requestBody.CareplanId ? requestBody.CareplanId : null,
+            PlanCode       : requestBody.PlanCode ? requestBody.PlanCode : null,
             ParticipantId  : requestBody.ParticipantId ? requestBody.ParticipantId : null,
             StartDate      : requestBody.StartDate ? requestBody.StartDate : new Date(),
             EndDate        : requestBody.EndDate ? requestBody.EndDate : null,
@@ -277,6 +296,7 @@ export class EnrollmentControllerDelegate {
         }
         return {
             id             : record.id,
+            DisplayId      : record.DisplayId,
             CareplanId     : record.CareplanId,
             ParticipantId  : record.ParticipantId,
             Asset          : record.Asset,
@@ -296,6 +316,7 @@ export class EnrollmentControllerDelegate {
         return {
             id             : record.id,
             CareplanId     : record.CareplanId,
+            PlanCode       : record.PlanCode,
             ParticipantId  : record.ParticipantId,
             Asset          : record.Asset,
             StartDate      : record.StartDate,

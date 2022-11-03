@@ -12,8 +12,8 @@ export interface ParticipantActivityResponseCreateModel {
     ParticipantId       : uuid;
     EnrollmentTaskId    : uuid;
     CareplanActivityId  : uuid;
-    CareplanId          : number;
-    AssetId             : number;
+    CareplanId          : uuid;
+    AssetId             : uuid;
     AssetType           : AssetType;
     Response            : string;
     TimeResponded       : Date;
@@ -32,8 +32,8 @@ export interface ParticipantActivityResponseDto {
     ParticipantId       : uuid;
     EnrollmentTaskId    : uuid;
     CareplanActivityId  : uuid;
-    CareplanId          : number;
-    AssetId             : number;
+    CareplanId          : uuid;
+    AssetId             : uuid;
     AssetType           : AssetType;
     Response            : string;
     TimeResponded       : Date;
@@ -42,8 +42,8 @@ export interface ParticipantActivityResponseDto {
 }
 
 export interface ParticipantActivityResponseSearchFilters extends BaseSearchFilters {
-    CareplanId     ?: number;
-    AssetId        ?: number;
+    CareplanId     ?: uuid;
+    AssetId        ?: uuid;
     AssetType      ?: AssetType;
     Response       ?: string;
     TimeResponded  ?: Date;

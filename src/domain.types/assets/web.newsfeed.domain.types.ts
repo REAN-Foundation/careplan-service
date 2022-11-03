@@ -27,7 +27,7 @@ export interface WebNewsfeedUpdateModel {
 }
 
 export interface WebNewsfeedDto {
-    id: number;
+    id: uuid;
     AssetCode: string;
     Name: string;
     Description: string;

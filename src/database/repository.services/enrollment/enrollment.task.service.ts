@@ -167,6 +167,9 @@ export class EnrollmentTaskService {
         if (filters.IsRegistrationActivity) {
             search.where['IsRegistrationActivity'] = filters.IsRegistrationActivity;
         }
+        if (filters.EnrollmentId) {
+            search.where['EnrollmentId'] = filters.EnrollmentId;
+        }
         const includeEnrollmentAsEnrollment = {
             model    : this.Enrollment,
             required : false,
@@ -237,7 +240,7 @@ export class EnrollmentTaskService {
 
     private addPaginationToSearch = (search, filters) => {
 
-        let limit = 25;
+        let limit = 250;
         if (filters.ItemsPerPage) {
             limit = filters.ItemsPerPage;
         }

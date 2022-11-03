@@ -78,6 +78,10 @@ export class EnrollmentTaskControllerDelegate {
         if (isRegistrationActivity != null) {
             filters['IsRegistrationActivity'] = isRegistrationActivity;
         }
+        var enrollmentId = query.enrollmentId ? query.enrollmentId : null;
+        if (enrollmentId != null) {
+            filters['EnrollmentId'] = enrollmentId;
+        }
         return filters;
     }
 

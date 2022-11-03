@@ -14,10 +14,16 @@ export class MessageModel {
 
     static Schema = {
         id : {
+            type         : DataTypes.UUID,
+            allowNull    : false,
+            defaultValue : DataTypes.UUIDV4,
+            primaryKey   : true
+        },
+        DisplayId : {
             type          : DataTypes.INTEGER,
             allowNull     : false,
             autoIncrement : true,
-            primaryKey    : true
+            unique        : true
         },
         AssetCode : {
             type      : DataTypes.STRING(256),
@@ -53,7 +59,7 @@ export class MessageModel {
         Tags : {
             type         : DataTypes.TEXT,
             allowNull    : false,
-            defaultValue : []
+            defaultValue : '[]'
         },
         Url : {
             type      : DataTypes.TEXT,
