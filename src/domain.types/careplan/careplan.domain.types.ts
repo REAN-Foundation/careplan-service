@@ -35,6 +35,8 @@ export interface CareplanDto {
     OwnerUserId: uuid;
     Tags: string[];
     IsActive: boolean;
+    CreatedAt:Date;
+    UpdatedAt:Date;
 }
 
 export interface CareplanSearchFilters extends BaseSearchFilters {

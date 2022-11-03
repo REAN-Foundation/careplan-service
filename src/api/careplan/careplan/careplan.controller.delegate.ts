@@ -164,7 +164,9 @@ export class CareplanControllerDelegate {
             Version     : record.Version,
             OwnerUserId : record.OwnerUserId,
             Tags        : JSON.parse(record.Tags),
-            IsActive    : record.IsActive
+            IsActive    : record.IsActive,
+            CreatedAt   : record.CreatedAt,
+            UpdatedAt   : record.UpdatedAt
         };
     }
 
@@ -183,7 +185,9 @@ export class CareplanControllerDelegate {
             Version     : record.Version,
             OwnerUserId : record.OwnerUserId,
             Tags        : JSON.parse(record.Tags),
-            IsActive    : record.IsActive
+            IsActive    : record.IsActive,
+            CreatedAt   : record.CreatedAt,
+            UpdatedAt   : record.UpdatedAt
         };
     }
 
