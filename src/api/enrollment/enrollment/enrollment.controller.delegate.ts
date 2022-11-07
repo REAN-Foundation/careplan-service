@@ -306,6 +306,9 @@ export class EnrollmentControllerDelegate {
             WeekOffset     : record.WeekOffset,
             DayOffset      : record.DayOffset,
             ProgressStatus : record.ProgressStatus,
+            Careplan       :record.Careplan,
+            Participant    :record.Participant,
+
         };
     }
 
@@ -324,7 +327,10 @@ export class EnrollmentControllerDelegate {
             EnrollmentDate : record.EnrollmentDate,
             WeekOffset     : record.WeekOffset,
             DayOffset      : record.DayOffset,
-            ProgressStatus : record.ProgressStatus
+            ProgressStatus : record.ProgressStatus,
+            Careplan       :record.Careplan,
+            Participant     :record.Participant,
+
         };
     }
 

@@ -166,7 +166,8 @@ export class CareplanControllerDelegate {
             Tags        : JSON.parse(record.Tags),
             IsActive    : record.IsActive,
             CreatedAt   : record.CreatedAt,
-            UpdatedAt   : record.UpdatedAt
+            UpdatedAt   : record.UpdatedAt,
+            Type        : record.Category.Type
         };
     }
 
@@ -187,7 +188,9 @@ export class CareplanControllerDelegate {
             Tags        : JSON.parse(record.Tags),
             IsActive    : record.IsActive,
             CreatedAt   : record.CreatedAt,
-            UpdatedAt   : record.UpdatedAt
+            UpdatedAt   : record.UpdatedAt,
+            Type        : record.Category.Type
+        
         };
     }
 
