@@ -70,6 +70,7 @@ export interface ApiClientSearchFilters extends BaseSearchFilters {
     CountryCode ? : string;
     Phone ? : string;
     Email ? : string;
+    CreatedAt ? : string;
     ValidFrom ? : Date;
     ValidTill ? : Date;
 }

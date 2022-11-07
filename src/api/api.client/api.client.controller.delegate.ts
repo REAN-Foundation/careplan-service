@@ -150,6 +150,10 @@ export class ApiClientControllerDelegate {
         if (email != null) {
             filters['Email'] = email;
         }
+        var createdAt = query.createdAt ? query.createdAt : null;
+        if (createdAt != null) {
+            filters['CreatedAt'] = createdAt;
+        }
         var validFrom = query.validFrom ? query.validFrom : null;
         if (validFrom != null) {
             filters['ValidFrom'] = validFrom;
@@ -261,6 +265,7 @@ export class ApiClientControllerDelegate {
             ValidFrom           : record.ValidFrom,
             ValidTill           : record.ValidTill,
             IsActive            : record.IsActive,
+            CreatedAt           : record.CreatedAt,
         };
     };
 
