@@ -59,6 +59,7 @@ export interface ConsultationSearchFilters extends BaseSearchFilters {
     AssetCategory ? : string;
     Tags ? : string;
     Version ? : string;
+    CreatedAt ? : Date;
 }
 
 export interface ConsultationSearchResults extends BaseSearchResults {

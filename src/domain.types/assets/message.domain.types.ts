@@ -62,6 +62,7 @@ export interface MessageSearchFilters extends BaseSearchFilters {
     MessageType ? : MessageType;
     Tags ? : string;
     Version ? : string;
+    CreatedAt ? : Date;
 }
 
 export interface MessageSearchResults extends BaseSearchResults {

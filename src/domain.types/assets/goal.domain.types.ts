@@ -43,6 +43,7 @@ export interface GoalSearchFilters extends BaseSearchFilters {
     AssetCategory ? : string;
     Tags ? : string;
     Version ? : string;
+    CreatedAt ? : Date;
 }
 
 export interface GoalSearchResults extends BaseSearchResults {

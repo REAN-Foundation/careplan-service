@@ -43,6 +43,7 @@ export interface CheckupSearchFilters extends BaseSearchFilters {
     AssetCategory ? : string;
     Tags ? : string;
     Version ? : string;
+    CreatedAt ? : Date;
 }
 
 export interface CheckupSearchResults extends BaseSearchResults {

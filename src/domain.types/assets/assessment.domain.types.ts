@@ -47,6 +47,7 @@ export interface AssessmentSearchFilters extends BaseSearchFilters {
     Template ? : string;
     Tags ? : string;
     Version ? : string;
+    CreatedAt ? : Date;
 }
 
 export interface AssessmentSearchResults extends BaseSearchResults {

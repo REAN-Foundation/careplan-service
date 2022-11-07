@@ -219,7 +219,8 @@ export class ExerciseControllerDelegate {
             AssetCategory          : record.AssetCategory,
             OwnerUserId            : record.OwnerUserId,
             Tags                   : JSON.parse(record.Tags),
-            Version                : record.Version
+            Version                : record.Version,
+            CreatedAt              : record.CreatedAt,
         };
     }
 

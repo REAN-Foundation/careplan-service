@@ -71,6 +71,7 @@ export interface MeditationSearchFilters extends BaseSearchFilters {
     AssetCategory          ?: string;
     Tags                   ?: string;
     Version                ?: string;
+    CreatedAt              ?: Date;
 }
 
 export interface MeditationSearchResults extends BaseSearchResults {
