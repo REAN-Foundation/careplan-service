@@ -42,6 +42,7 @@ export interface ActionPlanSearchFilters extends BaseSearchFilters {
     AssetCategory?: string;
     Tags?         : string;
     Version?      : string;
+    CreatedAt?    : Date;
 }
 
 export interface ActionPlanSearchResults extends BaseSearchResults {

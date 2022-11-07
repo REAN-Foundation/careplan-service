@@ -48,6 +48,7 @@ export interface AnimationSearchFilters extends BaseSearchFilters {
     AssetCategory ? : string;
     Tags ? : string;
     Version ? : string;
+    CreatedAt ? : Date;
 }
 
 export interface AnimationSearchResults extends BaseSearchResults {
