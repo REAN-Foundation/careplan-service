@@ -1,4 +1,3 @@
-import { CareplanCategoryDto } from "../careplan/careplan.category.domain.types";
 import { CareplanDto } from "../careplan/careplan.domain.types";
 import {
     BaseSearchFilters,

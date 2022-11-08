@@ -15,6 +15,12 @@ import {
     EnrollmentSearchFilters,
     EnrollmentSearchResults
 } from '../../../domain.types/enrollment/enrollment.domain.types';
+import {
+    ParticipantActivityResponseModel
+} from '../../../database/models/participant.responses/participant.activity.response.model';
+import { EnrollmentTaskModel } from '../../../database/models/enrollment/enrollment.task.model';
+import { Op } from "sequelize";
+import { CareplanCategoryModel } from '../../../database/models/careplan/careplan.category.model';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -28,6 +34,11 @@ export class EnrollmentService {
 
     Participant = ParticipantModel.Model;
 
+    ParticipantActivityResponse = ParticipantActivityResponseModel.Model;
+
+    EnrollmentTask = EnrollmentTaskModel.Model;
+
+    CareplanCatrgory = CareplanCategoryModel.Model;
     //#endregion
 
     //#region Publics
@@ -52,7 +63,15 @@ export class EnrollmentService {
                     required : false,
                     as       : 'Careplan',
                     //through: { attributes: [] }
-                }, {
+                    include  : [{
+                        model    : this.CareplanCatrgory,
+                        required : false,
+                        as       : 'Category',
+                    }
+                    ],
+                    
+                },
+                {
                     model    : this.Participant,
                     required : false,
                     as       : 'Participant',
@@ -61,9 +80,10 @@ export class EnrollmentService {
 
                 ]
             });
+            console.log("record",record);
             return record;
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve enrollment!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve enrollment stats!', error);
         }
     }
 
@@ -99,7 +119,6 @@ export class EnrollmentService {
                 OrderedBy      : orderByColumn,
                 Items          : foundResults.rows,
             };
-
             return searchResults;
 
         } catch (error) {
@@ -138,6 +157,41 @@ export class EnrollmentService {
         }
     }
 
+    getEnrollmentStats = async (participantId) => {
+        try {
+            const totalTasks = await this.EnrollmentTask.findAll({
+                where : {
+                    ParticipantId : participantId,
+                },
+            });
+            const ongoingTasks = await this.EnrollmentTask.findAll({
+                where : {
+                    ParticipantId : participantId,
+                    ScheduledDate : {
+                        [Op.lte] : new Date()
+                    }
+                },
+            });
+            
+            const completedTask = await this.ParticipantActivityResponse.findAll({
+                where : {
+                    ParticipantId : participantId,
+                },
+            });
+
+            const record = {
+                TolalTask    : totalTasks.length,
+                FinishedTask : completedTask.length,
+                DelayedTask  : (ongoingTasks.length - completedTask.length),
+                UnservedTask : (totalTasks.length -
+                    ((ongoingTasks.length - completedTask.length) + completedTask.length))
+            };
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve enrollment stats!', error);
+        }
+    }
+
     //#endregion
 
     //#region Privates
@@ -157,7 +211,7 @@ export class EnrollmentService {
         }
         const includeCareplanAsCareplan = {
             model    : this.Careplan,
-            required : false,
+            required : true,
             as       : 'Careplan',
             where    : {}
         };
@@ -167,7 +221,7 @@ export class EnrollmentService {
         search.include.push(includeCareplanAsCareplan);
         const includeParticipantAsParticipant = {
             model    : this.Participant,
-            required : false,
+            required : true,
             as       : 'Participant',
             where    : {}
         };
