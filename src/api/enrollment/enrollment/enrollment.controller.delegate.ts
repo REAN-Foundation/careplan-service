@@ -145,8 +145,6 @@ export class EnrollmentControllerDelegate {
         if (record === null) {
             ErrorHandler.throwNotFoundError('Enrollment stats with id ' + participantId.toString() + ' cannot be found!');
         }
-        // await this._enrollmentTaskService.search(record.participantId);
-        // await this._participantActivityResponseService.search(record.participantId);
         return this.getEnrichedDtoForStat(record);
     }
     ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -357,7 +355,9 @@ export class EnrollmentControllerDelegate {
             TolalTask    : record.TolalTask ,
             FinishedTask : record.FinishedTask,
             DelayedTask  : record.DelayedTask,
-            UnservedTask : record.UnservedTask
+            UnservedTask : record.UnservedTask,
+            CurrentWeek  : record.CurrentWeek,
+            TotalWeek    : record.TotalWeek
             
         };
     }

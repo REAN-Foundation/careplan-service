@@ -80,7 +80,6 @@ export class EnrollmentService {
 
                 ]
             });
-            console.log("record",record);
             return record;
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve enrollment stats!', error);
@@ -179,12 +178,37 @@ export class EnrollmentService {
                 },
             });
 
+            const enrollment = await this.Enrollment.findOne({
+                where : {
+                    ParticipantId : participantId,
+                },
+            });
+
+            //Calculating current week by enrollment start date
+            const currentDate = new Date();
+            const startDate = enrollment.StartDate;
+            const endDate = enrollment.EndDate;
+            const days = Math.floor((currentDate.getTime() - startDate.getTime()) /
+                (24 * 60 * 60 * 1000));
+            const currentWeek = Math.ceil(days / 7);
+
+            //Calculating no of week by enrollment start date and end date
+
+            const week =  function diff_weeks(startDate:Date, endDate:Date)
+            {
+                var diff = (startDate.getTime() - endDate.getTime()) / 1000;
+                diff /= (60 * 60 * 24 * 7);
+                return Math.abs(Math.round(diff));
+            };
+            const totalWeek = (week(startDate, endDate));
             const record = {
                 TolalTask    : totalTasks.length,
                 FinishedTask : completedTask.length,
                 DelayedTask  : (ongoingTasks.length - completedTask.length),
                 UnservedTask : (totalTasks.length -
-                    ((ongoingTasks.length - completedTask.length) + completedTask.length))
+                    ((ongoingTasks.length - completedTask.length) + completedTask.length)),
+                CurrentWeek : currentWeek,
+                TotalWeek   : totalWeek
             };
             return record;
         } catch (error) {
