@@ -67,7 +67,6 @@ export class ApiClientValidator {
                 countryCode         : joi.string().optional(),
                 phone               : joi.string().optional(),
                 email               : joi.string().email().optional(),
-                createdAt           : joi.string().email().optional(),
                 validFrom           : joi.date().iso().optional(),
                 validTill           : joi.date().iso().optional(),
             });
