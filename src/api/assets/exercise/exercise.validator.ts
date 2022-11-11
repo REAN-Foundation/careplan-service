@@ -62,7 +62,7 @@ export class ExerciseValidator {
                 orderBy                : joi.string().max(128).optional(),
                 itemsPerPage           : joi.number().max(128).optional(),
                 pageIndex              : joi.number().max(128).optional(),
-                CreatedAt              : joi.number().max(128).optional(),
+                
             });
             return await schema.validateAsync(query);
 
