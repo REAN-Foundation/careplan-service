@@ -43,6 +43,7 @@ export interface NutritionSearchFilters extends BaseSearchFilters {
     AssetCategory ? : string;
     Tags ? : string;
     Version ? : string;
+    CreatedAt ? : Date;
 }
 
 export interface NutritionSearchResults extends BaseSearchResults {

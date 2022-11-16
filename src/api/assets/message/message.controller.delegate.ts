@@ -205,7 +205,8 @@ export class MessageControllerDelegate {
             OwnerUserId : record.OwnerUserId,
             Tags        : JSON.parse(record.Tags),
             Url         : record.Url,
-            Version     : record.Version
+            Version     : record.Version,
+            CreatedAt   : record.CreatedAt,
         };
     }
 

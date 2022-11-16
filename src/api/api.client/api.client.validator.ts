@@ -1,8 +1,6 @@
 import * as joi from 'joi';
 import { ApiClientVerificationDomainModel } from '../../domain.types/api.client.domain.types';
-import {
-    ErrorHandler
-} from '../../common/error.handler';
+import { ErrorHandler } from '../../common/error.handler';
 import { Helper } from '../../common/helper';
 import { TimeHelper } from '../../common/time.helper';
 import { DurationType } from '../../domain.types/miscellaneous/time.types';
@@ -15,8 +13,10 @@ export class ApiClientValidator {
         try {
             const schema = joi.object({
                 ClientName          : joi.string().max(256).optional(),
+                FirstName           : joi.string().max(256).optional(),
+                LastName            : joi.string().max(256).optional(),
                 ClientCode          : joi.string().max(256).optional(),
-                ClientInterfaceType : joi.string().valid("Mobile App", "Web App", "Desktop App", "Other").optional(),
+                ClientInterfaceType : joi.string().valid('Mobile App', 'Web App', 'Desktop App', 'Other').optional(),
                 IsPrivileged        : joi.boolean().optional(),
                 CountryCode         : joi.string().required(),
                 Phone               : joi.string().required(),
@@ -24,20 +24,22 @@ export class ApiClientValidator {
                 Password            : joi.string().optional(),
                 ApiKey              : joi.string().optional(),
                 ValidFrom           : joi.date().iso().optional(),
-                ValidTill           : joi.date().iso().optional()
+                ValidTill           : joi.date().iso().optional(),
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
     static validateUpdateRequest = async (requestBody) => {
         try {
             const schema = joi.object({
                 ClientName          : joi.string().max(256).optional(),
+                FirstName           : joi.string().max(256).optional(),
+                LastName            : joi.string().max(256).optional(),
                 ClientCode          : joi.string().max(256).optional(),
-                ClientInterfaceType : joi.string().valid("Mobile App", "Web App", "Desktop App", "Other").optional(),
+                ClientInterfaceType : joi.string().valid('Mobile App', 'Web App', 'Desktop App', 'Other').optional(),
                 IsPrivileged        : joi.boolean().optional(),
                 CountryCode         : joi.string().optional(),
                 Phone               : joi.string().optional(),
@@ -45,41 +47,40 @@ export class ApiClientValidator {
                 Password            : joi.string().optional(),
                 ApiKey              : joi.string().optional(),
                 ValidFrom           : joi.date().iso().optional(),
-                ValidTill           : joi.date().iso().optional()
+                ValidTill           : joi.date().iso().optional(),
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
     static validateSearchRequest = async (query) => {
         try {
             const schema = joi.object({
                 clientName          : joi.string().max(256).optional(),
+                FirstName           : joi.string().max(256).optional(),
+                LastName            : joi.string().max(256).optional(),
                 clientCode          : joi.string().max(256).optional(),
-                clientInterfaceType : joi.string().valid("Mobile App", "Web App", "Desktop App", "Other").optional(),
+                clientInterfaceType : joi.string().valid('Mobile App', 'Web App', 'Desktop App', 'Other').optional(),
                 isPrivileged        : joi.boolean().optional(),
                 countryCode         : joi.string().optional(),
                 phone               : joi.string().optional(),
                 email               : joi.string().email().optional(),
                 validFrom           : joi.date().iso().optional(),
-                validTill           : joi.date().iso().optional()
+                validTill           : joi.date().iso().optional(),
             });
             return await schema.validateAsync(query);
-
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
-    static getOrRenewApiKey = async ( request: any
-    ): Promise<ApiClientVerificationDomainModel> => {
-
+    static getOrRenewApiKey = async (request: any): Promise<ApiClientVerificationDomainModel> => {
         const authHeader = request.headers['authorization'].toString();
         let tokens = authHeader.split(' ');
         if (tokens.length < 2) {
-            throw new Error("Invalid authorization header.");
+            throw new Error('Invalid authorization header.');
         }
         if (tokens[0].toLowerCase() !== 'basic') {
             throw new Error('Invalid auth header formatting. Should be basic authorization.');
@@ -87,23 +88,25 @@ export class ApiClientValidator {
         const load = Helper.decodeFromBase64(tokens[1]);
         tokens = load.split(':');
         if (tokens.length < 2) {
-            throw new Error("Basic auth formatting error.");
+            throw new Error('Basic auth formatting error.');
         }
         const clientCode = tokens[0].trim();
         const password = tokens[1].trim();
 
         const schema = joi.object({
             ValidFrom : joi.date().optional(),
-            ValidTill : joi.date().optional()
+            ValidTill : joi.date().optional(),
         });
         await schema.validateAsync(request.body);
 
         return ApiClientValidator.getVerificationDomainModel(request.body, clientCode, password);
     };
 
-    static getVerificationDomainModel = async (body: any, clientCode: string, password: string):
-        Promise<ApiClientVerificationDomainModel> => {
-
+    static getVerificationDomainModel = async (
+        body: any,
+        clientCode: string,
+        password: string
+    ): Promise<ApiClientVerificationDomainModel> => {
         let model: ApiClientVerificationDomainModel = null;
         model = {
             ClientCode : clientCode,

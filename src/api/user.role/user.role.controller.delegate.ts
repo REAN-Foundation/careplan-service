@@ -85,7 +85,7 @@ export class UserRoleControllerDelegate {
         }
         const userRoleDeleted: boolean = await this._service.delete(id);
         return {
-            Deleted: userRoleDeleted
+            Deleted : userRoleDeleted
         };
     }
 
@@ -111,7 +111,7 @@ export class UserRoleControllerDelegate {
 
     getUpdateModel = (requestBody): UserRoleUpdateModel => {
 
-        let updateModel: UserRoleUpdateModel = {};
+        const updateModel: UserRoleUpdateModel = {};
 
         if (Helper.hasProperty(requestBody, 'UserId')) {
             updateModel.UserId = requestBody.UserId;
@@ -125,8 +125,8 @@ export class UserRoleControllerDelegate {
 
     getCreateModel = (requestBody): UserRoleCreateModel => {
         return {
-            UserId: requestBody.UserId ? requestBody.UserId : null,
-            RoleId: requestBody.RoleId ? requestBody.RoleId : null
+            UserId : requestBody.UserId ? requestBody.UserId : null,
+            RoleId : requestBody.RoleId ? requestBody.RoleId : null
         };
     }
 
@@ -135,9 +135,9 @@ export class UserRoleControllerDelegate {
             return null;
         }
         return {
-            id: record.id,
-            UserId: record.UserId,
-            RoleId: record.RoleId
+            id     : record.id,
+            UserId : record.UserId,
+            RoleId : record.RoleId
         };
     }
 
@@ -146,12 +146,13 @@ export class UserRoleControllerDelegate {
             return null;
         }
         return {
-            id: record.id,
-            UserId: record.UserId,
-            RoleId: record.RoleId
+            id     : record.id,
+            UserId : record.UserId,
+            RoleId : record.RoleId
         };
     }
 
     //#endregion
+
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////

@@ -18,6 +18,8 @@ export class ApiClientService {
         try {
             const entity = {
                 ClientName   : clientDomainModel.ClientName,
+                FirstName    : clientDomainModel.FirstName,
+                LastName     : clientDomainModel.LastName,
                 ClientCode   : clientDomainModel.ClientCode,
                 IsPrivileged : clientDomainModel.IsPrivileged,
                 Phone        : clientDomainModel.Phone,
@@ -214,6 +216,12 @@ export class ApiClientService {
             if (clientDomainModel.ClientName != null) {
                 client.ClientName = clientDomainModel.ClientName;
             }
+            if (clientDomainModel.FirstName != null) {
+                client.FirstName = clientDomainModel.FirstName;
+            }
+            if (clientDomainModel.LastName != null) {
+                client.LastName = clientDomainModel.LastName;
+            }
             if (clientDomainModel.Password != null) {
                 client.Password = Helper.hash(clientDomainModel.Password);
             }
@@ -263,9 +271,12 @@ export class ApiClientService {
         const dto: ApiClientDto = {
             id           : client.id,
             ClientName   : client.ClientName,
+            FirstName    : client.FirstName,
+            LastName     : client.LastName,
             ClientCode   : client.ClientCode,
             Phone        : client.Phone,
             Email        : client.Email,
+            ApiKey       : client.ApiKey,
             IsActive     : active,
             CountryCode  : client.CountryCode,
             IsPrivileged : client.IsPrivileged,
