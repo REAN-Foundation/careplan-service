@@ -41,7 +41,7 @@ export interface MessageUpdateModel {
 }
 
 export interface MessageDto {
-    id: number;
+    id: uuid;
     AssetCode: string;
     Name: string;
     Description: string;

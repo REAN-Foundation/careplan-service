@@ -18,11 +18,21 @@ export class EnrollmentModel {
             defaultValue : DataTypes.UUIDV4,
             primaryKey   : true
         },
+        DisplayId : {
+            type      : DataTypes.STRING(32),
+            allowNull : true,
+            unique    : false
+        },
         CareplanId : {
-            type       : DataTypes.INTEGER,
-            allowNull  : false,
+            type       : DataTypes.UUID,
+            allowNull  : true,
             foreignKey : true,
             unique     : false
+        },
+        PlanCode : {
+            type      : DataTypes.STRING(64),
+            allowNull : false,
+            unique    : false
         },
         ParticipantId : {
             type       : DataTypes.UUID,

@@ -27,7 +27,7 @@ export interface AnimationUpdateModel {
 }
 
 export interface AnimationDto {
-    id: number;
+    id: uuid;
     AssetCode: string;
     Name: string;
     Transcript: string;

@@ -25,7 +25,7 @@ export interface PriorityUpdateModel {
 }
 
 export interface PriorityDto {
-    id: number;
+    id: uuid;
     AssetCode: string;
     Name: string;
     Description: string;

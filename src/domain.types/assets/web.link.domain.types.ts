@@ -27,7 +27,7 @@ export interface WebLinkUpdateModel {
 }
 
 export interface WebLinkDto {
-    id: number;
+    id: uuid;
     AssetCode: string;
     Name: string;
     Description: string;

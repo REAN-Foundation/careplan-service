@@ -25,7 +25,7 @@ export interface ReflectionUpdateModel {
 }
 
 export interface ReflectionDto {
-    id: number;
+    id: uuid;
     AssetCode: string;
     Name: string;
     Description: string;

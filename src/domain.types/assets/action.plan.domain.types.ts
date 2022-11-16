@@ -25,7 +25,7 @@ export interface ActionPlanUpdateModel {
 }
 
 export interface ActionPlanDto {
-    id           : number;
+    id           : uuid;
     AssetCode    : string;
     Name         : string;
     Description  : string;

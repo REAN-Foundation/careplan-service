@@ -33,7 +33,7 @@ export class AssetHelper {
 
     //#region Publics
 
-    public static getAsset = async (id: number, assetType: AssetType) => {
+    public static getAsset = async (id: string, assetType: AssetType) => {
         try {
             
             switch (assetType) {
@@ -121,7 +121,7 @@ export class AssetHelper {
         }
     }
 
-    public static generateAssetCode = (id: number, assetType: AssetType, assetName: string) => {
+    public static generateAssetCode = (displayId: number, assetType: AssetType, assetName: string) => {
 
         let name = assetName;
         name = name.toUpperCase();
@@ -141,13 +141,13 @@ export class AssetHelper {
 
         var shortened = cleanedName.substring(0, 12);
 
-        const code = AssetTypeCodePrefixes[assetType] + '-' + shortened + '-' + Helper.padInteger(id, 4, '0');
+        const code = AssetTypeCodePrefixes[assetType] + '-' + shortened + '-' + Helper.padInteger(displayId, 4, '0');
         return code;
     };
 
     public static updateAssetCode = async (record, service) => {
         if (!record.AssetCode) {
-            const assetCode = AssetHelper.generateAssetCode(record.id, record.AssetType, record.Name);
+            const assetCode = AssetHelper.generateAssetCode(record.DisplayId, record.AssetType, record.Name);
             const updated = await service.update(record.id, { AssetCode: assetCode });
             if (updated == null) {
                 ErrorHandler.throwInternalServerError('Unable to update asset!');

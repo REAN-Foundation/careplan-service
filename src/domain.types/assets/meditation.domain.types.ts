@@ -49,7 +49,7 @@ export interface MeditationUpdateModel {
 }
 
 export interface MeditationDto {
-    id                    : number;
+    id                    : uuid;
     AssetCode             : string;
     Name                  : string;
     Description           : string;

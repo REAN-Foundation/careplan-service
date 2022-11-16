@@ -18,6 +18,8 @@ export class EnrollmentMapper {
             EndDate        : enrollment.EndDate,
             EnrollmentDate : enrollment.EnrollmentDate,
             ProgressStatus : enrollment.ProgressStatus,
+            Careplan       : [],
+            Participant    : [],
 
         };
         return dto;

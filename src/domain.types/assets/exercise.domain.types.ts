@@ -69,7 +69,7 @@ export interface ExerciseUpdateModel {
 }
 
 export interface ExerciseDto {
-    id                    : number;
+    id                    : uuid;
     AssetCode             : string;
     Name                  : string;
     Description           : string;

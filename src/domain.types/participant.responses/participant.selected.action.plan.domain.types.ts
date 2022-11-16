@@ -13,8 +13,8 @@ export interface ParticipantSelectedActionPlanCreateModel {
     EnrollmentId      ?: uuid;
     ParticipantId     ?: uuid;
     SelectedGoalId    ?: uuid;
-    CareplanId        ?: number;
-    AssetId           ?: number;
+    CareplanId        ?: uuid;
+    AssetId           ?: uuid;
     AssetType         ?: string;
     AssetCode         ?: string;
     AdditionalDetails ?: string;
@@ -28,8 +28,8 @@ export interface ParticipantSelectedActionPlanUpdateModel {
     EnrollmentId      ?: uuid;
     ParticipantId     ?: uuid;
     SelectedGoalId    ?: uuid;
-    CareplanId        ?: number;
-    AssetId           ?: number;
+    CareplanId        ?: uuid;
+    AssetId           ?: uuid;
     AssetType         ?: string;
     AssetCode         ?: string;
     AdditionalDetails ?: string;
@@ -44,8 +44,8 @@ export interface ParticipantSelectedActionPlanDto {
     EnrollmentId     : uuid;
     ParticipantId    : uuid;
     SelectedGoalId   : uuid;
-    CareplanId       : number;
-    AssetId          : number;
+    CareplanId       : uuid;
+    AssetId          : uuid;
     AssetType        : string;
     AssetCode        : string;
     AdditionalDetails: string;
@@ -61,8 +61,8 @@ export interface ParticipantSelectedActionPlanSearchFilters extends BaseSearchFi
     EnrollmentId      ?: uuid;
     ParticipantId     ?: uuid;
     SelectedGoalId    ?: uuid;
-    CareplanId        ?: number;
-    AssetId           ?: number;
+    CareplanId        ?: uuid;
+    AssetId           ?: uuid;
     AssetType         ?: string;
     AssetCode         ?: string;
     AdditionalDetails ?: string;

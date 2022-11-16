@@ -27,7 +27,7 @@ export interface ArticleUpdateModel {
 }
 
 export interface ArticleDto {
-    id: number;
+    id: uuid;
     AssetCode: string;
     Name: string;
     Summary: string;

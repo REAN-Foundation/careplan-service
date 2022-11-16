@@ -27,7 +27,7 @@ export interface WordPowerUpdateModel {
 }
 
 export interface WordPowerDto {
-    id                 : number;
+    id                 : uuid;
     AssetCode          : string;
     Name               : string;
     Description        : string;

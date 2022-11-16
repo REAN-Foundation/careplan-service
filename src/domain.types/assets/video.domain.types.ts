@@ -27,7 +27,7 @@ export interface VideoUpdateModel {
 }
 
 export interface VideoDto {
-    id: number;
+    id: uuid;
     AssetCode: string;
     Name: string;
     Transcript: string;

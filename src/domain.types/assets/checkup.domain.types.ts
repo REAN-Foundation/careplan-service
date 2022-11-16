@@ -25,7 +25,7 @@ export interface CheckupUpdateModel {
 }
 
 export interface CheckupDto {
-    id: number;
+    id: uuid;
     AssetCode: string;
     Name: string;
     Description: string;

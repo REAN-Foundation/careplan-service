@@ -27,7 +27,7 @@ export interface AudioUpdateModel {
 }
 
 export interface AudioDto {
-    id: number;
+    id: uuid;
     AssetCode: string;
     Name: string;
     Transcript: string;

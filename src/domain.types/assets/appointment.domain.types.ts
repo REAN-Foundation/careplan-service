@@ -41,7 +41,7 @@ export interface AppointmentUpdateModel {
 }
 
 export interface AppointmentDto {
-    id: number;
+    id: uuid;
     AssetCode: string;
     Name: string;
     Description: string;

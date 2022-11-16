@@ -38,7 +38,7 @@ export class EnrollmentTaskModel {
             unique     : false
         },
         AssetId : {
-            type      : DataTypes.INTEGER,
+            type      : DataTypes.UUID,
             allowNull : false
         },
         AssetType : {
@@ -46,7 +46,7 @@ export class EnrollmentTaskModel {
             allowNull : false
         },
         CareplanId : {
-            type       : DataTypes.INTEGER,
+            type       : DataTypes.UUID,
             allowNull  : false,
             foreignKey : true,
             unique     : false

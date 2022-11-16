@@ -39,7 +39,7 @@ export interface ConsultationUpdateModel {
 }
 
 export interface ConsultationDto {
-    id: number;
+    id: uuid;
     AssetCode: string;
     Name: string;
     Description: string;

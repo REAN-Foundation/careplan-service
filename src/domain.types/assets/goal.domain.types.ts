@@ -25,7 +25,7 @@ export interface GoalUpdateModel {
 }
 
 export interface GoalDto {
-    id: number;
+    id: uuid;
     AssetCode: string;
     Name: string;
     Description: string;

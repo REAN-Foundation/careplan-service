@@ -25,7 +25,7 @@ export interface ChallengeUpdateModel {
 }
 
 export interface ChallengeDto {
-    id: number;
+    id: uuid;
     AssetCode: string;
     Name: string;
     Description: string;

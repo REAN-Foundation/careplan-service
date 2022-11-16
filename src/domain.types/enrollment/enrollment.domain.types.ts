@@ -1,3 +1,4 @@
+import { CareplanDto } from "../careplan/careplan.domain.types";
 import {
     BaseSearchFilters,
     BaseSearchResults
@@ -6,9 +7,11 @@ import {
     ProgressStatus,
     uuid
 } from "../miscellaneous/system.types";
+import { ParticipantDto } from "./participant.domain.types";
 
 export interface EnrollmentCreateModel {
-    CareplanId     ?: number;
+    CareplanId     ?: uuid;
+    PlanCode       ?: string;
     ParticipantId  ?: uuid;
     StartDate      ?: Date;
     EndDate        ?: Date;
@@ -18,7 +21,7 @@ export interface EnrollmentCreateModel {
 }
 
 export interface EnrollmentUpdateModel {
-    CareplanId     ?: number;
+    CareplanId     ?: uuid;
     ParticipantId  ?: uuid;
     StartDate      ?: Date;
     EndDate        ?: Date;
@@ -29,7 +32,8 @@ export interface EnrollmentUpdateModel {
 
 export interface EnrollmentDto {
     id            : uuid;
-    CareplanId    : number;
+    CareplanId    : uuid;
+    PlanCode?     : string;
     ParticipantId : uuid;
     StartDate     : Date;
     EndDate       : Date;
@@ -37,10 +41,12 @@ export interface EnrollmentDto {
     WeekOffset   ?: number;
     DayOffset    ?: number;
     ProgressStatus: ProgressStatus;
+    Careplan       : CareplanDto[];
+    Participant    : ParticipantDto[];
 }
 
 export interface EnrollmentSearchFilters extends BaseSearchFilters {
-    CareplanId     ?: number;
+    CareplanId     ?: uuid;
     ProgressStatus ?: ProgressStatus;
 }
 

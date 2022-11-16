@@ -25,7 +25,7 @@ export interface MedicationUpdateModel {
 }
 
 export interface MedicationDto {
-    id: number;
+    id: uuid;
     AssetCode: string;
     Name: string;
     Description: string;
