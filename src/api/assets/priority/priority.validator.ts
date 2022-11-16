@@ -53,6 +53,7 @@ export class PriorityValidator {
                 orderBy       : joi.string().max(128).optional(),
                 itemsPerPage  : joi.number().max(128).optional(),
                 pageIndex     : joi.number().max(128).optional(),
+                
             });
             return await schema.validateAsync(query);
 
