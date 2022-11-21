@@ -51,7 +51,7 @@ export interface ApiClientDto {
     IsPrivileged : boolean;
     IsActive     : boolean;
     ValidFrom?   : Date,
-    ValidTill?   : Date,
+    ValidTill    : Date,
 }
 
 export interface ClientApiKeyDto {

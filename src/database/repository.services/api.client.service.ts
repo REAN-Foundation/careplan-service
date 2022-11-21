@@ -280,6 +280,7 @@ export class ApiClientService {
             IsActive     : active,
             CountryCode  : client.CountryCode,
             IsPrivileged : client.IsPrivileged,
+            ValidTill    : client.ValidTill,
         };
         return dto;
     }
