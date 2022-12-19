@@ -16,6 +16,7 @@ import {
 import {
     Op
 } from 'sequelize';
+import { Helper } from '../../../common/helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -33,6 +34,14 @@ export class WebNewsfeedService {
 
     create = async (createModel: WebNewsfeedCreateModel) => {
         try {
+            if (!createModel.AssetCode) {
+                const count = await this.WebNewsfeed.count();
+                createModel.AssetCode = 'WebNewsfeed-' + count.toString();
+                const exists = await this.getByCode(createModel.AssetCode);
+                if (exists) {
+                    createModel.AssetCode = 'WebNewsfeed-' + Helper.generateDisplayId();
+                }
+            }
             var record = await this.WebNewsfeed.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
@@ -50,6 +59,19 @@ export class WebNewsfeedService {
             return record;
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve web newsfeed!', error);
+        }
+    }
+
+    getByCode = async (code) => {
+        try {
+            const record = await this.WebNewsfeed.findOne({
+                where : {
+                    AssetCode : code
+                }
+            });
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
         }
     }
 

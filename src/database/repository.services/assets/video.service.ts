@@ -19,6 +19,7 @@ import {
 import {
     Op
 } from 'sequelize';
+import { Helper } from '../../../common/helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -38,6 +39,14 @@ export class VideoService {
 
     create = async (createModel: VideoCreateModel) => {
         try {
+            if (!createModel.AssetCode) {
+                const count = await this.Video.count();
+                createModel.AssetCode = 'Video-' + count.toString();
+                const exists = await this.getByCode(createModel.AssetCode);
+                if (exists) {
+                    createModel.AssetCode = 'Video-' + Helper.generateDisplayId();
+                }
+            }
             var record = await this.Video.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
@@ -62,6 +71,19 @@ export class VideoService {
             return record;
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve video!', error);
+        }
+    }
+
+    getByCode = async (code) => {
+        try {
+            const record = await this.Video.findOne({
+                where : {
+                    AssetCode : code
+                }
+            });
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
         }
     }
 

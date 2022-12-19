@@ -16,6 +16,7 @@ import {
 import {
     Op
 } from 'sequelize';
+import { Helper } from '../../../common/helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -33,6 +34,14 @@ export class MessageService {
 
     create = async (createModel: MessageCreateModel) => {
         try {
+            if (!createModel.AssetCode) {
+                const count = await this.Message.count();
+                createModel.AssetCode = 'Message-' + count.toString();
+                const exists = await this.getByCode(createModel.AssetCode);
+                if (exists) {
+                    createModel.AssetCode = 'Message-' + Helper.generateDisplayId();
+                }
+            }
             var record = await this.Message.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
@@ -50,6 +59,19 @@ export class MessageService {
             return record;
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve message!', error);
+        }
+    }
+
+    getByCode = async (code) => {
+        try {
+            const record = await this.Message.findOne({
+                where : {
+                    AssetCode : code
+                }
+            });
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
         }
     }
 

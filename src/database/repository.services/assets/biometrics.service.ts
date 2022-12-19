@@ -16,6 +16,7 @@ import {
 import {
     Op
 } from 'sequelize';
+import { Helper } from '../../../common/helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -33,6 +34,14 @@ export class BiometricsService {
 
     create = async (createModel: BiometricsCreateModel) => {
         try {
+            if (!createModel.AssetCode) {
+                const count = await this.Biometrics.count();
+                createModel.AssetCode = 'Biometrics-' + count.toString();
+                const exists = await this.getByCode(createModel.AssetCode);
+                if (exists) {
+                    createModel.AssetCode = 'Biometrics-' + Helper.generateDisplayId();
+                }
+            }
             var record = await this.Biometrics.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
@@ -50,6 +59,19 @@ export class BiometricsService {
             return record;
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve biometrics!', error);
+        }
+    }
+
+    getByCode = async (code) => {
+        try {
+            const record = await this.Biometrics.findOne({
+                where : {
+                    AssetCode : code
+                }
+            });
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
         }
     }
 

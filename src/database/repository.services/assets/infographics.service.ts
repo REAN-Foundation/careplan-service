@@ -19,6 +19,7 @@ import {
 import {
     Op
 } from 'sequelize';
+import { Helper } from '../../../common/helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -38,6 +39,14 @@ export class InfographicsService {
 
     create = async (createModel: InfographicsCreateModel) => {
         try {
+            if (!createModel.AssetCode) {
+                const count = await this.Infographics.count();
+                createModel.AssetCode = 'Infographics-' + count.toString();
+                const exists = await this.getByCode(createModel.AssetCode);
+                if (exists) {
+                    createModel.AssetCode = 'Infographics-' + Helper.generateDisplayId();
+                }
+            }
             var record = await this.Infographics.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
@@ -62,6 +71,19 @@ export class InfographicsService {
             return record;
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve infographics!', error);
+        }
+    }
+
+    getByCode = async (code) => {
+        try {
+            const record = await this.Infographics.findOne({
+                where : {
+                    AssetCode : code
+                }
+            });
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
         }
     }
 

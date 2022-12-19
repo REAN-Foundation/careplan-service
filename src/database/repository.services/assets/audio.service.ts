@@ -19,6 +19,7 @@ import {
 import {
     Op
 } from 'sequelize';
+import { Helper } from '../../../common/helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -38,6 +39,14 @@ export class AudioService {
 
     create = async (createModel: AudioCreateModel) => {
         try {
+            if (!createModel.AssetCode) {
+                const count = await this.Audio.count();
+                createModel.AssetCode = 'Audio-' + count.toString();
+                const exists = await this.getByCode(createModel.AssetCode);
+                if (exists) {
+                    createModel.AssetCode = 'Audio-' + Helper.generateDisplayId();
+                }
+            }
             var record = await this.Audio.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
@@ -62,6 +71,19 @@ export class AudioService {
             return record;
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve audio!', error);
+        }
+    }
+
+    getByCode = async (code) => {
+        try {
+            const record = await this.Audio.findOne({
+                where : {
+                    AssetCode : code
+                }
+            });
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
         }
     }
 

@@ -16,6 +16,7 @@ import {
 import {
     Op
 } from 'sequelize';
+import { Helper } from '../../../common/helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -33,6 +34,14 @@ export class GoalService {
 
     create = async (createModel: GoalCreateModel) => {
         try {
+            if (!createModel.AssetCode) {
+                const count = await this.Goal.count();
+                createModel.AssetCode = 'Goal-' + count.toString();
+                const exists = await this.getByCode(createModel.AssetCode);
+                if (exists) {
+                    createModel.AssetCode = 'Goal-' + Helper.generateDisplayId();
+                }
+            }
             var record = await this.Goal.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
@@ -50,6 +59,19 @@ export class GoalService {
             return record;
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve goal!', error);
+        }
+    }
+
+    getByCode = async (code) => {
+        try {
+            const record = await this.Goal.findOne({
+                where : {
+                    AssetCode : code
+                }
+            });
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
         }
     }
 

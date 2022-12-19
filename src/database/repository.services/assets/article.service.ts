@@ -8,6 +8,7 @@ import {
     ArticleSearchResults
 } from '../../../domain.types/assets/article.domain.types';
 import { Op } from 'sequelize';
+import { Helper } from '../../../common/helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -27,6 +28,14 @@ export class ArticleService {
 
     create = async (createModel: ArticleCreateModel) => {
         try {
+            if (!createModel.AssetCode) {
+                const count = await this.Article.count();
+                createModel.AssetCode = 'Article-' + count.toString();
+                const exists = await this.getByCode(createModel.AssetCode);
+                if (exists) {
+                    createModel.AssetCode = 'Article-' + Helper.generateDisplayId();
+                }
+            }
             var record = await this.Article.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
@@ -52,6 +61,19 @@ export class ArticleService {
             return record;
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve article!', error);
+        }
+    }
+
+    getByCode = async (code) => {
+        try {
+            const record = await this.Article.findOne({
+                where : {
+                    AssetCode : code
+                }
+            });
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
         }
     }
 

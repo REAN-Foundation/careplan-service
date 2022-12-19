@@ -16,6 +16,7 @@ import {
 import {
     Op
 } from 'sequelize';
+import { Helper } from '../../../common/helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -33,6 +34,14 @@ export class ConsultationService {
 
     create = async (createModel: ConsultationCreateModel) => {
         try {
+            if (!createModel.AssetCode) {
+                const count = await this.Consultation.count();
+                createModel.AssetCode = 'Consultation-' + count.toString();
+                const exists = await this.getByCode(createModel.AssetCode);
+                if (exists) {
+                    createModel.AssetCode = 'Consultation-' + Helper.generateDisplayId();
+                }
+            }
             var record = await this.Consultation.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
@@ -50,6 +59,19 @@ export class ConsultationService {
             return record;
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve consultation!', error);
+        }
+    }
+
+    getByCode = async (code) => {
+        try {
+            const record = await this.Consultation.findOne({
+                where : {
+                    AssetCode : code
+                }
+            });
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
         }
     }
 

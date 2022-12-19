@@ -16,6 +16,7 @@ import {
 import {
     Op
 } from 'sequelize';
+import { Helper } from '../../../common/helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -33,6 +34,14 @@ export class PhysiotherapyService {
 
     create = async (createModel: PhysiotherapyCreateModel) => {
         try {
+            if (!createModel.AssetCode) {
+                const count = await this.Physiotherapy.count();
+                createModel.AssetCode = 'Physiotherapy-' + count.toString();
+                const exists = await this.getByCode(createModel.AssetCode);
+                if (exists) {
+                    createModel.AssetCode = 'Physiotherapy-' + Helper.generateDisplayId();
+                }
+            }
             var record = await this.Physiotherapy.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
@@ -50,6 +59,19 @@ export class PhysiotherapyService {
             return record;
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve physiotherapy!', error);
+        }
+    }
+
+    getByCode = async (code) => {
+        try {
+            const record = await this.Physiotherapy.findOne({
+                where : {
+                    AssetCode : code
+                }
+            });
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
         }
     }
 

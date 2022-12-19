@@ -15,6 +15,7 @@ import {
 import {
     Op
 } from 'sequelize';
+import { Helper } from '../../../common/helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -32,6 +33,14 @@ export class WebLinkService {
 
     create = async (createModel) => {
         try {
+            if (!createModel.AssetCode) {
+                const count = await this.WebLink.count();
+                createModel.AssetCode = 'WebLink-' + count.toString();
+                const exists = await this.getByCode(createModel.AssetCode);
+                if (exists) {
+                    createModel.AssetCode = 'WebLink-' + Helper.generateDisplayId();
+                }
+            }
             var record = await this.WebLink.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
@@ -49,6 +58,19 @@ export class WebLinkService {
             return record;
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve web link!', error);
+        }
+    }
+
+    getByCode = async (code) => {
+        try {
+            const record = await this.WebLink.findOne({
+                where : {
+                    AssetCode : code
+                }
+            });
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
         }
     }
 

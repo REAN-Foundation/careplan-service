@@ -16,6 +16,7 @@ import {
 import {
     Op
 } from 'sequelize';
+import { Helper } from '../../../common/helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -33,10 +34,31 @@ export class ChallengeService {
 
     create = async (createModel: ChallengeCreateModel) => {
         try {
+            if (!createModel.AssetCode) {
+                const count = await this.Challenge.count();
+                createModel.AssetCode = 'Challenge-' + count.toString();
+                const exists = await this.getByCode(createModel.AssetCode);
+                if (exists) {
+                    createModel.AssetCode = 'Challenge-' + Helper.generateDisplayId();
+                }
+            }
             var record = await this.Challenge.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create challenge!', error);
+        }
+    }
+
+    getByCode = async (code) => {
+        try {
+            const record = await this.Challenge.findOne({
+                where : {
+                    AssetCode : code
+                }
+            });
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
         }
     }
 

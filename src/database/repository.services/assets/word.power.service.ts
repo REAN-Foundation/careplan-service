@@ -16,6 +16,7 @@ import {
 import {
     Op
 } from 'sequelize';
+import { Helper } from '../../../common/helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -33,6 +34,14 @@ export class WordPowerService {
 
     create = async (createModel: WordPowerCreateModel) => {
         try {
+            if (!createModel.AssetCode) {
+                const count = await this.WordPower.count();
+                createModel.AssetCode = 'WordPower-' + count.toString();
+                const exists = await this.getByCode(createModel.AssetCode);
+                if (exists) {
+                    createModel.AssetCode = 'WordPower-' + Helper.generateDisplayId();
+                }
+            }
             var record = await this.WordPower.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
@@ -50,6 +59,19 @@ export class WordPowerService {
             return record;
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve word power!', error);
+        }
+    }
+
+    getByCode = async (code) => {
+        try {
+            const record = await this.WordPower.findOne({
+                where : {
+                    AssetCode : code
+                }
+            });
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
         }
     }
 

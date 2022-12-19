@@ -16,6 +16,7 @@ import {
 import {
     Op
 } from 'sequelize';
+import { Helper } from '../../../common/helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -33,6 +34,14 @@ export class ReminderService {
 
     create = async (createModel: ReminderCreateModel) => {
         try {
+            if (!createModel.AssetCode) {
+                const count = await this.Reminder.count();
+                createModel.AssetCode = 'Reminder-' + count.toString();
+                const exists = await this.getByCode(createModel.AssetCode);
+                if (exists) {
+                    createModel.AssetCode = 'Reminder-' + Helper.generateDisplayId();
+                }
+            }
             var record = await this.Reminder.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
@@ -50,6 +59,19 @@ export class ReminderService {
             return record;
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve reminder!', error);
+        }
+    }
+
+    getByCode = async (code) => {
+        try {
+            const record = await this.Reminder.findOne({
+                where : {
+                    AssetCode : code
+                }
+            });
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
         }
     }
 
