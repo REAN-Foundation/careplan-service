@@ -35,7 +35,7 @@ export class WebNewsfeedService {
     create = async (createModel: WebNewsfeedCreateModel) => {
         try {
             if (!createModel.AssetCode) {
-                const count = await this.WebNewsfeed.count();
+                const count = await this.WebNewsfeed.count() + 1;
                 createModel.AssetCode = 'WebNewsfeed-' + count.toString();
                 const exists = await this.getByCode(createModel.AssetCode);
                 if (exists) {

@@ -40,7 +40,7 @@ export class AnimationService {
     create = async (createModel: AnimationCreateModel) => {
         try {
             if (!createModel.AssetCode) {
-                const count = await this.Animation.count();
+                const count = await this.Animation.count() + 1;
                 createModel.AssetCode = 'Animation-' + count.toString();
                 const exists = await this.getByCode(createModel.AssetCode);
                 if (exists) {

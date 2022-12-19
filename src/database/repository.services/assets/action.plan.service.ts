@@ -35,7 +35,7 @@ export class ActionPlanService {
     create = async (createModel: ActionPlanCreateModel) => {
         try {
             if (!createModel.AssetCode) {
-                const count = await this.ActionPlan.count();
+                const count = await this.ActionPlan.count() + 1;
                 createModel.AssetCode = 'ActionPlan-' + count.toString();
                 const exists = await this.getByCode(createModel.AssetCode);
                 if (exists) {

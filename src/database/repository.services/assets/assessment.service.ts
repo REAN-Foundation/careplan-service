@@ -35,7 +35,7 @@ export class AssessmentService {
     create = async (createModel: AssessmentCreateModel) => {
         try {
             if (!createModel.AssetCode) {
-                const count = await this.Assessment.count();
+                const count = await this.Assessment.count() + 1;
                 createModel.AssetCode = 'Assessment-' + count.toString();
                 const exists = await this.getByCode(createModel.AssetCode);
                 if (exists) {

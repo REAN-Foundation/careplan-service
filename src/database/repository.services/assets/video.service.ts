@@ -40,7 +40,7 @@ export class VideoService {
     create = async (createModel: VideoCreateModel) => {
         try {
             if (!createModel.AssetCode) {
-                const count = await this.Video.count();
+                const count = await this.Video.count() + 1;
                 createModel.AssetCode = 'Video-' + count.toString();
                 const exists = await this.getByCode(createModel.AssetCode);
                 if (exists) {

@@ -35,7 +35,7 @@ export class NutritionService {
     create = async (createModel: NutritionCreateModel) => {
         try {
             if (!createModel.AssetCode) {
-                const count = await this.Nutrition.count();
+                const count = await this.Nutrition.count() + 1;
                 createModel.AssetCode = 'Nutrition-' + count.toString();
                 const exists = await this.getByCode(createModel.AssetCode);
                 if (exists) {

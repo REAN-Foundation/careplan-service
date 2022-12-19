@@ -35,7 +35,7 @@ export class AppointmentService {
     create = async (createModel: AppointmentCreateModel) => {
         try {
             if (!createModel.AssetCode) {
-                const count = await this.Appointment.count();
+                const count = await this.Appointment.count() + 1;
                 createModel.AssetCode = 'Appointment-' + count.toString();
                 const exists = await this.getByCode(createModel.AssetCode);
                 if (exists) {

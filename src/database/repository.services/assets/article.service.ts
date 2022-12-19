@@ -29,7 +29,7 @@ export class ArticleService {
     create = async (createModel: ArticleCreateModel) => {
         try {
             if (!createModel.AssetCode) {
-                const count = await this.Article.count();
+                const count = await this.Article.count() + 1;
                 createModel.AssetCode = 'Article-' + count.toString();
                 const exists = await this.getByCode(createModel.AssetCode);
                 if (exists) {

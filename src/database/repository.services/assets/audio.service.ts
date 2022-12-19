@@ -40,7 +40,7 @@ export class AudioService {
     create = async (createModel: AudioCreateModel) => {
         try {
             if (!createModel.AssetCode) {
-                const count = await this.Audio.count();
+                const count = await this.Audio.count() + 1;
                 createModel.AssetCode = 'Audio-' + count.toString();
                 const exists = await this.getByCode(createModel.AssetCode);
                 if (exists) {

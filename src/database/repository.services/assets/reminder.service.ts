@@ -35,7 +35,7 @@ export class ReminderService {
     create = async (createModel: ReminderCreateModel) => {
         try {
             if (!createModel.AssetCode) {
-                const count = await this.Reminder.count();
+                const count = await this.Reminder.count() + 1;
                 createModel.AssetCode = 'Reminder-' + count.toString();
                 const exists = await this.getByCode(createModel.AssetCode);
                 if (exists) {

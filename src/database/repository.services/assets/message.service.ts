@@ -35,7 +35,7 @@ export class MessageService {
     create = async (createModel: MessageCreateModel) => {
         try {
             if (!createModel.AssetCode) {
-                const count = await this.Message.count();
+                const count = await this.Message.count() + 1;
                 createModel.AssetCode = 'Message-' + count.toString();
                 const exists = await this.getByCode(createModel.AssetCode);
                 if (exists) {

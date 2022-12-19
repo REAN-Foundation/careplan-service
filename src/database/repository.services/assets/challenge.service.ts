@@ -35,7 +35,7 @@ export class ChallengeService {
     create = async (createModel: ChallengeCreateModel) => {
         try {
             if (!createModel.AssetCode) {
-                const count = await this.Challenge.count();
+                const count = await this.Challenge.count() + 1;
                 createModel.AssetCode = 'Challenge-' + count.toString();
                 const exists = await this.getByCode(createModel.AssetCode);
                 if (exists) {

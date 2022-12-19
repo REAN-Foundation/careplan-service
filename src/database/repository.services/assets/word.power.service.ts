@@ -35,7 +35,7 @@ export class WordPowerService {
     create = async (createModel: WordPowerCreateModel) => {
         try {
             if (!createModel.AssetCode) {
-                const count = await this.WordPower.count();
+                const count = await this.WordPower.count() + 1;
                 createModel.AssetCode = 'WordPower-' + count.toString();
                 const exists = await this.getByCode(createModel.AssetCode);
                 if (exists) {

@@ -35,7 +35,7 @@ export class MeditationService {
     create = async (createModel: MeditationCreateModel) => {
         try {
             if (!createModel.AssetCode) {
-                const count = await this.Meditation.count();
+                const count = await this.Meditation.count() + 1;
                 createModel.AssetCode = 'Meditation-' + count.toString();
                 const exists = await this.getByCode(createModel.AssetCode);
                 if (exists) {

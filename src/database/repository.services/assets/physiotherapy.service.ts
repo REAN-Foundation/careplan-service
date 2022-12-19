@@ -35,7 +35,7 @@ export class PhysiotherapyService {
     create = async (createModel: PhysiotherapyCreateModel) => {
         try {
             if (!createModel.AssetCode) {
-                const count = await this.Physiotherapy.count();
+                const count = await this.Physiotherapy.count() + 1;
                 createModel.AssetCode = 'Physiotherapy-' + count.toString();
                 const exists = await this.getByCode(createModel.AssetCode);
                 if (exists) {

@@ -10,7 +10,7 @@ export class WebLinkValidator {
     static validateCreateRequest = async (requestBody) => {
         try {
             const schema = joi.object({
-                AssetCode   : joi.string().max(256).optional(),
+                AssetCode   : joi.string().max(256).optional().allow(null),
                 Name        : joi.string().max(256).optional(),
                 Description : joi.string().optional(),
                 Url         : joi.string().optional(),

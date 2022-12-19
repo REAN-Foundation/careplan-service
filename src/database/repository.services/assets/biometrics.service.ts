@@ -35,7 +35,7 @@ export class BiometricsService {
     create = async (createModel: BiometricsCreateModel) => {
         try {
             if (!createModel.AssetCode) {
-                const count = await this.Biometrics.count();
+                const count = await this.Biometrics.count() + 1;
                 createModel.AssetCode = 'Biometrics-' + count.toString();
                 const exists = await this.getByCode(createModel.AssetCode);
                 if (exists) {

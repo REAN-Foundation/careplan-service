@@ -35,7 +35,7 @@ export class ReflectionService {
     create = async (createModel: ReflectionCreateModel) => {
         try {
             if (!createModel.AssetCode) {
-                const count = await this.Reflection.count();
+                const count = await this.Reflection.count() + 1;
                 createModel.AssetCode = 'Reflection-' + count.toString();
                 const exists = await this.getByCode(createModel.AssetCode);
                 if (exists) {

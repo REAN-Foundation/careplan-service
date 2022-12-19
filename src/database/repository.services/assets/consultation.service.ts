@@ -35,7 +35,7 @@ export class ConsultationService {
     create = async (createModel: ConsultationCreateModel) => {
         try {
             if (!createModel.AssetCode) {
-                const count = await this.Consultation.count();
+                const count = await this.Consultation.count() + 1;
                 createModel.AssetCode = 'Consultation-' + count.toString();
                 const exists = await this.getByCode(createModel.AssetCode);
                 if (exists) {

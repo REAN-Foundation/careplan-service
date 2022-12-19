@@ -35,7 +35,7 @@ export class GoalService {
     create = async (createModel: GoalCreateModel) => {
         try {
             if (!createModel.AssetCode) {
-                const count = await this.Goal.count();
+                const count = await this.Goal.count() + 1;
                 createModel.AssetCode = 'Goal-' + count.toString();
                 const exists = await this.getByCode(createModel.AssetCode);
                 if (exists) {

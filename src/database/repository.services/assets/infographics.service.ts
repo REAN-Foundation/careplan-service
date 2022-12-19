@@ -40,7 +40,7 @@ export class InfographicsService {
     create = async (createModel: InfographicsCreateModel) => {
         try {
             if (!createModel.AssetCode) {
-                const count = await this.Infographics.count();
+                const count = await this.Infographics.count() + 1;
                 createModel.AssetCode = 'Infographics-' + count.toString();
                 const exists = await this.getByCode(createModel.AssetCode);
                 if (exists) {

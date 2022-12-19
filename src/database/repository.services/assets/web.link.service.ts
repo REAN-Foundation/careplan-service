@@ -34,7 +34,7 @@ export class WebLinkService {
     create = async (createModel) => {
         try {
             if (!createModel.AssetCode) {
-                const count = await this.WebLink.count();
+                const count = await this.WebLink.count() + 1;
                 createModel.AssetCode = 'WebLink-' + count.toString();
                 const exists = await this.getByCode(createModel.AssetCode);
                 if (exists) {

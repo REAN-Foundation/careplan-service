@@ -35,7 +35,7 @@ export class MedicationService {
     create = async (createModel: MedicationCreateModel) => {
         try {
             if (!createModel.AssetCode) {
-                const count = await this.Medication.count();
+                const count = await this.Medication.count() + 1;
                 createModel.AssetCode = 'Medication-' + count.toString();
                 const exists = await this.getByCode(createModel.AssetCode);
                 if (exists) {

@@ -35,7 +35,7 @@ export class PriorityService {
     create = async (createModel: PriorityCreateModel) => {
         try {
             if (!createModel.AssetCode) {
-                const count = await this.Priority.count();
+                const count = await this.Priority.count() + 1;
                 createModel.AssetCode = 'Priority-' + count.toString();
                 const exists = await this.getByCode(createModel.AssetCode);
                 if (exists) {

@@ -35,7 +35,7 @@ export class CheckupService {
     create = async (createModel: CheckupCreateModel) => {
         try {
             if (!createModel.AssetCode) {
-                const count = await this.Checkup.count();
+                const count = await this.Checkup.count() + 1;
                 createModel.AssetCode = 'Checkup-' + count.toString();
                 const exists = await this.getByCode(createModel.AssetCode);
                 if (exists) {
