@@ -59,16 +59,22 @@ export class ApiClientValidator {
         try {
             const schema = joi.object({
                 clientName          : joi.string().max(256).optional(),
-                FirstName           : joi.string().max(256).optional(),
-                LastName            : joi.string().max(256).optional(),
+                firstName           : joi.string().max(256).optional(),
+                lastName            : joi.string().max(256).optional(),
                 clientCode          : joi.string().max(256).optional(),
                 clientInterfaceType : joi.string().valid('Mobile App', 'Web App', 'Desktop App', 'Other').optional(),
                 isPrivileged        : joi.boolean().optional(),
                 countryCode         : joi.string().optional(),
                 phone               : joi.string().optional(),
-                email               : joi.string().email().optional(),
+                email               : joi.string().optional(),
                 validFrom           : joi.date().iso().optional(),
                 validTill           : joi.date().iso().optional(),
+                pageIndex           : joi.number().min(0).optional(),
+                itemsPerPage        : joi.number().min(1).optional(),
+                orderBy             : joi.string().max(256).optional(),
+                order               : joi.string().valid('ascending', 'descending')
+                    .optional()
+                    .error(()=> new Error("order param: 'ascending' and 'descending' are the only valid values.")),
             });
             return await schema.validateAsync(query);
         } catch (error) {

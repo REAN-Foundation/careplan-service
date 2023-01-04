@@ -329,7 +329,9 @@ export class ApiClientService {
             search.where['Phone'] = filters.Phone;
         }
         if (filters.Email) {
-            search.where['Email'] = filters.Email;
+            search.where['Email'] = {
+                [Op.like] : '%' + filters.Email + '%'
+            };
         }
         if (filters.ValidFrom) {
             search.where['ValidFrom'] = filters.ValidFrom;
