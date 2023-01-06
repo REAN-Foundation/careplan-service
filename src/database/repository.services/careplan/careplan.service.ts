@@ -5,6 +5,7 @@ import { ErrorHandler } from '../../../common/error.handler';
 import { CareplanCreateModel } from '../../../domain.types/careplan/careplan.domain.types';
 import { CareplanDto, CareplanSearchFilters, CareplanSearchResults } from '../../../domain.types/careplan/careplan.domain.types';
 import { uuid } from '../../../domain.types/miscellaneous/system.types';
+import { Op } from 'sequelize';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -79,7 +80,10 @@ export class CareplanService {
                 search.where['CategoryId'] = filters.CategoryId;
             }
             if (filters.Name) {
-                search.where['Name'] = filters.Name;
+                search.where['Name'] =
+                 {
+                     [Op.like] : '%' + filters.Name + '%'
+                 };
             }
             if (filters.Version) {
                 search.where['Version'] = filters.Version;
