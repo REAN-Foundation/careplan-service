@@ -42,7 +42,7 @@ export class TypesController extends BaseController {
                     Description : x.Description
                 };
             });
-            
+
             ResponseHandler.success(request, response, 'User role types retrieved successfully!', 200, {
                 RoleTypes : roles,
             });
@@ -77,6 +77,7 @@ export class TypesController extends BaseController {
             ResponseHandler.handleError(request, response, error);
         }
     };
+
     // getPriorityTypes = async (request: express.Request, response: express.Response): Promise<void> => {
     //     try {
     //         await this.setContext('HealthPriority.GetPrioritiesTypes', request, response);

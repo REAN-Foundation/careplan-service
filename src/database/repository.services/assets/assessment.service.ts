@@ -16,6 +16,7 @@ import {
 import {
     Op
 } from 'sequelize';
+import { Helper } from '../../../common/helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -33,12 +34,20 @@ export class AssessmentService {
 
     create = async (createModel: AssessmentCreateModel) => {
         try {
+            if (!createModel.AssetCode) {
+                const count = await this.Assessment.count() + 1;
+                createModel.AssetCode = 'Assessment-' + count.toString();
+                const exists = await this.getByCode(createModel.AssetCode);
+                if (exists) {
+                    createModel.AssetCode = 'Assessment-' + Helper.generateDisplayId();
+                }
+            }
             var record = await this.Assessment.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create assessment!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -51,7 +60,20 @@ export class AssessmentService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve assessment!', error);
         }
-    }
+    };
+
+    getByCode = async (code) => {
+        try {
+            const record = await this.Assessment.findOne({
+                where : {
+                    AssetCode : code
+                }
+            });
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
+        }
+    };
 
     exists = async (id): Promise < boolean > => {
         try {
@@ -60,7 +82,7 @@ export class AssessmentService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of assessment!', error);
         }
-    }
+    };
 
     search = async (filters: AssessmentSearchFilters): Promise < AssessmentSearchResults > => {
         try {
@@ -91,7 +113,7 @@ export class AssessmentService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search assessment records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -109,7 +131,7 @@ export class AssessmentService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update assessment!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -122,7 +144,7 @@ export class AssessmentService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete assessment!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -172,7 +194,7 @@ export class AssessmentService {
         }
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -196,7 +218,7 @@ export class AssessmentService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -217,7 +239,7 @@ export class AssessmentService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

@@ -45,7 +45,7 @@ export class ParticipantSelectedActionPlanControllerDelegate {
             throw new ApiError('Unable to create participant selected action plan!', 400);
         }
         return this.getEnrichedDto(record);
-    }
+    };
 
     getById = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -53,7 +53,7 @@ export class ParticipantSelectedActionPlanControllerDelegate {
             ErrorHandler.throwNotFoundError('User selected action plan with id ' + id.toString() + ' cannot be found!');
         }
         return this.getEnrichedDto(record);
-    }
+    };
 
     search = async (query: any) => {
         await validator.validateSearchRequest(query);
@@ -62,7 +62,7 @@ export class ParticipantSelectedActionPlanControllerDelegate {
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
         return searchResults;
-    }
+    };
 
     update = async (id: uuid, requestBody: any) => {
         await validator.validateUpdateRequest(requestBody);
@@ -76,7 +76,7 @@ export class ParticipantSelectedActionPlanControllerDelegate {
             throw new ApiError('Unable to update participant selected action plan!', 400);
         }
         return this.getEnrichedDto(updated);
-    }
+    };
 
     delete = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -87,7 +87,7 @@ export class ParticipantSelectedActionPlanControllerDelegate {
         return {
             Deleted : participantSelectedActionPlanDeleted
         };
-    }
+    };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -151,7 +151,7 @@ export class ParticipantSelectedActionPlanControllerDelegate {
         }
 
         return filters;
-    }
+    };
 
     getUpdateModel = (requestBody): ParticipantSelectedActionPlanUpdateModel => {
 
@@ -195,7 +195,7 @@ export class ParticipantSelectedActionPlanControllerDelegate {
         }
 
         return updateModel;
-    }
+    };
 
     getCreateModel = (requestBody): ParticipantSelectedActionPlanCreateModel => {
         return {
@@ -212,7 +212,7 @@ export class ParticipantSelectedActionPlanControllerDelegate {
             StartDate         : requestBody.StartDate ? requestBody.StartDate : null,
             EndDate           : requestBody.EndDate ? requestBody.EndDate : null
         };
-    }
+    };
 
     getEnrichedDto = (record) => {
         if (record == null) {
@@ -234,7 +234,7 @@ export class ParticipantSelectedActionPlanControllerDelegate {
             EndDate           : record.EndDate,
             ProgressStatus    : record.ProgressStatus
         };
-    }
+    };
 
     getSearchDto = (record) => {
         if (record == null) {
@@ -256,7 +256,7 @@ export class ParticipantSelectedActionPlanControllerDelegate {
             EndDate           : record.EndDate,
             ProgressStatus    : record.ProgressStatus
         };
-    }
+    };
 
     //#endregion
 

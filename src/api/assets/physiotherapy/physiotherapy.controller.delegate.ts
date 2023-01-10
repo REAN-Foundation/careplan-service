@@ -47,7 +47,7 @@ export class PhysiotherapyControllerDelegate {
         }
         record = await AssetHelper.updateAssetCode(record, this._service);
         return this.getEnrichedDto(record);
-    }
+    };
 
     getById = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -55,7 +55,7 @@ export class PhysiotherapyControllerDelegate {
             ErrorHandler.throwNotFoundError('Physiotherapy with id ' + id.toString() + ' cannot be found!');
         }
         return this.getEnrichedDto(record);
-    }
+    };
 
     search = async (query: any) => {
         await validator.validateSearchRequest(query);
@@ -64,7 +64,7 @@ export class PhysiotherapyControllerDelegate {
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
         return searchResults;
-    }
+    };
 
     update = async (id: uuid, requestBody: any) => {
         await validator.validateUpdateRequest(requestBody);
@@ -78,7 +78,7 @@ export class PhysiotherapyControllerDelegate {
             throw new ApiError('Unable to update physiotherapy!', 400);
         }
         return this.getEnrichedDto(updated);
-    }
+    };
 
     delete = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -89,7 +89,7 @@ export class PhysiotherapyControllerDelegate {
         return {
             Deleted : physiotherapyDeleted
         };
-    }
+    };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -129,7 +129,7 @@ export class PhysiotherapyControllerDelegate {
         }
 
         return filters;
-    }
+    };
 
     getUpdateModel = (requestBody): PhysiotherapyUpdateModel => {
 
@@ -155,7 +155,7 @@ export class PhysiotherapyControllerDelegate {
         }
 
         return updateModel;
-    }
+    };
 
     getCreateModel = (requestBody): PhysiotherapyCreateModel => {
         return {
@@ -167,7 +167,7 @@ export class PhysiotherapyControllerDelegate {
             Version                : requestBody.Version ? requestBody.Version : 'V1',
             OwnerUserId            : requestBody.OwnerUserId
         };
-    }
+    };
 
     getEnrichedDto = (record) => {
         if (record == null) {
@@ -184,7 +184,7 @@ export class PhysiotherapyControllerDelegate {
             Tags                   : JSON.parse(record.Tags),
             Version                : record.Version
         };
-    }
+    };
 
     getSearchDto = (record) => {
         if (record == null) {
@@ -201,7 +201,7 @@ export class PhysiotherapyControllerDelegate {
             Tags                   : JSON.parse(record.Tags),
             Version                : record.Version
         };
-    }
+    };
 
     //#endregion
 

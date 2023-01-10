@@ -10,7 +10,7 @@ export class InfographicsValidator {
     static validateCreateRequest = async (requestBody) => {
         try {
             const schema = joi.object({
-                AssetCode   : joi.string().max(256).optional(),
+                AssetCode   : joi.string().max(256).optional().allow(null),
                 Name        : joi.string().max(256).optional(),
                 Description : joi.string().optional(),
                 Url         : joi.string().optional(),
@@ -24,7 +24,7 @@ export class InfographicsValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
     static validateUpdateRequest = async (requestBody) => {
         try {
@@ -40,7 +40,7 @@ export class InfographicsValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
     static validateSearchRequest = async (query) => {
         try {
@@ -62,6 +62,6 @@ export class InfographicsValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
 }

@@ -16,6 +16,7 @@ import {
 import {
     Op
 } from 'sequelize';
+import { Helper } from '../../../common/helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -33,12 +34,20 @@ export class ReflectionService {
 
     create = async (createModel: ReflectionCreateModel) => {
         try {
+            if (!createModel.AssetCode) {
+                const count = await this.Reflection.count() + 1;
+                createModel.AssetCode = 'Reflection-' + count.toString();
+                const exists = await this.getByCode(createModel.AssetCode);
+                if (exists) {
+                    createModel.AssetCode = 'Reflection-' + Helper.generateDisplayId();
+                }
+            }
             var record = await this.Reflection.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create reflection!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -51,7 +60,20 @@ export class ReflectionService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve reflection!', error);
         }
-    }
+    };
+
+    getByCode = async (code) => {
+        try {
+            const record = await this.Reflection.findOne({
+                where : {
+                    AssetCode : code
+                }
+            });
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
+        }
+    };
 
     exists = async (id): Promise < boolean > => {
         try {
@@ -60,7 +82,7 @@ export class ReflectionService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of reflection!', error);
         }
-    }
+    };
 
     search = async (filters: ReflectionSearchFilters): Promise < ReflectionSearchResults > => {
         try {
@@ -91,7 +113,7 @@ export class ReflectionService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search reflection records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -109,7 +131,7 @@ export class ReflectionService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update reflection!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -122,7 +144,7 @@ export class ReflectionService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete reflection!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -167,7 +189,7 @@ export class ReflectionService {
         }
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -191,7 +213,7 @@ export class ReflectionService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -212,7 +234,7 @@ export class ReflectionService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

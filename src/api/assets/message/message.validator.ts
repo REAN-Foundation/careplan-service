@@ -10,7 +10,7 @@ export class MessageValidator {
     static validateCreateRequest = async (requestBody) => {
         try {
             const schema = joi.object({
-                AssetCode   : joi.string().max(256).optional(),
+                AssetCode   : joi.string().max(256).optional().allow(null),
                 Name        : joi.string().optional(),
                 Description : joi.string().optional(),
                 MessageType : joi.string().valid("Educational", "Status", "Unknown").optional(),
@@ -25,7 +25,7 @@ export class MessageValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
     static validateUpdateRequest = async (requestBody) => {
         try {
@@ -42,7 +42,7 @@ export class MessageValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
     static validateSearchRequest = async (query) => {
         try {
@@ -64,6 +64,6 @@ export class MessageValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
 }
