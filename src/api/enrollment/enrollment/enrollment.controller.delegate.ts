@@ -250,6 +250,10 @@ export class EnrollmentControllerDelegate {
         if (careplanId != null) {
             filters['CareplanId'] = careplanId;
         }
+        var carePlan = query.carePlan ? query.carePlan : null;
+        if (carePlan != null) {
+            filters['CarePlan'] = carePlan;
+        }
         var participantId = query.participantId ? query.participantId : null;
         if (participantId != null) {
             filters['ParticipantId'] = participantId;
