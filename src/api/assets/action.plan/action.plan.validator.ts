@@ -23,7 +23,7 @@ export class ActionPlanValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
     static validateUpdateRequest = async (requestBody) => {
         try {
@@ -38,7 +38,7 @@ export class ActionPlanValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
     static validateSearchRequest = async (query) => {
         try {
@@ -60,6 +60,6 @@ export class ActionPlanValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
 }

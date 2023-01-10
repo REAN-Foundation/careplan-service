@@ -23,7 +23,7 @@ export class ReminderValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
     static validateUpdateRequest = async (requestBody) => {
         try {
@@ -38,7 +38,7 @@ export class ReminderValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
     static validateSearchRequest = async (query) => {
         try {
@@ -59,6 +59,6 @@ export class ReminderValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
 }
