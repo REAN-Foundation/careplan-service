@@ -47,7 +47,7 @@ export class CareplanActivityControllerDelegate {
             throw new ApiError('Unable to create careplan activity!', 400);
         }
         return this.getEnrichedDto(record);
-    }
+    };
 
     getById = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -55,7 +55,7 @@ export class CareplanActivityControllerDelegate {
             ErrorHandler.throwNotFoundError('Careplan activity with id ' + id.toString() + ' cannot be found!');
         }
         return this.getEnrichedDto(record);
-    }
+    };
 
     search = async (query: any) => {
         await validator.validateSearchRequest(query);
@@ -64,7 +64,7 @@ export class CareplanActivityControllerDelegate {
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
         return searchResults;
-    }
+    };
 
     update = async (id: uuid, requestBody: any) => {
         await validator.validateUpdateRequest(requestBody);
@@ -79,7 +79,7 @@ export class CareplanActivityControllerDelegate {
             throw new ApiError('Unable to update careplan activity!', 400);
         }
         return this.getEnrichedDto(updated);
-    }
+    };
 
     delete = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -90,7 +90,7 @@ export class CareplanActivityControllerDelegate {
         return {
             Deleted : careplanActivityDeleted
         };
-    }
+    };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -126,7 +126,7 @@ export class CareplanActivityControllerDelegate {
         }
 
         return filters;
-    }
+    };
 
     getUpdateModel = (requestBody): CareplanActivityUpdateModel => {
 
@@ -151,7 +151,7 @@ export class CareplanActivityControllerDelegate {
             updateModel.IsRegistrationActivity = requestBody.IsRegistrationActivity;
         }
         return updateModel;
-    }
+    };
 
     getCreateModel = (requestBody): CareplanActivityCreateModel => {
         return {
@@ -162,7 +162,7 @@ export class CareplanActivityControllerDelegate {
             TimeSlot               : requestBody.TimeSlot ? requestBody.TimeSlot : 'Unspecified',
             IsRegistrationActivity : requestBody.IsRegistrationActivity ? requestBody.IsRegistrationActivity : false,
         };
-    }
+    };
 
     getEnrichedDto = (record) => {
         if (record == null) {
@@ -178,7 +178,7 @@ export class CareplanActivityControllerDelegate {
             TimeSlot               : record.TimeSlot,
             IsRegistrationActivity : record.IsRegistrationActivity
         };
-    }
+    };
 
     getSearchDto = (record) => {
         if (record == null) {
@@ -194,7 +194,7 @@ export class CareplanActivityControllerDelegate {
             TimeSlot               : record.TimeSlot,
             IsRegistrationActivity : record.IsRegistrationActivity
         };
-    }
+    };
 
     private async checkValidAssetType(
         model: CareplanActivityUpdateModel | CareplanActivityCreateModel, record?: any) {

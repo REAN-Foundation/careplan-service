@@ -29,7 +29,7 @@ export class FileResourceController extends BaseController {
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }
-    }
+    };
 
     download = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
@@ -50,7 +50,7 @@ export class FileResourceController extends BaseController {
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }
-    }
+    };
 
     getById = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
@@ -61,7 +61,7 @@ export class FileResourceController extends BaseController {
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }
-    }
+    };
 
     delete = async (request: express.Request, response: express.Response): Promise < void > => {
         try {

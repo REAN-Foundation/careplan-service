@@ -92,7 +92,7 @@ export class EnrollmentControllerDelegate {
         await this.generateScheduledTasks(record);
 
         return this.getEnrichedDto(record);
-    }
+    };
 
     getById = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -100,7 +100,7 @@ export class EnrollmentControllerDelegate {
             ErrorHandler.throwNotFoundError('Enrollment with id ' + id.toString() + ' cannot be found!');
         }
         return this.getEnrichedDto(record);
-    }
+    };
 
     search = async (query: any) => {
         await validator.validateSearchRequest(query);
@@ -109,7 +109,7 @@ export class EnrollmentControllerDelegate {
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
         return searchResults;
-    }
+    };
 
     update = async (id: uuid, requestBody: any) => {
         await validator.validateUpdateRequest(requestBody);
@@ -123,7 +123,7 @@ export class EnrollmentControllerDelegate {
             throw new ApiError('Unable to update enrollment!', 400);
         }
         return this.getEnrichedDto(updated);
-    }
+    };
 
     delete = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -134,7 +134,7 @@ export class EnrollmentControllerDelegate {
         return {
             Deleted : enrollmentDeleted
         };
-    }
+    };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -146,7 +146,7 @@ export class EnrollmentControllerDelegate {
 
             const registrationActivities =
                 await this._careplanActivityService.getRegistrationActivities(record.CareplanId);
-        
+
             const enrollmentDate = record.StartDate;
             var count = 0;
             const timeOffset = 15; //seconds
@@ -176,7 +176,7 @@ export class EnrollmentControllerDelegate {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create enrollment registration tasks!', error);
         }
 
-    }
+    };
 
     generateScheduledTasks = async(record) => {
 
@@ -184,12 +184,12 @@ export class EnrollmentControllerDelegate {
 
             const scheduledActivities =
                 await this._careplanActivityService.getScheduledActivities(record.CareplanId);
-        
+
             const startDate = record.StartDate;
 
             const calculatedOffset =
                 (record.WeekOffset ? (record.WeekOffset * 7) : 0) + (record.DayOffset ? record.DayOffset : 0);
-            
+
             const filtered = scheduledActivities.filter( (x) => x.Day >= calculatedOffset);
 
             for await (var act of filtered) {
@@ -229,7 +229,7 @@ export class EnrollmentControllerDelegate {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create enrollment scheduled tasks!', error);
         }
-    }
+    };
 
     getSearchFilters = (query) => {
 
@@ -249,7 +249,7 @@ export class EnrollmentControllerDelegate {
         }
 
         return filters;
-    }
+    };
 
     getUpdateModel = (requestBody): EnrollmentUpdateModel => {
 
@@ -275,7 +275,7 @@ export class EnrollmentControllerDelegate {
         }
 
         return updateModel;
-    }
+    };
 
     getCreateModel = (requestBody): EnrollmentCreateModel => {
         return {
@@ -288,7 +288,7 @@ export class EnrollmentControllerDelegate {
             DayOffset      : requestBody.DayOffset ? requestBody.DayOffset : 0,
             EnrollmentDate : requestBody.EnrollmentDate ? requestBody.EnrollmentDate : new Date()
         };
-    }
+    };
 
     getEnrichedDto = (record) => {
         if (record == null) {
@@ -307,7 +307,7 @@ export class EnrollmentControllerDelegate {
             DayOffset      : record.DayOffset,
             ProgressStatus : record.ProgressStatus,
         };
-    }
+    };
 
     getSearchDto = (record) => {
         if (record == null) {
@@ -326,7 +326,7 @@ export class EnrollmentControllerDelegate {
             DayOffset      : record.DayOffset,
             ProgressStatus : record.ProgressStatus
         };
-    }
+    };
 
     //#endregion
 

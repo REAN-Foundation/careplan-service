@@ -27,7 +27,7 @@ export class UserValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
     static validateSearchRequest = async (query) => {
         try {
@@ -53,7 +53,7 @@ export class UserValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
     static validateUpdateRequest = async (requestBody) => {
         try {
@@ -76,7 +76,7 @@ export class UserValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
     static validatePasswordChangeRequest = async (requestBody) => {
         try {
@@ -89,7 +89,7 @@ export class UserValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
     static validateResetPasswordLinkRequest = async (requestBody) => {
         try {
@@ -100,7 +100,7 @@ export class UserValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
     static validateSetPasswordRequest = async (requestBody) => {
         try {
@@ -112,7 +112,7 @@ export class UserValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
     static validateLoginWithPasswordRequest = async (requestBody) => {
         try {
@@ -127,7 +127,7 @@ export class UserValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
     static validateLoginWithOtpRequest = async (requestBody) => {
         try {
@@ -142,7 +142,7 @@ export class UserValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
     static validatePasswordResetRequest = async (requestBody) => {
         try {
@@ -154,7 +154,7 @@ export class UserValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
     static validateSendOtpRequest = async (requestBody) => {
         try {
@@ -168,6 +168,6 @@ export class UserValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
 }

@@ -11,14 +11,14 @@ export class GoalMapper {
             return null;
         }
         const dto: GoalDto = {
-            id: goal.id,
-            AssetCode: goal.AssetCode,
-            Name: goal.Name,
-            Description: goal.Description,
-            AssetCategory: goal.AssetCategory,
-            OwnerUserId: goal.OwnerUserId,
-            Tags: goal.Tags,
-            Version: goal.Version,
+            id            : goal.id,
+            AssetCode     : goal.AssetCode,
+            Name          : goal.Name,
+            Description   : goal.Description,
+            AssetCategory : goal.AssetCategory,
+            OwnerUserId   : goal.OwnerUserId,
+            Tags          : goal.Tags,
+            Version       : goal.Version,
 
         };
         return dto;

@@ -56,7 +56,7 @@ export class UserControllerDelegate {
         // }
 
         return this.getEnrichedDto(record);
-    }
+    };
 
     getById = async (id: uuid) => {
         const record: UserDto = await this._service.getById(id);
@@ -64,7 +64,7 @@ export class UserControllerDelegate {
             ErrorHandler.throwNotFoundError('User with id ' + id.toString() + ' cannot be found!');
         }
         return this.getEnrichedDto(record);
-    }
+    };
 
     search = async (query) => {
         await validator.validateSearchRequest(query);
@@ -73,7 +73,7 @@ export class UserControllerDelegate {
         var items = searchResults.Items.map(x => this.getPublicDto(x));
         searchResults.Items = items;
         return searchResults;
-    }
+    };
 
     update = async (id: uuid, requestBody: any) => {
         await validator.validateUpdateRequest(requestBody);
@@ -87,7 +87,7 @@ export class UserControllerDelegate {
             throw new ApiError('Unable to update user!', 400);
         }
         return this.getEnrichedDto(updated);
-    }
+    };
 
     delete = async (id: uuid) => {
         const record: UserDto = await this._service.getById(id);
@@ -98,7 +98,7 @@ export class UserControllerDelegate {
         return {
             Deleted : userDeleted
         };
-    }
+    };
 
     loginWithPassword = async (requestBody) => {
         await validator.validateLoginWithPasswordRequest(requestBody);
@@ -120,7 +120,7 @@ export class UserControllerDelegate {
             AccessToken      : accessToken,
             SessionValidTill : validTill
         };
-    }
+    };
 
     getBySessionId = async (sessionId: uuid) => {
         const { user, session } = await this._service.getBySessionId(sessionId);
@@ -129,7 +129,7 @@ export class UserControllerDelegate {
         }
         const currentUser: CurrentUser = this.constructCurrentUser(user, session.id);
         return currentUser;
-    }
+    };
 
     loginWithOtp = async (requestBody) => {
         await validator.validateLoginWithOtpRequest(requestBody);
@@ -160,7 +160,7 @@ export class UserControllerDelegate {
             AccessToken      : accessToken,
             SessionValidTill : validTill
         };
-    }
+    };
 
     changePassword = async (requestBody) => {
         await validator.validatePasswordChangeRequest(requestBody);
@@ -174,7 +174,7 @@ export class UserControllerDelegate {
         const hashedPassword = Helper.generateHashedPassword(passwordResetModel.NewPassword);
 
         return await this._service.resetPassword(passwordResetModel.User.id, hashedPassword);
-    }
+    };
 
     sendOtp = async (requestBody) => {
         await validator.validateSendOtpRequest(requestBody);
@@ -196,11 +196,11 @@ export class UserControllerDelegate {
             return true;
         }
         return false;
-    }
+    };
 
     logout = async (userId, sessionId) => {
         await this._service.invalidateUserLoginSession(sessionId);
-    }
+    };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -251,7 +251,7 @@ export class UserControllerDelegate {
             filters['LastUpdatedByUserId'] = lastUpdatedByUserId;
         }
         return filters;
-    }
+    };
 
     //This function returns a response DTO which is enriched with available resource data
 
@@ -278,7 +278,7 @@ export class UserControllerDelegate {
             AddedByUserId       : record.AddedByUserId,
             LastUpdatedByUserId : record.LastUpdatedByUserId
         };
-    }
+    };
 
     //This function returns a response DTO which has only public parameters
 
@@ -299,7 +299,7 @@ export class UserControllerDelegate {
             Gender      : record.Gender,
             BirthDate   : record.BirthDate,
         };
-    }
+    };
 
     getLoginModel = async (requestBody) => {
 
@@ -321,7 +321,7 @@ export class UserControllerDelegate {
             Password  : password,
             Otp       : otp
         };
-    }
+    };
 
     getPasswordChangeModel = async (requestBody) => {
         const oldPassword = requestBody.OldPassword;
@@ -335,7 +335,7 @@ export class UserControllerDelegate {
             OldPassword : oldPassword,
             NewPassword : newPassword,
         };
-    }
+    };
 
     constructCurrentUser = (user, sessionId): CurrentUser => {
         return {
@@ -347,6 +347,6 @@ export class UserControllerDelegate {
             Phone         : user.CountryCode + '-' + user.Phone,
             Email         : user.Email
         };
-    }
+    };
 
 }
