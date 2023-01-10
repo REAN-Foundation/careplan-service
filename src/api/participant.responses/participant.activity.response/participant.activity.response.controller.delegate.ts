@@ -32,7 +32,7 @@ export class ParticipantActivityResponseControllerDelegate {
 
     _service: ParticipantActivityResponseService = null;
 
-    _enrollmentTaskService: EnrollmentTaskService = null
+    _enrollmentTaskService: EnrollmentTaskService = null;
 
     constructor() {
         this._service = new ParticipantActivityResponseService();
