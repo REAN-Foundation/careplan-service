@@ -192,7 +192,8 @@ export class CareplanActivityControllerDelegate {
             Asset                  : record.Asset,
             Day                    : record.Day,
             TimeSlot               : record.TimeSlot,
-            IsRegistrationActivity : record.IsRegistrationActivity
+            IsRegistrationActivity : record.IsRegistrationActivity,
+            Code               : record.Careplan.Code
         };
     }
 

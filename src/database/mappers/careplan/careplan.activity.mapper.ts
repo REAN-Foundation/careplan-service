@@ -18,6 +18,7 @@ export class CareplanActivityMapper {
             Day                    : careplanActivity.Day,
             TimeSlot               : careplanActivity.TimeSlot,
             IsRegistrationActivity : careplanActivity.IsRegistrationActivity,
+            Code               : [],
         };
         return dto;
     };

@@ -185,7 +185,7 @@ export class CareplanActivityService {
         }
         const includeCareplanAsCareplan = {
             model    : this.Careplan,
-            required : false,
+            required : true,
             as       : 'Careplan',
             where    : {}
         };
