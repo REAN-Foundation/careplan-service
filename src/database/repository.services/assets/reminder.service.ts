@@ -47,7 +47,7 @@ export class ReminderService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create reminder!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -60,7 +60,7 @@ export class ReminderService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve reminder!', error);
         }
-    }
+    };
 
     getByCode = async (code) => {
         try {
@@ -73,7 +73,7 @@ export class ReminderService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
         }
-    }
+    };
 
     exists = async (id): Promise < boolean > => {
         try {
@@ -82,7 +82,7 @@ export class ReminderService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of reminder!', error);
         }
-    }
+    };
 
     search = async (filters: ReminderSearchFilters): Promise < ReminderSearchResults > => {
         try {
@@ -113,7 +113,7 @@ export class ReminderService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search reminder records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -131,7 +131,7 @@ export class ReminderService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update reminder!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -144,7 +144,7 @@ export class ReminderService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete reminder!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -189,7 +189,7 @@ export class ReminderService {
         }
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -213,7 +213,7 @@ export class ReminderService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -234,7 +234,7 @@ export class ReminderService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

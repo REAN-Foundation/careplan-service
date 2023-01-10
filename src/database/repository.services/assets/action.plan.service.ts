@@ -47,7 +47,7 @@ export class ActionPlanService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create action plan!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -60,7 +60,7 @@ export class ActionPlanService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
         }
-    }
+    };
 
     getByCode = async (code) => {
         try {
@@ -73,7 +73,7 @@ export class ActionPlanService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
         }
-    }
+    };
 
     exists = async (id): Promise < boolean > => {
         try {
@@ -82,7 +82,7 @@ export class ActionPlanService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of action plan!', error);
         }
-    }
+    };
 
     search = async (filters: ActionPlanSearchFilters): Promise < ActionPlanSearchResults > => {
         try {
@@ -113,7 +113,7 @@ export class ActionPlanService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search action plan records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -131,7 +131,7 @@ export class ActionPlanService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update action plan!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -144,7 +144,7 @@ export class ActionPlanService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete action plan!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -189,7 +189,7 @@ export class ActionPlanService {
         }
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -213,7 +213,7 @@ export class ActionPlanService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -234,7 +234,7 @@ export class ActionPlanService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

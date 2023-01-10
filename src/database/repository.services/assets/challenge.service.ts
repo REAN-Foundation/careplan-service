@@ -47,7 +47,7 @@ export class ChallengeService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create challenge!', error);
         }
-    }
+    };
 
     getByCode = async (code) => {
         try {
@@ -60,7 +60,7 @@ export class ChallengeService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -73,7 +73,7 @@ export class ChallengeService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve challenge!', error);
         }
-    }
+    };
 
     exists = async (id): Promise < boolean > => {
         try {
@@ -82,7 +82,7 @@ export class ChallengeService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of challenge!', error);
         }
-    }
+    };
 
     search = async (filters: ChallengeSearchFilters): Promise < ChallengeSearchResults > => {
         try {
@@ -113,7 +113,7 @@ export class ChallengeService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search challenge records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -131,7 +131,7 @@ export class ChallengeService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update challenge!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -144,7 +144,7 @@ export class ChallengeService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete challenge!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -189,7 +189,7 @@ export class ChallengeService {
         }
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -213,7 +213,7 @@ export class ChallengeService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -234,7 +234,7 @@ export class ChallengeService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

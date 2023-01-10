@@ -47,7 +47,7 @@ export class BiometricsService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create biometrics!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -60,7 +60,7 @@ export class BiometricsService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve biometrics!', error);
         }
-    }
+    };
 
     getByCode = async (code) => {
         try {
@@ -73,7 +73,7 @@ export class BiometricsService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
         }
-    }
+    };
 
     exists = async (id): Promise < boolean > => {
         try {
@@ -82,7 +82,7 @@ export class BiometricsService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of biometrics!', error);
         }
-    }
+    };
 
     search = async (filters: BiometricsSearchFilters): Promise < BiometricsSearchResults > => {
         try {
@@ -113,7 +113,7 @@ export class BiometricsService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search biometrics records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -131,7 +131,7 @@ export class BiometricsService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update biometrics!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -144,7 +144,7 @@ export class BiometricsService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete biometrics!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -197,7 +197,7 @@ export class BiometricsService {
         }
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -221,7 +221,7 @@ export class BiometricsService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -242,7 +242,7 @@ export class BiometricsService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

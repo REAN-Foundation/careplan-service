@@ -47,7 +47,7 @@ export class ExerciseService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create exercise!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -60,7 +60,7 @@ export class ExerciseService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve exercise!', error);
         }
-    }
+    };
 
     getByCode = async (code) => {
         try {
@@ -73,7 +73,7 @@ export class ExerciseService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
         }
-    }
+    };
 
     exists = async (id): Promise < boolean > => {
         try {
@@ -82,7 +82,7 @@ export class ExerciseService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of exercise!', error);
         }
-    }
+    };
 
     search = async (filters: ExerciseSearchFilters): Promise < ExerciseSearchResults > => {
         try {
@@ -113,7 +113,7 @@ export class ExerciseService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search exercise records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -131,7 +131,7 @@ export class ExerciseService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update exercise!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -144,7 +144,7 @@ export class ExerciseService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete exercise!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -198,7 +198,7 @@ export class ExerciseService {
         }
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -222,7 +222,7 @@ export class ExerciseService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -243,7 +243,7 @@ export class ExerciseService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

@@ -41,7 +41,7 @@ export class ArticleService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create article!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -62,7 +62,7 @@ export class ArticleService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve article!', error);
         }
-    }
+    };
 
     getByCode = async (code) => {
         try {
@@ -75,7 +75,7 @@ export class ArticleService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
         }
-    }
+    };
 
     exists = async (id): Promise<boolean> => {
         try {
@@ -84,7 +84,7 @@ export class ArticleService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of article!', error);
         }
-    }
+    };
 
     search = async (filters: ArticleSearchFilters): Promise<ArticleSearchResults> => {
         try {
@@ -115,7 +115,7 @@ export class ArticleService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search article records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -133,7 +133,7 @@ export class ArticleService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update article!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -146,7 +146,7 @@ export class ArticleService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete article!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -206,7 +206,7 @@ export class ArticleService {
         search.include.push(includeFileResourceAsFileResource);
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -230,7 +230,7 @@ export class ArticleService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -251,7 +251,7 @@ export class ArticleService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

@@ -47,7 +47,7 @@ export class ReflectionService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create reflection!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -60,7 +60,7 @@ export class ReflectionService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve reflection!', error);
         }
-    }
+    };
 
     getByCode = async (code) => {
         try {
@@ -73,7 +73,7 @@ export class ReflectionService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
         }
-    }
+    };
 
     exists = async (id): Promise < boolean > => {
         try {
@@ -82,7 +82,7 @@ export class ReflectionService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of reflection!', error);
         }
-    }
+    };
 
     search = async (filters: ReflectionSearchFilters): Promise < ReflectionSearchResults > => {
         try {
@@ -113,7 +113,7 @@ export class ReflectionService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search reflection records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -131,7 +131,7 @@ export class ReflectionService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update reflection!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -144,7 +144,7 @@ export class ReflectionService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete reflection!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -189,7 +189,7 @@ export class ReflectionService {
         }
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -213,7 +213,7 @@ export class ReflectionService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -234,7 +234,7 @@ export class ReflectionService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

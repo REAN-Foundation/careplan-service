@@ -47,7 +47,7 @@ export class PhysiotherapyService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create physiotherapy!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -60,7 +60,7 @@ export class PhysiotherapyService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve physiotherapy!', error);
         }
-    }
+    };
 
     getByCode = async (code) => {
         try {
@@ -73,7 +73,7 @@ export class PhysiotherapyService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
         }
-    }
+    };
 
     exists = async (id): Promise < boolean > => {
         try {
@@ -82,7 +82,7 @@ export class PhysiotherapyService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of physiotherapy!', error);
         }
-    }
+    };
 
     search = async (filters: PhysiotherapySearchFilters): Promise < PhysiotherapySearchResults > => {
         try {
@@ -113,7 +113,7 @@ export class PhysiotherapyService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search physiotherapy records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -131,7 +131,7 @@ export class PhysiotherapyService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update physiotherapy!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -144,7 +144,7 @@ export class PhysiotherapyService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete physiotherapy!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -192,7 +192,7 @@ export class PhysiotherapyService {
         }
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -216,7 +216,7 @@ export class PhysiotherapyService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -237,7 +237,7 @@ export class PhysiotherapyService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

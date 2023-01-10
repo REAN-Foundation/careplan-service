@@ -47,7 +47,7 @@ export class WebNewsfeedService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create web newsfeed!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -60,7 +60,7 @@ export class WebNewsfeedService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve web newsfeed!', error);
         }
-    }
+    };
 
     getByCode = async (code) => {
         try {
@@ -73,7 +73,7 @@ export class WebNewsfeedService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
         }
-    }
+    };
 
     exists = async (id): Promise < boolean > => {
         try {
@@ -82,7 +82,7 @@ export class WebNewsfeedService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of web newsfeed!', error);
         }
-    }
+    };
 
     search = async (filters: WebNewsfeedSearchFilters): Promise < WebNewsfeedSearchResults > => {
         try {
@@ -113,7 +113,7 @@ export class WebNewsfeedService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search web newsfeed records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -131,7 +131,7 @@ export class WebNewsfeedService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update web newsfeed!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -144,7 +144,7 @@ export class WebNewsfeedService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete web newsfeed!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -194,7 +194,7 @@ export class WebNewsfeedService {
         }
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -218,7 +218,7 @@ export class WebNewsfeedService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -239,7 +239,7 @@ export class WebNewsfeedService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

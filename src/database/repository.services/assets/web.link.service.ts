@@ -46,7 +46,7 @@ export class WebLinkService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create web link!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -59,7 +59,7 @@ export class WebLinkService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve web link!', error);
         }
-    }
+    };
 
     getByCode = async (code) => {
         try {
@@ -72,7 +72,7 @@ export class WebLinkService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
         }
-    }
+    };
 
     exists = async (id): Promise < boolean > => {
         try {
@@ -81,7 +81,7 @@ export class WebLinkService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of web link!', error);
         }
-    }
+    };
 
     search = async (filters: WebLinkSearchFilters): Promise < WebLinkSearchResults > => {
         try {
@@ -112,7 +112,7 @@ export class WebLinkService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search web link records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -130,7 +130,7 @@ export class WebLinkService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update web link!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -143,7 +143,7 @@ export class WebLinkService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete web link!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -193,7 +193,7 @@ export class WebLinkService {
         }
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -217,7 +217,7 @@ export class WebLinkService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -238,7 +238,7 @@ export class WebLinkService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

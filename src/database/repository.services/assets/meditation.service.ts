@@ -47,7 +47,7 @@ export class MeditationService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create meditation!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -60,7 +60,7 @@ export class MeditationService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve meditation!', error);
         }
-    }
+    };
 
     getByCode = async (code) => {
         try {
@@ -73,7 +73,7 @@ export class MeditationService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
         }
-    }
+    };
 
     exists = async (id): Promise < boolean > => {
         try {
@@ -82,7 +82,7 @@ export class MeditationService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of meditation!', error);
         }
-    }
+    };
 
     search = async (filters: MeditationSearchFilters): Promise < MeditationSearchResults > => {
         try {
@@ -113,7 +113,7 @@ export class MeditationService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search meditation records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -131,7 +131,7 @@ export class MeditationService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update meditation!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -144,7 +144,7 @@ export class MeditationService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete meditation!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -195,7 +195,7 @@ export class MeditationService {
         }
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -219,7 +219,7 @@ export class MeditationService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -240,7 +240,7 @@ export class MeditationService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

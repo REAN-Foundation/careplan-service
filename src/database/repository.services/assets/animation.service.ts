@@ -52,7 +52,7 @@ export class AnimationService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create animation!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -72,7 +72,7 @@ export class AnimationService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve animation!', error);
         }
-    }
+    };
 
     getByCode = async (code) => {
         try {
@@ -85,7 +85,7 @@ export class AnimationService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
         }
-    }
+    };
 
     exists = async (id): Promise<boolean> => {
         try {
@@ -94,7 +94,7 @@ export class AnimationService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of animation!', error);
         }
-    }
+    };
 
     search = async (filters: AnimationSearchFilters): Promise<AnimationSearchResults> => {
         try {
@@ -125,7 +125,7 @@ export class AnimationService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search animation records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -143,7 +143,7 @@ export class AnimationService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update animation!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -156,7 +156,7 @@ export class AnimationService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete animation!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -216,7 +216,7 @@ export class AnimationService {
         search.include.push(includeFileResourceAsFileResource);
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -240,7 +240,7 @@ export class AnimationService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -261,7 +261,7 @@ export class AnimationService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

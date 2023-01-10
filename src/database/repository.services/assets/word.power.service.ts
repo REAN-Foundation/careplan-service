@@ -47,7 +47,7 @@ export class WordPowerService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create word power!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -60,7 +60,7 @@ export class WordPowerService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve word power!', error);
         }
-    }
+    };
 
     getByCode = async (code) => {
         try {
@@ -73,7 +73,7 @@ export class WordPowerService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
         }
-    }
+    };
 
     exists = async (id): Promise < boolean > => {
         try {
@@ -82,7 +82,7 @@ export class WordPowerService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of word power!', error);
         }
-    }
+    };
 
     search = async (filters: WordPowerSearchFilters): Promise < WordPowerSearchResults > => {
         try {
@@ -113,7 +113,7 @@ export class WordPowerService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search word power records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -131,7 +131,7 @@ export class WordPowerService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update word power!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -144,7 +144,7 @@ export class WordPowerService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete word power!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -194,7 +194,7 @@ export class WordPowerService {
         }
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -218,7 +218,7 @@ export class WordPowerService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -239,7 +239,7 @@ export class WordPowerService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

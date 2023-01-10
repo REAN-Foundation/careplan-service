@@ -47,7 +47,7 @@ export class MessageService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create message!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -60,7 +60,7 @@ export class MessageService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve message!', error);
         }
-    }
+    };
 
     getByCode = async (code) => {
         try {
@@ -73,7 +73,7 @@ export class MessageService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
         }
-    }
+    };
 
     exists = async (id): Promise < boolean > => {
         try {
@@ -82,7 +82,7 @@ export class MessageService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of message!', error);
         }
-    }
+    };
 
     search = async (filters: MessageSearchFilters): Promise < MessageSearchResults > => {
         try {
@@ -113,7 +113,7 @@ export class MessageService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search message records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -131,7 +131,7 @@ export class MessageService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update message!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -144,7 +144,7 @@ export class MessageService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete message!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -192,7 +192,7 @@ export class MessageService {
         }
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -216,7 +216,7 @@ export class MessageService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -237,7 +237,7 @@ export class MessageService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

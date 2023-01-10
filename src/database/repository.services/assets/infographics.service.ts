@@ -52,7 +52,7 @@ export class InfographicsService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create infographics!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -72,7 +72,7 @@ export class InfographicsService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve infographics!', error);
         }
-    }
+    };
 
     getByCode = async (code) => {
         try {
@@ -85,7 +85,7 @@ export class InfographicsService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
         }
-    }
+    };
 
     exists = async (id): Promise<boolean> => {
         try {
@@ -94,7 +94,7 @@ export class InfographicsService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of infographics!', error);
         }
-    }
+    };
 
     search = async (filters: InfographicsSearchFilters): Promise<InfographicsSearchResults> => {
         try {
@@ -125,7 +125,7 @@ export class InfographicsService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search infographics records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -143,7 +143,7 @@ export class InfographicsService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update infographics!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -156,7 +156,7 @@ export class InfographicsService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete infographics!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -216,7 +216,7 @@ export class InfographicsService {
         search.include.push(includeFileResourceAsFileResource);
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -240,7 +240,7 @@ export class InfographicsService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -261,7 +261,7 @@ export class InfographicsService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

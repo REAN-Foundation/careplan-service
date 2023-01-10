@@ -47,7 +47,7 @@ export class MedicationService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create medication!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -60,7 +60,7 @@ export class MedicationService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve medication!', error);
         }
-    }
+    };
 
     getByCode = async (code) => {
         try {
@@ -73,7 +73,7 @@ export class MedicationService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
         }
-    }
+    };
 
     exists = async (id): Promise < boolean > => {
         try {
@@ -82,7 +82,7 @@ export class MedicationService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of medication!', error);
         }
-    }
+    };
 
     search = async (filters: MedicationSearchFilters): Promise < MedicationSearchResults > => {
         try {
@@ -113,7 +113,7 @@ export class MedicationService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search medication records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -131,7 +131,7 @@ export class MedicationService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update medication!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -144,7 +144,7 @@ export class MedicationService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete medication!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -189,7 +189,7 @@ export class MedicationService {
         }
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -213,7 +213,7 @@ export class MedicationService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -234,7 +234,7 @@ export class MedicationService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

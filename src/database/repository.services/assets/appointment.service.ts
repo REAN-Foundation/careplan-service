@@ -47,7 +47,7 @@ export class AppointmentService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create appointment!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -60,7 +60,7 @@ export class AppointmentService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve appointment!', error);
         }
-    }
+    };
 
     getByCode = async (code) => {
         try {
@@ -73,7 +73,7 @@ export class AppointmentService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
         }
-    }
+    };
 
     exists = async (id): Promise < boolean > => {
         try {
@@ -82,7 +82,7 @@ export class AppointmentService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of appointment!', error);
         }
-    }
+    };
 
     search = async (filters: AppointmentSearchFilters): Promise < AppointmentSearchResults > => {
         try {
@@ -113,7 +113,7 @@ export class AppointmentService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search appointment records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -131,7 +131,7 @@ export class AppointmentService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update appointment!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -144,7 +144,7 @@ export class AppointmentService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete appointment!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -192,7 +192,7 @@ export class AppointmentService {
         }
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -216,7 +216,7 @@ export class AppointmentService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -237,7 +237,7 @@ export class AppointmentService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 
