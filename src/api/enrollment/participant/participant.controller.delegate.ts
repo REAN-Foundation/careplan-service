@@ -52,7 +52,7 @@ export class ParticipantControllerDelegate {
         }
 
         return this.getEnrichedDto(record);
-    }
+    };
 
     getById = async (id: uuid) => {
         const record: ParticipantDto = await this._service.getById(id);
@@ -60,7 +60,7 @@ export class ParticipantControllerDelegate {
             ErrorHandler.throwNotFoundError('Participant with id ' + id.toString() + ' cannot be found!');
         }
         return this.getEnrichedDto(record);
-    }
+    };
 
     search = async (query) => {
         await validator.validateSearchRequest(query);
@@ -69,7 +69,7 @@ export class ParticipantControllerDelegate {
         var items = searchResults.Items.map(x => this.getPublicDto(x));
         searchResults.Items = items;
         return searchResults;
-    }
+    };
 
     update = async (id: uuid, requestBody: any) => {
         await validator.validateUpdateRequest(requestBody);
@@ -84,7 +84,7 @@ export class ParticipantControllerDelegate {
             throw new ApiError('Unable to update Participant!', 400);
         }
         return this.getEnrichedDto(updated);
-    }
+    };
 
     delete = async (id: uuid) => {
         const record: ParticipantDto = await this._service.getById(id);
@@ -95,7 +95,7 @@ export class ParticipantControllerDelegate {
         return {
             Deleted : userDeleted
         };
-    }
+    };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -134,7 +134,7 @@ export class ParticipantControllerDelegate {
             filters['LastUpdatedByUserId'] = lastUpdatedByUserId;
         }
         return filters;
-    }
+    };
 
     //This function returns a response DTO which is enriched with available resource data
 
@@ -158,7 +158,7 @@ export class ParticipantControllerDelegate {
             AddedByUserId          : record.AddedByUserId,
             LastUpdatedByUserId    : record.LastUpdatedByUserId
         };
-    }
+    };
 
     //This function returns a response DTO which has only public parameters
 
@@ -180,6 +180,6 @@ export class ParticipantControllerDelegate {
             BirthDate              : record.BirthDate,
             Country                : record.Country,
         };
-    }
+    };
 
 }

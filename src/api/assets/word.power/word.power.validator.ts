@@ -24,7 +24,7 @@ export class WordPowerValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
     static validateUpdateRequest = async (requestBody) => {
         try {
@@ -40,7 +40,7 @@ export class WordPowerValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
     static validateSearchRequest = async (query) => {
         try {
@@ -63,6 +63,6 @@ export class WordPowerValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
 }

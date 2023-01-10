@@ -47,7 +47,7 @@ export class MessageControllerDelegate {
         }
         record = await AssetHelper.updateAssetCode(record, this._service);
         return this.getEnrichedDto(record);
-    }
+    };
 
     getById = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -55,7 +55,7 @@ export class MessageControllerDelegate {
             ErrorHandler.throwNotFoundError('Message with id ' + id.toString() + ' cannot be found!');
         }
         return this.getEnrichedDto(record);
-    }
+    };
 
     search = async (query: any) => {
         await validator.validateSearchRequest(query);
@@ -64,7 +64,7 @@ export class MessageControllerDelegate {
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
         return searchResults;
-    }
+    };
 
     update = async (id: uuid, requestBody: any) => {
         await validator.validateUpdateRequest(requestBody);
@@ -78,7 +78,7 @@ export class MessageControllerDelegate {
             throw new ApiError('Unable to update message!', 400);
         }
         return this.getEnrichedDto(updated);
-    }
+    };
 
     delete = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -89,7 +89,7 @@ export class MessageControllerDelegate {
         return {
             Deleted : messageDeleted
         };
-    }
+    };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -129,7 +129,7 @@ export class MessageControllerDelegate {
         }
 
         return filters;
-    }
+    };
 
     getUpdateModel = (requestBody): MessageUpdateModel => {
 
@@ -158,7 +158,7 @@ export class MessageControllerDelegate {
         }
 
         return updateModel;
-    }
+    };
 
     getCreateModel = (requestBody): MessageCreateModel => {
         return {
@@ -171,7 +171,7 @@ export class MessageControllerDelegate {
             Version     : requestBody.Version ? requestBody.Version : 'V1',
             OwnerUserId : requestBody.OwnerUserId
         };
-    }
+    };
 
     getEnrichedDto = (record) => {
         if (record == null) {
@@ -189,7 +189,7 @@ export class MessageControllerDelegate {
             Url         : record.Url,
             Version     : record.Version
         };
-    }
+    };
 
     getSearchDto = (record) => {
         if (record == null) {
@@ -208,7 +208,7 @@ export class MessageControllerDelegate {
             Version     : record.Version,
             CreatedAt   : record.CreatedAt,
         };
-    }
+    };
 
     //#endregion
 

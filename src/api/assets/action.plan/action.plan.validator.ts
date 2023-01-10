@@ -10,7 +10,7 @@ export class ActionPlanValidator {
     static validateCreateRequest = async (requestBody) => {
         try {
             const schema = joi.object({
-                AssetCode   : joi.string().max(256).optional(),
+                AssetCode   : joi.string().max(256).optional().allow(null),
                 Name        : joi.string().max(256).required(),
                 Description : joi.string().optional(),
                 Tags        : joi.array().items(joi.string()).optional(),
@@ -23,7 +23,7 @@ export class ActionPlanValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
     static validateUpdateRequest = async (requestBody) => {
         try {
@@ -38,7 +38,7 @@ export class ActionPlanValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
     static validateSearchRequest = async (query) => {
         try {
@@ -61,6 +61,6 @@ export class ActionPlanValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
 }

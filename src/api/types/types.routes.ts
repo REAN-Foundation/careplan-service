@@ -12,7 +12,6 @@ export const register = (app: express.Application): void => {
 
     router.get('/roles', controller.getRoleTypes);
     router.get('/careplan-categories', controller.getCareplanCategories);
-
     router.get('/slot', controller.getSlotTypes);
     router.get('/assets', controller.getAssetTypes);
 

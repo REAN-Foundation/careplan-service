@@ -16,6 +16,7 @@ import {
 import {
     Op
 } from 'sequelize';
+import { Helper } from '../../../common/helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -33,12 +34,20 @@ export class ConsultationService {
 
     create = async (createModel: ConsultationCreateModel) => {
         try {
+            if (!createModel.AssetCode) {
+                const count = await this.Consultation.count() + 1;
+                createModel.AssetCode = 'Consultation-' + count.toString();
+                const exists = await this.getByCode(createModel.AssetCode);
+                if (exists) {
+                    createModel.AssetCode = 'Consultation-' + Helper.generateDisplayId();
+                }
+            }
             var record = await this.Consultation.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create consultation!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -51,7 +60,20 @@ export class ConsultationService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve consultation!', error);
         }
-    }
+    };
+
+    getByCode = async (code) => {
+        try {
+            const record = await this.Consultation.findOne({
+                where : {
+                    AssetCode : code
+                }
+            });
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
+        }
+    };
 
     exists = async (id): Promise < boolean > => {
         try {
@@ -60,7 +82,7 @@ export class ConsultationService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of consultation!', error);
         }
-    }
+    };
 
     search = async (filters: ConsultationSearchFilters): Promise < ConsultationSearchResults > => {
         try {
@@ -91,7 +113,7 @@ export class ConsultationService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search consultation records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -109,7 +131,7 @@ export class ConsultationService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update consultation!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -122,7 +144,7 @@ export class ConsultationService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete consultation!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -170,7 +192,7 @@ export class ConsultationService {
         }
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -194,7 +216,7 @@ export class ConsultationService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -215,7 +237,7 @@ export class ConsultationService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

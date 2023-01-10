@@ -16,6 +16,7 @@ import {
 import {
     Op
 } from 'sequelize';
+import { Helper } from '../../../common/helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -33,12 +34,20 @@ export class PriorityService {
 
     create = async (createModel: PriorityCreateModel) => {
         try {
+            if (!createModel.AssetCode) {
+                const count = await this.Priority.count() + 1;
+                createModel.AssetCode = 'Priority-' + count.toString();
+                const exists = await this.getByCode(createModel.AssetCode);
+                if (exists) {
+                    createModel.AssetCode = 'Priority-' + Helper.generateDisplayId();
+                }
+            }
             var record = await this.Priority.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create priority!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -51,7 +60,20 @@ export class PriorityService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve priority!', error);
         }
-    }
+    };
+
+    getByCode = async (code) => {
+        try {
+            const record = await this.Priority.findOne({
+                where : {
+                    AssetCode : code
+                }
+            });
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
+        }
+    };
 
     exists = async (id): Promise < boolean > => {
         try {
@@ -60,7 +82,7 @@ export class PriorityService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of priority!', error);
         }
-    }
+    };
 
     search = async (filters: PrioritySearchFilters): Promise < PrioritySearchResults > => {
         try {
@@ -91,7 +113,7 @@ export class PriorityService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search priority records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -109,7 +131,7 @@ export class PriorityService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update priority!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -122,7 +144,7 @@ export class PriorityService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete priority!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -167,7 +189,7 @@ export class PriorityService {
         }
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -191,7 +213,7 @@ export class PriorityService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -212,7 +234,7 @@ export class PriorityService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

@@ -23,7 +23,6 @@ import {
     MedicationSearchResults
 } from '../../../domain.types/assets/medication.domain.types';
 import { AssetHelper } from '../../../database/repository.services/assets/asset.helper';
-import { validateRequest } from 'twilio';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -48,7 +47,7 @@ export class MedicationControllerDelegate {
         }
         record = await AssetHelper.updateAssetCode(record, this._service);
         return this.getEnrichedDto(record);
-    }
+    };
 
     getById = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -56,7 +55,7 @@ export class MedicationControllerDelegate {
             ErrorHandler.throwNotFoundError('Medication with id ' + id.toString() + ' cannot be found!');
         }
         return this.getEnrichedDto(record);
-    }
+    };
 
     search = async (query: any) => {
         await validator.validateSearchRequest(query);
@@ -65,7 +64,7 @@ export class MedicationControllerDelegate {
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
         return searchResults;
-    }
+    };
 
     update = async (id: uuid, requestBody: any) => {
         await validator.validateUpdateRequest(requestBody);
@@ -79,7 +78,7 @@ export class MedicationControllerDelegate {
             throw new ApiError('Unable to update medication!', 400);
         }
         return this.getEnrichedDto(updated);
-    }
+    };
 
     delete = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -90,7 +89,7 @@ export class MedicationControllerDelegate {
         return {
             Deleted : medicationDeleted
         };
-    }
+    };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -126,7 +125,7 @@ export class MedicationControllerDelegate {
         }
 
         return filters;
-    }
+    };
 
     getUpdateModel = (requestBody): MedicationUpdateModel => {
 
@@ -149,7 +148,7 @@ export class MedicationControllerDelegate {
         }
 
         return updateModel;
-    }
+    };
 
     getCreateModel = (requestBody): MedicationCreateModel => {
         return {
@@ -160,7 +159,7 @@ export class MedicationControllerDelegate {
             Version     : requestBody.Version ? requestBody.Version : 'V1',
             OwnerUserId : requestBody.OwnerUserId
         };
-    }
+    };
 
     getEnrichedDto = (record) => {
         if (record == null) {
@@ -176,7 +175,7 @@ export class MedicationControllerDelegate {
             Tags          : JSON.parse(record.Tags),
             Version       : record.Version
         };
-    }
+    };
 
     getSearchDto = (record) => {
         if (record == null) {
@@ -193,7 +192,7 @@ export class MedicationControllerDelegate {
             Version       : record.Version,
             CreatedAt     : record.CreatedAt,
         };
-    }
+    };
 
     //#endregion
 

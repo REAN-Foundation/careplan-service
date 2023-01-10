@@ -35,7 +35,7 @@ export class EnrollmentTaskControllerDelegate {
             ErrorHandler.throwNotFoundError('Enrollment schedule with id ' + id.toString() + ' cannot be found!');
         }
         return this.getEnrichedDto(record);
-    }
+    };
 
     search = async (query: any) => {
         await validator.validateSearchRequest(query);
@@ -44,7 +44,7 @@ export class EnrollmentTaskControllerDelegate {
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
         return searchResults;
-    }
+    };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -83,7 +83,7 @@ export class EnrollmentTaskControllerDelegate {
             filters['EnrollmentId'] = enrollmentId;
         }
         return filters;
-    }
+    };
 
     getEnrichedDto = (record) => {
         if (record == null) {
@@ -103,7 +103,7 @@ export class EnrollmentTaskControllerDelegate {
             ScheduledDate          : record.ScheduledDate,
             IsRegistrationActivity : record.IsRegistrationActivity
         };
-    }
+    };
 
     getSearchDto = (record) => {
         if (record == null) {
@@ -122,7 +122,7 @@ export class EnrollmentTaskControllerDelegate {
             ScheduledDate          : record.ScheduledDate,
             IsRegistrationActivity : record.IsRegistrationActivity
         };
-    }
+    };
 
     //#endregion
 

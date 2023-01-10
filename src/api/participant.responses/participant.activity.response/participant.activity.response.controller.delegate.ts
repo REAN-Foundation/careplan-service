@@ -32,7 +32,7 @@ export class ParticipantActivityResponseControllerDelegate {
 
     _service: ParticipantActivityResponseService = null;
 
-    _enrollmentTaskService: EnrollmentTaskService = null
+    _enrollmentTaskService: EnrollmentTaskService = null;
 
     constructor() {
         this._service = new ParticipantActivityResponseService();
@@ -50,7 +50,7 @@ export class ParticipantActivityResponseControllerDelegate {
             throw new ApiError('Unable to create participant activity response!', 400);
         }
         return this.getEnrichedDto(record);
-    }
+    };
 
     getById = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -58,7 +58,7 @@ export class ParticipantActivityResponseControllerDelegate {
             ErrorHandler.throwNotFoundError('Participant activity response with id ' + id.toString() + ' cannot be found!');
         }
         return this.getEnrichedDto(record);
-    }
+    };
 
     search = async (query: any) => {
         await validator.validateSearchRequest(query);
@@ -67,7 +67,7 @@ export class ParticipantActivityResponseControllerDelegate {
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
         return searchResults;
-    }
+    };
 
     update = async (id: uuid, requestBody: any) => {
         await validator.validateUpdateRequest(requestBody);
@@ -81,7 +81,7 @@ export class ParticipantActivityResponseControllerDelegate {
             throw new ApiError('Unable to update participant activity response!', 400);
         }
         return this.getEnrichedDto(updated);
-    }
+    };
 
     delete = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -92,7 +92,7 @@ export class ParticipantActivityResponseControllerDelegate {
         return {
             Deleted : participantActivityResponseDeleted
         };
-    }
+    };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -132,7 +132,7 @@ export class ParticipantActivityResponseControllerDelegate {
         }
 
         return filters;
-    }
+    };
 
     getUpdateModel = (requestBody): ParticipantActivityResponseUpdateModel => {
 
@@ -152,7 +152,7 @@ export class ParticipantActivityResponseControllerDelegate {
         }
 
         return updateModel;
-    }
+    };
 
     getCreateModel = (requestBody, enrollmentTask): ParticipantActivityResponseCreateModel => {
         return {
@@ -166,7 +166,7 @@ export class ParticipantActivityResponseControllerDelegate {
             TimeResponded      : new Date(),
             ProgressStatus     : requestBody.ProgressStatus ? requestBody.ProgressStatus : 'Completed'
         };
-    }
+    };
 
     getEnrichedDto = (record) => {
         if (record == null) {
@@ -184,7 +184,7 @@ export class ParticipantActivityResponseControllerDelegate {
             TimeResponded      : record.TimeResponded,
             ProgressStatus     : record.ProgressStatus
         };
-    }
+    };
 
     getSearchDto = (record) => {
         if (record == null) {
@@ -202,7 +202,7 @@ export class ParticipantActivityResponseControllerDelegate {
             TimeResponded      : record.TimeResponded,
             ProgressStatus     : record.ProgressStatus
         };
-    }
+    };
 
     //#endregion
 

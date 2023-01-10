@@ -27,7 +27,7 @@ export class UserHelper {
             BirthDate   : new Date(birthDate),
             Password    : requestBody.Password ? requestBody.Password : null,
         };
-    }
+    };
 
     static getValidUserCreateModel = async (requestBody) => {
 
@@ -67,7 +67,7 @@ export class UserHelper {
 
         var userCreateModel: UserCreateModel = await this.getUserCreateModel(requestBody);
         return { userCreateModel, password };
-    }
+    };
 
     static getValidParticipantCreateModel = async (requestBody) => {
 
@@ -80,7 +80,7 @@ export class UserHelper {
             ErrorHandler.throwDuplicateUserError(`Participant with phone ${requestBody.CountryCode} ${requestBody.Phone.toString()} already exists!`);
         }
 
-    }
+    };
 
     static getValidParticipantUpdateModel = async (user, requestBody) => {
 
@@ -139,7 +139,7 @@ export class UserHelper {
         }
 
         return updateModel;
-    }
+    };
 
     static getValidUserUpdateModel = async (user, requestBody) => {
 
@@ -202,6 +202,6 @@ export class UserHelper {
         }
 
         return updateModel;
-    }
+    };
 
 }
