@@ -28,7 +28,7 @@ export class CareplanControllerDelegate {
             throw new ApiError('Unable to create care plan!', 400);
         }
         return this.getEnrichedDto(record);
-    }
+    };
 
     getById = async (id: uuid) => {
         const record: CareplanDto = await this._service.getById(id);
@@ -36,7 +36,7 @@ export class CareplanControllerDelegate {
             ErrorHandler.throwNotFoundError('Care plan with id ' + id.toString() + ' cannot be found!');
         }
         return this.getEnrichedDto(record);
-    }
+    };
 
     search = async (query: any) => {
         await validator.validateSearchRequest(query);
@@ -45,7 +45,7 @@ export class CareplanControllerDelegate {
         var items = searchResults.Items.map(x => this.getPublicDto(x));
         searchResults.Items = items;
         return searchResults;
-    }
+    };
 
     update = async (id: uuid, requestBody: any) => {
         await validator.validateUpdateRequest(requestBody);
@@ -59,7 +59,7 @@ export class CareplanControllerDelegate {
             throw new ApiError('Unable to update care plan!', 400);
         }
         return this.getEnrichedDto(updated);
-    }
+    };
 
     delete = async (id: uuid) => {
         const record: CareplanDto = await this._service.getById(id);
@@ -70,7 +70,7 @@ export class CareplanControllerDelegate {
         return {
             Deleted : carePlanDeleted
         };
-    }
+    };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -107,7 +107,7 @@ export class CareplanControllerDelegate {
             filters['IsActive'] = isActive;
         }
         return filters;
-    }
+    };
 
     getUpdateModel = (requestBody) => {
 
@@ -135,7 +135,7 @@ export class CareplanControllerDelegate {
             updateModel.Tags = JSON.stringify(requestBody.Tags);
         }
         return updateModel;
-    }
+    };
 
     getCreateModel = (requestBody): CareplanCreateModel => {
         return {
@@ -147,7 +147,7 @@ export class CareplanControllerDelegate {
             OwnerUserId : requestBody.OwnerUserId ? requestBody.OwnerUserId : null,
             Tags        : requestBody.Tags ? JSON.stringify(requestBody.Tags) as string : JSON.stringify([]),
         };
-    }
+    };
 
     //This function returns a response DTO which is enriched with available resource data
 
@@ -169,7 +169,7 @@ export class CareplanControllerDelegate {
             UpdatedAt   : record.UpdatedAt,
             Type        : record.Category.Type
         };
-    }
+    };
 
     //This function returns a response DTO which has only public parameters
 
@@ -192,6 +192,6 @@ export class CareplanControllerDelegate {
             Type        : record.Category.Type
         
         };
-    }
+    };
 
 }

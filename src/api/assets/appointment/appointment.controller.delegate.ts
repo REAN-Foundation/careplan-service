@@ -47,7 +47,7 @@ export class AppointmentControllerDelegate {
         }
         record = await AssetHelper.updateAssetCode(record, this._service);
         return this.getEnrichedDto(record);
-    }
+    };
 
     getById = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -55,7 +55,7 @@ export class AppointmentControllerDelegate {
             ErrorHandler.throwNotFoundError('Appointment with id ' + id.toString() + ' cannot be found!');
         }
         return this.getEnrichedDto(record);
-    }
+    };
 
     search = async (query: any) => {
         await validator.validateSearchRequest(query);
@@ -64,7 +64,7 @@ export class AppointmentControllerDelegate {
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
         return searchResults;
-    }
+    };
 
     update = async (id: uuid, requestBody: any) => {
         await validator.validateUpdateRequest(requestBody);
@@ -78,7 +78,7 @@ export class AppointmentControllerDelegate {
             throw new ApiError('Unable to update appointment!', 400);
         }
         return this.getEnrichedDto(updated);
-    }
+    };
 
     delete = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -89,7 +89,7 @@ export class AppointmentControllerDelegate {
         return {
             Deleted : appointmentDeleted
         };
-    }
+    };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -129,7 +129,7 @@ export class AppointmentControllerDelegate {
         }
 
         return filters;
-    }
+    };
 
     getUpdateModel = (requestBody): AppointmentUpdateModel => {
 
@@ -155,7 +155,7 @@ export class AppointmentControllerDelegate {
         }
 
         return updateModel;
-    }
+    };
 
     getCreateModel = (requestBody): AppointmentCreateModel => {
         return {
@@ -167,7 +167,7 @@ export class AppointmentControllerDelegate {
             Version         : requestBody.Version ? requestBody.Version : 'V1',
             OwnerUserId     : requestBody.OwnerUserId
         };
-    }
+    };
 
     getEnrichedDto = (record) => {
         if (record == null) {
@@ -184,7 +184,7 @@ export class AppointmentControllerDelegate {
             Tags            : JSON.parse(record.Tags),
             Version         : record.Version
         };
-    }
+    };
 
     getSearchDto = (record) => {
         if (record == null) {
@@ -202,7 +202,7 @@ export class AppointmentControllerDelegate {
             Version         : record.Version,
             CreatedAt       : record.CreatedAt,
         };
-    }
+    };
 
     //#endregion
 

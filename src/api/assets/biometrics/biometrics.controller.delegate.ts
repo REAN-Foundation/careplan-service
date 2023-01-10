@@ -47,7 +47,7 @@ export class BiometricsControllerDelegate {
         }
         record = await AssetHelper.updateAssetCode(record, this._service);
         return this.getEnrichedDto(record);
-    }
+    };
 
     getById = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -55,7 +55,7 @@ export class BiometricsControllerDelegate {
             ErrorHandler.throwNotFoundError('Biometrics with id ' + id.toString() + ' cannot be found!');
         }
         return this.getEnrichedDto(record);
-    }
+    };
 
     search = async (query: any) => {
         await validator.validateSearchRequest(query);
@@ -64,7 +64,7 @@ export class BiometricsControllerDelegate {
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
         return searchResults;
-    }
+    };
 
     update = async (id: uuid, requestBody: any) => {
         await validator.validateUpdateRequest(requestBody);
@@ -78,7 +78,7 @@ export class BiometricsControllerDelegate {
             throw new ApiError('Unable to update biometrics!', 400);
         }
         return this.getEnrichedDto(updated);
-    }
+    };
 
     delete = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -89,7 +89,7 @@ export class BiometricsControllerDelegate {
         return {
             Deleted : biometricsDeleted
         };
-    }
+    };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -133,7 +133,7 @@ export class BiometricsControllerDelegate {
         }
 
         return filters;
-    }
+    };
 
     getUpdateModel = (requestBody): BiometricsUpdateModel => {
 
@@ -162,7 +162,7 @@ export class BiometricsControllerDelegate {
         }
 
         return updateModel;
-    }
+    };
 
     getCreateModel = (requestBody): BiometricsCreateModel => {
         return {
@@ -175,7 +175,7 @@ export class BiometricsControllerDelegate {
             Version         : requestBody.Version ? requestBody.Version : 'V1',
             OwnerUserId     : requestBody.OwnerUserId
         };
-    }
+    };
 
     getEnrichedDto = (record) => {
         if (record == null) {
@@ -193,7 +193,7 @@ export class BiometricsControllerDelegate {
             Tags            : JSON.parse(record.Tags),
             Version         : record.Version
         };
-    }
+    };
 
     getSearchDto = (record) => {
         if (record == null) {
@@ -212,7 +212,7 @@ export class BiometricsControllerDelegate {
             Version         : record.Version,
             CreatedAt       : record.CreatedAt,
         };
-    }
+    };
 
     //#endregion
 

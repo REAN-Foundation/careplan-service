@@ -47,7 +47,7 @@ export class GoalControllerDelegate {
         }
         record = await AssetHelper.updateAssetCode(record, this._service);
         return this.getEnrichedDto(record);
-    }
+    };
 
     getById = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -55,7 +55,7 @@ export class GoalControllerDelegate {
             ErrorHandler.throwNotFoundError('Goal with id ' + id.toString() + ' cannot be found!');
         }
         return this.getEnrichedDto(record);
-    }
+    };
 
     search = async (query: any) => {
         await validator.validateSearchRequest(query);
@@ -64,7 +64,7 @@ export class GoalControllerDelegate {
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
         return searchResults;
-    }
+    };
 
     update = async (id: uuid, requestBody: any) => {
         await validator.validateUpdateRequest(requestBody);
@@ -78,7 +78,7 @@ export class GoalControllerDelegate {
             throw new ApiError('Unable to update goal!', 400);
         }
         return this.getEnrichedDto(updated);
-    }
+    };
 
     delete = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -89,14 +89,14 @@ export class GoalControllerDelegate {
         return {
             Deleted : goalDeleted
         };
-    }
+    };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
     //#region Privates
 
     getSearchFilters = (query) => {
-        
+
         var filters = Helper.getDefaultSearchFilters(query);
 
         var assetCode = query.assetCode ? query.assetCode : null;
@@ -125,7 +125,7 @@ export class GoalControllerDelegate {
         }
 
         return filters;
-    }
+    };
 
     getUpdateModel = (requestBody): GoalUpdateModel => {
 
@@ -148,7 +148,7 @@ export class GoalControllerDelegate {
         }
 
         return updateModel;
-    }
+    };
 
     getCreateModel = (requestBody): GoalCreateModel => {
         return {
@@ -159,7 +159,7 @@ export class GoalControllerDelegate {
             Version     : requestBody.Version ? requestBody.Version : 'V1',
             OwnerUserId : requestBody.OwnerUserId
         };
-    }
+    };
 
     getEnrichedDto = (record) => {
         if (record == null) {
@@ -175,7 +175,7 @@ export class GoalControllerDelegate {
             Tags          : JSON.parse(record.Tags),
             Version       : record.Version
         };
-    }
+    };
 
     getSearchDto = (record) => {
         if (record == null) {
@@ -192,7 +192,7 @@ export class GoalControllerDelegate {
             Version       : record.Version,
             CreatedAt     : record.CreatedAt,
         };
-    }
+    };
 
     //#endregion
 

@@ -45,7 +45,7 @@ export class ParticipantSelectedGoalControllerDelegate {
             throw new ApiError('Unable to create participant selected goal!', 400);
         }
         return this.getEnrichedDto(record);
-    }
+    };
 
     getById = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -53,7 +53,7 @@ export class ParticipantSelectedGoalControllerDelegate {
             ErrorHandler.throwNotFoundError('Participant selected goal with id ' + id.toString() + ' cannot be found!');
         }
         return this.getEnrichedDto(record);
-    }
+    };
 
     search = async (query: any) => {
         await validator.validateSearchRequest(query);
@@ -62,7 +62,7 @@ export class ParticipantSelectedGoalControllerDelegate {
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
         return searchResults;
-    }
+    };
 
     update = async (id: uuid, requestBody: any) => {
         await validator.validateUpdateRequest(requestBody);
@@ -76,7 +76,7 @@ export class ParticipantSelectedGoalControllerDelegate {
             throw new ApiError('Unable to update participant selected goal!', 400);
         }
         return this.getEnrichedDto(updated);
-    }
+    };
 
     delete = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -87,7 +87,7 @@ export class ParticipantSelectedGoalControllerDelegate {
         return {
             Deleted : participantSelectedGoalDeleted
         };
-    }
+    };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -151,7 +151,7 @@ export class ParticipantSelectedGoalControllerDelegate {
         }
 
         return filters;
-    }
+    };
 
     getUpdateModel = (requestBody): ParticipantSelectedGoalUpdateModel => {
 
@@ -195,7 +195,7 @@ export class ParticipantSelectedGoalControllerDelegate {
         }
 
         return updateModel;
-    }
+    };
 
     getCreateModel = (requestBody): ParticipantSelectedGoalCreateModel => {
         return {
@@ -212,7 +212,7 @@ export class ParticipantSelectedGoalControllerDelegate {
             StartDate          : requestBody.StartDate ? requestBody.StartDate : null,
             EndDate            : requestBody.EndDate ? requestBody.EndDate : null
         };
-    }
+    };
 
     getEnrichedDto = (record) => {
         if (record == null) {
@@ -234,7 +234,7 @@ export class ParticipantSelectedGoalControllerDelegate {
             EndDate            : record.EndDate,
             ProgressStatus     : record.ProgressStatus
         };
-    }
+    };
 
     getSearchDto = (record) => {
         if (record == null) {
@@ -256,8 +256,8 @@ export class ParticipantSelectedGoalControllerDelegate {
             EndDate            : record.EndDate,
             ProgressStatus     : record.ProgressStatus
         };
-    }
-    
+    };
+
     //#endregion
 
 }

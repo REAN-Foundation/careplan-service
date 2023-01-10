@@ -35,7 +35,7 @@ export class CareplanCategoryControllerDelegate {
             throw new ApiError('Unable to create careplan category!', 400);
         }
         return this.getEnrichedDto(record);
-    }
+    };
 
     getById = async (id: uuid) => {
         const record: CareplanCategoryDto = await this._service.getById(id);
@@ -43,7 +43,7 @@ export class CareplanCategoryControllerDelegate {
             ErrorHandler.throwNotFoundError('Careplan category with id ' + id.toString() + ' cannot be found!');
         }
         return this.getEnrichedDto(record);
-    }
+    };
 
     search = async (query: any) => {
         await validator.validateSearchRequest(query);
@@ -52,7 +52,7 @@ export class CareplanCategoryControllerDelegate {
         var items = searchResults.Items.map(x => this.getPublicDto(x));
         searchResults.Items = items;
         return searchResults;
-    }
+    };
 
     update = async (id: uuid, requestBody: any) => {
         await validator.validateUpdateRequest(requestBody);
@@ -66,7 +66,7 @@ export class CareplanCategoryControllerDelegate {
             throw new ApiError('Unable to update careplan category!', 400);
         }
         return this.getEnrichedDto(updated);
-    }
+    };
 
     delete = async (id: uuid) => {
         const record: CareplanCategoryDto = await this._service.getById(id);
@@ -77,7 +77,7 @@ export class CareplanCategoryControllerDelegate {
         return {
             Deleted : careplanCategoryDeleted
         };
-    }
+    };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -94,7 +94,7 @@ export class CareplanCategoryControllerDelegate {
             filters['Description'] = description;
         }
         return filters;
-    }
+    };
 
     getUpdateModel = (requestBody) => {
 
@@ -107,14 +107,14 @@ export class CareplanCategoryControllerDelegate {
             updateModel.Description = requestBody.Description;
         }
         return updateModel;
-    }
+    };
 
     getCreateModel = (requestBody): CareplanCategoryCreateModel => {
         return {
             Type        : requestBody.Type ? requestBody.Type : null,
             Description : requestBody.Description ? requestBody.Description : null
         };
-    }
+    };
 
     //This function returns a response DTO which is enriched with available resource data
 
@@ -127,7 +127,7 @@ export class CareplanCategoryControllerDelegate {
             Type        : record.Type,
             Description : record.Description
         };
-    }
+    };
 
     //This function returns a response DTO which has only public parameters
 
@@ -140,6 +140,6 @@ export class CareplanCategoryControllerDelegate {
             Type        : record.Type,
             Description : record.Description
         };
-    }
-    
+    };
+
 }

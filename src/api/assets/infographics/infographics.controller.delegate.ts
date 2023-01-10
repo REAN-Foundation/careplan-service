@@ -47,7 +47,7 @@ export class InfographicsControllerDelegate {
         }
         record = await AssetHelper.updateAssetCode(record, this._service);
         return this.getEnrichedDto(record);
-    }
+    };
 
     getById = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -55,7 +55,7 @@ export class InfographicsControllerDelegate {
             ErrorHandler.throwNotFoundError('Infographics with id ' + id.toString() + ' cannot be found!');
         }
         return this.getEnrichedDto(record);
-    }
+    };
 
     search = async (query: any) => {
         await validator.validateSearchRequest(query);
@@ -64,7 +64,7 @@ export class InfographicsControllerDelegate {
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
         return searchResults;
-    }
+    };
 
     update = async (id: uuid, requestBody: any) => {
         await validator.validateUpdateRequest(requestBody);
@@ -78,7 +78,7 @@ export class InfographicsControllerDelegate {
             throw new ApiError('Unable to update infographics!', 400);
         }
         return this.getEnrichedDto(updated);
-    }
+    };
 
     delete = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -89,7 +89,7 @@ export class InfographicsControllerDelegate {
         return {
             Deleted : infographicsDeleted
         };
-    }
+    };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -129,7 +129,7 @@ export class InfographicsControllerDelegate {
         }
 
         return filters;
-    }
+    };
 
     getUpdateModel = (requestBody): InfographicsUpdateModel => {
 
@@ -155,7 +155,7 @@ export class InfographicsControllerDelegate {
         }
 
         return updateModel;
-    }
+    };
 
     getCreateModel = (requestBody): InfographicsCreateModel => {
         return {
@@ -167,7 +167,7 @@ export class InfographicsControllerDelegate {
             Version     : requestBody.Version ? requestBody.Version : 'V1',
             OwnerUserId : requestBody.OwnerUserId
         };
-    }
+    };
 
     getEnrichedDto = (record) => {
         if (record == null) {
@@ -185,7 +185,7 @@ export class InfographicsControllerDelegate {
             Tags           : JSON.parse(record.Tags),
             Version        : record.Version
         };
-    }
+    };
 
     getSearchDto = (record) => {
         if (record == null) {
@@ -204,7 +204,7 @@ export class InfographicsControllerDelegate {
             Version        : record.Version,
             CreatedAt      : record.CreatedAt,
         };
-    }
+    };
 
     //#endregion
 

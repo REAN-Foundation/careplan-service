@@ -45,7 +45,7 @@ export class ParticipantSelectedPriorityControllerDelegate {
             throw new ApiError('Unable to create participant selected priority!', 400);
         }
         return this.getEnrichedDto(record);
-    }
+    };
 
     getById = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -53,7 +53,7 @@ export class ParticipantSelectedPriorityControllerDelegate {
             ErrorHandler.throwNotFoundError('Participant selected priority with id ' + id.toString() + ' cannot be found!');
         }
         return this.getEnrichedDto(record);
-    }
+    };
 
     search = async (query: any) => {
         await validator.validateSearchRequest(query);
@@ -62,7 +62,7 @@ export class ParticipantSelectedPriorityControllerDelegate {
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
         return searchResults;
-    }
+    };
 
     update = async (id: uuid, requestBody: any) => {
         await validator.validateUpdateRequest(requestBody);
@@ -76,7 +76,7 @@ export class ParticipantSelectedPriorityControllerDelegate {
             throw new ApiError('Unable to update participant selected priority!', 400);
         }
         return this.getEnrichedDto(updated);
-    }
+    };
 
     delete = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -87,7 +87,7 @@ export class ParticipantSelectedPriorityControllerDelegate {
         return {
             Deleted : participantSelectedPriorityDeleted
         };
-    }
+    };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -135,7 +135,7 @@ export class ParticipantSelectedPriorityControllerDelegate {
         }
 
         return filters;
-    }
+    };
 
     getUpdateModel = (requestBody): ParticipantSelectedPriorityUpdateModel => {
 
@@ -170,7 +170,7 @@ export class ParticipantSelectedPriorityControllerDelegate {
         }
 
         return updateModel;
-    }
+    };
 
     getCreateModel = (requestBody): ParticipantSelectedPriorityCreateModel => {
         return {
@@ -184,7 +184,7 @@ export class ParticipantSelectedPriorityControllerDelegate {
             AssetCode     : requestBody.AssetCode ? requestBody.AssetCode : null,
             StartDate     : requestBody.StartDate ? requestBody.StartDate : null
         };
-    }
+    };
 
     getEnrichedDto = (record) => {
         if (record == null) {
@@ -202,7 +202,7 @@ export class ParticipantSelectedPriorityControllerDelegate {
             AssetCode     : record.AssetCode,
             StartDate     : record.StartDate
         };
-    }
+    };
 
     getSearchDto = (record) => {
         if (record == null) {
@@ -220,7 +220,7 @@ export class ParticipantSelectedPriorityControllerDelegate {
             AssetCode     : record.AssetCode,
             StartDate     : record.StartDate
         };
-    }
+    };
 
     //#endregion
 

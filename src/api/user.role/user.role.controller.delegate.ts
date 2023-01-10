@@ -45,7 +45,7 @@ export class UserRoleControllerDelegate {
             throw new ApiError('Unable to create user role!', 400);
         }
         return this.getEnrichedDto(record);
-    }
+    };
 
     getById = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -53,7 +53,7 @@ export class UserRoleControllerDelegate {
             ErrorHandler.throwNotFoundError('User role with id ' + id.toString() + ' cannot be found!');
         }
         return this.getEnrichedDto(record);
-    }
+    };
 
     search = async (query: any) => {
         await validator.validateSearchRequest(query);
@@ -62,7 +62,7 @@ export class UserRoleControllerDelegate {
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
         return searchResults;
-    }
+    };
 
     update = async (id: uuid, requestBody: any) => {
         await validator.validateUpdateRequest(requestBody);
@@ -76,7 +76,7 @@ export class UserRoleControllerDelegate {
             throw new ApiError('Unable to update user role!', 400);
         }
         return this.getEnrichedDto(updated);
-    }
+    };
 
     delete = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -87,7 +87,7 @@ export class UserRoleControllerDelegate {
         return {
             Deleted : userRoleDeleted
         };
-    }
+    };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -107,7 +107,7 @@ export class UserRoleControllerDelegate {
         }
 
         return filters;
-    }
+    };
 
     getUpdateModel = (requestBody): UserRoleUpdateModel => {
 
@@ -121,14 +121,14 @@ export class UserRoleControllerDelegate {
         }
 
         return updateModel;
-    }
+    };
 
     getCreateModel = (requestBody): UserRoleCreateModel => {
         return {
             UserId : requestBody.UserId ? requestBody.UserId : null,
             RoleId : requestBody.RoleId ? requestBody.RoleId : null
         };
-    }
+    };
 
     getEnrichedDto = (record) => {
         if (record == null) {
@@ -139,7 +139,7 @@ export class UserRoleControllerDelegate {
             UserId : record.UserId,
             RoleId : record.RoleId
         };
-    }
+    };
 
     getSearchDto = (record) => {
         if (record == null) {
@@ -150,7 +150,7 @@ export class UserRoleControllerDelegate {
             UserId : record.UserId,
             RoleId : record.RoleId
         };
-    }
+    };
 
     //#endregion
 
