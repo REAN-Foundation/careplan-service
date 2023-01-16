@@ -39,7 +39,7 @@ export class ArticleModel {
         },
         Summary : {
             type      : DataTypes.TEXT,
-            allowNull : false
+            allowNull : true
         },
         Url : {
             type      : DataTypes.TEXT,
@@ -70,7 +70,6 @@ export class ArticleModel {
             allowNull    : false,
             defaultValue : 'V1'
         },
-
         CreatedAt : DataTypes.DATE,
         UpdatedAt : DataTypes.DATE,
         DeletedAt : DataTypes.DATE

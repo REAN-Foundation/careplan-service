@@ -40,7 +40,7 @@ export class ConsultationModel {
         },
         Description : {
             type      : DataTypes.TEXT,
-            allowNull : false
+            allowNull : true
         },
         ConsultationType : {
             type         : DataTypes.ENUM({ values: ConsultationTypeList }),

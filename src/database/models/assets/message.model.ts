@@ -40,7 +40,7 @@ export class MessageModel {
         },
         Description : {
             type      : DataTypes.TEXT,
-            allowNull : false
+            allowNull : true
         },
         Category : {
             type         : DataTypes.STRING(128),

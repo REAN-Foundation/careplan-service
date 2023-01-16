@@ -39,7 +39,7 @@ export class PhysiotherapyModel {
         },
         Description : {
             type      : DataTypes.TEXT,
-            allowNull : false
+            allowNull : true
         },
         RecommendedDurationMin : {
             type         : DataTypes.INTEGER,
