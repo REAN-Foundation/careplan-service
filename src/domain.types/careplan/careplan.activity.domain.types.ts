@@ -32,7 +32,7 @@ export interface CareplanActivityDto {
     Day                   : number;
     TimeSlot              : TimeSlot;
     IsRegistrationActivity: boolean;
-    Code               : CareplanDto[];
+    Code                  : CareplanDto[];
 }
 
 export interface CareplanActivitySearchFilters extends BaseSearchFilters {
