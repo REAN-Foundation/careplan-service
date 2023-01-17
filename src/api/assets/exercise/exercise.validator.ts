@@ -12,7 +12,7 @@ export class ExerciseValidator {
             const schema = joi.object({
                 AssetCode              : joi.string().max(256).optional(),
                 Name                   : joi.string().max(256).optional(),
-                Description            : joi.string().optional(),
+                Description            : joi.string().optional().allow(null, ''),
                 ExerciseType           : joi.string().valid("Strength", "Aerobic", "Balance", "Reflexes", "Flexibility").optional(),
                 IntensityLevel         : joi.string().valid("None", "Minimal", "Moderate", "Somewhat hard", "Hard", "Harder", "Very hard", "Extremely hard", "Maximum effort").optional(),
                 RecommendedDurationMin : joi.number().integer().optional(),
@@ -33,7 +33,7 @@ export class ExerciseValidator {
             const schema = joi.object({
                 AssetCode              : joi.string().max(256).optional(),
                 Name                   : joi.string().max(256).optional(),
-                Description            : joi.string().optional(),
+                Description            : joi.string().optional().allow(null, ''),
                 ExerciseType           : joi.string().valid("Strength", "Aerobic", "Balance", "Reflexes", "Flexibility").optional(),
                 IntensityLevel         : joi.string().valid("None", "Minimal", "Moderate", "Somewhat hard", "Hard", "Harder", "Very hard", "Extremely hard", "Maximum effort").optional(),
                 RecommendedDurationMin : joi.number().integer().optional(),

@@ -12,10 +12,10 @@ export class MessageValidator {
             const schema = joi.object({
                 AssetCode   : joi.string().max(256).optional().allow(null),
                 Name        : joi.string().optional(),
-                Description : joi.string().optional(),
+                Description : joi.string().optional().allow(null, ''),
                 MessageType : joi.string().valid("Educational", "Status", "Unknown").optional(),
                 Tags        : joi.array().items(joi.string()).optional(),
-                Url         : joi.string().optional(),
+                Url         : joi.string().optional().allow(null, ''),
                 Version     : joi.string().max(128).optional(),
                 OwnerUserId : joi.string().guid({
                     version : ['uuidv4']
@@ -32,10 +32,10 @@ export class MessageValidator {
             const schema = joi.object({
                 AssetCode   : joi.string().max(256).optional(),
                 Name        : joi.string().optional(),
-                Description : joi.string().optional(),
+                Description : joi.string().optional().allow(null, ''),
                 MessageType : joi.string().valid("Educational", "Status", "Unknown").optional(),
                 Tags        : joi.array().items(joi.string()).optional(),
-                Url         : joi.string().optional(),
+                Url         : joi.string().optional().allow(null, ''),
                 Version     : joi.string().max(128).optional()
             });
             return await schema.validateAsync(requestBody);

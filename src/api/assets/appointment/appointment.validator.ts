@@ -12,7 +12,7 @@ export class AppointmentValidator {
             const schema = joi.object({
                 AssetCode       : joi.string().max(256).optional(),
                 Name            : joi.string().max(256).optional(),
-                Description     : joi.string().optional(),
+                Description     : joi.string().optional().allow(null, ''),
                 AppointmentType : joi.string().valid("Doctor", "Lab", "Physiotherapy", "Other").optional(),
                 Tags            : joi.array().items(joi.string()).optional(),
                 Version         : joi.string().max(128).optional(),

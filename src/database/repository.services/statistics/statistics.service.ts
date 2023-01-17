@@ -261,10 +261,10 @@ export class StatisticsService {
                     (actionPlan_.count) + (animation_.count) + (appointment_.count) + (article_.count) +
                     (assessment_.count) + (audio_.count) + (biometrics_.count) + (challenge_.count) +
                     (checkup_.count) + (consultation_.count) + (exercise_.count) + (goal_.count) +
-                    (medication_.count) + (meditation_.count) +  (message_.count) +
+                    (infographics_.count) + (medication_.count) + (meditation_.count) +  (message_.count) +
                     (nutrition_.count) + (physiotherapy_.count) + (priority_.count) +
                     (reflection_.count) + (reminder_.count) +  (video_.count) +
-                   (webLink_.count) + (webNewsfeed_.count) + (wordPower_.count)
+                    (webLink_.count) + (webNewsfeed_.count) + (wordPower_.count)
                 );
 
                 const accumulativeAssetsDaily = accumlativeData(assets);
