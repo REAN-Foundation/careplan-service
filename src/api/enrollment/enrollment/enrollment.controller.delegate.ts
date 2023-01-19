@@ -337,6 +337,7 @@ export class EnrollmentControllerDelegate {
             CareplanId     : record.CareplanId,
             PlanCode       : record.PlanCode,
             ParticipantId  : record.ParticipantId,
+            DisplayId      : record.DisplayId,
             Asset          : record.Asset,
             StartDate      : record.StartDate,
             EndDate        : record.EndDate,

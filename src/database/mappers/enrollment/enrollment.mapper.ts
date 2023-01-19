@@ -14,6 +14,7 @@ export class EnrollmentMapper {
             id             : enrollment.id,
             CareplanId     : enrollment.CareplanId,
             ParticipantId  : enrollment.ParticipantId,
+            DisplayId      : enrollment.DisplayId,
             StartDate      : enrollment.StartDate,
             EndDate        : enrollment.EndDate,
             EnrollmentDate : enrollment.EnrollmentDate,

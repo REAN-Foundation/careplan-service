@@ -35,14 +35,15 @@ export interface EnrollmentDto {
     CareplanId    : uuid;
     PlanCode?     : string;
     ParticipantId : uuid;
+    DisplayId     : string;
     StartDate     : Date;
     EndDate       : Date;
     EnrollmentDate: Date;
     WeekOffset   ?: number;
     DayOffset    ?: number;
     ProgressStatus: ProgressStatus;
-    Careplan       : CareplanDto[];
-    Participant    : ParticipantDto[];
+    Careplan      : CareplanDto[];
+    Participant   : ParticipantDto[];
 }
 
 export interface EnrollmentSearchFilters extends BaseSearchFilters {
