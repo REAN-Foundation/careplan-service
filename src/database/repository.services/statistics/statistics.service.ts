@@ -43,6 +43,8 @@ import { VideoModel } from '../../../database/models/assets/video.model';
 import { WebLinkModel } from '../../../database/models/assets/web.link.model';
 import { WebNewsfeedModel } from '../../../database/models/assets/web.newsfeed.model';
 import { WordPowerModel } from '../../../database/models/assets/word.power.model';
+import { TimeHelper } from '../../../common/time.helper';
+import { DurationType } from '../../../domain.types/miscellaneous/time.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -121,66 +123,57 @@ export class StatisticsService {
                 //for careplan stats
                 const careplanResults_ = await this.Careplan.findAndCountAll();
                 const careplanResults = careplanResults_.rows;
-                const accumulativeCareplanDaily = accumlativeData(careplanResults);
-                const incrementalCareplanDaily = incrementalData(careplanResults);
-
+                const accumulativeCareplanDaily = statisticsData(careplanResults);
+            
                 const careplanStatistics = {
-                    TotalCareplans   : careplanResults_.count,
-                    IncrementalDaily : incrementalCareplanDaily,
-                    AccumlativeDaily : accumulativeCareplanDaily,
+                    TotalCareplans : careplanResults_.count,
+                    CareplansDaily : accumulativeCareplanDaily,
                     
                 };
                 
                 // for api clients stats
                 const apiClientResults_ = await this.ApiClient.findAndCountAll();
                 const apiClientResults = apiClientResults_.rows;
-                const accumulativeApiClientDaily = accumlativeData(apiClientResults);
-                const incrementalApiClientDaily = incrementalData(apiClientResults);
+                const accumulativeApiClientDaily = statisticsData(apiClientResults);
                 const apiclientStatistics = {
-                    TotalApiClients  : apiClientResults_.count,
-                    IncrementalDaily : incrementalApiClientDaily ,
-                    AccumlativeDaily : accumulativeApiClientDaily,
+                    TotalApiClients : apiClientResults_.count,
+                    ApiClientsDaily : accumulativeApiClientDaily,
   
                 };
 
                 // for participant stats
                 const participantsResults_ = await this.Participant.findAndCountAll();
                 const participantsResults = participantsResults_.rows;
-                const accumulativeParticipantDaily = accumlativeData(participantsResults);
-                const incrementalParticipantDaily = incrementalData(participantsResults);
-                const participantsStatistics = {
+                const accumulativeParticipantDaily = statisticsData(participantsResults);
+                const participantStatistics = {
                     TotalParticipants : participantsResults_.count,
-                    IncrementalDaily  : incrementalParticipantDaily,
-                    AccumlativeDaily  : accumulativeParticipantDaily,
+                    ParticipantsDaily : accumulativeParticipantDaily,
                     
                 };
 
                 // for enrollment stats
                 const enrollmentResults_ = await this.Enrollment.findAndCountAll();
                 const enrollmentResults = enrollmentResults_.rows;
-                const accumulativeEnrollmentDaily = accumlativeData(enrollmentResults);
-                const incrementalEnrollmentDaily = incrementalData(enrollmentResults);
+                const accumulativeEnrollmentDaily = statisticsData(enrollmentResults);
+               
                 const enrollmentStatistics = {
                     TotalEnrollments : enrollmentResults_.count,
-                    IncrementalDaily : incrementalEnrollmentDaily,
-                    AccumlativeDaily : accumulativeEnrollmentDaily
+                    EnrollmentsDaily : accumulativeEnrollmentDaily
                 };
 
                 // for active enrollment stats
                 const activeEnrollments = enrollmentResults.filter(x =>x.EndDate.getTime() >= new Date());
                 const totalActiveEnrollments = activeEnrollments.length;
-                const accumulativeActiveEnrollmentDaily = accumlativeData(activeEnrollments);
-                const incrementalActiveEnrollmentDaily = incrementalData(activeEnrollments);
-                const activeEnrollmentsStatistics = {
+                const accumulativeActiveEnrollmentDaily = statisticsData(activeEnrollments);
+                const activeEnrollmentStatistics = {
                     TotalActiveEnrollments : totalActiveEnrollments,
-                    IncrementalDaily       : accumulativeActiveEnrollmentDaily,
-                    AccumlativeDaily       : incrementalActiveEnrollmentDaily,
+                    ActiveEnrollmentsDaily : accumulativeActiveEnrollmentDaily,
+                
                 };
 
                 // for assets stats
                 const actionPlan_ = await this.ActionPlan.findAndCountAll();
                 const actionPlan  = actionPlan_.rows;
-                // console.log(`Enrollments = ${JSON.stringify(actionPlan)}`);
                 const animation_ = await this.Animation.findAndCountAll();
                 const animation = animation_.rows;
                 const appointment_ = await this.Appointment.findAndCountAll();
@@ -267,24 +260,32 @@ export class StatisticsService {
                     (webLink_.count) + (webNewsfeed_.count) + (wordPower_.count)
                 );
 
-                const accumulativeAssetsDaily = accumlativeData(assets);
-                const incrementalAssetsDaily = incrementalData(assets);
-                // const assetTypes = AssetTypeList;
+                const accumulativeAssetsDaily = statisticsData(assets);
                 const assetsStatistics = {
-                    TotalAssets      : totalAssetsCount,
-                    IncrementalDaily : accumulativeAssetsDaily,
-                    AccumlativeDaily : incrementalAssetsDaily,
+                    TotalAssets : totalAssetsCount,
+                    AssetsDaily : accumulativeAssetsDaily ,
+                    
+                };
+                
+                const enrollmentTasks_ = await this.EnrollmentTask.findAndCountAll();
+                const enrollmentTasks = enrollmentTasks_.rows;
+                const ParticipantActivityResponse_ = await this.ParticipantActivityResponse.findAndCountAll();
+                const ParticipantActivityResponse = ParticipantActivityResponse_ .rows;
+                const userEngagementDaily = userEngagement(enrollmentTasks,ParticipantActivityResponse);
+
+                const userEngagementSattistics = {
+                    UserEngagementDaily : userEngagementDaily,
                       
                 };
 
                 const dashboardStats = {
                     CareplanStatistics         : careplanStatistics,
                     ApiclientStatistics        : apiclientStatistics,
-                    ParticipantStatistics      : participantsStatistics,
+                    ParticipantStatistics      : participantStatistics,
                     EnrollmentStatistics       : enrollmentStatistics,
-                    ActiveEnrollmentStatistics : activeEnrollmentsStatistics,
+                    ActiveEnrollmentStatistics : activeEnrollmentStatistics,
                     AssetsStatistics           : assetsStatistics,
-
+                    UserEngagementSattistics   : userEngagementSattistics,
                 };
 
                 return dashboardStats;
@@ -297,118 +298,73 @@ export class StatisticsService {
 
 }
 
-const accumlativeData = (retrivedData) => {
+const statisticsData = (retrievedData) => {
     try {
-        const createdAtDate: Date[] = [];
-        (retrivedData).forEach((item) => {
-            createdAtDate.push(new Date(item.CreatedAt));
-        });
-        const accumulativeDaily: { x: Date; y: number }[] = [];
-        const uniqueDate: Date[] = [];
-        let flag = 0;
-        createdAtDate.forEach((item) => {
-            const d = new Date(item);
-            d.setUTCHours(0, 0, 0, 0);
-            uniqueDate.forEach((j) => {
-                const p = new Date(j);
-                p.setUTCHours(0, 0, 0, 0);
-                if (p.getTime() === d.getTime()) {
-                    flag = 1;
-                }
+        const { minDate, maxDate } = getMinMaxDates(retrievedData);
+        var d = minDate;
+        var itemCounts = [];
+        while (d < maxDate)
+        {
+            var dStart = d;
+            var dEnd = TimeHelper.addDuration(d, 24, DurationType.Hour);
+            var itemsForDay = retrievedData.filter(x => x.CreatedAt >= dStart && x.CreatedAt < dEnd);
+            var incrementalItemCount = itemsForDay.length; //Count for the day
+            var itemsTillDay = retrievedData.filter(x => x.CreatedAt >= minDate && x.CreatedAt < dEnd);
+            var accumulativeItemCount = itemsTillDay.length;
+            itemCounts.push({
+                Day: d,
+                Incremental: incrementalItemCount,
+                Accumulative: accumulativeItemCount
             });
-            if (flag === 0) {
-                uniqueDate.push(d);
-                flag = 0;
-            }
-        });
-        uniqueDate.sort((a: Date, b: Date) => {
-            return a.getTime() - b.getTime();
-        });
-        const startDate = new Date(uniqueDate[0]);
-        const endDate = new Date(uniqueDate[uniqueDate.length - 1]);
-        let count = 0;
-        while (startDate.getTime() <= endDate.getTime()) {
-            let temp = new Date(startDate);
-            createdAtDate.forEach(() => {
-                createdAtDate.forEach((i) => {
-                    const c = new Date(i);
-                    c.setUTCHours(0, 0, 0, 0);
-                    if (c.getTime() === temp.getTime()) {
-                        count++;
-                    }
-                });
-                accumulativeDaily.push({
-                    x : temp,
-                    y : count,
-                });
-                count = 0;
-                startDate.setUTCDate(startDate.getUTCDate() + 1);
-                temp = new Date(startDate);
-                
-            });
+            d = TimeHelper.addDuration(d, 24, DurationType.Hour);
         }
-        return accumulativeDaily;
+        return itemCounts;
     }
     catch (err){
         ErrorHandler.throwDbAccessError('DB Error: Unable to search records!', err);
     }
 };
 
-const incrementalData = (retrivedData) => {
+const userEngagement = (enrollmentTasks, ParticipantActivityResponse) => {
     try {
-        const createdAtDate: Date[] = [];
-        (retrivedData).forEach((item) => {
-            createdAtDate.push(new Date(item.CreatedAt));
-        });
-        const incrementalDaily: { x: Date; y: number }[] = [];
-        const uniqueDate: Date[] = [];
-        let flag = 0;
-        createdAtDate.forEach((item) => {
-            const d = new Date(item);
-            d.setUTCHours(0, 0, 0, 0);
-            uniqueDate.forEach((j) => {
-                const p = new Date(j);
-                p.setUTCHours(0, 0, 0, 0);
-                if (p.getTime() === d.getTime()) {
-                    flag = 1;
-                }
+        var { minDate, maxDate } = getMinMaxDates(enrollmentTasks);
+        var d = minDate;
+        var itemCounts = [];
+        while (d < maxDate)
+        {
+            var dStart = d;
+            var dEnd = TimeHelper.addDuration(d, 24, DurationType.Hour);
+            var itemsForDay = enrollmentTasks.filter(x => x.ScheduledDate >= dStart && x.ScheduledDate < dEnd);
+            var enrollmentTasksCount = itemsForDay.length; //Count for the day
+            var itemsForDay =
+            ParticipantActivityResponse.filter(x => x.TimeResponded >= dStart && x.TimeResponded < dEnd);
+            var ParticipantActivityResponseCount = itemsForDay.length;
+            const userEngagement = (ParticipantActivityResponseCount / enrollmentTasksCount);
+            itemCounts.push({
+                Day: d,
+                UserEngagementDaily: userEngagement,
             });
-            if (flag === 0) {
-                uniqueDate.push(d);
-                flag = 0;
-            }
-        });
-        uniqueDate.sort((a: Date, b: Date) => {
-            return a.getTime() - b.getTime();
-        });
-        const start1 = new Date(uniqueDate[0]);
-        const end1 = new Date(uniqueDate[uniqueDate.length - 1]);
-        let count = 0;
-        
-        while (start1.getTime() <= end1.getTime()) {
-            let temp = new Date(start1);
-            createdAtDate.forEach(() => {
-                createdAtDate.forEach((i) => {
-                    const c = new Date(i);
-                    c.setUTCHours(0, 0, 0, 0);
-                    if (c.getTime() === temp.getTime()) {
-                        count++;
-                    }
-                });
-                incrementalDaily.push({
-                    x : temp,
-                    y : count,
-                });
-                const y = count;
-                count = y;
-                start1.setUTCDate(start1.getUTCDate() + 1);
-                temp = new Date(start1);
-                
-            });
+            d = TimeHelper.addDuration(d, 24, DurationType.Hour);
         }
-        return incrementalDaily;
+        return itemCounts;
     }
     catch (err){
         ErrorHandler.throwDbAccessError('DB Error: Unable to search records!', err);
     }
 };
+
+function getMinMaxDates(retrievedData: any) {
+    const dates = retrievedData.map(x => new Date(x.CreatedAt).getTime());
+    const minDate_ = Math.min(...dates);
+    var minDate = new Date();
+    if (minDate_) {
+        var temp = new Date(minDate_).setUTCHours(0, 0, 0, 0);
+        minDate = new Date(temp);
+    }
+
+    const maxDate_ = new Date().setUTCHours(0, 0, 0, 0);
+    const maxDate = new Date(maxDate_);
+
+    return { minDate, maxDate };
+}
+
