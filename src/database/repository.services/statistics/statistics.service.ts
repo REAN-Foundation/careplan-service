@@ -294,7 +294,7 @@ export class StatisticsService {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search enrollment records!', error);
         }
    
-    }
+    };
 
 }
 
