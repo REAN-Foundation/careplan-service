@@ -49,6 +49,9 @@ export interface EnrollmentDto {
 export interface EnrollmentSearchFilters extends BaseSearchFilters {
     CareplanId     ?: uuid;
     ProgressStatus ?: ProgressStatus;
+    DisplayId     ?: string;
+    StartDate     ?: Date;
+    EndDate       ?: Date;
 }
 
 export interface EnrollmentSearchResults extends BaseSearchResults {

@@ -262,7 +262,19 @@ export class EnrollmentControllerDelegate {
         if (progressStatus != null) {
             filters['ProgressStatus'] = progressStatus;
         }
+        var displayId = query.displayId ? query.displayId : null;
+        if (displayId != null) {
+            filters['DisplayId'] = displayId;
+        }
+        var startDate = query.startDate ? query.startDate : null;
+        if (startDate != null) {
+            filters['StartDate'] = startDate;
+        }
 
+        var endDate = query.endDate ? query.endDate : null;
+        if (endDate != null) {
+            filters['EndDate'] = endDate;
+        }
         return filters;
     };
 
@@ -345,8 +357,8 @@ export class EnrollmentControllerDelegate {
             WeekOffset     : record.WeekOffset,
             DayOffset      : record.DayOffset,
             ProgressStatus : record.ProgressStatus,
-            Careplan       :record.Careplan,
-            Participant     :record.Participant,
+            Careplan       : record.Careplan,
+            Participant    : record.Participant,
 
         };
     }

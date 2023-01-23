@@ -233,6 +233,16 @@ export class EnrollmentService {
         if (filters.ProgressStatus) {
             search.where['ProgressStatus'] = filters.ProgressStatus;
         }
+        if (filters.DisplayId) {
+            search.where['DisplayId'] = filters.DisplayId;
+        }
+        if (filters.StartDate) {
+            search.where['StartDate'] = filters.StartDate;
+        }
+        if (filters.EndDate) {
+            search.where['EndDate'] = filters.EndDate;
+        }
+
         const includeCareplanAsCareplan = {
             model    : this.Careplan,
             required : true,
