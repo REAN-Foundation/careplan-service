@@ -120,7 +120,8 @@ export class EnrollmentTaskControllerDelegate {
             CareplanId             : record.CareplanId,
             TimeSlot               : record.TimeSlot,
             ScheduledDate          : record.ScheduledDate,
-            IsRegistrationActivity : record.IsRegistrationActivity
+            IsRegistrationActivity : record.IsRegistrationActivity,
+            CreatedAt              : record.CreatedAt,
         };
     };
 
