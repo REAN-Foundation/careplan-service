@@ -43,6 +43,8 @@ import { VideoModel } from '../../../database/models/assets/video.model';
 import { WebLinkModel } from '../../../database/models/assets/web.link.model';
 import { WebNewsfeedModel } from '../../../database/models/assets/web.newsfeed.model';
 import { WordPowerModel } from '../../../database/models/assets/word.power.model';
+import { TimeHelper } from '../../../common/time.helper';
+import { DurationType } from '../../../domain.types/miscellaneous/time.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -116,121 +118,112 @@ export class StatisticsService {
 
     //#endregion
 
-        getDashboardStats = async () => {
-            try {
-                //for careplan stats
-                const careplanResults_ = await this.Careplan.findAndCountAll();
-                const careplanResults = careplanResults_.rows;
-                const accumulativeCareplanDaily = accumlativeData(careplanResults);
-                const incrementalCareplanDaily = incrementalData(careplanResults);
-
-                const careplanStatistics = {
-                    TotalCareplans   : careplanResults_.count,
-                    IncrementalDaily : incrementalCareplanDaily,
-                    AccumlativeDaily : accumulativeCareplanDaily,
+    getDashboardStats = async () => {
+        try {
+            //for careplan stats
+            const careplanResults_ = await this.Careplan.findAndCountAll();
+            const careplanResults = careplanResults_.rows;
+            const accumulativeCareplanDaily = statisticsData(careplanResults);
+            
+            const careplanStatistics = {
+                TotalCareplans : careplanResults_.count,
+                CareplansDaily : accumulativeCareplanDaily,
                     
-                };
+            };
                 
-                // for api clients stats
-                const apiClientResults_ = await this.ApiClient.findAndCountAll();
-                const apiClientResults = apiClientResults_.rows;
-                const accumulativeApiClientDaily = accumlativeData(apiClientResults);
-                const incrementalApiClientDaily = incrementalData(apiClientResults);
-                const apiclientStatistics = {
-                    TotalApiClients  : apiClientResults_.count,
-                    IncrementalDaily : incrementalApiClientDaily ,
-                    AccumlativeDaily : accumulativeApiClientDaily,
+            // for api clients stats
+            const apiClientResults_ = await this.ApiClient.findAndCountAll();
+            const apiClientResults = apiClientResults_.rows;
+            const accumulativeApiClientDaily = statisticsData(apiClientResults);
+            const apiclientStatistics = {
+                TotalApiClients : apiClientResults_.count,
+                ApiClientsDaily : accumulativeApiClientDaily,
   
-                };
+            };
 
-                // for participant stats
-                const participantsResults_ = await this.Participant.findAndCountAll();
-                const participantsResults = participantsResults_.rows;
-                const accumulativeParticipantDaily = accumlativeData(participantsResults);
-                const incrementalParticipantDaily = incrementalData(participantsResults);
-                const participantsStatistics = {
-                    TotalParticipants : participantsResults_.count,
-                    IncrementalDaily  : incrementalParticipantDaily,
-                    AccumlativeDaily  : accumulativeParticipantDaily,
+            // for participant stats
+            const participantsResults_ = await this.Participant.findAndCountAll();
+            const participantsResults = participantsResults_.rows;
+            const accumulativeParticipantDaily = statisticsData(participantsResults);
+            const participantStatistics = {
+                TotalParticipants : participantsResults_.count,
+                ParticipantsDaily : accumulativeParticipantDaily,
                     
-                };
+            };
 
-                // for enrollment stats
-                const enrollmentResults_ = await this.Enrollment.findAndCountAll();
-                const enrollmentResults = enrollmentResults_.rows;
-                const accumulativeEnrollmentDaily = accumlativeData(enrollmentResults);
-                const incrementalEnrollmentDaily = incrementalData(enrollmentResults);
-                const enrollmentStatistics = {
-                    TotalEnrollments : enrollmentResults_.count,
-                    IncrementalDaily : incrementalEnrollmentDaily,
-                    AccumlativeDaily : accumulativeEnrollmentDaily
-                };
+            // for enrollment stats
+            const enrollmentResults_ = await this.Enrollment.findAndCountAll();
+            const enrollmentResults = enrollmentResults_.rows;
+            const accumulativeEnrollmentDaily = statisticsData(enrollmentResults);
+               
+            const enrollmentStatistics = {
+                TotalEnrollments : enrollmentResults_.count,
+                EnrollmentsDaily : accumulativeEnrollmentDaily
+            };
 
-                // for active enrollment stats
-                const activeEnrollments = enrollmentResults.filter(x =>x.EndDate.getTime() >= new Date());
-                const totalActiveEnrollments = activeEnrollments.length;
-                const accumulativeActiveEnrollmentDaily = accumlativeData(activeEnrollments);
-                const incrementalActiveEnrollmentDaily = incrementalData(activeEnrollments);
-                const activeEnrollmentsStatistics = {
-                    TotalActiveEnrollments : totalActiveEnrollments,
-                    IncrementalDaily       : accumulativeActiveEnrollmentDaily,
-                    AccumlativeDaily       : incrementalActiveEnrollmentDaily,
-                };
+            // for active enrollment stats
+            const activeEnrollments = enrollmentResults.filter(x =>x.EndDate.getTime() >= new Date());
+            const totalActiveEnrollments = activeEnrollments.length;
+            const accumulativeActiveEnrollmentDaily = statisticsData(activeEnrollments);
+            const activeEnrollmentStatistics = {
+                TotalActiveEnrollments : totalActiveEnrollments,
+                ActiveEnrollmentsDaily : accumulativeActiveEnrollmentDaily,
+                
+            };
 
-                // for assets stats
-                const actionPlan_ = await this.ActionPlan.findAndCountAll();
-                const actionPlan  = actionPlan_.rows;
-                // console.log(`Enrollments = ${JSON.stringify(actionPlan)}`);
-                const animation_ = await this.Animation.findAndCountAll();
-                const animation = animation_.rows;
-                const appointment_ = await this.Appointment.findAndCountAll();
-                const appointment = appointment_.rows;
-                const article_ = await this.Article.findAndCountAll();
-                const article = article_.rows;
-                const assessment_ = await this.Assessment.findAndCountAll();
-                const assessment = assessment_.rows;
-                const audio_ = await this.Audio.findAndCountAll();
-                const audio = audio_.rows;
-                const biometrics_ = await this.Biometrics.findAndCountAll();
-                const biometrics = biometrics_.rows;
-                const challenge_ = await this.Challenge.findAndCountAll();
-                const challenge = challenge_.rows;
-                const checkup_ = await this.Checkup.findAndCountAll();
-                const checkup = checkup_.rows;
-                const consultation_ = await this.Consultation.findAndCountAll();
-                const consultation = consultation_.rows;
-                const exercise_ = await this.Exercise.findAndCountAll();
-                const exercise = exercise_.rows;
-                const goal_ = await this.Goal.findAndCountAll();
-                const goal  = goal_.rows;
-                const infographics_ = await this.Infographics.findAndCountAll();
-                const infographics = infographics_.rows;
-                const medication_ = await this.Medication.findAndCountAll();
-                const medication = medication_.rows;
-                const meditation_ = await this.Meditation.findAndCountAll();
-                const meditation = meditation_.rows;
-                const message_ = await this.Message.findAndCountAll();
-                const message = message_.rows;
-                const nutrition_ = await this.Nutrition.findAndCountAll();
-                const nutrition = nutrition_.rows;
-                const physiotherapy_ = await this.Physiotherapy.findAndCountAll();
-                const physiotherapy = physiotherapy_.rows;
-                const priority_ = await this.Priority.findAndCountAll();
-                const priority = priority_.rows;
-                const reflection_ = await this.Reflection.findAndCountAll();
-                const reflection = reflection_.rows;
-                const reminder_ = await this.Reminder.findAndCountAll();
-                const reminder = reminder_.rows;
-                const video_ = await this.Video.findAndCountAll();
-                const video = video_.rows;
-                const webLink_ = await this.WebLink.findAndCountAll();
-                const webLink = webLink_.rows;
-                const webNewsfeed_ = await this.WebNewsfeed.findAndCountAll();
-                const webNewsfeed = webNewsfeed_.rows;
-                const wordPower_ = await this.WordPower.findAndCountAll();
-                const wordPower = wordPower_.rows;
+            // for assets stats
+            const actionPlan_ = await this.ActionPlan.findAndCountAll();
+            const actionPlan  = actionPlan_.rows;
+            const animation_ = await this.Animation.findAndCountAll();
+            const animation = animation_.rows;
+            const appointment_ = await this.Appointment.findAndCountAll();
+            const appointment = appointment_.rows;
+            const article_ = await this.Article.findAndCountAll();
+            const article = article_.rows;
+            const assessment_ = await this.Assessment.findAndCountAll();
+            const assessment = assessment_.rows;
+            const audio_ = await this.Audio.findAndCountAll();
+            const audio = audio_.rows;
+            const biometrics_ = await this.Biometrics.findAndCountAll();
+            const biometrics = biometrics_.rows;
+            const challenge_ = await this.Challenge.findAndCountAll();
+            const challenge = challenge_.rows;
+            const checkup_ = await this.Checkup.findAndCountAll();
+            const checkup = checkup_.rows;
+            const consultation_ = await this.Consultation.findAndCountAll();
+            const consultation = consultation_.rows;
+            const exercise_ = await this.Exercise.findAndCountAll();
+            const exercise = exercise_.rows;
+            const goal_ = await this.Goal.findAndCountAll();
+            const goal  = goal_.rows;
+            const infographics_ = await this.Infographics.findAndCountAll();
+            const infographics = infographics_.rows;
+            const medication_ = await this.Medication.findAndCountAll();
+            const medication = medication_.rows;
+            const meditation_ = await this.Meditation.findAndCountAll();
+            const meditation = meditation_.rows;
+            const message_ = await this.Message.findAndCountAll();
+            const message = message_.rows;
+            const nutrition_ = await this.Nutrition.findAndCountAll();
+            const nutrition = nutrition_.rows;
+            const physiotherapy_ = await this.Physiotherapy.findAndCountAll();
+            const physiotherapy = physiotherapy_.rows;
+            const priority_ = await this.Priority.findAndCountAll();
+            const priority = priority_.rows;
+            const reflection_ = await this.Reflection.findAndCountAll();
+            const reflection = reflection_.rows;
+            const reminder_ = await this.Reminder.findAndCountAll();
+            const reminder = reminder_.rows;
+            const video_ = await this.Video.findAndCountAll();
+            const video = video_.rows;
+            const webLink_ = await this.WebLink.findAndCountAll();
+            const webLink = webLink_.rows;
+            const webNewsfeed_ = await this.WebNewsfeed.findAndCountAll();
+            const webNewsfeed = webNewsfeed_.rows;
+            const wordPower_ = await this.WordPower.findAndCountAll();
+            const wordPower = wordPower_.rows;
 
-                const assets =
+            const assets =
                 [...actionPlan,
                     ...animation,
                     ...appointment,
@@ -257,158 +250,121 @@ export class StatisticsService {
                     ...webNewsfeed,
                     ...wordPower,
                 ] ;
-                const totalAssetsCount = (
-                    (actionPlan_.count) + (animation_.count) + (appointment_.count) + (article_.count) +
-                    (assessment_.count) + (audio_.count) + (biometrics_.count) + (challenge_.count) +
-                    (checkup_.count) + (consultation_.count) + (exercise_.count) + (goal_.count) +
-                    (infographics_.count) + (medication_.count) + (meditation_.count) +  (message_.count) +
-                    (nutrition_.count) + (physiotherapy_.count) + (priority_.count) +
-                    (reflection_.count) + (reminder_.count) +  (video_.count) +
-                    (webLink_.count) + (webNewsfeed_.count) + (wordPower_.count)
-                );
+            const totalAssetsCount = (
+                (actionPlan_.count) + (animation_.count) + (appointment_.count) + (article_.count) +
+                (assessment_.count) + (audio_.count) + (biometrics_.count) + (challenge_.count) +
+                (checkup_.count) + (consultation_.count) + (exercise_.count) + (goal_.count) +
+                (infographics_.count) + (medication_.count) + (meditation_.count) +  (message_.count) +
+                (nutrition_.count) + (physiotherapy_.count) + (priority_.count) +
+                (reflection_.count) + (reminder_.count) +  (video_.count) +
+                (webLink_.count) + (webNewsfeed_.count) + (wordPower_.count)
+            );
 
-                const accumulativeAssetsDaily = accumlativeData(assets);
-                const incrementalAssetsDaily = incrementalData(assets);
-                // const assetTypes = AssetTypeList;
-                const assetsStatistics = {
-                    TotalAssets      : totalAssetsCount,
-                    IncrementalDaily : accumulativeAssetsDaily,
-                    AccumlativeDaily : incrementalAssetsDaily,
+            const accumulativeAssetsDaily = statisticsData(assets);
+            const assetsStatistics = {
+                TotalAssets : totalAssetsCount,
+                AssetsDaily : accumulativeAssetsDaily ,
+                    
+            };
+                
+            const enrollmentTasks_ = await this.EnrollmentTask.findAndCountAll();
+            const enrollmentTasks = enrollmentTasks_.rows;
+            const ParticipantActivityResponse_ = await this.ParticipantActivityResponse.findAndCountAll();
+            const ParticipantActivityResponse = ParticipantActivityResponse_ .rows;
+            const userEngagementDaily = userEngagement(enrollmentTasks,ParticipantActivityResponse);
+
+            const userEngagementSattistics = {
+                UserEngagementDaily : userEngagementDaily,
                       
-                };
+            };
 
-                const dashboardStats = {
-                    CareplanStatistics         : careplanStatistics,
-                    ApiclientStatistics        : apiclientStatistics,
-                    ParticipantStatistics      : participantsStatistics,
-                    EnrollmentStatistics       : enrollmentStatistics,
-                    ActiveEnrollmentStatistics : activeEnrollmentsStatistics,
-                    AssetsStatistics           : assetsStatistics,
+            const dashboardStats = {
+                CareplanStatistics         : careplanStatistics,
+                ApiclientStatistics        : apiclientStatistics,
+                ParticipantStatistics      : participantStatistics,
+                EnrollmentStatistics       : enrollmentStatistics,
+                ActiveEnrollmentStatistics : activeEnrollmentStatistics,
+                AssetsStatistics           : assetsStatistics,
+                UserEngagementSattistics   : userEngagementSattistics,
+            };
 
-                };
+            return dashboardStats;
 
-                return dashboardStats;
-
-            } catch (error) {
-                ErrorHandler.throwDbAccessError('DB Error: Unable to search enrollment records!', error);
-            }
-   
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to search enrollment records!', error);
         }
+   
+    };
 
 }
 
-const accumlativeData = (retrivedData) => {
+const statisticsData = (retrievedData) => {
     try {
-        const createdAtDate: Date[] = [];
-        (retrivedData).forEach((item) => {
-            createdAtDate.push(new Date(item.CreatedAt));
-        });
-        const accumulativeDaily: { x: Date; y: number }[] = [];
-        const uniqueDate: Date[] = [];
-        let flag = 0;
-        createdAtDate.forEach((item) => {
-            const d = new Date(item);
-            d.setUTCHours(0, 0, 0, 0);
-            uniqueDate.forEach((j) => {
-                const p = new Date(j);
-                p.setUTCHours(0, 0, 0, 0);
-                if (p.getTime() === d.getTime()) {
-                    flag = 1;
-                }
+        const { minDate, maxDate } = getMinMaxDates(retrievedData);
+        var d = minDate;
+        var itemCounts = [];
+        while (d < maxDate)
+        {
+            var dStart = d;
+            var dEnd = TimeHelper.addDuration(d, 24, DurationType.Hour);
+            var itemsForDay = retrievedData.filter(x => x.CreatedAt >= dStart && x.CreatedAt < dEnd);
+            var incrementalItemCount = itemsForDay.length; //Count for the day
+            var itemsTillDay = retrievedData.filter(x => x.CreatedAt >= minDate && x.CreatedAt < dEnd);
+            var accumulativeItemCount = itemsTillDay.length;
+            itemCounts.push({
+                Day          : d,
+                Incremental  : incrementalItemCount,
+                Accumulative : accumulativeItemCount
             });
-            if (flag === 0) {
-                uniqueDate.push(d);
-                flag = 0;
-            }
-        });
-        uniqueDate.sort((a: Date, b: Date) => {
-            return a.getTime() - b.getTime();
-        });
-        const startDate = new Date(uniqueDate[0]);
-        const endDate = new Date(uniqueDate[uniqueDate.length - 1]);
-        let count = 0;
-        while (startDate.getTime() <= endDate.getTime()) {
-            let temp = new Date(startDate);
-            createdAtDate.forEach(() => {
-                createdAtDate.forEach((i) => {
-                    const c = new Date(i);
-                    c.setUTCHours(0, 0, 0, 0);
-                    if (c.getTime() === temp.getTime()) {
-                        count++;
-                    }
-                });
-                accumulativeDaily.push({
-                    x : temp,
-                    y : count,
-                });
-                count = 0;
-                startDate.setUTCDate(startDate.getUTCDate() + 1);
-                temp = new Date(startDate);
-                
-            });
+            d = TimeHelper.addDuration(d, 24, DurationType.Hour);
         }
-        return accumulativeDaily;
+        return itemCounts;
     }
     catch (err){
         ErrorHandler.throwDbAccessError('DB Error: Unable to search records!', err);
     }
 };
 
-const incrementalData = (retrivedData) => {
+const userEngagement = (enrollmentTasks, ParticipantActivityResponse) => {
     try {
-        const createdAtDate: Date[] = [];
-        (retrivedData).forEach((item) => {
-            createdAtDate.push(new Date(item.CreatedAt));
-        });
-        const incrementalDaily: { x: Date; y: number }[] = [];
-        const uniqueDate: Date[] = [];
-        let flag = 0;
-        createdAtDate.forEach((item) => {
-            const d = new Date(item);
-            d.setUTCHours(0, 0, 0, 0);
-            uniqueDate.forEach((j) => {
-                const p = new Date(j);
-                p.setUTCHours(0, 0, 0, 0);
-                if (p.getTime() === d.getTime()) {
-                    flag = 1;
-                }
+        var { minDate, maxDate } = getMinMaxDates(enrollmentTasks);
+        var d = minDate;
+        var itemCounts = [];
+        while (d < maxDate)
+        {
+            var dStart = d;
+            var dEnd = TimeHelper.addDuration(d, 24, DurationType.Hour);
+            var itemsForDay = enrollmentTasks.filter(x => x.ScheduledDate >= dStart && x.ScheduledDate < dEnd);
+            var enrollmentTasksCount = itemsForDay.length; //Count for the day
+            var itemsForDay =
+            ParticipantActivityResponse.filter(x => x.TimeResponded >= dStart && x.TimeResponded < dEnd);
+            var ParticipantActivityResponseCount = itemsForDay.length;
+            const userEngagement = (ParticipantActivityResponseCount / enrollmentTasksCount);
+            itemCounts.push({
+                Day                 : d,
+                UserEngagementDaily : userEngagement,
             });
-            if (flag === 0) {
-                uniqueDate.push(d);
-                flag = 0;
-            }
-        });
-        uniqueDate.sort((a: Date, b: Date) => {
-            return a.getTime() - b.getTime();
-        });
-        const start1 = new Date(uniqueDate[0]);
-        const end1 = new Date(uniqueDate[uniqueDate.length - 1]);
-        let count = 0;
-        
-        while (start1.getTime() <= end1.getTime()) {
-            let temp = new Date(start1);
-            createdAtDate.forEach(() => {
-                createdAtDate.forEach((i) => {
-                    const c = new Date(i);
-                    c.setUTCHours(0, 0, 0, 0);
-                    if (c.getTime() === temp.getTime()) {
-                        count++;
-                    }
-                });
-                incrementalDaily.push({
-                    x : temp,
-                    y : count,
-                });
-                const y = count;
-                count = y;
-                start1.setUTCDate(start1.getUTCDate() + 1);
-                temp = new Date(start1);
-                
-            });
+            d = TimeHelper.addDuration(d, 24, DurationType.Hour);
         }
-        return incrementalDaily;
+        return itemCounts;
     }
     catch (err){
         ErrorHandler.throwDbAccessError('DB Error: Unable to search records!', err);
     }
 };
+
+function getMinMaxDates(retrievedData: any) {
+    const dates = retrievedData.map(x => new Date(x.CreatedAt).getTime());
+    const minDate_ = Math.min(...dates);
+    var minDate = new Date();
+    if (minDate_) {
+        var temp = new Date(minDate_).setUTCHours(0, 0, 0, 0);
+        minDate = new Date(temp);
+    }
+
+    const maxDate_ = new Date().setUTCHours(0, 0, 0, 0);
+    const maxDate = new Date(maxDate_);
+
+    return { minDate, maxDate };
+}
+
