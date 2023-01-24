@@ -214,7 +214,7 @@ export class EnrollmentService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve enrollment stats!', error);
         }
-    }
+    };
 
     //#endregion
 
