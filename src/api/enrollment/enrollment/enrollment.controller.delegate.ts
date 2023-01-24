@@ -146,7 +146,7 @@ export class EnrollmentControllerDelegate {
             ErrorHandler.throwNotFoundError('Enrollment stats with id ' + participantId.toString() + ' cannot be found!');
         }
         return this.getEnrichedDtoForStat(record);
-    }
+    };
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
     //#region Privates
@@ -361,7 +361,7 @@ export class EnrollmentControllerDelegate {
             Participant    : record.Participant,
 
         };
-    }
+    };
 
     getEnrichedDtoForStat = (record) => {
         if (record == null) {

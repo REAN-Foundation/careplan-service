@@ -50,7 +50,7 @@ export class EnrollmentService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create enrollment!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -84,7 +84,7 @@ export class EnrollmentService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve enrollment stats!', error);
         }
-    }
+    };
 
     exists = async (id): Promise < boolean > => {
         try {
@@ -93,7 +93,7 @@ export class EnrollmentService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of enrollment!', error);
         }
-    }
+    };
 
     search = async (filters: EnrollmentSearchFilters): Promise < EnrollmentSearchResults > => {
         try {
@@ -123,7 +123,7 @@ export class EnrollmentService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search enrollment records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -141,7 +141,7 @@ export class EnrollmentService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update enrollment!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -154,7 +154,7 @@ export class EnrollmentService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete enrollment!', error);
         }
-    }
+    };
 
     getEnrollmentStats = async (participantId) => {
         try {
@@ -265,7 +265,7 @@ export class EnrollmentService {
         search.include.push(includeParticipantAsParticipant);
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -289,7 +289,7 @@ export class EnrollmentService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -310,7 +310,7 @@ export class EnrollmentService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 
