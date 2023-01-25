@@ -201,7 +201,7 @@ export class WordPowerControllerDelegate {
             OwnerUserId         : record.OwnerUserId,
             Tags                : JSON.parse(record.Tags),
             Version             : record.Version,
-            CreatedAt           : record.CratedAt,
+            CreatedAt           : record.CreatedAt,
         };
     };
 
