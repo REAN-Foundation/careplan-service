@@ -37,7 +37,7 @@ export class CareplanActivityService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create careplan activity!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -60,7 +60,7 @@ export class CareplanActivityService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve careplan activity!', error);
         }
-    }
+    };
 
     getRegistrationActivities = async (careplanId: uuid) => {
         const records = await this.CareplanActivity.findAll({
@@ -70,7 +70,7 @@ export class CareplanActivityService {
             }
         });
         return records;
-    }
+    };
 
     getScheduledActivities = async (careplanId: uuid) => {
         const records = await this.CareplanActivity.findAll({
@@ -81,7 +81,7 @@ export class CareplanActivityService {
         });
         var sorted = records.sort((a,b) => a.Day - b.Day);
         return sorted;
-    }
+    };
 
     exists = async (id): Promise < boolean > => {
         try {
@@ -90,7 +90,7 @@ export class CareplanActivityService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of careplan activity!', error);
         }
-    }
+    };
 
     search = async (filters: CareplanActivitySearchFilters): Promise < CareplanActivitySearchResults > => {
         try {
@@ -121,7 +121,7 @@ export class CareplanActivityService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search careplan activity records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -139,7 +139,7 @@ export class CareplanActivityService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update careplan activity!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -152,7 +152,7 @@ export class CareplanActivityService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete careplan activity!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -195,7 +195,7 @@ export class CareplanActivityService {
         search.include.push(includeCareplanAsCareplan);
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -219,7 +219,7 @@ export class CareplanActivityService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -240,7 +240,7 @@ export class CareplanActivityService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

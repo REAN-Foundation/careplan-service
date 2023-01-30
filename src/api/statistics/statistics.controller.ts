@@ -34,6 +34,6 @@ export class StatisticsController extends BaseController {
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }
-    }
+    };
 
 }
