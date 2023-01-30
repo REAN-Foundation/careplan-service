@@ -78,7 +78,7 @@ export class TypesController extends BaseController {
         }
     };
 
-    getSlotTypes = async (request: express.Request, response: express.Response): Promise<void> => {
+    getTimeSlots = async (request: express.Request, response: express.Response): Promise<void> => {
         try {
             await this.authorize('Types.GetSlotTypes', request, response, false);
             const slotTypes = TimeSlotList;
