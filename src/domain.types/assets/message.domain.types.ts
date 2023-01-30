@@ -45,7 +45,7 @@ export interface MessageDto {
     AssetCode: string;
     Name: string;
     Description: string;
-    Category: string;
+    AssetCategory: string;
     MessageType: MessageType;
     OwnerUserId: uuid;
     Tags: string[];
