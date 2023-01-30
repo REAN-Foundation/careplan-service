@@ -28,7 +28,7 @@ export class CareplanService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create care plan!', error);
         }
-    }
+    };
 
     getById = async (id): Promise<CareplanDto> => {
         try {
@@ -48,7 +48,7 @@ export class CareplanService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve care plan!', error);
         }
-    }
+    };
 
     exists = async (code): Promise<uuid> => {
         try {
@@ -63,7 +63,7 @@ export class CareplanService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of care plan!', error);
         }
-    }
+    };
 
     search = async (filters: CareplanSearchFilters): Promise<CareplanSearchResults> => {
         try {
@@ -156,7 +156,7 @@ export class CareplanService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search care plan records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -174,7 +174,7 @@ export class CareplanService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update care plan!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -187,7 +187,7 @@ export class CareplanService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete care plan!', error);
         }
-    }
+    };
 
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////

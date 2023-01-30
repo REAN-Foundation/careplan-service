@@ -79,7 +79,7 @@ export class ApiClientService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search api client records!', error);
         }
-    }
+    };
 
     getByClientCode = async (clientCode: string): Promise<ApiClientDto> =>{
         try {
@@ -94,7 +94,7 @@ export class ApiClientService {
             Logger.instance().log(error.message);
             throw new ApiError(error.message, 500);
         }
-    }
+    };
 
     getApiKeyByClientCode = async (clientCode: string): Promise<ClientApiKeyDto> =>{
         try {
@@ -109,7 +109,7 @@ export class ApiClientService {
             Logger.instance().log(error.message);
             throw new ApiError(error.message, 500);
         }
-    }
+    };
 
     getClientHashedPassword = async(id: string): Promise<string> => {
         try {
@@ -119,7 +119,7 @@ export class ApiClientService {
             Logger.instance().log(error.message);
             throw new ApiError(error.message, 500);
         }
-    }
+    };
 
     getApiKey = async(verificationModel: ApiClientVerificationDomainModel): Promise<ClientApiKeyDto> => {
         try {
@@ -140,7 +140,7 @@ export class ApiClientService {
             Logger.instance().log(error.message);
             throw new ApiError(error.message, 500);
         }
-    }
+    };
 
     renewApiKey = async (verificationModel: ApiClientVerificationDomainModel): Promise<ClientApiKeyDto> => {
 
@@ -180,7 +180,7 @@ export class ApiClientService {
             Logger.instance().log(error.message);
             throw new ApiError(error.message, 500);
         }
-    }
+    };
     
     isApiKeyValid = async (apiKey: string): Promise<CurrentClient> => {
         try {
@@ -204,7 +204,7 @@ export class ApiClientService {
             Logger.instance().log(error.message);
             throw new ApiError(error.message, 500);
         }
-    }
+    };
     
     update = async (id: string, clientDomainModel: ApiClientUpdateModel): Promise<ApiClientDto> => {
         try {
@@ -248,7 +248,7 @@ export class ApiClientService {
             Logger.instance().log(error.message);
             throw new ApiError(error.message, 500);
         }
-    }
+    };
 
     delete = async (id: string): Promise<boolean> => {
         try {
@@ -283,7 +283,7 @@ export class ApiClientService {
             ValidTill    : client.ValidTill,
         };
         return dto;
-    }
+    };
 
     toClientSecretsDto = (client): ClientApiKeyDto => {
         if (client == null){
@@ -298,7 +298,7 @@ export class ApiClientService {
             ValidTill  : client.ValidTill,
         };
         return dto;
-    }
+    };
     
     //#region Privates
 
@@ -341,7 +341,7 @@ export class ApiClientService {
         }
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -365,7 +365,7 @@ export class ApiClientService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -386,7 +386,7 @@ export class ApiClientService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

@@ -54,7 +54,6 @@ export class ActionPlanValidator {
                 itemsPerPage  : joi.number().max(128).optional(),
                 pageIndex     : joi.number().max(128).optional(),
                 
-
             });
             return await schema.validateAsync(query);
 

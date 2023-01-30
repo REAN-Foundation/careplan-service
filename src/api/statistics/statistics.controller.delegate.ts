@@ -19,7 +19,7 @@ export class StatisticsControllerDelegate {
         // var items = searchResults.Items.map(x => this.getSearchDto(x));
         // searchResults.Items = items;
         return searchResults;
-    }
+    };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -42,7 +42,7 @@ export class StatisticsControllerDelegate {
             ScheduledDate          : record.ScheduledDate,
             IsRegistrationActivity : record.IsRegistrationActivity
         };
-    }
+    };
 
     //#endregion
 
