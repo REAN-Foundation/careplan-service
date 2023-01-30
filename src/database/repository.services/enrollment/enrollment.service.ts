@@ -15,6 +15,12 @@ import {
     EnrollmentSearchFilters,
     EnrollmentSearchResults
 } from '../../../domain.types/enrollment/enrollment.domain.types';
+import {
+    ParticipantActivityResponseModel
+} from '../../../database/models/participant.responses/participant.activity.response.model';
+import { EnrollmentTaskModel } from '../../../database/models/enrollment/enrollment.task.model';
+import { Op } from "sequelize";
+import { CareplanCategoryModel } from '../../../database/models/careplan/careplan.category.model';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -28,6 +34,11 @@ export class EnrollmentService {
 
     Participant = ParticipantModel.Model;
 
+    ParticipantActivityResponse = ParticipantActivityResponseModel.Model;
+
+    EnrollmentTask = EnrollmentTaskModel.Model;
+
+    CareplanCatrgory = CareplanCategoryModel.Model;
     //#endregion
 
     //#region Publics
@@ -39,7 +50,7 @@ export class EnrollmentService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create enrollment!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -52,7 +63,15 @@ export class EnrollmentService {
                     required : false,
                     as       : 'Careplan',
                     //through: { attributes: [] }
-                }, {
+                    include  : [{
+                        model    : this.CareplanCatrgory,
+                        required : false,
+                        as       : 'Category',
+                    }
+                    ],
+                    
+                },
+                {
                     model    : this.Participant,
                     required : false,
                     as       : 'Participant',
@@ -63,9 +82,9 @@ export class EnrollmentService {
             });
             return record;
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve enrollment!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve enrollment stats!', error);
         }
-    }
+    };
 
     exists = async (id): Promise < boolean > => {
         try {
@@ -74,7 +93,7 @@ export class EnrollmentService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of enrollment!', error);
         }
-    }
+    };
 
     search = async (filters: EnrollmentSearchFilters): Promise < EnrollmentSearchResults > => {
         try {
@@ -99,13 +118,12 @@ export class EnrollmentService {
                 OrderedBy      : orderByColumn,
                 Items          : foundResults.rows,
             };
-
             return searchResults;
 
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search enrollment records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -123,7 +141,7 @@ export class EnrollmentService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update enrollment!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -136,7 +154,67 @@ export class EnrollmentService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete enrollment!', error);
         }
-    }
+    };
+
+    getEnrollmentStats = async (participantId) => {
+        try {
+            const totalTasks = await this.EnrollmentTask.findAll({
+                where : {
+                    ParticipantId : participantId,
+                },
+            });
+            const ongoingTasks = await this.EnrollmentTask.findAll({
+                where : {
+                    ParticipantId : participantId,
+                    ScheduledDate : {
+                        [Op.lte] : new Date()
+                    }
+                },
+            });
+            
+            const completedTask = await this.ParticipantActivityResponse.findAll({
+                where : {
+                    ParticipantId : participantId,
+                },
+            });
+
+            const enrollment = await this.Enrollment.findOne({
+                where : {
+                    ParticipantId : participantId,
+                },
+            });
+
+            //Calculating current week by enrollment start date
+            const currentDate = new Date();
+            const startDate = enrollment.StartDate;
+            const endDate = enrollment.EndDate;
+            const days = Math.floor((currentDate.getTime() - startDate.getTime()) /
+                (24 * 60 * 60 * 1000));
+            const currentWeek = Math.ceil(days / 7);
+
+            //Calculating no of week by enrollment start date and end date
+
+            const week =  function diff_weeks(startDate:Date, endDate:Date)
+            {
+                var diff = (startDate.getTime() - endDate.getTime()) / 1000;
+                diff /= (60 * 60 * 24 * 7);
+                return Math.abs(Math.round(diff));
+            };
+            const totalWeek = (week(startDate, endDate));
+            const record = {
+                TolalTask    : totalTasks.length,
+                FinishedTask : completedTask.length,
+                DelayedTask  : (ongoingTasks.length - completedTask.length),
+                UnservedTask : (totalTasks.length -
+                    ((ongoingTasks.length - completedTask.length) + completedTask.length)),
+                CurrentWeek : currentWeek,
+                TotalWeek   : totalWeek
+            };
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve enrollment stats!', error);
+        }
+    };
 
     //#endregion
 
@@ -155,9 +233,19 @@ export class EnrollmentService {
         if (filters.ProgressStatus) {
             search.where['ProgressStatus'] = filters.ProgressStatus;
         }
+        if (filters.DisplayId) {
+            search.where['DisplayId'] = filters.DisplayId;
+        }
+        if (filters.StartDate) {
+            search.where['StartDate'] = filters.StartDate;
+        }
+        if (filters.EndDate) {
+            search.where['EndDate'] = filters.EndDate;
+        }
+
         const includeCareplanAsCareplan = {
             model    : this.Careplan,
-            required : false,
+            required : true,
             as       : 'Careplan',
             where    : {}
         };
@@ -167,7 +255,7 @@ export class EnrollmentService {
         search.include.push(includeCareplanAsCareplan);
         const includeParticipantAsParticipant = {
             model    : this.Participant,
-            required : false,
+            required : true,
             as       : 'Participant',
             where    : {}
         };
@@ -177,7 +265,7 @@ export class EnrollmentService {
         search.include.push(includeParticipantAsParticipant);
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -201,7 +289,7 @@ export class EnrollmentService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -222,7 +310,7 @@ export class EnrollmentService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

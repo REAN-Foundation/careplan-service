@@ -45,7 +45,7 @@ export interface MessageDto {
     AssetCode: string;
     Name: string;
     Description: string;
-    Category: string;
+    AssetCategory: string;
     MessageType: MessageType;
     OwnerUserId: uuid;
     Tags: string[];
@@ -62,6 +62,7 @@ export interface MessageSearchFilters extends BaseSearchFilters {
     MessageType ? : MessageType;
     Tags ? : string;
     Version ? : string;
+    CreatedAt ? : Date;
 }
 
 export interface MessageSearchResults extends BaseSearchResults {

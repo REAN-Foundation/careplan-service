@@ -209,7 +209,8 @@ export class BiometricsControllerDelegate {
             MeasurementUnit : record.MeasurementUnit,
             OwnerUserId     : record.OwnerUserId,
             Tags            : JSON.parse(record.Tags),
-            Version         : record.Version
+            Version         : record.Version,
+            CreatedAt       : record.CreatedAt,
         };
     };
 

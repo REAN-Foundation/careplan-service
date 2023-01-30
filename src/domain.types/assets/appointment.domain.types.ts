@@ -61,6 +61,7 @@ export interface AppointmentSearchFilters extends BaseSearchFilters {
     AssetCategory ? : string;
     Tags ? : string;
     Version ? : string;
+    CreatedAt ? : Date;
 }
 
 export interface AppointmentSearchResults extends BaseSearchResults {

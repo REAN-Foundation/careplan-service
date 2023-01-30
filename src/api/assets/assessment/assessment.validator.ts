@@ -12,8 +12,8 @@ export class AssessmentValidator {
             const schema = joi.object({
                 AssetCode   : joi.string().max(256).optional().allow(null),
                 Name        : joi.string().max(256).optional(),
-                Description : joi.string().optional(),
-                Template    : joi.string().optional(),
+                Description : joi.string().optional().allow(null, ''),
+                Template    : joi.string().optional().allow(null, ''),
                 Tags        : joi.array().items(joi.string()).optional(),
                 Version     : joi.string().max(128).optional(),
                 OwnerUserId : joi.string().guid({
@@ -31,8 +31,8 @@ export class AssessmentValidator {
             const schema = joi.object({
                 AssetCode   : joi.string().max(256).optional(),
                 Name        : joi.string().max(256).optional(),
-                Description : joi.string().optional(),
-                Template    : joi.string().optional(),
+                Description : joi.string().optional().allow(null, ''),
+                Template    : joi.string().optional().allow(null, ''),
                 Tags        : joi.array().items(joi.string()).optional(),
                 Version     : joi.string().max(128).optional()
             });
@@ -56,6 +56,7 @@ export class AssessmentValidator {
                 orderBy       : joi.string().max(128).optional(),
                 itemsPerPage  : joi.number().max(128).optional(),
                 pageIndex     : joi.number().max(128).optional(),
+                
             });
             return await schema.validateAsync(query);
 

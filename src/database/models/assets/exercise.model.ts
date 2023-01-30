@@ -41,7 +41,7 @@ export class ExerciseModel {
         },
         Description : {
             type      : DataTypes.TEXT,
-            allowNull : false
+            allowNull : true
         },
         ExerciseType : {
             type         : DataTypes.ENUM({ values: ExerciseTypeList }),
@@ -55,7 +55,7 @@ export class ExerciseModel {
         },
         RecommendedDurationMin : {
             type         : DataTypes.INTEGER,
-            allowNull    : false,
+            allowNull    : true,
             defaultValue : 15
         },
         AssetCategory : {

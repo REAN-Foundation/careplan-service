@@ -31,6 +31,7 @@ import { Logger } from '../../../common/logger';
 import { ParticipantService } from '../../../database/repository.services/enrollment/participant.service';
 import { CareplanService } from '../../../database/repository.services/careplan/careplan.service';
 import { CareplanActivityService } from '../../../database/repository.services/careplan/careplan.activity.service';
+import { ParticipantActivityResponseService } from '../../../database/repository.services/participant.responses/participant.activity.response.service';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -48,12 +49,15 @@ export class EnrollmentControllerDelegate {
 
     _careplanService: CareplanService = null;
 
+    _participantActivityResponseService: ParticipantActivityResponseService = null;
+
     constructor() {
         this._service = new EnrollmentService();
         this._careplanActivityService = new CareplanActivityService();
         this._enrollmentTaskService = new EnrollmentTaskService();
         this._participantService = new ParticipantService();
         this._careplanService = new CareplanService();
+        this._participantActivityResponseService = new ParticipantActivityResponseService();
     }
 
     //#endregion
@@ -136,6 +140,13 @@ export class EnrollmentControllerDelegate {
         };
     };
 
+    getEnrollmentStats = async (participantId : uuid) => {
+        const record = await this._service.getEnrollmentStats(participantId);
+        if (record === null) {
+            ErrorHandler.throwNotFoundError('Enrollment stats with id ' + participantId.toString() + ' cannot be found!');
+        }
+        return this.getEnrichedDtoForStat(record);
+    };
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
     //#region Privates
@@ -239,6 +250,10 @@ export class EnrollmentControllerDelegate {
         if (careplanId != null) {
             filters['CareplanId'] = careplanId;
         }
+        var carePlan = query.carePlan ? query.carePlan : null;
+        if (carePlan != null) {
+            filters['CarePlan'] = carePlan;
+        }
         var participantId = query.participantId ? query.participantId : null;
         if (participantId != null) {
             filters['ParticipantId'] = participantId;
@@ -247,7 +262,19 @@ export class EnrollmentControllerDelegate {
         if (progressStatus != null) {
             filters['ProgressStatus'] = progressStatus;
         }
+        var displayId = query.displayId ? query.displayId : null;
+        if (displayId != null) {
+            filters['DisplayId'] = displayId;
+        }
+        var startDate = query.startDate ? query.startDate : null;
+        if (startDate != null) {
+            filters['StartDate'] = startDate;
+        }
 
+        var endDate = query.endDate ? query.endDate : null;
+        if (endDate != null) {
+            filters['EndDate'] = endDate;
+        }
         return filters;
     };
 
@@ -306,6 +333,10 @@ export class EnrollmentControllerDelegate {
             WeekOffset     : record.WeekOffset,
             DayOffset      : record.DayOffset,
             ProgressStatus : record.ProgressStatus,
+            Careplan       : record.Careplan,
+            Participant    : record.Participant,
+            Category       : record.Careplan.Catrgory,
+
         };
     };
 
@@ -318,13 +349,33 @@ export class EnrollmentControllerDelegate {
             CareplanId     : record.CareplanId,
             PlanCode       : record.PlanCode,
             ParticipantId  : record.ParticipantId,
+            DisplayId      : record.DisplayId,
             Asset          : record.Asset,
             StartDate      : record.StartDate,
             EndDate        : record.EndDate,
             EnrollmentDate : record.EnrollmentDate,
             WeekOffset     : record.WeekOffset,
             DayOffset      : record.DayOffset,
-            ProgressStatus : record.ProgressStatus
+            ProgressStatus : record.ProgressStatus,
+            Careplan       : record.Careplan,
+            Participant    : record.Participant,
+
+        };
+    };
+
+    getEnrichedDtoForStat = (record) => {
+        if (record == null) {
+            return null;
+        }
+        return {
+           
+            TolalTask    : record.TolalTask ,
+            FinishedTask : record.FinishedTask,
+            DelayedTask  : record.DelayedTask,
+            UnservedTask : record.UnservedTask,
+            CurrentWeek  : record.CurrentWeek,
+            TotalWeek    : record.TotalWeek
+            
         };
     };
 

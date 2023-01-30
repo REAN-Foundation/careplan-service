@@ -201,7 +201,8 @@ export class VideoControllerDelegate {
             AssetCategory  : record.AssetCategory,
             OwnerUserId    : record.OwnerUserId,
             Tags           : JSON.parse(record.Tags),
-            Version        : record.Version
+            Version        : record.Version,
+            CratedAt       : record.CreatedAt,
         };
     };
 

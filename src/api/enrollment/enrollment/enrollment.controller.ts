@@ -58,6 +58,17 @@ export class EnrollmentController extends BaseController {
         }
     };
 
+    getEnrollmentStats = async (request: express.Request, response: express.Response): Promise < void > => {
+        try {
+            await this.authorize('Enrollment.GetEnrollmentStats', request, response, false);
+            const record = await this._delegate.getEnrollmentStats(request.params.participantId);
+            const message = 'Enrollment stats retrieved successfully!';
+            ResponseHandler.success(request, response, message, 200, record);
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
+
     update = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
             await this.authorize('Enrollment.Update', request, response, false);

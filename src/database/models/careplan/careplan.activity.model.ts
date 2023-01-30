@@ -20,7 +20,7 @@ export class CareplanActivityModel {
         },
         AssetId : {
             type      : DataTypes.UUID,
-            allowNull : false
+            allowNull : true
         },
         AssetType : {
             type      : DataTypes.ENUM({ values: AssetTypeList }),

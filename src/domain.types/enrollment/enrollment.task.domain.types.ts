@@ -35,6 +35,7 @@ export interface EnrollmentTaskDto {
     TimeSlot          : TimeSlot;
     ScheduledDate     : Date;
     IsRegistrationActivity : boolean,
+    CreatedAt        : Date;
 }
 
 export interface EnrollmentTaskSearchFilters extends BaseSearchFilters {

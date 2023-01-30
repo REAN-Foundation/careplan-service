@@ -53,6 +53,9 @@ export class EnrollmentValidator {
                 careplanId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
+                displayId      : joi.string().optional(),
+                startDate      : joi.date().iso().optional(),
+                endDate        : joi.date().iso().optional(),
                 progressStatus : joi.string().valid("Pending", "In-progress", "Completed", "Cancelled", "Delayed", "Unknown").optional()
             });
             return await schema.validateAsync(query);

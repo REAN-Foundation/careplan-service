@@ -178,16 +178,16 @@ export class MessageControllerDelegate {
             return null;
         }
         return {
-            id          : record.id,
-            AssetCode   : record.AssetCode,
-            Name        : record.Name,
-            Description : record.Description,
-            Category    : record.Category,
-            MessageType : record.MessageType,
-            OwnerUserId : record.OwnerUserId,
-            Tags        : JSON.parse(record.Tags),
-            Url         : record.Url,
-            Version     : record.Version
+            id            : record.id,
+            AssetCode     : record.AssetCode,
+            Name          : record.Name,
+            Description   : record.Description,
+            AssetCategory : record.AssetCategory,
+            MessageType   : record.MessageType,
+            OwnerUserId   : record.OwnerUserId,
+            Tags          : JSON.parse(record.Tags),
+            Url           : record.Url,
+            Version       : record.Version
         };
     };
 
@@ -196,16 +196,17 @@ export class MessageControllerDelegate {
             return null;
         }
         return {
-            id          : record.id,
-            AssetCode   : record.AssetCode,
-            Name        : record.Name,
-            Description : record.Description,
-            Category    : record.Category,
-            MessageType : record.MessageType,
-            OwnerUserId : record.OwnerUserId,
-            Tags        : JSON.parse(record.Tags),
-            Url         : record.Url,
-            Version     : record.Version
+            id            : record.id,
+            AssetCode     : record.AssetCode,
+            Name          : record.Name,
+            Description   : record.Description,
+            AssetCategory : record.AssetCategory,
+            MessageType   : record.MessageType,
+            OwnerUserId   : record.OwnerUserId,
+            Tags          : JSON.parse(record.Tags),
+            Url           : record.Url,
+            Version       : record.Version,
+            CreatedAt     : record.CreatedAt,
         };
     };
 

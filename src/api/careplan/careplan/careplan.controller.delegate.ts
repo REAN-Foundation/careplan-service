@@ -143,7 +143,7 @@ export class CareplanControllerDelegate {
             CategoryId  : requestBody.CategoryId ? requestBody.CategoryId : null,
             Name        : requestBody.Name ? requestBody.Name : null,
             Description : requestBody.Description ? requestBody.Description : null,
-            Version     : requestBody.Version ? requestBody.Version : '1.0.0',
+            Version     : requestBody.Version ? requestBody.Version : 'V1',
             OwnerUserId : requestBody.OwnerUserId ? requestBody.OwnerUserId : null,
             Tags        : requestBody.Tags ? JSON.stringify(requestBody.Tags) as string : JSON.stringify([]),
         };
@@ -164,7 +164,10 @@ export class CareplanControllerDelegate {
             Version     : record.Version,
             OwnerUserId : record.OwnerUserId,
             Tags        : JSON.parse(record.Tags),
-            IsActive    : record.IsActive
+            IsActive    : record.IsActive,
+            CreatedAt   : record.CreatedAt,
+            UpdatedAt   : record.UpdatedAt,
+            Type        : record.Category.Type
         };
     };
 
@@ -183,7 +186,11 @@ export class CareplanControllerDelegate {
             Version     : record.Version,
             OwnerUserId : record.OwnerUserId,
             Tags        : JSON.parse(record.Tags),
-            IsActive    : record.IsActive
+            IsActive    : record.IsActive,
+            CreatedAt   : record.CreatedAt,
+            UpdatedAt   : record.UpdatedAt,
+            Type        : record.Category.Type
+        
         };
     };
 
