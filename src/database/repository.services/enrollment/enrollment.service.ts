@@ -230,6 +230,9 @@ export class EnrollmentService {
         if (filters.CareplanId) {
             search.where['CareplanId'] = filters.CareplanId;
         }
+        if (filters.CareplanName) {
+            search.where['CareplanName'] = filters.CareplanName;
+        }
         if (filters.ProgressStatus) {
             search.where['ProgressStatus'] = filters.ProgressStatus;
         }
