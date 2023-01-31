@@ -250,6 +250,10 @@ export class EnrollmentControllerDelegate {
         if (careplanId != null) {
             filters['CareplanId'] = careplanId;
         }
+        var careplanName = query.careplanName ? query.careplanName : null;
+        if (careplanId != null) {
+            filters['CareplanName'] = careplanName;
+        }
         var carePlan = query.carePlan ? query.carePlan : null;
         if (carePlan != null) {
             filters['CarePlan'] = carePlan;
@@ -325,6 +329,7 @@ export class EnrollmentControllerDelegate {
             id             : record.id,
             DisplayId      : record.DisplayId,
             CareplanId     : record.CareplanId,
+            CareplanName   : record.CareplanName,
             ParticipantId  : record.ParticipantId,
             Asset          : record.Asset,
             StartDate      : record.StartDate,
@@ -347,6 +352,7 @@ export class EnrollmentControllerDelegate {
         return {
             id             : record.id,
             CareplanId     : record.CareplanId,
+            CareplanName     : record.CareplanName,
             PlanCode       : record.PlanCode,
             ParticipantId  : record.ParticipantId,
             DisplayId      : record.DisplayId,
