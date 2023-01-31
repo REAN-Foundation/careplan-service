@@ -33,6 +33,7 @@ export interface EnrollmentUpdateModel {
 export interface EnrollmentDto {
     id            : uuid;
     CareplanId    : uuid;
+    CareplanName? : string;
     PlanCode?     : string;
     ParticipantId : uuid;
     DisplayId     : string;
@@ -48,6 +49,8 @@ export interface EnrollmentDto {
 
 export interface EnrollmentSearchFilters extends BaseSearchFilters {
     CareplanId     ?: uuid;
+    CareplanName   ?: string;
+    PlanCode       ?: string;
     ProgressStatus ?: ProgressStatus;
     DisplayId     ?: string;
     StartDate     ?: Date;
