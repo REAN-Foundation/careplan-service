@@ -252,7 +252,7 @@ export class EnrollmentControllerDelegate {
         }
         var careplanName = query.careplanName ? query.careplanName : null;
         if (careplanName != null) {
-            filters['careplanName'] = careplanName;
+            filters['CareplanName'] = careplanName;
         }
         var carePlan = query.carePlan ? query.carePlan : null;
         if (carePlan != null) {
