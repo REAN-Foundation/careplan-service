@@ -10,14 +10,17 @@ export class MessageValidator {
     static validateCreateRequest = async (requestBody) => {
         try {
             const schema = joi.object({
-                AssetCode   : joi.string().max(256).optional().allow(null),
-                Name        : joi.string().optional(),
-                Description : joi.string().optional().allow(null, ''),
-                MessageType : joi.string().valid("Educational", "Status", "Unknown").optional(),
-                Tags        : joi.array().items(joi.string()).optional(),
-                Url         : joi.string().optional().allow(null, ''),
-                Version     : joi.string().max(128).optional(),
-                OwnerUserId : joi.string().guid({
+                AssetCode         : joi.string().max(256).optional().allow(null),
+                Name              : joi.string().optional(),
+                TemplateName      : joi.string().optional(),
+                TemplateVariables : joi.array().items(joi.any()).optional(),
+                TemplateButtonIds : joi.array().items(joi.string()).optional(),
+                Description       : joi.string().optional().allow(null, ''),
+                MessageType       : joi.string().valid("Educational", "Status", "Unknown").optional(),
+                Tags              : joi.array().items(joi.string()).optional(),
+                Url               : joi.string().optional().allow(null, ''),
+                Version           : joi.string().max(128).optional(),
+                OwnerUserId       : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
             });
@@ -30,13 +33,16 @@ export class MessageValidator {
     static validateUpdateRequest = async (requestBody) => {
         try {
             const schema = joi.object({
-                AssetCode   : joi.string().max(256).optional(),
-                Name        : joi.string().optional(),
-                Description : joi.string().optional().allow(null, ''),
-                MessageType : joi.string().valid("Educational", "Status", "Unknown").optional(),
-                Tags        : joi.array().items(joi.string()).optional(),
-                Url         : joi.string().optional().allow(null, ''),
-                Version     : joi.string().max(128).optional()
+                AssetCode         : joi.string().max(256).optional(),
+                Name              : joi.string().optional(),
+                TemplateName      : joi.string().optional(),
+                TemplateVariables : joi.array().items(joi.any()).optional(),
+                TemplateButtonIds : joi.array().items(joi.string()).optional(),
+                Description       : joi.string().optional().allow(null, ''),
+                MessageType       : joi.string().valid("Educational", "Status", "Unknown").optional(),
+                Tags              : joi.array().items(joi.string()).optional(),
+                Url               : joi.string().optional().allow(null, ''),
+                Version           : joi.string().max(128).optional()
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -49,6 +55,7 @@ export class MessageValidator {
             const schema = joi.object({
                 assetCode    : joi.string().max(256).optional(),
                 name         : joi.string().optional(),
+                templateName : joi.string().optional(),
                 description  : joi.string().optional(),
                 category     : joi.string().max(128).optional(),
                 messageType  : joi.string().valid("Educational", "Status", "Unknown").optional(),

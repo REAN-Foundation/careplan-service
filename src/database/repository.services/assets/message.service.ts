@@ -167,6 +167,11 @@ export class MessageService {
                 [Op.like] : '%' + filters.Name + '%'
             };
         }
+        if (filters.TemplateName) {
+            search.where['TemplateName'] = {
+                [Op.like] : '%' + filters.TemplateName + '%'
+            };
+        }
         if (filters.Description) {
             search.where['Description'] = {
                 [Op.like] : '%' + filters.Description + '%'
