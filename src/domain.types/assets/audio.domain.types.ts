@@ -48,6 +48,7 @@ export interface AudioSearchFilters extends BaseSearchFilters {
     AssetCategory ? : string;
     Tags ? : string;
     Version ? : string;
+    CreatedAt ? : Date;
 }
 
 export interface AudioSearchResults extends BaseSearchResults {

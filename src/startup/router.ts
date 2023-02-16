@@ -40,6 +40,7 @@ import { register as registerParticipantSelectedGoalRoutes       } from "../api/
 import { register as registerParticipantSelectedPriorityRoutes   } from "../api/participant.responses/participant.selected.priority/participant.selected.priority.routes";
 import { register as registerUserRoleRoutes               } from "../api/user.role/user.role.routes";
 import { register as registerParticipantRoutes            } from "../api/enrollment/participant/participant.routes";
+import { register as registerStatisticsRoutes            } from "../api/statistics/statistics.route";
 
 ////////////////////////////////////////////////////////////////////////////////////
 
@@ -104,6 +105,7 @@ export class Router {
                 registerParticipantSelectedPriorityRoutes(this._app);
                 registerUserRoleRoutes(this._app);
                 registerParticipantRoutes(this._app);
+                registerStatisticsRoutes(this._app);
 
                 resolve(true);
 

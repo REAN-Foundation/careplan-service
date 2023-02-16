@@ -47,6 +47,7 @@ export interface WebLinkSearchFilters extends BaseSearchFilters {
     AssetCategory ? : string;
     Tags ? : string;
     Version ? : string;
+    CreatedAt ? : Date;
 }
 
 export interface WebLinkSearchResults extends BaseSearchResults {

@@ -27,7 +27,7 @@ export class UserController extends BaseController {
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }
-    }
+    };
 
     getById = async (request: express.Request, response: express.Response): Promise <void> => {
         try {
@@ -38,7 +38,7 @@ export class UserController extends BaseController {
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }
-    }
+    };
 
     getBySessionId = async (request: express.Request, response: express.Response): Promise <void> => {
         try {
@@ -49,7 +49,7 @@ export class UserController extends BaseController {
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }
-    }
+    };
 
     search = async (request: express.Request, response: express.Response): Promise <void> => {
         try {
@@ -60,7 +60,7 @@ export class UserController extends BaseController {
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }
-    }
+    };
 
     update = async (request: express.Request, response: express.Response): Promise <void> => {
         try {
@@ -71,7 +71,7 @@ export class UserController extends BaseController {
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }
-    }
+    };
 
     delete = async (request: express.Request, response: express.Response): Promise <void> => {
         try {

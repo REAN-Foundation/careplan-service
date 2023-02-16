@@ -4,6 +4,7 @@ import {
     BaseSearchResults
 } from "../miscellaneous/base.search.types";
 import { uuid } from "../miscellaneous/system.types";
+import { CareplanDto } from "./careplan.domain.types";
 
 export interface CareplanActivityCreateModel {
     AssetId?              : uuid;
@@ -31,6 +32,7 @@ export interface CareplanActivityDto {
     Day                   : number;
     TimeSlot              : TimeSlot;
     IsRegistrationActivity: boolean;
+    Code                  : CareplanDto[];
 }
 
 export interface CareplanActivitySearchFilters extends BaseSearchFilters {

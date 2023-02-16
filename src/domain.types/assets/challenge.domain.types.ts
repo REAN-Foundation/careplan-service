@@ -43,6 +43,7 @@ export interface ChallengeSearchFilters extends BaseSearchFilters {
     AssetCategory ? : string;
     Tags ? : string;
     Version ? : string;
+    CreatedAt ? : Date;
 }
 
 export interface ChallengeSearchResults extends BaseSearchResults {

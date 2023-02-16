@@ -47,7 +47,7 @@ export class ExerciseControllerDelegate {
         }
         record = await AssetHelper.updateAssetCode(record, this._service);
         return this.getEnrichedDto(record);
-    }
+    };
 
     getById = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -55,7 +55,7 @@ export class ExerciseControllerDelegate {
             ErrorHandler.throwNotFoundError('Exercise with id ' + id.toString() + ' cannot be found!');
         }
         return this.getEnrichedDto(record);
-    }
+    };
 
     search = async (query: any) => {
         await validator.validateSearchRequest(query);
@@ -64,7 +64,7 @@ export class ExerciseControllerDelegate {
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
         return searchResults;
-    }
+    };
 
     update = async (id: uuid, requestBody: any) => {
         await validator.validateUpdateRequest(requestBody);
@@ -78,7 +78,7 @@ export class ExerciseControllerDelegate {
             throw new ApiError('Unable to update exercise!', 400);
         }
         return this.getEnrichedDto(updated);
-    }
+    };
 
     delete = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -89,7 +89,7 @@ export class ExerciseControllerDelegate {
         return {
             Deleted : exerciseDeleted
         };
-    }
+    };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -137,7 +137,7 @@ export class ExerciseControllerDelegate {
         }
 
         return filters;
-    }
+    };
 
     getUpdateModel = (requestBody): ExerciseUpdateModel => {
 
@@ -169,7 +169,7 @@ export class ExerciseControllerDelegate {
         }
 
         return updateModel;
-    }
+    };
 
     getCreateModel = (requestBody): ExerciseCreateModel => {
         return {
@@ -183,7 +183,7 @@ export class ExerciseControllerDelegate {
             Version                : requestBody.Version ? requestBody.Version : 'V1',
             OwnerUserId            : requestBody.OwnerUserId
         };
-    }
+    };
 
     getEnrichedDto = (record) => {
         if (record == null) {
@@ -202,7 +202,7 @@ export class ExerciseControllerDelegate {
             Tags                   : JSON.parse(record.Tags),
             Version                : record.Version
         };
-    }
+    };
 
     getSearchDto = (record) => {
         if (record == null) {
@@ -219,9 +219,10 @@ export class ExerciseControllerDelegate {
             AssetCategory          : record.AssetCategory,
             OwnerUserId            : record.OwnerUserId,
             Tags                   : JSON.parse(record.Tags),
-            Version                : record.Version
+            Version                : record.Version,
+            CreatedAt              : record.CreatedAt,
         };
-    }
+    };
 
     //#endregion
 

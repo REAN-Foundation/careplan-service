@@ -47,7 +47,7 @@ export class ReflectionControllerDelegate {
         }
         record = await AssetHelper.updateAssetCode(record, this._service);
         return this.getEnrichedDto(record);
-    }
+    };
 
     getById = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -55,7 +55,7 @@ export class ReflectionControllerDelegate {
             ErrorHandler.throwNotFoundError('Reflection with id ' + id.toString() + ' cannot be found!');
         }
         return this.getEnrichedDto(record);
-    }
+    };
 
     search = async (query: any) => {
         await validator.validateSearchRequest(query);
@@ -64,7 +64,7 @@ export class ReflectionControllerDelegate {
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
         return searchResults;
-    }
+    };
 
     update = async (id: uuid, requestBody: any) => {
         await validator.validateUpdateRequest(requestBody);
@@ -78,7 +78,7 @@ export class ReflectionControllerDelegate {
             throw new ApiError('Unable to update reflection!', 400);
         }
         return this.getEnrichedDto(updated);
-    }
+    };
 
     delete = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -89,7 +89,7 @@ export class ReflectionControllerDelegate {
         return {
             Deleted : reflectionDeleted
         };
-    }
+    };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -125,7 +125,7 @@ export class ReflectionControllerDelegate {
         }
 
         return filters;
-    }
+    };
 
     getUpdateModel = (requestBody): ReflectionUpdateModel => {
 
@@ -148,7 +148,7 @@ export class ReflectionControllerDelegate {
         }
 
         return updateModel;
-    }
+    };
 
     getCreateModel = (requestBody): ReflectionCreateModel => {
         return {
@@ -159,7 +159,7 @@ export class ReflectionControllerDelegate {
             Version     : requestBody.Version ? requestBody.Version : 'V1',
             OwnerUserId : requestBody.OwnerUserId
         };
-    }
+    };
 
     getEnrichedDto = (record) => {
         if (record == null) {
@@ -175,7 +175,7 @@ export class ReflectionControllerDelegate {
             Tags          : JSON.parse(record.Tags),
             Version       : record.Version
         };
-    }
+    };
 
     getSearchDto = (record) => {
         if (record == null) {
@@ -189,9 +189,10 @@ export class ReflectionControllerDelegate {
             AssetCategory : record.AssetCategory,
             OwnerUserId   : record.OwnerUserId,
             Tags          : JSON.parse(record.Tags),
-            Version       : record.Version
+            Version       : record.Version,
+            CreatedAt     : record.CreatedAt,
         };
-    }
+    };
 
     //#endregion
 

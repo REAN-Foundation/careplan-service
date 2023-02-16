@@ -3,6 +3,8 @@ import { BaseSearchFilters, BaseSearchResults } from "./miscellaneous/base.searc
 export interface ApiClientCreateModel {
     id?          : string;
     ClientName   : string;
+    FirstName?   : string;
+    LastName?    : string;
     ClientCode?  : string;
     Password?    : string;
     CountryCode? : string;
@@ -16,6 +18,8 @@ export interface ApiClientCreateModel {
 
 export interface ApiClientUpdateModel {
     ClientName ? : string;
+    FirstName?  : string;
+    LastName?   : string;
     ClientCode ? : string;
     IsPrivileged ? : boolean;
     CountryCode ? : string;
@@ -37,14 +41,17 @@ export interface ApiClientVerificationDomainModel {
 export interface ApiClientDto {
     id           : string;
     ClientName   : string;
+    FirstName    : string;
+    LastName     : string;
     ClientCode   : string;
     CountryCode  : string;
     Phone        : string;
     Email        : string;
+    ApiKey       : string;
     IsPrivileged : boolean;
     IsActive     : boolean;
     ValidFrom?   : Date,
-    ValidTill?   : Date,
+    ValidTill    : Date,
 }
 
 export interface ClientApiKeyDto {
@@ -63,6 +70,7 @@ export interface ApiClientSearchFilters extends BaseSearchFilters {
     CountryCode ? : string;
     Phone ? : string;
     Email ? : string;
+    CreatedAt ? : string;
     ValidFrom ? : Date;
     ValidTill ? : Date;
 }

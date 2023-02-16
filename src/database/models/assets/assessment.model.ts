@@ -39,7 +39,7 @@ export class AssessmentModel {
         },
         Description : {
             type      : DataTypes.TEXT,
-            allowNull : false
+            allowNull : true
         },
         AssetCategory : {
             type         : DataTypes.STRING(128),
@@ -48,7 +48,7 @@ export class AssessmentModel {
         },
         Template : {
             type         : DataTypes.TEXT,
-            allowNull    : false,
+            allowNull    : true,
             defaultValue : '{}'
         },
         OwnerUserId : {
@@ -57,12 +57,12 @@ export class AssessmentModel {
         },
         Tags : {
             type         : DataTypes.TEXT,
-            allowNull    : false,
+            allowNull    : true,
             defaultValue : '[]'
         },
         Version : {
             type         : DataTypes.STRING(128),
-            allowNull    : false,
+            allowNull    : true,
             defaultValue : 'V1'
         },
 

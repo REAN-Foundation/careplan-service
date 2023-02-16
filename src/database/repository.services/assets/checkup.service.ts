@@ -16,6 +16,7 @@ import {
 import {
     Op
 } from 'sequelize';
+import { Helper } from '../../../common/helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -33,12 +34,20 @@ export class CheckupService {
 
     create = async (createModel: CheckupCreateModel) => {
         try {
+            if (!createModel.AssetCode) {
+                const count = await this.Checkup.count() + 1;
+                createModel.AssetCode = 'Checkup-' + count.toString();
+                const exists = await this.getByCode(createModel.AssetCode);
+                if (exists) {
+                    createModel.AssetCode = 'Checkup-' + Helper.generateDisplayId();
+                }
+            }
             var record = await this.Checkup.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create checkup!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -51,7 +60,20 @@ export class CheckupService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve checkup!', error);
         }
-    }
+    };
+
+    getByCode = async (code) => {
+        try {
+            const record = await this.Checkup.findOne({
+                where : {
+                    AssetCode : code
+                }
+            });
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
+        }
+    };
 
     exists = async (id): Promise < boolean > => {
         try {
@@ -60,7 +82,7 @@ export class CheckupService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of checkup!', error);
         }
-    }
+    };
 
     search = async (filters: CheckupSearchFilters): Promise < CheckupSearchResults > => {
         try {
@@ -91,7 +113,7 @@ export class CheckupService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search checkup records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -109,7 +131,7 @@ export class CheckupService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update checkup!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -122,7 +144,7 @@ export class CheckupService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete checkup!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -167,7 +189,7 @@ export class CheckupService {
         }
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -191,7 +213,7 @@ export class CheckupService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -212,7 +234,7 @@ export class CheckupService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

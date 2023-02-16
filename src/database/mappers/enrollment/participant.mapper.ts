@@ -11,18 +11,18 @@ export class ParticipantMapper {
             return null;
         }
         const dto: ParticipantDto = {
-            id          : enrollment.id,
-            DisplayId   : enrollment.DisplayId,
-            Prefix      : enrollment.Prefix,
-            FirstName   : enrollment.FirstName,
-            LastName    : enrollment.LastName,
-            CountryCode : enrollment.CountryCode,
-            Phone       : enrollment.Phone,
-            Email       : enrollment.Email,
-            ParticipantReferenceId    : enrollment.ParticipantReferenceId,
-            Gender      : enrollment.Gender,
-            BirthDate   : enrollment.BirthDate,
-            Country     : enrollment.Country
+            id                     : enrollment.id,
+            DisplayId              : enrollment.DisplayId,
+            Prefix                 : enrollment.Prefix,
+            FirstName              : enrollment.FirstName,
+            LastName               : enrollment.LastName,
+            CountryCode            : enrollment.CountryCode,
+            Phone                  : enrollment.Phone,
+            Email                  : enrollment.Email,
+            ParticipantReferenceId : enrollment.ParticipantReferenceId,
+            Gender                 : enrollment.Gender,
+            BirthDate              : enrollment.BirthDate,
+            Country                : enrollment.Country
 
         };
         return dto;

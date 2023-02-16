@@ -21,7 +21,7 @@ export class FileResourceValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
     static validateUpdateRequest = async (requestBody) => {
         try {
@@ -37,7 +37,7 @@ export class FileResourceValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
     static validateSearchRequest = async (query) => {
         try {
@@ -52,6 +52,6 @@ export class FileResourceValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
 }

@@ -40,7 +40,7 @@ export class MeditationModel {
         },
         Description : {
             type      : DataTypes.TEXT,
-            allowNull : false
+            allowNull : true
         },
         MeditationType : {
             type         : DataTypes.ENUM({ values: MeditationTypeList }),

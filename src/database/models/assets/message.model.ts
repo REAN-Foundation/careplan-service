@@ -40,9 +40,9 @@ export class MessageModel {
         },
         Description : {
             type      : DataTypes.TEXT,
-            allowNull : false
+            allowNull : true
         },
-        Category : {
+        AssetCategory : {
             type         : DataTypes.STRING(128),
             allowNull    : false,
             defaultValue : 'Educational'

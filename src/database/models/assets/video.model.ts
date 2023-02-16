@@ -39,7 +39,7 @@ export class VideoModel {
         },
         Transcript : {
             type      : DataTypes.TEXT,
-            allowNull : false
+            allowNull : true
         },
         Url : {
             type      : DataTypes.TEXT,
