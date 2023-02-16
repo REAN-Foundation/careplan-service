@@ -47,7 +47,7 @@ export class WordPowerControllerDelegate {
         }
         record = await AssetHelper.updateAssetCode(record, this._service);
         return this.getEnrichedDto(record);
-    }
+    };
 
     getById = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -55,7 +55,7 @@ export class WordPowerControllerDelegate {
             ErrorHandler.throwNotFoundError('Word power with id ' + id.toString() + ' cannot be found!');
         }
         return this.getEnrichedDto(record);
-    }
+    };
 
     search = async (query: any) => {
         await validator.validateSearchRequest(query);
@@ -64,7 +64,7 @@ export class WordPowerControllerDelegate {
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
         return searchResults;
-    }
+    };
 
     update = async (id: uuid, requestBody: any) => {
         await validator.validateUpdateRequest(requestBody);
@@ -78,7 +78,7 @@ export class WordPowerControllerDelegate {
             throw new ApiError('Unable to update word power!', 400);
         }
         return this.getEnrichedDto(updated);
-    }
+    };
 
     delete = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -89,7 +89,7 @@ export class WordPowerControllerDelegate {
         return {
             Deleted : wordPowerDeleted
         };
-    }
+    };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -129,7 +129,7 @@ export class WordPowerControllerDelegate {
         }
 
         return filters;
-    }
+    };
 
     getUpdateModel = (requestBody): WordPowerUpdateModel => {
 
@@ -155,7 +155,7 @@ export class WordPowerControllerDelegate {
         }
 
         return updateModel;
-    }
+    };
 
     getCreateModel = (requestBody): WordPowerCreateModel => {
         return {
@@ -168,7 +168,7 @@ export class WordPowerControllerDelegate {
             Version     : requestBody.Version ? requestBody.Version : 'V1',
             OwnerUserId : requestBody.OwnerUserId
         };
-    }
+    };
 
     getEnrichedDto = (record) => {
         if (record == null) {
@@ -185,7 +185,7 @@ export class WordPowerControllerDelegate {
             Tags                : JSON.parse(record.Tags),
             Version             : record.Version
         };
-    }
+    };
 
     getSearchDto = (record) => {
         if (record == null) {
@@ -200,9 +200,10 @@ export class WordPowerControllerDelegate {
             AssetCategory       : record.AssetCategory,
             OwnerUserId         : record.OwnerUserId,
             Tags                : JSON.parse(record.Tags),
-            Version             : record.Version
+            Version             : record.Version,
+            CreatedAt           : record.CreatedAt,
         };
-    }
+    };
 
     //#endregion
 

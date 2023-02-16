@@ -43,6 +43,7 @@ export interface ReflectionSearchFilters extends BaseSearchFilters {
     AssetCategory ? : string;
     Tags ? : string;
     Version ? : string;
+    CreatedAt ? : Date;
 }
 
 export interface ReflectionSearchResults extends BaseSearchResults {

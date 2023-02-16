@@ -93,6 +93,7 @@ export interface ExerciseSearchFilters extends BaseSearchFilters {
     AssetCategory?         : string;
     Tags?                  : string;
     Version?               : string;
+    CreatedAt ?            : Date;
 }
 
 export interface ExerciseSearchResults extends BaseSearchResults {

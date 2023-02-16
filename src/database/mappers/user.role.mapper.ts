@@ -11,9 +11,9 @@ export class UserRoleMapper {
             return null;
         }
         const dto: UserRoleDto = {
-            id: userRole.id,
-            UserId: userRole.UserId,
-            RoleId: userRole.RoleId,
+            id     : userRole.id,
+            UserId : userRole.UserId,
+            RoleId : userRole.RoleId,
 
         };
         return dto;

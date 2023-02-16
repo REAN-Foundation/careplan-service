@@ -39,7 +39,7 @@ export class WordPowerModel {
         },
         Description : {
             type      : DataTypes.TEXT,
-            allowNull : false
+            allowNull : true
         },
         AdditionalResources : {
             type         : DataTypes.TEXT,

@@ -48,6 +48,7 @@ export interface ArticleSearchFilters extends BaseSearchFilters {
     AssetCategory ? : string;
     Tags ? : string;
     Version ? : string;
+    CreatedAt ? : Date;
 }
 
 export interface ArticleSearchResults extends BaseSearchResults {

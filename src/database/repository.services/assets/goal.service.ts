@@ -16,6 +16,7 @@ import {
 import {
     Op
 } from 'sequelize';
+import { Helper } from '../../../common/helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -33,12 +34,20 @@ export class GoalService {
 
     create = async (createModel: GoalCreateModel) => {
         try {
+            if (!createModel.AssetCode) {
+                const count = await this.Goal.count() + 1;
+                createModel.AssetCode = 'Goal-' + count.toString();
+                const exists = await this.getByCode(createModel.AssetCode);
+                if (exists) {
+                    createModel.AssetCode = 'Goal-' + Helper.generateDisplayId();
+                }
+            }
             var record = await this.Goal.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create goal!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -51,7 +60,20 @@ export class GoalService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve goal!', error);
         }
-    }
+    };
+
+    getByCode = async (code) => {
+        try {
+            const record = await this.Goal.findOne({
+                where : {
+                    AssetCode : code
+                }
+            });
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
+        }
+    };
 
     exists = async (id): Promise < boolean > => {
         try {
@@ -60,7 +82,7 @@ export class GoalService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of goal!', error);
         }
-    }
+    };
 
     search = async (filters: GoalSearchFilters): Promise < GoalSearchResults > => {
         try {
@@ -91,7 +113,7 @@ export class GoalService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search goal records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -109,7 +131,7 @@ export class GoalService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update goal!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -122,7 +144,7 @@ export class GoalService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete goal!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -167,7 +189,7 @@ export class GoalService {
         }
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -191,7 +213,7 @@ export class GoalService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -212,7 +234,7 @@ export class GoalService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

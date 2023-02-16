@@ -35,7 +35,7 @@ export class AssetHelper {
 
     public static getAsset = async (id: string, assetType: AssetType) => {
         try {
-            
+
             switch (assetType) {
                 case AssetType.ActionPlan: {
                     return await ActionPlanModel.Model.findByPk(id);
@@ -119,7 +119,7 @@ export class AssetHelper {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
         }
-    }
+    };
 
     public static generateAssetCode = (displayId: number, assetType: AssetType, assetName: string) => {
 
@@ -155,6 +155,6 @@ export class AssetHelper {
             return updated;
         }
         return record;
-    }
+    };
 
 }

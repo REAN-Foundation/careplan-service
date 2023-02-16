@@ -39,7 +39,7 @@ export class AnimationModel {
         },
         Transcript : {
             type      : DataTypes.TEXT,
-            allowNull : false
+            allowNull : true
         },
         Url : {
             type      : DataTypes.TEXT,

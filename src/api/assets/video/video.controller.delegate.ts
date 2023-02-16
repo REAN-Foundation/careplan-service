@@ -47,7 +47,7 @@ export class VideoControllerDelegate {
         }
         record = await AssetHelper.updateAssetCode(record, this._service);
         return this.getEnrichedDto(record);
-    }
+    };
 
     getById = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -55,7 +55,7 @@ export class VideoControllerDelegate {
             ErrorHandler.throwNotFoundError('Video with id ' + id.toString() + ' cannot be found!');
         }
         return this.getEnrichedDto(record);
-    }
+    };
 
     search = async (query: any) => {
         await validator.validateSearchRequest(query);
@@ -64,7 +64,7 @@ export class VideoControllerDelegate {
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
         return searchResults;
-    }
+    };
 
     update = async (id: uuid, requestBody: any) => {
         await validator.validateUpdateRequest(requestBody);
@@ -78,7 +78,7 @@ export class VideoControllerDelegate {
             throw new ApiError('Unable to update video!', 400);
         }
         return this.getEnrichedDto(updated);
-    }
+    };
 
     delete = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -89,7 +89,7 @@ export class VideoControllerDelegate {
         return {
             Deleted : videoDeleted
         };
-    }
+    };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -129,7 +129,7 @@ export class VideoControllerDelegate {
         }
 
         return filters;
-    }
+    };
 
     getUpdateModel = (requestBody): VideoUpdateModel => {
 
@@ -155,7 +155,7 @@ export class VideoControllerDelegate {
         }
 
         return updateModel;
-    }
+    };
 
     getCreateModel = (requestBody): VideoCreateModel => {
         return {
@@ -167,7 +167,7 @@ export class VideoControllerDelegate {
             Version     : requestBody.Version ? requestBody.Version : 'V1',
             OwnerUserId : requestBody.OwnerUserId
         };
-    }
+    };
 
     getEnrichedDto = (record) => {
         if (record == null) {
@@ -185,7 +185,7 @@ export class VideoControllerDelegate {
             Tags           : JSON.parse(record.Tags),
             Version        : record.Version
         };
-    }
+    };
 
     getSearchDto = (record) => {
         if (record == null) {
@@ -201,9 +201,10 @@ export class VideoControllerDelegate {
             AssetCategory  : record.AssetCategory,
             OwnerUserId    : record.OwnerUserId,
             Tags           : JSON.parse(record.Tags),
-            Version        : record.Version
+            Version        : record.Version,
+            CratedAt       : record.CreatedAt,
         };
-    }
+    };
 
     //#endregion
 

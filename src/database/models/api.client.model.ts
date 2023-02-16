@@ -21,6 +21,14 @@ export class ApiClientModel {
             type      : DataTypes.STRING(256),
             allowNull : false
         },
+        FirstName : {
+            type      : DataTypes.STRING(256),
+            allowNull : true
+        },
+        LastName : {
+            type      : DataTypes.STRING(256),
+            allowNull : true
+        },
         ClientCode : {
             type      : DataTypes.STRING(256),
             allowNull : false

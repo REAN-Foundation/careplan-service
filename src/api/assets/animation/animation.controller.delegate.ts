@@ -47,7 +47,7 @@ export class AnimationControllerDelegate {
         }
         record = await AssetHelper.updateAssetCode(record, this._service);
         return this.getEnrichedDto(record);
-    }
+    };
 
     getById = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -55,7 +55,7 @@ export class AnimationControllerDelegate {
             ErrorHandler.throwNotFoundError('Animation with id ' + id.toString() + ' cannot be found!');
         }
         return this.getEnrichedDto(record);
-    }
+    };
 
     search = async (query: any) => {
         await validator.validateSearchRequest(query);
@@ -64,7 +64,7 @@ export class AnimationControllerDelegate {
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
         return searchResults;
-    }
+    };
 
     update = async (id: uuid, requestBody: any) => {
         await validator.validateUpdateRequest(requestBody);
@@ -78,7 +78,7 @@ export class AnimationControllerDelegate {
             throw new ApiError('Unable to update animation!', 400);
         }
         return this.getEnrichedDto(updated);
-    }
+    };
 
     delete = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -89,7 +89,7 @@ export class AnimationControllerDelegate {
         return {
             Deleted : animationDeleted
         };
-    }
+    };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -129,7 +129,7 @@ export class AnimationControllerDelegate {
         }
 
         return filters;
-    }
+    };
 
     getUpdateModel = (requestBody): AnimationUpdateModel => {
 
@@ -155,7 +155,7 @@ export class AnimationControllerDelegate {
         }
 
         return updateModel;
-    }
+    };
 
     getCreateModel = (requestBody): AnimationCreateModel => {
         return {
@@ -167,7 +167,7 @@ export class AnimationControllerDelegate {
             Version     : requestBody.Version ? requestBody.Version : 'V1',
             OwnerUserId : requestBody.OwnerUserId
         };
-    }
+    };
 
     getEnrichedDto = (record) => {
         if (record == null) {
@@ -185,7 +185,7 @@ export class AnimationControllerDelegate {
             Tags           : JSON.parse(record.Tags),
             Version        : record.Version
         };
-    }
+    };
 
     getSearchDto = (record) => {
         if (record == null) {
@@ -201,9 +201,10 @@ export class AnimationControllerDelegate {
             AssetCategory  : record.AssetCategory,
             OwnerUserId    : record.OwnerUserId,
             Tags           : JSON.parse(record.Tags),
-            Version        : record.Version
+            Version        : record.Version,
+            CreatedAt      : record.CreatedAt,
         };
-    }
+    };
 
     //#endregion
 

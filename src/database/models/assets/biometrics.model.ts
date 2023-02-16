@@ -40,7 +40,7 @@ export class BiometricsModel {
         },
         Description : {
             type      : DataTypes.TEXT,
-            allowNull : false
+            allowNull : true
         },
         AssetCategory : {
             type         : DataTypes.STRING(128),

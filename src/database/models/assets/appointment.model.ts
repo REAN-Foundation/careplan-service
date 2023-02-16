@@ -40,7 +40,7 @@ export class AppointmentModel {
         },
         Description : {
             type      : DataTypes.TEXT,
-            allowNull : false
+            allowNull : true
         },
         AppointmentType : {
             type         : DataTypes.ENUM({ values: AppointmentTypeList }),

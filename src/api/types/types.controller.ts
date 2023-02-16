@@ -4,7 +4,7 @@ import { ErrorHandler } from '../../common/error.handler';
 import { BaseController } from '../base.controller';
 import { RoleService } from '../../database/repository.services/role.service';
 import { CareplanCategoryService } from '../../database/repository.services/careplan/careplan.category.service';
-import { AssetTypeList } from '../../domain.types/assets/asset.types';
+import { AssetTypeList, TimeSlotList } from '../../domain.types/assets/asset.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -42,7 +42,7 @@ export class TypesController extends BaseController {
                     Description : x.Description
                 };
             });
-            
+
             ResponseHandler.success(request, response, 'User role types retrieved successfully!', 200, {
                 RoleTypes : roles,
             });
@@ -77,6 +77,19 @@ export class TypesController extends BaseController {
             ResponseHandler.handleError(request, response, error);
         }
     };
+
+    getTimeSlots = async (request: express.Request, response: express.Response): Promise<void> => {
+        try {
+            await this.authorize('Types.GetSlotTypes', request, response, false);
+            const slotTypes = TimeSlotList;
+            ResponseHandler.success(request, response, 'Slot types retrieved successfully!', 200, {
+                SlotTypes : slotTypes,
+            });
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
+
     // getPriorityTypes = async (request: express.Request, response: express.Response): Promise<void> => {
     //     try {
     //         await this.setContext('HealthPriority.GetPrioritiesTypes', request, response);

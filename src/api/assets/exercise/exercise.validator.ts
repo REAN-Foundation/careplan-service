@@ -12,7 +12,7 @@ export class ExerciseValidator {
             const schema = joi.object({
                 AssetCode              : joi.string().max(256).optional(),
                 Name                   : joi.string().max(256).optional(),
-                Description            : joi.string().optional(),
+                Description            : joi.string().optional().allow(null, ''),
                 ExerciseType           : joi.string().valid("Strength", "Aerobic", "Balance", "Reflexes", "Flexibility").optional(),
                 IntensityLevel         : joi.string().valid("None", "Minimal", "Moderate", "Somewhat hard", "Hard", "Harder", "Very hard", "Extremely hard", "Maximum effort").optional(),
                 RecommendedDurationMin : joi.number().integer().optional(),
@@ -26,14 +26,14 @@ export class ExerciseValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
     static validateUpdateRequest = async (requestBody) => {
         try {
             const schema = joi.object({
                 AssetCode              : joi.string().max(256).optional(),
                 Name                   : joi.string().max(256).optional(),
-                Description            : joi.string().optional(),
+                Description            : joi.string().optional().allow(null, ''),
                 ExerciseType           : joi.string().valid("Strength", "Aerobic", "Balance", "Reflexes", "Flexibility").optional(),
                 IntensityLevel         : joi.string().valid("None", "Minimal", "Moderate", "Somewhat hard", "Hard", "Harder", "Very hard", "Extremely hard", "Maximum effort").optional(),
                 RecommendedDurationMin : joi.number().integer().optional(),
@@ -44,7 +44,7 @@ export class ExerciseValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
     static validateSearchRequest = async (query) => {
         try {
@@ -62,12 +62,13 @@ export class ExerciseValidator {
                 orderBy                : joi.string().max(128).optional(),
                 itemsPerPage           : joi.number().max(128).optional(),
                 pageIndex              : joi.number().max(128).optional(),
+                
             });
             return await schema.validateAsync(query);
 
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
 }

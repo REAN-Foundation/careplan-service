@@ -10,10 +10,10 @@ export class InfographicsValidator {
     static validateCreateRequest = async (requestBody) => {
         try {
             const schema = joi.object({
-                AssetCode   : joi.string().max(256).optional(),
+                AssetCode   : joi.string().max(256).optional().allow(null),
                 Name        : joi.string().max(256).optional(),
-                Description : joi.string().optional(),
-                Url         : joi.string().optional(),
+                Description : joi.string().optional().allow(null, ''),
+                Url         : joi.string().optional().allow(null, ''),
                 Tags        : joi.array().items(joi.string()).optional(),
                 Version     : joi.string().max(128).optional(),
                 OwnerUserId : joi.string().guid({
@@ -24,15 +24,15 @@ export class InfographicsValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
     static validateUpdateRequest = async (requestBody) => {
         try {
             const schema = joi.object({
                 AssetCode   : joi.string().max(256).optional(),
                 Name        : joi.string().max(256).optional(),
-                Description : joi.string().optional(),
-                Url         : joi.string().optional(),
+                Description : joi.string().optional().allow(null, ''),
+                Url         : joi.string().optional().allow(null, ''),
                 Tags        : joi.array().items(joi.string()).optional(),
                 Version     : joi.string().max(128).optional()
             });
@@ -40,7 +40,7 @@ export class InfographicsValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
     static validateSearchRequest = async (query) => {
         try {
@@ -56,12 +56,13 @@ export class InfographicsValidator {
                 orderBy       : joi.string().max(128).optional(),
                 itemsPerPage  : joi.number().max(128).optional(),
                 pageIndex     : joi.number().max(128).optional(),
+                
             });
             return await schema.validateAsync(query);
 
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
 }
