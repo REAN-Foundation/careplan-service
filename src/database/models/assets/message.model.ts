@@ -38,6 +38,22 @@ export class MessageModel {
             type      : DataTypes.TEXT,
             allowNull : false
         },
+        TemplateName : {
+            type      : DataTypes.TEXT,
+            allowNull : false
+        },
+        TemplateVariables : {
+            type         : DataTypes.TEXT,
+            allowNull    : true,
+            defaultValue : '[]'
+
+        },
+        TemplateButtonIds : {
+            type         : DataTypes.TEXT,
+            allowNull    : true,
+            defaultValue : '[]'
+
+        },
         Description : {
             type      : DataTypes.TEXT,
             allowNull : true
