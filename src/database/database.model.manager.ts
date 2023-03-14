@@ -47,7 +47,7 @@ export class DatabaseModelManager {
         });
 
         return models;
-    }
+    };
 
     static getModelName = (file: string) => {
 
@@ -71,7 +71,7 @@ export class DatabaseModelManager {
             }
         }
         return str;
-    }
+    };
 
     static dropAll = async () => {
 
@@ -118,6 +118,6 @@ export class DatabaseModelManager {
         }
 
         return models;
-    }
+    };
 
 }

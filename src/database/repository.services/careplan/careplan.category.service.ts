@@ -18,7 +18,7 @@ export class CareplanCategoryService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create careplan category!', error);
         }
-    }
+    };
 
     getById = async (id): Promise < CareplanCategoryDto > => {
         try {
@@ -31,7 +31,7 @@ export class CareplanCategoryService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve careplan category!', error);
         }
-    }
+    };
 
     exists = async (id): Promise < boolean > => {
         try {
@@ -40,7 +40,7 @@ export class CareplanCategoryService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of careplan category!', error);
         }
-    }
+    };
 
     existsByName = async (typeName): Promise < boolean > => {
         try {
@@ -51,7 +51,7 @@ export class CareplanCategoryService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of careplan category!', error);
         }
-    }
+    };
 
     getCareplanCategories = async (): Promise < string[] > => {
         try {
@@ -61,7 +61,7 @@ export class CareplanCategoryService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to find careplan categories!', error);
         }
-    }
+    };
 
     search = async (filters: CareplanCategorySearchFilters): Promise < CareplanCategorySearchResults > => {
         try {
@@ -125,7 +125,7 @@ export class CareplanCategoryService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search careplan category records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -143,7 +143,7 @@ export class CareplanCategoryService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update careplan category!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -156,7 +156,7 @@ export class CareplanCategoryService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete careplan category!', error);
         }
-    }
+    };
 
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////

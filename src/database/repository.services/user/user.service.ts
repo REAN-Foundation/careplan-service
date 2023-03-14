@@ -28,7 +28,7 @@ export class UserService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create user!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -52,7 +52,7 @@ export class UserService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve user!', error);
         }
-    }
+    };
 
     exists = async (id) => {
         try {
@@ -61,7 +61,7 @@ export class UserService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of user!', error);
         }
-    }
+    };
 
     search = async (filters) => {
         try {
@@ -155,7 +155,7 @@ export class UserService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search user records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -173,7 +173,7 @@ export class UserService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update user!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -186,7 +186,7 @@ export class UserService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete user!', error);
         }
-    }
+    };
 
     getUserWithPhone = async (countryCode, phone) => {
         try {
@@ -213,7 +213,7 @@ export class UserService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('Unable to check if user exists with email!', error);
         }
-    }
+    };
 
     getUserWithUserName = async (username) => {
         try {
@@ -226,7 +226,7 @@ export class UserService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('Unable to check username!', error);
         }
-    }
+    };
 
     generateUserNameIfDoesNotExist = async (userName) => {
         var tmpUsername = userName ?? Helper.generateUserName();
@@ -234,7 +234,7 @@ export class UserService {
             tmpUsername = Helper.generateUserName();
         }
         return tmpUsername;
-    }
+    };
 
     getUser = async (
         countryCode,
@@ -275,7 +275,7 @@ export class UserService {
         user['Role'] = role;
 
         return user;
-    }
+    };
 
     getUserUpdateModel = (inputModel) => {
 
@@ -310,7 +310,7 @@ export class UserService {
         }
 
         return updateModel;
-    }
+    };
 
     createUserLoginSession = async (userId) => {
         try {
@@ -326,7 +326,7 @@ export class UserService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('Unable to create user login session!', error);
         }
-    }
+    };
 
     invalidateUserLoginSession = async (sessionId) => {
         try {
@@ -337,7 +337,7 @@ export class UserService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('Unable to invalidate user login session!', error);
         }
-    }
+    };
 
     isValidUserLoginSession = async (sessionId) => {
         try {
@@ -355,7 +355,7 @@ export class UserService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('Unable to determine validity of user login session!', error);
         }
-    }
+    };
 
     getBySessionId = async (sessionId) => {
         try {
@@ -392,7 +392,7 @@ export class UserService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve user for the session!', error);
         }
-    }
+    };
 
     resetPassword = async (userId, hashedPassword) => {
         try {
@@ -408,7 +408,7 @@ export class UserService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('Unable to reset password!', error);
         }
-    }
+    };
 
     validatePasswordCriteria = (password) => {
         var strength = passwordStrength(password);
@@ -417,6 +417,6 @@ export class UserService {
             //'lowercase', 'uppercase', 'symbol', 'number'
             ErrorHandler.throwInputValidationError(['Password does not match security criteria!']);
         }
-    }
+    };
 
 }
