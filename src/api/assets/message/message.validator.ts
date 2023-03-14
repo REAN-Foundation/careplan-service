@@ -36,7 +36,7 @@ export class MessageValidator {
                 AssetCode         : joi.string().max(256).optional(),
                 Name              : joi.string().optional(),
                 TemplateName      : joi.string().optional(),
-                TemplateVariables : joi.array().optional(),
+                TemplateVariables : joi.object().optional(),
                 TemplateButtonIds : joi.array().items(joi.string()).optional(),
                 Description       : joi.string().optional().allow(null, ''),
                 MessageType       : joi.string().valid("Educational", "Status", "Unknown").optional(),

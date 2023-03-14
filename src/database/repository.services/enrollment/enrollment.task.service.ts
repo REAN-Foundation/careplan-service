@@ -216,7 +216,7 @@ export class EnrollmentTaskService {
 
     private addSortingToSearch = (search, filters) => {
 
-        let orderByColumn = 'CreatedAt';
+        let orderByColumn = 'ScheduledDate';
         if (filters.OrderBy) {
             orderByColumn = filters.OrderBy;
         }

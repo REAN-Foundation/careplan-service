@@ -45,6 +45,7 @@ export interface EnrollmentTaskSearchFilters extends BaseSearchFilters {
     TimeSlot   ?: TimeSlot;
     IsRegistrationActivity? : boolean,
     EnrollmentId? : string,
+    ScheduledDate?: Date;
 }
 
 export interface EnrollmentTaskSearchResults extends BaseSearchResults {
