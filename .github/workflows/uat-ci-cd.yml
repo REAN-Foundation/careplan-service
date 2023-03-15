@@ -16,7 +16,6 @@ on:
       - '!release/aha**'   # excludes master
   
   pull_request:
-    types: [opened, edited]
     branches: main
 
 jobs:
