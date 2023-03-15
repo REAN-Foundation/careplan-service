@@ -82,6 +82,10 @@ export class EnrollmentTaskControllerDelegate {
         if (enrollmentId != null) {
             filters['EnrollmentId'] = enrollmentId;
         }
+        var orderBy = query.orderBy ? query.orderBy : null;
+        if (orderBy != null) {
+            filters['OrderBy'] = orderBy;
+        }
         return filters;
     };
 

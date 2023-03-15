@@ -55,7 +55,7 @@ export default class Application {
         catch (error) {
             Logger.instance().log('An error occurred while warming up.' + error.message);
         }
-    }
+    };
 
     setupDatabaseConnection = async () => {
 
@@ -74,7 +74,7 @@ export default class Application {
 
         await sequelize.sync({ alter: { drop: false } });
 
-    }
+    };
 
     public start = async(): Promise<void> => {
         try {

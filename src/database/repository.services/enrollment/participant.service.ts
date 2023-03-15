@@ -15,7 +15,7 @@ export class ParticipantService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create participant!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -28,7 +28,7 @@ export class ParticipantService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve participant!', error);
         }
-    }
+    };
 
     exists = async (id) => {
         try {
@@ -37,7 +37,7 @@ export class ParticipantService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of participant!', error);
         }
-    }
+    };
 
     search = async (filters) => {
         try {
@@ -125,7 +125,7 @@ export class ParticipantService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search participant records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -143,7 +143,7 @@ export class ParticipantService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update participant!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -156,7 +156,7 @@ export class ParticipantService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete participant!', error);
         }
-    }
+    };
 
     getParticipantWithPhone = async (countryCode, phone) => {
         try {
@@ -183,6 +183,6 @@ export class ParticipantService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('Unable to check if participant exists with email!', error);
         }
-    }
+    };
 
 }

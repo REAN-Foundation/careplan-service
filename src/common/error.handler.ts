@@ -12,39 +12,39 @@ export class ErrorHandler {
             message = message.split('"').join('');
         }
         throw new ApiError(message, 422);
-    }
+    };
 
     static throwDuplicateUserError = (message) => {
         throw new ApiError(message, 422);
-    }
+    };
 
     static throwNotFoundError = (message) => {
         throw new ApiError(message, 404);
-    }
+    };
 
     static throwUnauthorizedUserError = (message) => {
         throw new ApiError(message, 401);
-    }
+    };
 
     static throwForebiddenAccessError = (message) => {
         throw new ApiError(message, 403);
-    }
+    };
 
     static throwDbAccessError = (message, error) => {
         throw new ApiError(message, 503, error);
-    }
+    };
 
     static throwConflictError = (message) => {
         throw new ApiError(message, 409);
-    }
+    };
 
     static throwFailedPreconditionError = (message) => {
         throw new ApiError(message, 412);
-    }
+    };
 
     static throwInternalServerError = (message, error = null) => {
         throw new ApiError(message, 500, error);
-    }
+    };
 
     static handleValidationError = (error) => {
         if (error.isJoi === true) {
@@ -55,6 +55,6 @@ export class ErrorHandler {
         else {
             ErrorHandler.throwInputValidationError(error.message);
         }
-    }
+    };
 
 }

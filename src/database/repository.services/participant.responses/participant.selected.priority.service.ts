@@ -46,7 +46,7 @@ export class ParticipantSelectedPriorityService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create participant selected priority!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -76,7 +76,7 @@ export class ParticipantSelectedPriorityService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve participant selected priority!', error);
         }
-    }
+    };
 
     exists = async (id): Promise < boolean > => {
         try {
@@ -85,7 +85,7 @@ export class ParticipantSelectedPriorityService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of participant selected priority!', error);
         }
-    }
+    };
 
     search = async (filters: ParticipantSelectedPrioritySearchFilters):
         Promise < ParticipantSelectedPrioritySearchResults > => {
@@ -117,7 +117,7 @@ export class ParticipantSelectedPriorityService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search participant selected priority records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -135,7 +135,7 @@ export class ParticipantSelectedPriorityService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update participant selected priority!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -148,7 +148,7 @@ export class ParticipantSelectedPriorityService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete participant selected priority!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -224,7 +224,7 @@ export class ParticipantSelectedPriorityService {
         search.include.push(includeCareplanAsCareplan);
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -248,7 +248,7 @@ export class ParticipantSelectedPriorityService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -269,7 +269,7 @@ export class ParticipantSelectedPriorityService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

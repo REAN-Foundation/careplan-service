@@ -25,7 +25,7 @@ export class FileResourceService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create file resource!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -46,7 +46,7 @@ export class FileResourceService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve file resource!', error);
         }
-    }
+    };
 
     incrementDownloadCount = async (id) => {
         try {
@@ -60,7 +60,7 @@ export class FileResourceService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update download count for file resource!', error);
         }
-    }
+    };
 
     exists = async (id): Promise<boolean> => {
         try {
@@ -69,7 +69,7 @@ export class FileResourceService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of file resource!', error);
         }
-    }
+    };
 
     search = async (filters): Promise<any> => {
         try {
@@ -100,7 +100,7 @@ export class FileResourceService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search file resource records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -118,7 +118,7 @@ export class FileResourceService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update file resource!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -131,7 +131,7 @@ export class FileResourceService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete file resource!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -174,7 +174,7 @@ export class FileResourceService {
         search.include.push(includeUserAsUser);
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -198,7 +198,7 @@ export class FileResourceService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -219,7 +219,7 @@ export class FileResourceService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 
