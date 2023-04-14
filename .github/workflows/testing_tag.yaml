@@ -12,17 +12,17 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
       
-      - name: Bump version and push tag(major)
-        uses: anothrNick/github-tag-action@1.61.0
-        env:
-          DEFAULT_BUMP: major
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          WITH_V: true
-          VERBOSE: true
-        
-#       - name: New Release Publish
-#         uses: release-drafter/release-drafter@v5
-#         with:
-#           publish : true
+#       - name: Bump version and push tag(major)
+#         uses: anothrNick/github-tag-action@1.61.0
 #         env:
-#           GITHUB_TOKEN: ${{ secrets.PAT_GITHUB }}
+#           DEFAULT_BUMP: major
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#           WITH_V: true
+#           VERBOSE: true
+        
+      - name: New Release Publish
+        uses: release-drafter/release-drafter@v5
+        with:
+          publish : true
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_GITHUB }}
