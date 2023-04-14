@@ -2,7 +2,7 @@ name: testing tag
 
 on:
   push:
-    branches: feature/fix_snyk
+    branches: testing_tag
 
 jobs:
   labels:
