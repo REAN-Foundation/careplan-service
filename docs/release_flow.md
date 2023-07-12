@@ -14,9 +14,6 @@
      - [Dev-ci-cd](#Dev-ci-cd)
      - [UAT-ci-cd](#UAT-ci-cd)
      - [PROD-ci-cd](#PROD-ci-cd)
-  - [Customer Workflows](#Customer-Workflows)
-     - [AHA-UAT-ci-cd](#AHA-UAT-ci-cd)
-     - [AHA-PROD-ci-cd](#AHA-PROD-ci-cd)
 
 
 
@@ -57,7 +54,3 @@ There are different types of workflows designed for the type of source branch us
 * [UAT-CI-CD](https://github.com/REAN-Foundation/reancare-service/blob/develop/docs/release_docs/REAN_Platform_Deployment_Workflows.md#uat-ci-cd).
 * [PROD-CI-CD](https://github.com/REAN-Foundation/reancare-service/blob/develop/docs/release_docs/REAN_Platform_Deployment_Workflows.md#prod-ci-cd).
 
-### Customer Workflows
-
-* [AHA-UAT-CI-CD](https://github.com/REAN-Foundation/reancare-service/blob/develop/docs/release_docs/AHA_Platform_Deployment_Workflows.md#aha-uat-ci-cd).
-* [AHA-PROD-CI-CD](https://github.com/REAN-Foundation/reancare-service/blob/develop/docs/release_docs/AHA_Platform_Deployment_Workflows.md#aha-prod-ci-cd).
