@@ -17,6 +17,7 @@ This service supports following workflows.
 - Assessments/quiz module is currently part of the REAN-care service. 
 __SideNote: Assessment will be separate service which will seamlessly integrate with careplan service in the near future.__
 
+* [Release Flow](docs/release_flow.md)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
