@@ -49,7 +49,7 @@ export class ParticipantSelectedActionPlanService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to get participant selected action plan!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -85,7 +85,7 @@ export class ParticipantSelectedActionPlanService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve participant selected action plan!', error);
         }
-    }
+    };
 
     exists = async (id): Promise < boolean > => {
         try {
@@ -94,7 +94,7 @@ export class ParticipantSelectedActionPlanService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of participant selected action plan!', error);
         }
-    }
+    };
 
     search = async (filters: ParticipantSelectedActionPlanSearchFilters):
         Promise < ParticipantSelectedActionPlanSearchResults > => {
@@ -126,7 +126,7 @@ export class ParticipantSelectedActionPlanService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search participant selected action plan records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -144,7 +144,7 @@ export class ParticipantSelectedActionPlanService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update participant selected action plan!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -157,7 +157,7 @@ export class ParticipantSelectedActionPlanService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete participant selected action plan!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -257,7 +257,7 @@ export class ParticipantSelectedActionPlanService {
         search.include.push(includeCareplanAsCareplan);
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -281,7 +281,7 @@ export class ParticipantSelectedActionPlanService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -302,7 +302,7 @@ export class ParticipantSelectedActionPlanService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

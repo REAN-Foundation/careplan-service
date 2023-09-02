@@ -107,6 +107,10 @@ export class MessageControllerDelegate {
         if (name != null) {
             filters['Name'] = name;
         }
+        var templateName = query.templateName ? query.templateName : null;
+        if (templateName != null) {
+            filters['TemplateName'] = templateName;
+        }
         var description = query.description ? query.description : null;
         if (description != null) {
             filters['Description'] = description;
@@ -141,6 +145,15 @@ export class MessageControllerDelegate {
         if (Helper.hasProperty(requestBody, 'Name')) {
             updateModel.Name = requestBody.Name;
         }
+        if (Helper.hasProperty(requestBody, 'TemplateName')) {
+            updateModel.TemplateName = requestBody.TemplateName;
+        }
+        if (Helper.hasProperty(requestBody, 'TemplateVariables')) {
+            updateModel.TemplateVariables = JSON.stringify(requestBody.TemplateVariables);
+        }
+        if (Helper.hasProperty(requestBody, 'TemplateButtonIds')) {
+            updateModel.TemplateButtonIds = JSON.stringify(requestBody.TemplateButtonIds);
+        }
         if (Helper.hasProperty(requestBody, 'Description')) {
             updateModel.Description = requestBody.Description;
         }
@@ -162,8 +175,13 @@ export class MessageControllerDelegate {
 
     getCreateModel = (requestBody): MessageCreateModel => {
         return {
-            AssetCode   : requestBody.AssetCode ? requestBody.AssetCode : null,
-            Name        : requestBody.Name ? requestBody.Name : null,
+            AssetCode         : requestBody.AssetCode ? requestBody.AssetCode : null,
+            Name              : requestBody.Name ? requestBody.Name : null,
+            TemplateName      : requestBody.TemplateName ? requestBody.TemplateName : null,
+            TemplateVariables : requestBody.TemplateVariables ?
+                JSON.stringify(requestBody.TemplateVariables) as string : JSON.stringify([]),
+            TemplateButtonIds : requestBody.TemplateButtonIds ?
+                JSON.stringify(requestBody.TemplateButtonIds) as string : JSON.stringify([]),
             Description : requestBody.Description ? requestBody.Description : null,
             MessageType : requestBody.MessageType ? requestBody.MessageType : 'Unknown',
             Tags        : requestBody.Tags ? JSON.stringify(requestBody.Tags) as string : JSON.stringify([]),
@@ -178,16 +196,19 @@ export class MessageControllerDelegate {
             return null;
         }
         return {
-            id            : record.id,
-            AssetCode     : record.AssetCode,
-            Name          : record.Name,
-            Description   : record.Description,
-            AssetCategory : record.AssetCategory,
-            MessageType   : record.MessageType,
-            OwnerUserId   : record.OwnerUserId,
-            Tags          : JSON.parse(record.Tags),
-            Url           : record.Url,
-            Version       : record.Version
+            id                : record.id,
+            AssetCode         : record.AssetCode,
+            Name              : record.Name,
+            TemplateName      : record.TemplateName,
+            TemplateVariables : JSON.parse(record.TemplateVariables),
+            TemplateButtonIds : JSON.parse(record.TemplateButtonIds),
+            Description       : record.Description,
+            AssetCategory     : record.AssetCategory,
+            MessageType       : record.MessageType,
+            OwnerUserId       : record.OwnerUserId,
+            Tags              : JSON.parse(record.Tags),
+            Url               : record.Url,
+            Version           : record.Version
         };
     };
 
@@ -196,17 +217,20 @@ export class MessageControllerDelegate {
             return null;
         }
         return {
-            id            : record.id,
-            AssetCode     : record.AssetCode,
-            Name          : record.Name,
-            Description   : record.Description,
-            AssetCategory : record.AssetCategory,
-            MessageType   : record.MessageType,
-            OwnerUserId   : record.OwnerUserId,
-            Tags          : JSON.parse(record.Tags),
-            Url           : record.Url,
-            Version       : record.Version,
-            CreatedAt     : record.CreatedAt,
+            id                : record.id,
+            AssetCode         : record.AssetCode,
+            Name              : record.Name,
+            TemplateName      : record.TemplateName,
+            TemplateVariables : JSON.parse(record.TemplateVariables),
+            TemplateButtonIds : JSON.parse(record.TemplateButtonIds),
+            Description       : record.Description,
+            AssetCategory     : record.AssetCategory,
+            MessageType       : record.MessageType,
+            OwnerUserId       : record.OwnerUserId,
+            Tags              : JSON.parse(record.Tags),
+            Url               : record.Url,
+            Version           : record.Version,
+            CreatedAt         : record.CreatedAt,
         };
     };
 

@@ -23,7 +23,7 @@ import {
     EnrollmentTaskSearchResults
 } from '../../../domain.types/enrollment/enrollment.task.domain.types';
 import { AssetHelper } from '../assets/asset.helper';
-
+import { Op } from 'sequelize';
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 export class EnrollmentTaskService {
@@ -51,7 +51,7 @@ export class EnrollmentTaskService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create enrollment schedule!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -89,7 +89,7 @@ export class EnrollmentTaskService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve enrollment schedule!', error);
         }
-    }
+    };
 
     exists = async (id): Promise < boolean > => {
         try {
@@ -98,7 +98,7 @@ export class EnrollmentTaskService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of enrollment schedule!', error);
         }
-    }
+    };
 
     search = async (filters: EnrollmentTaskSearchFilters): Promise < EnrollmentTaskSearchResults > => {
         try {
@@ -136,7 +136,7 @@ export class EnrollmentTaskService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search enrollment schedule records!', error);
         }
-    }
+    };
     
     //#endregion
 
@@ -156,7 +156,9 @@ export class EnrollmentTaskService {
             search.where['AssetId'] = filters.AssetId;
         }
         if (filters.AssetType) {
-            search.where['AssetType'] = filters.AssetType;
+            search.where['AssetType'] = {
+                [Op.like] : '%' + filters.AssetType + '%'
+            };
         }
         if (filters.CareplanId) {
             search.where['CareplanId'] = filters.CareplanId;
@@ -169,6 +171,9 @@ export class EnrollmentTaskService {
         }
         if (filters.EnrollmentId) {
             search.where['EnrollmentId'] = filters.EnrollmentId;
+        }
+        if (filters.ScheduledDate) {
+            search.where['ScheduledDate'] = filters.ScheduledDate;
         }
         const includeEnrollmentAsEnrollment = {
             model    : this.Enrollment,
@@ -212,11 +217,11 @@ export class EnrollmentTaskService {
         search.include.push(includeCareplanAsCareplan);
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
-        let orderByColumn = 'CreatedAt';
+        let orderByColumn = 'ScheduledDate';
         if (filters.OrderBy) {
             orderByColumn = filters.OrderBy;
         }
@@ -236,7 +241,7 @@ export class EnrollmentTaskService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -257,7 +262,7 @@ export class EnrollmentTaskService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

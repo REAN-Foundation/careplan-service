@@ -82,6 +82,14 @@ export class EnrollmentTaskControllerDelegate {
         if (enrollmentId != null) {
             filters['EnrollmentId'] = enrollmentId;
         }
+        var scheduledDate = query.scheduledDate ? query.scheduledDate : null;
+        if (scheduledDate != null) {
+            filters['ScheduledDate'] = scheduledDate;
+        }
+        var orderBy = query.orderBy ? query.orderBy : null;
+        if (orderBy != null) {
+            filters['OrderBy'] = orderBy;
+        }
         return filters;
     };
 

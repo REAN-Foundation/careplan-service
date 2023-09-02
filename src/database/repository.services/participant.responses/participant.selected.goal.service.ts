@@ -49,7 +49,7 @@ export class ParticipantSelectedGoalService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create participant selected goal!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -85,7 +85,7 @@ export class ParticipantSelectedGoalService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve participant selected goal!', error);
         }
-    }
+    };
 
     exists = async (id): Promise < boolean > => {
         try {
@@ -94,7 +94,7 @@ export class ParticipantSelectedGoalService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of participant selected goal!', error);
         }
-    }
+    };
 
     search = async (filters: ParticipantSelectedGoalSearchFilters):
         Promise < ParticipantSelectedGoalSearchResults > => {
@@ -126,7 +126,7 @@ export class ParticipantSelectedGoalService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search participant selected goal records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -144,7 +144,7 @@ export class ParticipantSelectedGoalService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update participant selected goal!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -157,7 +157,7 @@ export class ParticipantSelectedGoalService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete participant selected goal!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -257,7 +257,7 @@ export class ParticipantSelectedGoalService {
         search.include.push(includeCareplanAsCareplan);
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -281,7 +281,7 @@ export class ParticipantSelectedGoalService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -302,7 +302,7 @@ export class ParticipantSelectedGoalService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 
