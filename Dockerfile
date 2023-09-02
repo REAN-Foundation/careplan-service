@@ -1,4 +1,5 @@
-FROM node:18.12.0-alpine3.15 AS builder
+
+FROM node:hydrogen-alpine3.15 AS builder
 ADD . /app
 RUN apk add bash
 RUN apk add --no-cache \
@@ -19,7 +20,8 @@ RUN npm run build
 
 # RUN npm run build
 
-FROM node:18.12.0-alpine3.15
+
+FROM node:hydrogen-alpine3.15
 RUN apk add bash
 RUN apk add --no-cache \
         python3 \

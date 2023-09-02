@@ -21,6 +21,9 @@ export const MessageTypeList: MessageType[] = [
 export interface MessageCreateModel {
     AssetCode ? : string;
     Name ? : string;
+    TemplateName ? : string;
+    TemplateVariables ? : string;
+    TemplateButtonIds ? : string;
     Description ? : string;
     MessageType ? : MessageType;
     Tags ? : string;
@@ -32,6 +35,9 @@ export interface MessageCreateModel {
 export interface MessageUpdateModel {
     AssetCode ? : string;
     Name ? : string;
+    TemplateName ? : string;
+    TemplateVariables ? : string;
+    TemplateButtonIds ? : string;
     Description ? : string;
     MessageType ? : MessageType;
     Tags ? : string;
@@ -44,6 +50,9 @@ export interface MessageDto {
     id: uuid;
     AssetCode: string;
     Name: string;
+    TemplateName ? : string;
+    TemplateVariables ? : string[];
+    TemplateButtonIds ? : string[];
     Description: string;
     AssetCategory: string;
     MessageType: MessageType;
@@ -57,6 +66,7 @@ export interface MessageDto {
 export interface MessageSearchFilters extends BaseSearchFilters {
     AssetCode ? : string;
     Name ? : string;
+    TemplateName ? : string;
     Description ? : string;
     Category ? : string;
     MessageType ? : MessageType;

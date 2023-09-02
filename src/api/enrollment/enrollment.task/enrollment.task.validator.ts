@@ -50,6 +50,7 @@ export class EnrollmentTaskValidator {
                 scheduledDate          : joi.date().iso().optional(),
                 timeSlot               : joi.string().valid("Early morning", "Morning", "Afternoon", "Late afternoon", "Evening", "Night", "Late night", "Unspecified", "Whole day").optional(),
                 isRegistrationActivity : joi.boolean().optional(),
+                orderBy                : joi.string().valid("ScheduledDate", "CreatedAt"),
             });
             return await schema.validateAsync(query);
 

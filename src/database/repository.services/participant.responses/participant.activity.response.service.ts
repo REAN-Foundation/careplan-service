@@ -53,7 +53,7 @@ export class ParticipantActivityResponseService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create participant activity response!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -89,7 +89,7 @@ export class ParticipantActivityResponseService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve participant activity response!', error);
         }
-    }
+    };
 
     exists = async (id): Promise < boolean > => {
         try {
@@ -98,7 +98,7 @@ export class ParticipantActivityResponseService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of participant activity response!', error);
         }
-    }
+    };
 
     // eslint-disable-next-line max-len
     search = async (filters: ParticipantActivityResponseSearchFilters): Promise < ParticipantActivityResponseSearchResults > => {
@@ -130,7 +130,7 @@ export class ParticipantActivityResponseService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search participant activity response records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -148,7 +148,7 @@ export class ParticipantActivityResponseService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update participant activity response!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -161,7 +161,7 @@ export class ParticipantActivityResponseService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete participant activity response!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -239,7 +239,7 @@ export class ParticipantActivityResponseService {
         search.include.push(includeCareplanAsCareplan);
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -263,7 +263,7 @@ export class ParticipantActivityResponseService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -284,7 +284,7 @@ export class ParticipantActivityResponseService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 
