@@ -13,7 +13,7 @@ export class CareplanValidator {
                     version : ['uuidv4']
                 }).optional(),
                 Name        : joi.string().max(256).required(),
-                Description : joi.string().optional(),
+                Description : joi.string().allow('', null).optional(),
                 Version     : joi.string().max(32).optional(),
                 Tags        : joi.array().items(joi.string()).optional(),
                 OwnerUserId : joi.string().guid({
@@ -62,7 +62,7 @@ export class CareplanValidator {
                     version : ['uuidv4']
                 }).optional(),
                 Name        : joi.string().max(256).optional(),
-                Description : joi.string().optional(),
+                Description : joi.string().allow('', null).optional(),
                 Version     : joi.string().max(32).optional(),
                 Tags        : joi.array().items(joi.string()).optional(),
                 OwnerUserId : joi.string().guid({
