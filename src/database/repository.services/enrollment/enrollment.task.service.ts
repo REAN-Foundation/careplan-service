@@ -23,7 +23,7 @@ import {
     EnrollmentTaskSearchResults
 } from '../../../domain.types/enrollment/enrollment.task.domain.types';
 import { AssetHelper } from '../assets/asset.helper';
-
+import { Op } from 'sequelize';
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 export class EnrollmentTaskService {
@@ -156,7 +156,9 @@ export class EnrollmentTaskService {
             search.where['AssetId'] = filters.AssetId;
         }
         if (filters.AssetType) {
-            search.where['AssetType'] = filters.AssetType;
+            search.where['AssetType'] = {
+                [Op.like] : '%' + filters.AssetType + '%'
+            };
         }
         if (filters.CareplanId) {
             search.where['CareplanId'] = filters.CareplanId;
@@ -169,6 +171,9 @@ export class EnrollmentTaskService {
         }
         if (filters.EnrollmentId) {
             search.where['EnrollmentId'] = filters.EnrollmentId;
+        }
+        if (filters.ScheduledDate) {
+            search.where['ScheduledDate'] = filters.ScheduledDate;
         }
         const includeEnrollmentAsEnrollment = {
             model    : this.Enrollment,
