@@ -202,7 +202,7 @@ export class VideoControllerDelegate {
             OwnerUserId    : record.OwnerUserId,
             Tags           : JSON.parse(record.Tags),
             Version        : record.Version,
-            CratedAt       : record.CreatedAt,
+            CreatedAt      : record.CreatedAt,
         };
     };
 
