@@ -245,7 +245,7 @@ export class EnrollmentTaskService {
 
     private addPaginationToSearch = (search, filters) => {
 
-        let limit = 250;
+        let limit = 25;
         if (filters.ItemsPerPage) {
             limit = filters.ItemsPerPage;
         }

@@ -114,6 +114,14 @@ export class CareplanControllerDelegate {
         if (order != null) {
             filters['Order'] = order;
         }
+        var itemsPerPage = query.itemsPerPage ? query.itemsPerPage : null;
+        if (itemsPerPage != null) {
+            filters['ItemsPerPage'] = parseInt(itemsPerPage);
+        }
+        var pageIndex = query.pageIndex ? query.pageIndex : null;
+        if (pageIndex != null) {
+            filters['PageIndex'] = parseInt(pageIndex);
+        }
         return filters;
     };
 

@@ -50,7 +50,11 @@ export class EnrollmentTaskValidator {
                 scheduledDate          : joi.date().iso().optional(),
                 timeSlot               : joi.string().valid("Early morning", "Morning", "Afternoon", "Late afternoon", "Evening", "Night", "Late night", "Unspecified", "Whole day").optional(),
                 isRegistrationActivity : joi.boolean().optional(),
-                orderBy                : joi.string().valid("ScheduledDate", "CreatedAt"),
+                orderBy                : joi.string().valid("ScheduledDate", "CreatedAt", "AssetType"),
+                pageIndex              : joi.number().min(0).optional(),
+                itemsPerPage           : joi.number().min(1).optional(),
+                order                  : joi.string().valid('ascending', 'descending').optional()
+                    .error(()=> new Error("order param: 'ascending' and 'descending' are the only valid values.")),
             });
             return await schema.validateAsync(query);
 
