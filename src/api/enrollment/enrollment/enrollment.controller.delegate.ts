@@ -211,8 +211,21 @@ export class EnrollmentControllerDelegate {
                 }
                 let dt = null;
                
-                dt = TimeHelper.addDuration(startDate, daysToAdd, DurationType.Day);
-                dt = TimeHelper.addDuration(dt, 270, DurationType.Minute);
+                const reminder = daysToAdd % 4;
+                const days = Math.ceil(daysToAdd / 4);
+                dt = TimeHelper.addDuration(startDate, days, DurationType.Day);
+                if (reminder === 1) {
+                    dt = TimeHelper.addDuration(dt, 360, DurationType.Minute);
+                } else if (reminder === 2) {
+                    dt = TimeHelper.addDuration(dt, 360 + 120 * 1, DurationType.Minute);
+                } else if (reminder === 3) {
+                    dt = TimeHelper.addDuration(dt, 360 + 120 * 2, DurationType.Minute);
+                } else if (reminder === 0) {
+                    dt = TimeHelper.addDuration(dt, 360 + 120 * 3, DurationType.Minute);
+                }
+               
+                // dt = TimeHelper.addDuration(startDate, daysToAdd, DurationType.Day);
+                // dt = TimeHelper.addDuration(dt, 270, DurationType.Minute);
 
                 var createModel: EnrollmentTaskCreateModel = {
                     EnrollmentId       : record.id,
@@ -267,10 +280,25 @@ export class EnrollmentControllerDelegate {
         if (startDate != null) {
             filters['StartDate'] = startDate;
         }
-
         var endDate = query.endDate ? query.endDate : null;
         if (endDate != null) {
             filters['EndDate'] = endDate;
+        }
+        var orderBy = query.orderBy ? query.orderBy : null;
+        if (orderBy != null) {
+            filters['OrderBy'] = orderBy;
+        }
+        var itemsPerPage = query.itemsPerPage ? query.itemsPerPage : null;
+        if (itemsPerPage != null) {
+            filters['ItemsPerPage'] = parseInt(itemsPerPage);
+        }
+        var order = query.order ? query.order : null;
+        if (order != null) {
+            filters['Order'] = order;
+        }
+        var pageIndex = query.pageIndex ? query.pageIndex : null;
+        if (pageIndex != null) {
+            filters['PageIndex'] = parseInt(pageIndex);
         }
         return filters;
     };

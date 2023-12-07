@@ -106,6 +106,22 @@ export class CareplanControllerDelegate {
         if (isActive != null) {
             filters['IsActive'] = isActive;
         }
+        var orderBy = query.orderBy ? query.orderBy : 'CreatedAt';
+        if (orderBy != null) {
+            filters['OrderBy'] = orderBy;
+        }
+        var order = query.order ? query.order : 'ASC';
+        if (order != null) {
+            filters['Order'] = order;
+        }
+        var itemsPerPage = query.itemsPerPage ? query.itemsPerPage : null;
+        if (itemsPerPage != null) {
+            filters['ItemsPerPage'] = parseInt(itemsPerPage);
+        }
+        var pageIndex = query.pageIndex ? query.pageIndex : null;
+        if (pageIndex != null) {
+            filters['PageIndex'] = parseInt(pageIndex);
+        }
         return filters;
     };
 
