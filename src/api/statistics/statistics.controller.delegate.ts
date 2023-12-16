@@ -1,5 +1,7 @@
-
+import { DailyStatisticsDomainModel } from '../../domain.types/daily.statistics/daily.statistics.domain.model';
+import { DailyStatisticsService } from '../../database/repository.services/statistics/daily.statistics/daily.statistics.service';
 import { StatisticsService } from '../../database/repository.services/statistics/statistics.service';
+import { Logger } from '../../common/logger';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -9,8 +11,29 @@ export class StatisticsControllerDelegate {
 
     _service: StatisticsService = null;
 
+    _dailyStatisticsService: DailyStatisticsService = null;
+
     constructor() {
         this._service = new StatisticsService();
+        this._dailyStatisticsService = new DailyStatisticsService();
+    }
+
+    createDailyStatistics = async () => {
+        try {
+            const record = await this.getDashboardStats();
+            const createModel: DailyStatisticsDomainModel = {
+                ReportDate      : new Date(),
+                ReportTimestamp : new Date(),
+                Statistics      : JSON.stringify(record)
+            };
+            const dailyStatistics = await this._dailyStatisticsService.create(createModel);
+            if (!dailyStatistics) {
+                Logger.instance().log('Unable to create daily careplan statistics!');
+            }
+            Logger.instance().log('Daily careplan statistics created successfully.');
+        } catch (error) {
+            Logger.instance().log(`Error in creating daily careplan statistics: ${error.message}`);
+        }
     }
 
     //#endregion

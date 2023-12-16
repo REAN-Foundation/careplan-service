@@ -200,7 +200,9 @@
             "WordPower.Search",
             "WordPower.GetById",
             "WordPower.Update",
-            "WordPower.Delete"
+            "WordPower.Delete",
+
+            "DailyStatistics.GetLatestStatistics"
         ]
     },
     {

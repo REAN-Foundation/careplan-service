@@ -1,6 +1,7 @@
 import * as cron from 'node-cron';
 import * as CronSchedules from '../../seed.data/cron.schedules.json';
 import { Logger } from '../common/logger';
+import { StatisticsControllerDelegate } from '../api/statistics/statistics.controller.delegate';
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -12,7 +13,10 @@ export class Scheduler {
 
     private static _schedules = null;
 
+    _delegate: StatisticsControllerDelegate = null;
+
     private constructor() {
+        this._delegate = new StatisticsControllerDelegate();
         const env = process.env.NODE_ENV || 'development';
         Scheduler._schedules = CronSchedules[env];
         Logger.instance().log('Initializing the schedular.');
@@ -31,6 +35,7 @@ export class Scheduler {
             try {
 
                 this.scheduleDailyReminders();
+                this.scheduleDailyStatistics();
                 
                 resolve(true);
             } catch (error) {
@@ -54,6 +59,14 @@ export class Scheduler {
         });
     };
     
+    private scheduleDailyStatistics = () => {
+        cron.schedule(Scheduler._schedules['DailyStatistics'], () => {
+            (async () => {
+                Logger.instance().log('Running scheduled jobs: creating overall statistics...');
+                await this._delegate.createDailyStatistics();
+            })();
+        });
+    };
     //#endregion
 
 }

@@ -1,18 +1,22 @@
 {
     "local": {
         "FileCleanup": "*/30 * * * *",
-        "DailyReminder": "*/15 * * * *"
+        "DailyReminder": "*/15 * * * *",
+        "DailyStatistics": "*/1 * * * *"
     },
     "development": {
         "FileCleanup": "*/30 * * * *",
-        "DailyReminder": "*/15 * * * *"
+        "DailyReminder": "*/15 * * * *",
+        "DailyStatistics": "0 0 * * *"
     },
     "uat": {
         "FileCleanup": "*/30 * * * *",
-        "DailyReminder": "*/15 * * * *"
+        "DailyReminder": "*/15 * * * *",
+        "DailyStatistics": "0 0 * * *"
     },
     "production": {
         "FileCleanup": "*/30 * * * *",
-        "DailyReminder": "*/15 * * * *"
+        "DailyReminder": "*/15 * * * *",
+        "DailyStatistics": "0 0 * * *"
     }
 }
