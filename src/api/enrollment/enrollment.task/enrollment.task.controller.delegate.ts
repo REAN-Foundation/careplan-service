@@ -82,9 +82,25 @@ export class EnrollmentTaskControllerDelegate {
         if (enrollmentId != null) {
             filters['EnrollmentId'] = enrollmentId;
         }
+        var scheduledDate = query.scheduledDate ? query.scheduledDate : null;
+        if (scheduledDate != null) {
+            filters['ScheduledDate'] = scheduledDate;
+        }
         var orderBy = query.orderBy ? query.orderBy : null;
         if (orderBy != null) {
             filters['OrderBy'] = orderBy;
+        }
+        var itemsPerPage = query.itemsPerPage ? query.itemsPerPage : null;
+        if (itemsPerPage != null) {
+            filters['ItemsPerPage'] = parseInt(itemsPerPage);
+        }
+        var order = query.order ? query.order : null;
+        if (order != null) {
+            filters['Order'] = order;
+        }
+        var pageIndex = query.pageIndex ? query.pageIndex : null;
+        if (pageIndex != null) {
+            filters['PageIndex'] = parseInt(pageIndex);
         }
         return filters;
     };
