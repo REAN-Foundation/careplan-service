@@ -339,7 +339,7 @@ const userEngagement = (enrollmentTasks, ParticipantActivityResponse) => {
             var itemsForDay =
             ParticipantActivityResponse.filter(x => x.TimeResponded >= dStart && x.TimeResponded < dEnd);
             var ParticipantActivityResponseCount = itemsForDay.length;
-            const userEngagement = (ParticipantActivityResponseCount / enrollmentTasksCount);
+            const userEngagement = (ParticipantActivityResponseCount / enrollmentTasksCount) * 100;
             itemCounts.push({
                 Day                 : d,
                 UserEngagementDaily : userEngagement,
