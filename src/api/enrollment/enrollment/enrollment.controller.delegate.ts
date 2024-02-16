@@ -211,21 +211,8 @@ export class EnrollmentControllerDelegate {
                 }
                 let dt = null;
                
-                const reminder = daysToAdd % 4;
-                const days = Math.ceil(daysToAdd / 4);
-                dt = TimeHelper.addDuration(startDate, days, DurationType.Day);
-                if (reminder === 1) {
-                    dt = TimeHelper.addDuration(dt, 360, DurationType.Minute);
-                } else if (reminder === 2) {
-                    dt = TimeHelper.addDuration(dt, 360 + 120 * 1, DurationType.Minute);
-                } else if (reminder === 3) {
-                    dt = TimeHelper.addDuration(dt, 360 + 120 * 2, DurationType.Minute);
-                } else if (reminder === 0) {
-                    dt = TimeHelper.addDuration(dt, 360 + 120 * 3, DurationType.Minute);
-                }
-               
-                // dt = TimeHelper.addDuration(startDate, daysToAdd, DurationType.Day);
-                // dt = TimeHelper.addDuration(dt, 270, DurationType.Minute);
+                dt = TimeHelper.addDuration(startDate, daysToAdd, DurationType.Day);
+                dt = TimeHelper.addDuration(dt, 270, DurationType.Minute);
 
                 var createModel: EnrollmentTaskCreateModel = {
                     EnrollmentId       : record.id,
