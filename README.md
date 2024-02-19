@@ -11,6 +11,8 @@ This service supports following workflows.
 ### Highlights
 - API currently supports client authentication using API keys.
 - User authentication is also applicable for careplan and asset creators and admin.
+  
+* [Release Flow](docs/release_flow.md)
 
 ### Currently in progress
 - Careplan service supports static careplan schedules, but support for dynamic scheduling of careplans is in progress. When complete, the scheduling will be driven by rule engine, events and participant responses.
