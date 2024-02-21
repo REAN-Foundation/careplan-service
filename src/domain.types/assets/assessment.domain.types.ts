@@ -11,6 +11,8 @@ export interface AssessmentCreateModel {
     Name ? : string;
     Description ? : string;
     Template ? : string;
+    ReferenceTemplateCode ? : string;
+    ReferenceTemplateId ? : string;
     Tags ? : string;
     Version ? : string;
     OwnerUserId?: uuid;
@@ -21,6 +23,8 @@ export interface AssessmentUpdateModel {
     Name ? : string;
     Description ? : string;
     Template ? : string;
+    ReferenceTemplateCode ? : string;
+    ReferenceTemplateId ? : string;
     Tags ? : string;
     Version ? : string;
     OwnerUserId?: uuid;
@@ -33,6 +37,8 @@ export interface AssessmentDto {
     Description: string;
     AssetCategory: string;
     Template: string;
+    ReferenceTemplateCode : string;
+    ReferenceTemplateId? : string;
     OwnerUserId: uuid;
     Tags: string[];
     Version: string;

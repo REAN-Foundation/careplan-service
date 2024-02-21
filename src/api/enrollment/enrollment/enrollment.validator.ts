@@ -21,7 +21,8 @@ export class EnrollmentValidator {
                 EndDate        : joi.date().iso().optional().allow(null),
                 WeekOffset     : joi.number().optional(),
                 DayOffset      : joi.number().optional(),
-                EnrollmentDate : joi.date().iso().optional()
+                EnrollmentDate : joi.date().iso().optional(),
+                IsTest         : joi.boolean().optional(),
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {

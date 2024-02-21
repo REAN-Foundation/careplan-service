@@ -18,6 +18,7 @@ export interface EnrollmentCreateModel {
     WeekOffset     ?: number;
     DayOffset      ?: number;
     EnrollmentDate ?: Date;
+    IsTest         ?: boolean;
 }
 
 export interface EnrollmentUpdateModel {

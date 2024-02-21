@@ -19,6 +19,7 @@ export class AssessmentValidator {
                 OwnerUserId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
+                ReferenceTemplateCode : joi.string().max(256).optional(),
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -29,12 +30,13 @@ export class AssessmentValidator {
     static validateUpdateRequest = async (requestBody) => {
         try {
             const schema = joi.object({
-                AssetCode   : joi.string().max(256).optional(),
-                Name        : joi.string().max(256).optional(),
-                Description : joi.string().optional().allow(null, ''),
-                Template    : joi.string().optional().allow(null, ''),
-                Tags        : joi.array().items(joi.string()).optional(),
-                Version     : joi.string().max(128).optional()
+                AssetCode             : joi.string().max(256).optional(),
+                Name                  : joi.string().max(256).optional(),
+                Description           : joi.string().optional().allow(null, ''),
+                Template              : joi.string().optional().allow(null, ''),
+                Tags                  : joi.array().items(joi.string()).optional(),
+                Version               : joi.string().max(128).optional(),
+                ReferenceTemplateCode : joi.string().max(256).optional()
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {

@@ -91,9 +91,12 @@ export class EnrollmentControllerDelegate {
         if (record == null) {
             ErrorHandler.throwInternalServerError('Unable to update displayId!');
         }
-
-        await this.generateRegistrationTasks(record);
-        await this.generateScheduledTasks(record);
+        if (requestBody.IsTest === true) {
+            await this.generateScheduledTasks_Testing(record);
+        } else {
+            await this.generateRegistrationTasks(record);
+            await this.generateScheduledTasks(record);
+        }
 
         return this.getEnrichedDto(record);
     };
@@ -235,6 +238,75 @@ export class EnrollmentControllerDelegate {
         }
     };
 
+    generateScheduledTasks_Testing = async(record) => {
+
+        try {
+
+            const scheduledActivities =
+                await this._careplanActivityService.getScheduledActivities(record.CareplanId);
+            const totalTasks = scheduledActivities.length; // Total number of tasks
+            const tasks = scheduledActivities;
+
+            const startHour = 17.5; // 12 PM
+            const minutesInDay = 24 * 60; // Total minutes in a day
+            const minutesInWeek = 7 * minutesInDay; // Total minutes in a week
+
+            // Calculate the interval between tasks
+            const interval = 15; // in minutes
+
+            // Calculate the number of tasks per day
+            const tasksPerDay = Math.ceil(totalTasks / 7);
+
+            // Initialize the schedule
+            const schedule = [];
+
+            // Distribute tasks evenly over 7 days
+            for (let day = 0; day < 7; day++) {
+                const dailyTasks = [];
+                const startSequence = day * tasksPerDay;
+                const endSequence = Math.min((day + 1) * tasksPerDay, totalTasks);
+
+                for (let i = startSequence; i < endSequence; i++) {
+                    dailyTasks.push(tasks[i]);
+                }
+
+                schedule.push(dailyTasks);
+            }
+            const today = new Date().toISOString().split("T")[0];
+
+            // Display the schedule
+            schedule.forEach((tasks, day) => {
+                const dt = TimeHelper.addDuration(new Date(today), day + 1, DurationType.Day);
+                const dateString = dt.toISOString().split("T")[0];
+                let currentTime = startHour * 60; // Convert start hour to minutes
+                tasks.forEach( async task => {
+                    const hours = Math.floor(currentTime / 60);
+                    const minutes = currentTime % 60;
+                    const scheduleDateTime = new Date(`${dateString}T${hours}:${minutes.toString().padStart(2, '0')}:00`);
+                    currentTime += interval;
+
+                    var createModel: EnrollmentTaskCreateModel = {
+                        EnrollmentId       : record.id,
+                        ParticipantId      : record.ParticipantId,
+                        CareplanId         : record.CareplanId,
+                        CareplanActivityId : task.id,
+                        AssetId            : task.AssetId,
+                        AssetType          : task.AssetType,
+                        TimeSlot           : task.TimeSlot,
+                        IsRegistrationActivity : false,
+                        ScheduledDate      : scheduleDateTime
+                    };
+    
+                    const activity = await this._enrollmentTaskService.create(createModel);
+                    Logger.instance().log(`Scheduled activity for day: ${dateString} \n${JSON.stringify(activity, null, 2)}`);
+                });
+            });
+
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to create enrollment scheduled tasks for testing!', error);
+        }
+    };
+
     getSearchFilters = (query) => {
 
         var filters = {};
@@ -325,7 +397,8 @@ export class EnrollmentControllerDelegate {
             EndDate        : requestBody.EndDate ? requestBody.EndDate : null,
             WeekOffset     : requestBody.WeekOffset ? requestBody.WeekOffset : 0,
             DayOffset      : requestBody.DayOffset ? requestBody.DayOffset : 0,
-            EnrollmentDate : requestBody.EnrollmentDate ? requestBody.EnrollmentDate : new Date()
+            EnrollmentDate : requestBody.EnrollmentDate ? requestBody.EnrollmentDate : new Date(),
+            IsTest         : requestBody.IsTest ? requestBody.IsTest : false
         };
     };
 
