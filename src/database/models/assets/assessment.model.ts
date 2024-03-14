@@ -51,6 +51,14 @@ export class AssessmentModel {
             allowNull    : true,
             defaultValue : '{}'
         },
+        ReferenceTemplateCode : {
+            type      : DataTypes.STRING(256),
+            allowNull : true
+        },
+        ReferenceTemplateId : {
+            type      : DataTypes.STRING(256),
+            allowNull : true
+        },
         OwnerUserId : {
             type      : DataTypes.UUID,
             allowNull : true

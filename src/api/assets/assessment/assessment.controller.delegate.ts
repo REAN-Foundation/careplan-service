@@ -23,6 +23,7 @@ import {
     AssessmentSearchResults
 } from '../../../domain.types/assets/assessment.domain.types';
 import { AssetHelper } from '../../../database/repository.services/assets/asset.helper';
+import { NeedleService } from '../../../common/needle.service';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -40,6 +41,7 @@ export class AssessmentControllerDelegate {
 
     create = async (requestBody: any) => {
         await validator.validateCreateRequest(requestBody);
+        requestBody  = await this.updateAssessmentId(requestBody);
         var createModel: AssessmentCreateModel = this.getCreateModel(requestBody);
         var record = await this._service.create(createModel);
         if (record === null) {
@@ -72,7 +74,11 @@ export class AssessmentControllerDelegate {
         if (record === null) {
             ErrorHandler.throwNotFoundError('Assessment with id ' + id.toString() + ' cannot be found!');
         }
-        const updateModel: AssessmentUpdateModel = this.getUpdateModel(requestBody);
+        let updateModel: AssessmentUpdateModel = this.getUpdateModel(requestBody);
+        // First find in reancare that template is present or not then update the code otherwise don't update
+        if (updateModel.ReferenceTemplateCode) {
+            updateModel = await this.updateAssessmentId(updateModel);
+        }
         const updated = await this._service.update(id, updateModel);
         if (updated == null) {
             throw new ApiError('Unable to update assessment!', 400);
@@ -153,19 +159,24 @@ export class AssessmentControllerDelegate {
         if (Helper.hasProperty(requestBody, 'Version')) {
             updateModel.Version = requestBody.Version;
         }
-
+        if (Helper.hasProperty(requestBody, 'ReferenceTemplateCode')) {
+            updateModel.ReferenceTemplateCode = requestBody.ReferenceTemplateCode;
+            requestBody = this.updateAssessmentId(requestBody);
+        }
         return updateModel;
     };
 
     getCreateModel = (requestBody): AssessmentCreateModel => {
         return {
-            AssetCode   : requestBody.AssetCode ? requestBody.AssetCode : null,
-            Name        : requestBody.Name ? requestBody.Name : null,
-            Description : requestBody.Description ? requestBody.Description : null,
-            Template    : requestBody.Template ? requestBody.Template : '{}',
-            Tags        : requestBody.Tags ? JSON.stringify(requestBody.Tags) as string : JSON.stringify([]),
-            Version     : requestBody.Version ? requestBody.Version : 'V1',
-            OwnerUserId : requestBody.OwnerUserId
+            AssetCode             : requestBody.AssetCode ? requestBody.AssetCode : null,
+            Name                  : requestBody.Name ? requestBody.Name : null,
+            Description           : requestBody.Description ? requestBody.Description : null,
+            Template              : requestBody.Template ? requestBody.Template : '{}',
+            ReferenceTemplateCode : requestBody.ReferenceTemplateCode ? requestBody.ReferenceTemplateCode : null,
+            ReferenceTemplateId   : requestBody.ReferenceTemplateId ? requestBody.ReferenceTemplateId : null,
+            Tags                  : requestBody.Tags ? JSON.stringify(requestBody.Tags) as string : JSON.stringify([]),
+            Version               : requestBody.Version ? requestBody.Version : 'V1',
+            OwnerUserId           : requestBody.OwnerUserId
         };
     };
 
@@ -174,15 +185,17 @@ export class AssessmentControllerDelegate {
             return null;
         }
         return {
-            id            : record.id,
-            AssetCode     : record.AssetCode,
-            Name          : record.Name,
-            Description   : record.Description,
-            AssetCategory : record.AssetCategory,
-            Template      : record.Template,
-            OwnerUserId   : record.OwnerUserId,
-            Tags          : JSON.parse(record.Tags),
-            Version       : record.Version
+            id                    : record.id,
+            AssetCode             : record.AssetCode,
+            Name                  : record.Name,
+            Description           : record.Description,
+            AssetCategory         : record.AssetCategory,
+            Template              : record.Template,
+            ReferenceTemplateCode : record.ReferenceTemplateCode,
+            ReferenceTemplateId   : record.ReferenceTemplateId,
+            OwnerUserId           : record.OwnerUserId,
+            Tags                  : JSON.parse(record.Tags),
+            Version               : record.Version
         };
     };
 
@@ -191,17 +204,33 @@ export class AssessmentControllerDelegate {
             return null;
         }
         return {
-            id            : record.id,
-            AssetCode     : record.AssetCode,
-            Name          : record.Name,
-            Description   : record.Description,
-            AssetCategory : record.AssetCategory,
-            Template      : record.Template,
-            OwnerUserId   : record.OwnerUserId,
-            Tags          : JSON.parse(record.Tags),
-            Version       : record.Version,
-            CreatedAt     : record.CreatedAt,
+            id                    : record.id,
+            AssetCode             : record.AssetCode,
+            Name                  : record.Name,
+            Description           : record.Description,
+            AssetCategory         : record.AssetCategory,
+            Template              : record.Template,
+            ReferenceTemplateCode : record.ReferenceTemplateCode,
+            ReferenceTemplateId   : record.ReferenceTemplateId,
+            OwnerUserId           : record.OwnerUserId,
+            Tags                  : JSON.parse(record.Tags),
+            Version               : record.Version,
+            CreatedAt             : record.CreatedAt,
         };
+    };
+
+    updateAssessmentId = async (requestBody) => {
+
+        if (requestBody.ReferenceTemplateCode) {
+            const templateCode = requestBody.ReferenceTemplateCode;
+            const apiURL = `/clinical/assessment-templates/search?displayCode=${templateCode}`;
+            const serachResults = await NeedleService.needleRequestForREAN("get", apiURL);
+            const items = serachResults.Data.AssessmentTemplateRecords.Items;
+            if (items.length !== 0) {
+                requestBody.ReferenceTemplateId = items[0].id;
+            }
+        }
+        return requestBody;
     };
 
     //#endregion
