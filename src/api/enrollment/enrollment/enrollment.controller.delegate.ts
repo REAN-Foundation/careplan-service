@@ -247,7 +247,7 @@ export class EnrollmentControllerDelegate {
             const totalTasks = scheduledActivities.length; // Total number of tasks
             const tasks = scheduledActivities;
 
-            const startHour = 17.5; // 12 PM
+            const startHour = 14.5; // 9 AM + 05:30 IST
             const minutesInDay = 24 * 60; // Total minutes in a day
             const minutesInWeek = 7 * minutesInDay; // Total minutes in a week
 
