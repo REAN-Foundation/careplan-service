@@ -90,7 +90,7 @@ export class EnrollmentTaskControllerDelegate {
         if (orderBy != null) {
             filters['OrderBy'] = orderBy;
         }
-        var itemsPerPage = query.itemsPerPage ? query.itemsPerPage : null;
+        var itemsPerPage = query.itemsPerPage ? query.itemsPerPage : 120;
         if (itemsPerPage != null) {
             filters['ItemsPerPage'] = parseInt(itemsPerPage);
         }
