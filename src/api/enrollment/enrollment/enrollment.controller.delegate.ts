@@ -248,8 +248,6 @@ export class EnrollmentControllerDelegate {
             const tasks = scheduledActivities;
 
             const startHour: number = parseFloat(process.env.TEST_CAREPLAN_START_HOUR) ?? 14.5; // 9 AM + 05:30 IST
-            const minutesInDay = 24 * 60; // Total minutes in a day
-            const minutesInWeek = 7 * minutesInDay; // Total minutes in a week
 
             // Calculate the interval between tasks
             const interval = 15; // in minutes
