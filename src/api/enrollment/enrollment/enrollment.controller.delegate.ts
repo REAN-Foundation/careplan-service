@@ -215,7 +215,7 @@ export class EnrollmentControllerDelegate {
                 let dt = null;
                
                 dt = TimeHelper.addDuration(startDate, daysToAdd, DurationType.Day);
-                dt = TimeHelper.addDuration(dt, 270, DurationType.Minute);
+                dt = TimeHelper.addDuration(dt, 540, DurationType.Minute);
 
                 var createModel: EnrollmentTaskCreateModel = {
                     EnrollmentId       : record.id,
