@@ -79,7 +79,7 @@ export class CheckupModel {
             tableName       : CheckupModel.TableName,
         });
 
-    static associate = (models) => {
+    static associate = () => {
 
         //Add associations here...
 

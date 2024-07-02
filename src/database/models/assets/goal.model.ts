@@ -79,7 +79,7 @@ export class GoalModel {
             tableName       : GoalModel.TableName,
         });
 
-    static associate = (models) => {
+    static associate = () => {
 
         //Add associations here...
 

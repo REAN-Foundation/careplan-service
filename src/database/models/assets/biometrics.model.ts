@@ -89,7 +89,7 @@ export class BiometricsModel {
             tableName       : BiometricsModel.TableName,
         });
 
-    static associate = (models) => {
+    static associate = () => {
 
         //Add associations here...
 

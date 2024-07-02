@@ -83,7 +83,7 @@ export class WebNewsfeedModel {
             tableName       : WebNewsfeedModel.TableName,
         });
 
-    static associate = (models) => {
+    static associate = () => {
 
         //Add associations here...
 

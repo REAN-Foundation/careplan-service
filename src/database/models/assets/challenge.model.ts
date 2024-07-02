@@ -79,7 +79,7 @@ export class ChallengeModel {
             tableName       : ChallengeModel.TableName,
         });
 
-    static associate = (models) => {
+    static associate = () => {
 
         //Add associations here...
 

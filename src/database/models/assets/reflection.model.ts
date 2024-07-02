@@ -79,7 +79,7 @@ export class ReflectionModel {
             tableName       : ReflectionModel.TableName,
         });
 
-    static associate = (models) => {
+    static associate = () => {
 
         //Add associations here...
 

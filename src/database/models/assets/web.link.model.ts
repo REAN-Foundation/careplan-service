@@ -83,7 +83,7 @@ export class WebLinkModel {
             tableName       : WebLinkModel.TableName,
         });
 
-    static associate = (models) => {
+    static associate = () => {
 
         //Add associations here...
 

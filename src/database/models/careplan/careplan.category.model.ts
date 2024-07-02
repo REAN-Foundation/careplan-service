@@ -44,7 +44,7 @@ export class CareplanCategoryModel {
             tableName       : CareplanCategoryModel.TableName,
         });
 
-    static associate = (models) => {
+    static associate = () => {
         //Add associations here...
     };
 
