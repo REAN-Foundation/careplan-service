@@ -105,7 +105,7 @@ export class MessageModel {
             tableName       : MessageModel.TableName,
         });
 
-    static associate = (models) => {
+    static associate = () => {
 
         //Add associations here...
 

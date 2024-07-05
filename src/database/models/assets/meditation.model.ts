@@ -90,7 +90,7 @@ export class MeditationModel {
             tableName       : MeditationModel.TableName,
         });
 
-    static associate = (models) => {
+    static associate = () => {
 
         //Add associations here...
 

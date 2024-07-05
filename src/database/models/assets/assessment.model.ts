@@ -92,7 +92,7 @@ export class AssessmentModel {
             tableName       : AssessmentModel.TableName,
         });
 
-    static associate = (models) => {
+    static associate = () => {
 
         //Add associations here...
 

@@ -325,14 +325,14 @@ export class Helper {
     };
 
     static checkStr(val: any) {
-        if (typeof val === null || typeof val === undefined || typeof val !== 'string') {
+        if (val === null || val === undefined || typeof val !== 'string') {
             return null;
         }
         return val;
     }
 
     static isStr(val: any): boolean {
-        if (typeof val === null || typeof val === undefined || typeof val !== 'string') {
+        if (val === null || val === undefined || typeof val !== 'string') {
             return false;
         }
         return true;

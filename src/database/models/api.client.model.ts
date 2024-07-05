@@ -85,7 +85,7 @@ export class ApiClientModel {
             tableName       : ApiClientModel.TableName,
         });
 
-    static associate = (models) => {
+    static associate = () => {
         //Add associations here...
 
         // models.ApiClient.belongsTo(models.User, {

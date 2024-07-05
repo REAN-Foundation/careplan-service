@@ -79,7 +79,7 @@ export class ReminderModel {
             tableName       : ReminderModel.TableName,
         });
 
-    static associate = (models) => {
+    static associate = () => {
 
         //Add associations here...
 

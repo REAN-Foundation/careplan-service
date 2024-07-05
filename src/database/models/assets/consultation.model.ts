@@ -85,7 +85,7 @@ export class ConsultationModel {
             tableName       : ConsultationModel.TableName,
         });
 
-    static associate = (models) => {
+    static associate = () => {
 
         //Add associations here...
 

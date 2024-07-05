@@ -79,7 +79,7 @@ export class PriorityModel {
             tableName       : PriorityModel.TableName,
         });
 
-    static associate = (models) => {
+    static associate = () => {
 
         //Add associations here...
 
