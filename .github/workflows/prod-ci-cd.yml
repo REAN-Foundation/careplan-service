@@ -105,7 +105,7 @@ jobs:
         with:
           task-definition: task-definition.json
           container-name: default
-          image: public.ecr.aws/i9y2d4u3/careplan-service-prod:${{ steps.vars.outputs.branch }}_${{ steps.vars.outputs.sha_short }
+          image: public.ecr.aws/i9y2d4u3/careplan-service-prod:${{ steps.vars.outputs.branch }}_${{ steps.vars.outputs.sha_short }}
 
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
