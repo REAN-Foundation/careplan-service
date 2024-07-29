@@ -133,6 +133,10 @@ export class ParticipantControllerDelegate {
         if (lastUpdatedByUserId != null) {
             filters['LastUpdatedByUserId'] = lastUpdatedByUserId;
         }
+        var phone = query.phone ? query.phone : null;
+        if (phone != null) {
+            filters['Phone'] = phone;
+        }
         return filters;
     };
 

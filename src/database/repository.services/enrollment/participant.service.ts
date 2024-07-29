@@ -76,6 +76,9 @@ export class ParticipantService {
                     [Op.like] : '%' + filters.Country + '%'
                 };
             }
+            if (filters.Phone) {
+                search.where['Phone'] = filters.Phone;
+            }
 
             //Sorting
             let orderByColumn = 'CreatedAt';
