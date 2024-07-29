@@ -4,6 +4,10 @@
 # To use this workflow, you will need to set up a .github/labeler.yml
 # file with configuration.  For more information, see:
 # https://github.com/actions/labeler
+<<<<<<< HEAD
+=======
+#
+>>>>>>> main
 
 name: PROD-CI-CD
 
@@ -14,6 +18,7 @@ on:
     branches: [main]
 
 jobs:
+<<<<<<< HEAD
 
   Publish-Release:
     runs-on: ubuntu-latest
@@ -34,6 +39,9 @@ jobs:
   
   Deploy-ECS:
     needs: Publish-Release
+=======
+  Deploy-ECS:
+>>>>>>> main
     environment: prod
     runs-on: ubuntu-latest
 
@@ -81,7 +89,11 @@ jobs:
           file: ./Dockerfile
           builder: ${{ steps.buildx.outputs.name }}
           push: true
+<<<<<<< HEAD
           tags: public.ecr.aws/i9y2d4u3/careplan:${{ needs.Publish-Release.outputs.release_name }}_${{ needs.Publish-Release.outputs.release_id }}
+=======
+          tags: public.ecr.aws/i9y2d4u3/careplan-service-prod:${{ steps.vars.outputs.branch }}_${{ steps.vars.outputs.sha_short }}
+>>>>>>> main
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
 
@@ -98,7 +110,11 @@ jobs:
         with:
           task-definition: task-definition.json
           container-name: default
+<<<<<<< HEAD
           image: public.ecr.aws/i9y2d4u3/careplan:${{ needs.Publish-Release.outputs.release_name }}_${{ needs.Publish-Release.outputs.release_id }}
+=======
+          image: public.ecr.aws/i9y2d4u3/careplan-service-prod:${{ steps.vars.outputs.branch }}_${{ steps.vars.outputs.sha_short }}
+>>>>>>> main
 
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
@@ -121,3 +137,13 @@ jobs:
           method: 'POST'
           data: '{"TaskDefinition":${{ steps.taskdefintionvar.outputs.task_definition_arn }},"Name": "${{ secrets.SERVICE_NAME }}","Replicas":1, "HealthCheckGracePeriodSeconds": 1200, "DnsPrfx": ""}'
           bearerToken: ${{ secrets.DUPLOCLOUD_TOKEN }}
+<<<<<<< HEAD
+=======
+
+      - name: New Release Publish
+        uses: release-drafter/release-drafter@v5
+        with:
+          publish : true
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_GITHUB }}
+>>>>>>> main

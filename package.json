@@ -18,19 +18,32 @@
   "author": "Kiran Kharade",
   "license": "ISC",
   "dependencies": {
+<<<<<<< HEAD
     "@aws-sdk/client-comprehendmedical": "^3.501.0",
+=======
+    "@aws-sdk/client-comprehendmedical": "^3.105.0",
+>>>>>>> main
     "@types/adm-zip": "^0.4.34",
     "@types/bcryptjs": "^2.4.2",
     "@types/express": "^4.17.17",
     "@types/express-fileupload": "^1.1.7",
     "@types/mime-types": "^2.1.1",
     "@types/sequelize": "^4.28.9",
+<<<<<<< HEAD
     "@types/sharp": "^0.31.1",
     "adm-zip": "^0.5.6",
     "ansi-regex": "^6.0.1",
     "approx-string-match": "^1.1.0",
     "aws-sdk": "^2.1328.0",
     "axios": "^1.6.4",
+=======
+    "@types/sharp": "^0.30.3",
+    "adm-zip": "^0.5.6",
+    "ansi-regex": "^6.0.1",
+    "approx-string-match": "^1.1.0",
+    "aws-sdk": "^2.1149.0",
+    "axios": "^0.26.1",
+>>>>>>> main
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "check-password-strength": "^2.0.5",
@@ -55,8 +68,14 @@
     "pg-hstore": "^2.3.4",
     "readdirp": "^3.6.0",
     "reflect-metadata": "^0.1.13",
+<<<<<<< HEAD
     "sequelize": "^6.15.0",
     "sharp": "^0.33.2",
+=======
+    "sequelize": "^6.20.1",
+    "sequelize-typescript": "^2.1.0",
+    "sharp": "^0.30.0",
+>>>>>>> main
     "sleep": "^6.3.0",
     "timezone-support": "^2.0.2",
     "tsyringe": "^4.6.0",
