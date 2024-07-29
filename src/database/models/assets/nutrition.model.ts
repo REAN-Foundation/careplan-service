@@ -79,7 +79,7 @@ export class NutritionModel {
             tableName       : NutritionModel.TableName,
         });
 
-    static associate = (models) => {
+    static associate = () => {
 
         //Add associations here...
 

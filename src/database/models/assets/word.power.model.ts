@@ -84,7 +84,7 @@ export class WordPowerModel {
             tableName       : WordPowerModel.TableName,
         });
 
-    static associate = (models) => {
+    static associate = () => {
 
         //Add associations here...
 

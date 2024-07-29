@@ -178,8 +178,8 @@ export class UserControllerDelegate {
 
     sendOtp = async (requestBody) => {
         await validator.validateSendOtpRequest(requestBody);
-        const countryCode = (typeof requestBody.CountryCode !== undefined) ? requestBody.CountryCode : '+91';
-        const phone = (typeof requestBody.Phone !== undefined) ? requestBody.Phone : null;
+        const countryCode = (requestBody.CountryCode) ? requestBody.CountryCode : '+91';
+        const phone = (requestBody.Phone) ? requestBody.Phone : null;
         const user = await this._service.getUser(countryCode, phone, null, null);
         if (user === null) {
             ErrorHandler.throwNotFoundError('User does not exist!');

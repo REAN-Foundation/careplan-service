@@ -86,7 +86,7 @@ export class ParticipantModel {
             tableName       : ParticipantModel.TableName,
         });
     
-        static associate = (models) => {
+        static associate = () => {
             //Add associations here...
     
         };

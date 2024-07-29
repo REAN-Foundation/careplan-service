@@ -79,7 +79,7 @@ export class ActionPlanModel {
             tableName       : ActionPlanModel.TableName,
         });
 
-    static associate = (models) => {
+    static associate = () => {
 
         //Add associations here...
 
