@@ -25,7 +25,7 @@ export interface ReminderUpdateModel {
 }
 
 export interface ReminderDto {
-    id: number;
+    id: uuid;
     AssetCode: string;
     Name: string;
     Description: string;
@@ -43,6 +43,7 @@ export interface ReminderSearchFilters extends BaseSearchFilters {
     AssetCategory ? : string;
     Tags ? : string;
     Version ? : string;
+    CreatedAt ? : Date;
 }
 
 export interface ReminderSearchResults extends BaseSearchResults {

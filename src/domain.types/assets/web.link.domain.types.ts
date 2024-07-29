@@ -27,7 +27,7 @@ export interface WebLinkUpdateModel {
 }
 
 export interface WebLinkDto {
-    id: number;
+    id: uuid;
     AssetCode: string;
     Name: string;
     Description: string;
@@ -47,6 +47,7 @@ export interface WebLinkSearchFilters extends BaseSearchFilters {
     AssetCategory ? : string;
     Tags ? : string;
     Version ? : string;
+    CreatedAt ? : Date;
 }
 
 export interface WebLinkSearchResults extends BaseSearchResults {

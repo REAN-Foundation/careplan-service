@@ -11,15 +11,17 @@ export class AssessmentMapper {
             return null;
         }
         const dto: AssessmentDto = {
-            id            : assessment.id,
-            AssetCode     : assessment.AssetCode,
-            Name          : assessment.Name,
-            Description   : assessment.Description,
-            AssetCategory : assessment.AssetCategory,
-            Template      : assessment.Template,
-            OwnerUserId   : assessment.OwnerUserId,
-            Tags          : assessment.Tags,
-            Version       : assessment.Version,
+            id                    : assessment.id,
+            AssetCode             : assessment.AssetCode,
+            Name                  : assessment.Name,
+            Description           : assessment.Description,
+            AssetCategory         : assessment.AssetCategory,
+            Template              : assessment.Template,
+            ReferenceTemplateCode : assessment.ReferenceTemplateCode,
+            ReferenceTemplateId   : assessment.ReferenceTemplateId,
+            OwnerUserId           : assessment.OwnerUserId,
+            Tags                  : assessment.Tags,
+            Version               : assessment.Version,
 
         };
         return dto;

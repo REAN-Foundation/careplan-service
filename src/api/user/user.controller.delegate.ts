@@ -16,6 +16,7 @@ import { uuid } from '../../domain.types/miscellaneous/system.types';
 import { Loader } from '../../startup/loader';
 import { UserHelper } from '../user.helper';
 import { CurrentUser } from '../../domain.types/miscellaneous/current.user';
+import { ConfigurationManager } from '../../config/configuration.manager';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -44,6 +45,7 @@ export class UserControllerDelegate {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { userCreateModel, password } =
             await UserHelper.getValidUserCreateModel(requestBody);
+
         const record: UserDto = await this._service.create(userCreateModel);
         if (record === null) {
             throw new ApiError('Unable to create user!', 400);
@@ -54,7 +56,7 @@ export class UserControllerDelegate {
         // }
 
         return this.getEnrichedDto(record);
-    }
+    };
 
     getById = async (id: uuid) => {
         const record: UserDto = await this._service.getById(id);
@@ -62,7 +64,7 @@ export class UserControllerDelegate {
             ErrorHandler.throwNotFoundError('User with id ' + id.toString() + ' cannot be found!');
         }
         return this.getEnrichedDto(record);
-    }
+    };
 
     search = async (query) => {
         await validator.validateSearchRequest(query);
@@ -71,7 +73,7 @@ export class UserControllerDelegate {
         var items = searchResults.Items.map(x => this.getPublicDto(x));
         searchResults.Items = items;
         return searchResults;
-    }
+    };
 
     update = async (id: uuid, requestBody: any) => {
         await validator.validateUpdateRequest(requestBody);
@@ -85,7 +87,7 @@ export class UserControllerDelegate {
             throw new ApiError('Unable to update user!', 400);
         }
         return this.getEnrichedDto(updated);
-    }
+    };
 
     delete = async (id: uuid) => {
         const record: UserDto = await this._service.getById(id);
@@ -96,7 +98,7 @@ export class UserControllerDelegate {
         return {
             Deleted : userDeleted
         };
-    }
+    };
 
     loginWithPassword = async (requestBody) => {
         await validator.validateLoginWithPasswordRequest(requestBody);
@@ -111,11 +113,23 @@ export class UserControllerDelegate {
         const loginSession = await this._service.createUserLoginSession(user.id);
         const currentUser: CurrentUser = this.constructCurrentUser(user, loginSession.id);
         const accessToken = await Loader.Authorizer.generateUserSessionToken(currentUser);
+        const expiresIn: number = ConfigurationManager.JwtExpiresIn();
+        const validTill = new Date(Date.now() + expiresIn * 1000);
         return {
-            User        : currentUser,
-            AccessToken : accessToken
+            User             : currentUser,
+            AccessToken      : accessToken,
+            SessionValidTill : validTill
         };
-    }
+    };
+
+    getBySessionId = async (sessionId: uuid) => {
+        const { user, session } = await this._service.getBySessionId(sessionId);
+        if (user === null || session === null) {
+            ErrorHandler.throwNotFoundError('User associated with session ' + sessionId.toString() + ' cannot be found! Session may have expired!');
+        }
+        const currentUser: CurrentUser = this.constructCurrentUser(user, session.id);
+        return currentUser;
+    };
 
     loginWithOtp = async (requestBody) => {
         await validator.validateLoginWithOtpRequest(requestBody);
@@ -139,11 +153,14 @@ export class UserControllerDelegate {
         const currentUser: CurrentUser = this.constructCurrentUser(user, loginSession.id);
         const accessToken = await Loader.Authorizer.generateUserSessionToken(currentUser);
         currentUser['ImageUrl'] = user.ImageUrl ?? '';
+        const expiresIn: number = ConfigurationManager.JwtExpiresIn();
+        const validTill = new Date(Date.now() + expiresIn * 1000);
         return {
-            User        : currentUser,
-            AccessToken : accessToken
+            User             : currentUser,
+            AccessToken      : accessToken,
+            SessionValidTill : validTill
         };
-    }
+    };
 
     changePassword = async (requestBody) => {
         await validator.validatePasswordChangeRequest(requestBody);
@@ -157,12 +174,12 @@ export class UserControllerDelegate {
         const hashedPassword = Helper.generateHashedPassword(passwordResetModel.NewPassword);
 
         return await this._service.resetPassword(passwordResetModel.User.id, hashedPassword);
-    }
+    };
 
     sendOtp = async (requestBody) => {
         await validator.validateSendOtpRequest(requestBody);
-        const countryCode = (typeof requestBody.CountryCode !== undefined) ? requestBody.CountryCode : '+91';
-        const phone = (typeof requestBody.Phone !== undefined) ? requestBody.Phone : null;
+        const countryCode = (requestBody.CountryCode) ? requestBody.CountryCode : '+91';
+        const phone = (requestBody.Phone) ? requestBody.Phone : null;
         const user = await this._service.getUser(countryCode, phone, null, null);
         if (user === null) {
             ErrorHandler.throwNotFoundError('User does not exist!');
@@ -179,11 +196,11 @@ export class UserControllerDelegate {
             return true;
         }
         return false;
-    }
+    };
 
     logout = async (userId, sessionId) => {
         await this._service.invalidateUserLoginSession(sessionId);
-    }
+    };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -234,7 +251,7 @@ export class UserControllerDelegate {
             filters['LastUpdatedByUserId'] = lastUpdatedByUserId;
         }
         return filters;
-    }
+    };
 
     //This function returns a response DTO which is enriched with available resource data
 
@@ -261,7 +278,7 @@ export class UserControllerDelegate {
             AddedByUserId       : record.AddedByUserId,
             LastUpdatedByUserId : record.LastUpdatedByUserId
         };
-    }
+    };
 
     //This function returns a response DTO which has only public parameters
 
@@ -282,7 +299,7 @@ export class UserControllerDelegate {
             Gender      : record.Gender,
             BirthDate   : record.BirthDate,
         };
-    }
+    };
 
     getLoginModel = async (requestBody) => {
 
@@ -304,7 +321,7 @@ export class UserControllerDelegate {
             Password  : password,
             Otp       : otp
         };
-    }
+    };
 
     getPasswordChangeModel = async (requestBody) => {
         const oldPassword = requestBody.OldPassword;
@@ -318,19 +335,18 @@ export class UserControllerDelegate {
             OldPassword : oldPassword,
             NewPassword : newPassword,
         };
-    }
+    };
 
     constructCurrentUser = (user, sessionId): CurrentUser => {
         return {
-            UserId          : user.id,
-            UserName        : user.UserName,
-            CurrentRoleId   : user.RoleId,
-            CurrentRoleName : user.Role.RoleName,
-            DisplayName     : Helper.constructPersonDisplayName(user.Prefix, user.FirstName, user.LastName),
-            SessionId       : sessionId,
-            Phone           : user.CountryCode + '-' + user.Phone,
-            Email           : user.Email
+            UserId        : user.id,
+            UserName      : user.UserName,
+            CurrentRoleId : user.RoleId,
+            DisplayName   : Helper.constructPersonDisplayName(user.Prefix, user.FirstName, user.LastName),
+            SessionId     : sessionId,
+            Phone         : user.CountryCode + '-' + user.Phone,
+            Email         : user.Email
         };
-    }
+    };
 
 }

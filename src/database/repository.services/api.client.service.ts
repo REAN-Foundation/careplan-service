@@ -12,19 +12,22 @@ import * as apikeyGenerator from 'uuid-apikey';
 
 export class ApiClientService {
 
-    ApiClient = ApiClientModel.Model();
+    ApiClient = ApiClientModel.Model;
 
     create = async (clientDomainModel: ApiClientCreateModel): Promise<ApiClientDto> => {
         try {
             const entity = {
-                ClientName : clientDomainModel.ClientName,
-                ClientCode : clientDomainModel.ClientCode,
-                Phone      : clientDomainModel.Phone,
-                Email      : clientDomainModel.Email,
-                Password   : clientDomainModel.Password ?? null,
-                ApiKey     : clientDomainModel.ApiKey ?? apikeyGenerator.default.create().apiKey,
-                ValidFrom  : clientDomainModel.ValidFrom ?? null,
-                ValidTill  : clientDomainModel.ValidTill ?? null,
+                ClientName   : clientDomainModel.ClientName,
+                FirstName    : clientDomainModel.FirstName,
+                LastName     : clientDomainModel.LastName,
+                ClientCode   : clientDomainModel.ClientCode,
+                IsPrivileged : clientDomainModel.IsPrivileged,
+                Phone        : clientDomainModel.Phone,
+                Email        : clientDomainModel.Email,
+                Password     : clientDomainModel.Password ?? null,
+                ApiKey       : clientDomainModel.ApiKey ?? apikeyGenerator.default.create().apiKey,
+                ValidFrom    : clientDomainModel.ValidFrom ?? null,
+                ValidTill    : clientDomainModel.ValidTill ?? null,
             };
             entity.Password = Helper.hash(clientDomainModel.Password);
             const client = await this.ApiClient.create(entity);
@@ -76,7 +79,7 @@ export class ApiClientService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search api client records!', error);
         }
-    }
+    };
 
     getByClientCode = async (clientCode: string): Promise<ApiClientDto> =>{
         try {
@@ -91,7 +94,7 @@ export class ApiClientService {
             Logger.instance().log(error.message);
             throw new ApiError(error.message, 500);
         }
-    }
+    };
 
     getApiKeyByClientCode = async (clientCode: string): Promise<ClientApiKeyDto> =>{
         try {
@@ -106,7 +109,7 @@ export class ApiClientService {
             Logger.instance().log(error.message);
             throw new ApiError(error.message, 500);
         }
-    }
+    };
 
     getClientHashedPassword = async(id: string): Promise<string> => {
         try {
@@ -116,7 +119,7 @@ export class ApiClientService {
             Logger.instance().log(error.message);
             throw new ApiError(error.message, 500);
         }
-    }
+    };
 
     getApiKey = async(verificationModel: ApiClientVerificationDomainModel): Promise<ClientApiKeyDto> => {
         try {
@@ -137,7 +140,7 @@ export class ApiClientService {
             Logger.instance().log(error.message);
             throw new ApiError(error.message, 500);
         }
-    }
+    };
 
     renewApiKey = async (verificationModel: ApiClientVerificationDomainModel): Promise<ClientApiKeyDto> => {
 
@@ -177,7 +180,7 @@ export class ApiClientService {
             Logger.instance().log(error.message);
             throw new ApiError(error.message, 500);
         }
-    }
+    };
     
     isApiKeyValid = async (apiKey: string): Promise<CurrentClient> => {
         try {
@@ -201,7 +204,7 @@ export class ApiClientService {
             Logger.instance().log(error.message);
             throw new ApiError(error.message, 500);
         }
-    }
+    };
     
     update = async (id: string, clientDomainModel: ApiClientUpdateModel): Promise<ApiClientDto> => {
         try {
@@ -213,14 +216,26 @@ export class ApiClientService {
             if (clientDomainModel.ClientName != null) {
                 client.ClientName = clientDomainModel.ClientName;
             }
+            if (clientDomainModel.FirstName != null) {
+                client.FirstName = clientDomainModel.FirstName;
+            }
+            if (clientDomainModel.LastName != null) {
+                client.LastName = clientDomainModel.LastName;
+            }
             if (clientDomainModel.Password != null) {
                 client.Password = Helper.hash(clientDomainModel.Password);
             }
             if (clientDomainModel.Phone != null) {
                 client.Phone = clientDomainModel.Phone;
             }
+            if (clientDomainModel.IsPrivileged != null) {
+                client.IsPrivileged = clientDomainModel.IsPrivileged;
+            }
             if (clientDomainModel.Email != null) {
                 client.Email = clientDomainModel.Email;
+            }
+            if (clientDomainModel.ValidFrom != null) {
+                client.ValidFrom = clientDomainModel.ValidFrom;
             }
             if (clientDomainModel.ValidTill != null) {
                 client.ValidTill = clientDomainModel.ValidTill;
@@ -233,7 +248,7 @@ export class ApiClientService {
             Logger.instance().log(error.message);
             throw new ApiError(error.message, 500);
         }
-    }
+    };
 
     delete = async (id: string): Promise<boolean> => {
         try {
@@ -256,15 +271,19 @@ export class ApiClientService {
         const dto: ApiClientDto = {
             id           : client.id,
             ClientName   : client.ClientName,
+            FirstName    : client.FirstName,
+            LastName     : client.LastName,
             ClientCode   : client.ClientCode,
             Phone        : client.Phone,
             Email        : client.Email,
+            ApiKey       : client.ApiKey,
             IsActive     : active,
             CountryCode  : client.CountryCode,
-            IsPrivileged : false
+            IsPrivileged : client.IsPrivileged,
+            ValidTill    : client.ValidTill,
         };
         return dto;
-    }
+    };
 
     toClientSecretsDto = (client): ClientApiKeyDto => {
         if (client == null){
@@ -279,7 +298,7 @@ export class ApiClientService {
             ValidTill  : client.ValidTill,
         };
         return dto;
-    }
+    };
     
     //#region Privates
 
@@ -310,7 +329,9 @@ export class ApiClientService {
             search.where['Phone'] = filters.Phone;
         }
         if (filters.Email) {
-            search.where['Email'] = filters.Email;
+            search.where['Email'] = {
+                [Op.like] : '%' + filters.Email + '%'
+            };
         }
         if (filters.ValidFrom) {
             search.where['ValidFrom'] = filters.ValidFrom;
@@ -320,7 +341,7 @@ export class ApiClientService {
         }
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -344,7 +365,7 @@ export class ApiClientService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -365,7 +386,7 @@ export class ApiClientService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

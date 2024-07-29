@@ -22,6 +22,7 @@ import {
     NutritionSearchFilters,
     NutritionSearchResults
 } from '../../../domain.types/assets/nutrition.domain.types';
+import { AssetHelper } from '../../../database/repository.services/assets/asset.helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -40,12 +41,13 @@ export class NutritionControllerDelegate {
     create = async (requestBody: any) => {
         await validator.validateCreateRequest(requestBody);
         var createModel: NutritionCreateModel = this.getCreateModel(requestBody);
-        const record = await this._service.create(createModel);
+        var record = await this._service.create(createModel);
         if (record === null) {
             throw new ApiError('Unable to create nutrition!', 400);
         }
+        record = await AssetHelper.updateAssetCode(record, this._service);
         return this.getEnrichedDto(record);
-    }
+    };
 
     getById = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -53,7 +55,7 @@ export class NutritionControllerDelegate {
             ErrorHandler.throwNotFoundError('Nutrition with id ' + id.toString() + ' cannot be found!');
         }
         return this.getEnrichedDto(record);
-    }
+    };
 
     search = async (query: any) => {
         await validator.validateSearchRequest(query);
@@ -62,7 +64,7 @@ export class NutritionControllerDelegate {
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
         return searchResults;
-    }
+    };
 
     update = async (id: uuid, requestBody: any) => {
         await validator.validateUpdateRequest(requestBody);
@@ -76,7 +78,7 @@ export class NutritionControllerDelegate {
             throw new ApiError('Unable to update nutrition!', 400);
         }
         return this.getEnrichedDto(updated);
-    }
+    };
 
     delete = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -87,7 +89,7 @@ export class NutritionControllerDelegate {
         return {
             Deleted : nutritionDeleted
         };
-    }
+    };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -95,7 +97,7 @@ export class NutritionControllerDelegate {
 
     getSearchFilters = (query) => {
 
-        var filters = {};
+        var filters = Helper.getDefaultSearchFilters(query);
 
         var assetCode = query.assetCode ? query.assetCode : null;
         if (assetCode != null) {
@@ -123,7 +125,7 @@ export class NutritionControllerDelegate {
         }
 
         return filters;
-    }
+    };
 
     getUpdateModel = (requestBody): NutritionUpdateModel => {
 
@@ -146,7 +148,7 @@ export class NutritionControllerDelegate {
         }
 
         return updateModel;
-    }
+    };
 
     getCreateModel = (requestBody): NutritionCreateModel => {
         return {
@@ -157,7 +159,7 @@ export class NutritionControllerDelegate {
             Version     : requestBody.Version ? requestBody.Version : 'V1',
             OwnerUserId : requestBody.OwnerUserId
         };
-    }
+    };
 
     getEnrichedDto = (record) => {
         if (record == null) {
@@ -173,7 +175,7 @@ export class NutritionControllerDelegate {
             Tags          : JSON.parse(record.Tags),
             Version       : record.Version
         };
-    }
+    };
 
     getSearchDto = (record) => {
         if (record == null) {
@@ -187,9 +189,10 @@ export class NutritionControllerDelegate {
             AssetCategory : record.AssetCategory,
             OwnerUserId   : record.OwnerUserId,
             Tags          : JSON.parse(record.Tags),
-            Version       : record.Version
+            Version       : record.Version,
+            CreatedAt     : record.CreatedAt,
         };
-    }
+    };
 
     //#endregion
 

@@ -8,6 +8,7 @@ import {
     ArticleSearchResults
 } from '../../../domain.types/assets/article.domain.types';
 import { Op } from 'sequelize';
+import { Helper } from '../../../common/helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -15,11 +16,11 @@ export class ArticleService {
 
     //#region Models
 
-    Article = ArticleModel.Model();
+    Article = ArticleModel.Model;
 
-    FileResource = FileResourceModel.Model();
+    FileResource = FileResourceModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 
@@ -27,12 +28,20 @@ export class ArticleService {
 
     create = async (createModel: ArticleCreateModel) => {
         try {
+            if (!createModel.AssetCode) {
+                const count = await this.Article.count() + 1;
+                createModel.AssetCode = 'Article-' + count.toString();
+                const exists = await this.getByCode(createModel.AssetCode);
+                if (exists) {
+                    createModel.AssetCode = 'Article-' + Helper.generateDisplayId();
+                }
+            }
             var record = await this.Article.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create article!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -53,7 +62,20 @@ export class ArticleService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve article!', error);
         }
-    }
+    };
+
+    getByCode = async (code) => {
+        try {
+            const record = await this.Article.findOne({
+                where : {
+                    AssetCode : code
+                }
+            });
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
+        }
+    };
 
     exists = async (id): Promise<boolean> => {
         try {
@@ -62,7 +84,7 @@ export class ArticleService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of article!', error);
         }
-    }
+    };
 
     search = async (filters: ArticleSearchFilters): Promise<ArticleSearchResults> => {
         try {
@@ -93,7 +115,7 @@ export class ArticleService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search article records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -111,7 +133,7 @@ export class ArticleService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update article!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -124,7 +146,7 @@ export class ArticleService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete article!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -184,7 +206,7 @@ export class ArticleService {
         search.include.push(includeFileResourceAsFileResource);
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -208,7 +230,7 @@ export class ArticleService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -229,7 +251,7 @@ export class ArticleService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

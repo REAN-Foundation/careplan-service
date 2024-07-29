@@ -19,6 +19,7 @@ import {
 import {
     Op
 } from 'sequelize';
+import { Helper } from '../../../common/helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -26,11 +27,11 @@ export class AnimationService {
 
     //#region Models
 
-    Animation = AnimationModel.Model();
+    Animation = AnimationModel.Model;
 
-    FileResource = FileResourceModel.Model();
+    FileResource = FileResourceModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 
@@ -38,12 +39,20 @@ export class AnimationService {
 
     create = async (createModel: AnimationCreateModel) => {
         try {
+            if (!createModel.AssetCode) {
+                const count = await this.Animation.count() + 1;
+                createModel.AssetCode = 'Animation-' + count.toString();
+                const exists = await this.getByCode(createModel.AssetCode);
+                if (exists) {
+                    createModel.AssetCode = 'Animation-' + Helper.generateDisplayId();
+                }
+            }
             var record = await this.Animation.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create animation!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -63,7 +72,20 @@ export class AnimationService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve animation!', error);
         }
-    }
+    };
+
+    getByCode = async (code) => {
+        try {
+            const record = await this.Animation.findOne({
+                where : {
+                    AssetCode : code
+                }
+            });
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
+        }
+    };
 
     exists = async (id): Promise<boolean> => {
         try {
@@ -72,7 +94,7 @@ export class AnimationService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of animation!', error);
         }
-    }
+    };
 
     search = async (filters: AnimationSearchFilters): Promise<AnimationSearchResults> => {
         try {
@@ -103,7 +125,7 @@ export class AnimationService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search animation records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -121,7 +143,7 @@ export class AnimationService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update animation!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -134,7 +156,7 @@ export class AnimationService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete animation!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -194,7 +216,7 @@ export class AnimationService {
         search.include.push(includeFileResourceAsFileResource);
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -218,7 +240,7 @@ export class AnimationService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -239,7 +261,7 @@ export class AnimationService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

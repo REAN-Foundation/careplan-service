@@ -16,6 +16,7 @@ import {
 import {
     Op
 } from 'sequelize';
+import { Helper } from '../../../common/helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -23,9 +24,9 @@ export class WebNewsfeedService {
 
     //#region Models
 
-    WebNewsfeed = WebNewsfeedModel.Model();
+    WebNewsfeed = WebNewsfeedModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 
@@ -33,12 +34,20 @@ export class WebNewsfeedService {
 
     create = async (createModel: WebNewsfeedCreateModel) => {
         try {
+            if (!createModel.AssetCode) {
+                const count = await this.WebNewsfeed.count() + 1;
+                createModel.AssetCode = 'WebNewsfeed-' + count.toString();
+                const exists = await this.getByCode(createModel.AssetCode);
+                if (exists) {
+                    createModel.AssetCode = 'WebNewsfeed-' + Helper.generateDisplayId();
+                }
+            }
             var record = await this.WebNewsfeed.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create web newsfeed!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -51,7 +60,20 @@ export class WebNewsfeedService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve web newsfeed!', error);
         }
-    }
+    };
+
+    getByCode = async (code) => {
+        try {
+            const record = await this.WebNewsfeed.findOne({
+                where : {
+                    AssetCode : code
+                }
+            });
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
+        }
+    };
 
     exists = async (id): Promise < boolean > => {
         try {
@@ -60,7 +82,7 @@ export class WebNewsfeedService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of web newsfeed!', error);
         }
-    }
+    };
 
     search = async (filters: WebNewsfeedSearchFilters): Promise < WebNewsfeedSearchResults > => {
         try {
@@ -91,7 +113,7 @@ export class WebNewsfeedService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search web newsfeed records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -109,7 +131,7 @@ export class WebNewsfeedService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update web newsfeed!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -122,7 +144,7 @@ export class WebNewsfeedService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete web newsfeed!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -172,7 +194,7 @@ export class WebNewsfeedService {
         }
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -196,7 +218,7 @@ export class WebNewsfeedService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -217,7 +239,7 @@ export class WebNewsfeedService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

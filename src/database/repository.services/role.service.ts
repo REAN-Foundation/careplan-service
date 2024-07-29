@@ -6,7 +6,7 @@ import { Op } from 'sequelize';
 
 export class RoleService {
 
-    Role = RoleModel.Model();
+    Role = RoleModel.Model;
 
     create = async (createModel) => {
         try {

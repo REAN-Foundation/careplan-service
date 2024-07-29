@@ -16,6 +16,7 @@ import {
 import {
     Op
 } from 'sequelize';
+import { Helper } from '../../../common/helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -23,9 +24,9 @@ export class NutritionService {
 
     //#region Models
 
-    Nutrition = NutritionModel.Model();
+    Nutrition = NutritionModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 
@@ -33,12 +34,20 @@ export class NutritionService {
 
     create = async (createModel: NutritionCreateModel) => {
         try {
+            if (!createModel.AssetCode) {
+                const count = await this.Nutrition.count() + 1;
+                createModel.AssetCode = 'Nutrition-' + count.toString();
+                const exists = await this.getByCode(createModel.AssetCode);
+                if (exists) {
+                    createModel.AssetCode = 'Nutrition-' + Helper.generateDisplayId();
+                }
+            }
             var record = await this.Nutrition.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create nutrition!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -51,7 +60,20 @@ export class NutritionService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve nutrition!', error);
         }
-    }
+    };
+
+    getByCode = async (code) => {
+        try {
+            const record = await this.Nutrition.findOne({
+                where : {
+                    AssetCode : code
+                }
+            });
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
+        }
+    };
 
     exists = async (id): Promise < boolean > => {
         try {
@@ -60,7 +82,7 @@ export class NutritionService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of nutrition!', error);
         }
-    }
+    };
 
     search = async (filters: NutritionSearchFilters): Promise < NutritionSearchResults > => {
         try {
@@ -91,7 +113,7 @@ export class NutritionService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search nutrition records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -109,7 +131,7 @@ export class NutritionService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update nutrition!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -122,7 +144,7 @@ export class NutritionService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete nutrition!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -167,7 +189,7 @@ export class NutritionService {
         }
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -191,7 +213,7 @@ export class NutritionService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -212,7 +234,7 @@ export class NutritionService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

@@ -1,26 +1,14 @@
-import {
-    ApiClientService
-} from '../../database/repository.services/api.client.service';
-import {
-    ErrorHandler
-} from '../../common/error.handler';
-import {
-    Helper
-} from '../../common/helper';
-import {
-    ApiError
-} from '../../common/api.error';
-import {
-    ApiClientValidator as validator
-} from './api.client.validator';
-import {
-    uuid
-} from '../../domain.types/miscellaneous/system.types';
+import { ApiClientService } from '../../database/repository.services/api.client.service';
+import { ErrorHandler } from '../../common/error.handler';
+import { Helper } from '../../common/helper';
+import { ApiError } from '../../common/api.error';
+import { ApiClientValidator as validator } from './api.client.validator';
+import { uuid } from '../../domain.types/miscellaneous/system.types';
 import {
     ApiClientCreateModel,
     ApiClientUpdateModel,
     ApiClientSearchFilters,
-    ApiClientSearchResults
+    ApiClientSearchResults,
 } from '../../domain.types/api.client.domain.types';
 import * as apikeyGenerator from 'uuid-apikey';
 import { TimeHelper } from '../../common/time.helper';
@@ -49,8 +37,7 @@ export class ApiClientControllerDelegate {
             if (existing) {
                 ErrorHandler.throwConflictError(`Client with this client code already exists!`);
             }
-        }
-        else {
+        } else {
             clientCode = await this.getClientCode(requestBody.ClientName);
             requestBody.ClientCode = clientCode;
         }
@@ -60,7 +47,7 @@ export class ApiClientControllerDelegate {
             throw new ApiError('Unable to create api client!', 400);
         }
         return this.getEnrichedDto(record);
-    }
+    };
 
     getById = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -68,16 +55,16 @@ export class ApiClientControllerDelegate {
             ErrorHandler.throwNotFoundError('Api client with id ' + id.toString() + ' cannot be found!');
         }
         return this.getEnrichedDto(record);
-    }
+    };
 
     search = async (query: any) => {
         await validator.validateSearchRequest(query);
         var filters: ApiClientSearchFilters = this.getSearchFilters(query);
         var searchResults: ApiClientSearchResults = await this._service.search(filters);
-        var items = searchResults.Items.map(x => this.getSearchDto(x));
+        var items = searchResults.Items.map((x) => this.getSearchDto(x));
         searchResults.Items = items;
         return searchResults;
-    }
+    };
 
     update = async (id: uuid, requestBody: any) => {
         await validator.validateUpdateRequest(requestBody);
@@ -91,7 +78,7 @@ export class ApiClientControllerDelegate {
             throw new ApiError('Unable to update api client!', 400);
         }
         return this.getEnrichedDto(updated);
-    }
+    };
 
     delete = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -100,9 +87,9 @@ export class ApiClientControllerDelegate {
         }
         const apiClientDeleted: boolean = await this._service.delete(id);
         return {
-            Deleted : apiClientDeleted
+            Deleted : apiClientDeleted,
         };
-    }
+    };
 
     getCurrentApiKey = async (request) => {
         const verificationModel = await validator.getOrRenewApiKey(request);
@@ -111,10 +98,9 @@ export class ApiClientControllerDelegate {
             throw new ApiError('Unable to retrieve client api key.', 400);
         }
         return apiKeyDto;
-    }
+    };
 
     renewApiKey = async (request) => {
-
         const verificationModel = await validator.getOrRenewApiKey(request);
 
         if (verificationModel.ValidFrom == null) {
@@ -131,14 +117,13 @@ export class ApiClientControllerDelegate {
             throw new ApiError('Unable to renew client api key.', 400);
         }
         return apiKeyDto;
-    }
+    };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
     //#region Privates
 
     getSearchFilters = (query) => {
-
         var filters = {};
 
         var clientName = query.clientName ? query.clientName : null;
@@ -165,6 +150,10 @@ export class ApiClientControllerDelegate {
         if (email != null) {
             filters['Email'] = email;
         }
+        var createdAt = query.createdAt ? query.createdAt : null;
+        if (createdAt != null) {
+            filters['CreatedAt'] = createdAt;
+        }
         var validFrom = query.validFrom ? query.validFrom : null;
         if (validFrom != null) {
             filters['ValidFrom'] = validFrom;
@@ -175,14 +164,19 @@ export class ApiClientControllerDelegate {
         }
 
         return filters;
-    }
+    };
 
     getUpdateModel = (requestBody): ApiClientUpdateModel => {
-
         const updateModel: ApiClientUpdateModel = {};
 
         if (Helper.hasProperty(requestBody, 'ClientName')) {
             updateModel.ClientName = requestBody.ClientName;
+        }
+        if (Helper.hasProperty(requestBody, 'FirstName')) {
+            updateModel.FirstName = requestBody.FirstName;
+        }
+        if (Helper.hasProperty(requestBody, 'LastName')) {
+            updateModel.LastName = requestBody.LastName;
         }
         if (Helper.hasProperty(requestBody, 'IsPrivileged')) {
             updateModel.IsPrivileged = requestBody.IsPrivileged;
@@ -210,12 +204,13 @@ export class ApiClientControllerDelegate {
         }
 
         return updateModel;
-    }
+    };
 
     getCreateModel = (requestBody): ApiClientCreateModel => {
-
         return {
             ClientName   : requestBody.ClientName ? requestBody.ClientName : null,
+            FirstName    : requestBody.FirstName ? requestBody.FirstName : null,
+            LastName     : requestBody.LastName ? requestBody.LastName : null,
             ClientCode   : requestBody.ClientCode ? requestBody.ClientCode : null,
             IsPrivileged : requestBody.IsPrivileged ? requestBody.IsPrivileged : false,
             CountryCode  : requestBody.CountryCode ? requestBody.CountryCode : null,
@@ -224,10 +219,11 @@ export class ApiClientControllerDelegate {
             Password     : requestBody.Password ? requestBody.Password : null,
             ApiKey       : requestBody.ApiKey ? requestBody.ApiKey : apikeyGenerator.default.create().apiKey,
             ValidFrom    : requestBody.ValidFrom ? requestBody.ValidFrom : new Date(),
-            ValidTill    : requestBody.ValidTill ?
-                requestBody.ValidTill : TimeHelper.addDuration(new Date(), 180, DurationType.Day)
+            ValidTill    : requestBody.ValidTill
+                ? requestBody.ValidTill
+                : TimeHelper.addDuration(new Date(), 180, DurationType.Day),
         };
-    }
+    };
 
     getEnrichedDto = (record) => {
         if (record == null) {
@@ -236,16 +232,19 @@ export class ApiClientControllerDelegate {
         return {
             id           : record.id,
             ClientName   : record.ClientName,
+            FirstName    : record.FirstName,
+            LastName     : record.LastName,
             ClientCode   : record.ClientCode,
             IsPrivileged : record.IsPrivileged,
+            IsActive     : record.IsActive,
             CountryCode  : record.CountryCode,
             Phone        : record.Phone,
             Email        : record.Email,
             ApiKey       : record.ApiKey,
             ValidFrom    : record.ValidFrom,
-            ValidTill    : record.ValidTill
+            ValidTill    : record.ValidTill,
         };
-    }
+    };
 
     getSearchDto = (record) => {
         if (record == null) {
@@ -254,17 +253,21 @@ export class ApiClientControllerDelegate {
         return {
             id                  : record.id,
             ClientName          : record.ClientName,
+            FirstName           : record.FirstName,
+            LastName            : record.LastName,
             ClientCode          : record.ClientCode,
             ClientInterfaceType : record.ClientInterfaceType,
             IsPrivileged        : record.IsPrivileged,
             CountryCode         : record.CountryCode,
             Phone               : record.Phone,
             Email               : record.Email,
+            ApiKey              : record.ApiKey,
             ValidFrom           : record.ValidFrom,
             ValidTill           : record.ValidTill,
-            IsActive            : record.IsActive
+            IsActive            : record.IsActive,
+            CreatedAt           : record.CreatedAt,
         };
-    }
+    };
 
     private getClientCodePostfix() {
         return generate({

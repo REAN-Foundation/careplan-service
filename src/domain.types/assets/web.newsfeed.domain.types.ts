@@ -27,7 +27,7 @@ export interface WebNewsfeedUpdateModel {
 }
 
 export interface WebNewsfeedDto {
-    id: number;
+    id: uuid;
     AssetCode: string;
     Name: string;
     Description: string;
@@ -47,6 +47,7 @@ export interface WebNewsfeedSearchFilters extends BaseSearchFilters {
     AssetCategory ? : string;
     Tags ? : string;
     Version ? : string;
+    CreatedAt ? : Date;
 }
 
 export interface WebNewsfeedSearchResults extends BaseSearchResults {

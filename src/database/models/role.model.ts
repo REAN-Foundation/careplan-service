@@ -1,4 +1,6 @@
-import { DatabaseConnector } from '../database.connector';
+import * as db from '../database.connector';
+import { DataTypes } from 'sequelize';
+const sequelize = db.default.sequelize;
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -8,53 +10,41 @@ export class RoleModel {
 
     static ModelName = 'Role';
 
-    static Schema = () => {
-        const db = DatabaseConnector.db();
-        const Sequelize: any = db.Sequelize;
+    static Schema = {
+        id : {
+            type          : DataTypes.INTEGER,
+            allowNull     : false,
+            autoIncrement : true,
+            primaryKey    : true
+        },
 
-        return {
-            id : {
-                type          : Sequelize.INTEGER,
-                allowNull     : false,
-                autoIncrement : true,
-                primaryKey    : true
-            },
+        RoleName : {
+            type      : DataTypes.STRING(32),
+            allowNull : false
+        },
 
-            RoleName : {
-                type      : Sequelize.STRING(32),
-                allowNull : false
-            },
+        Description : {
+            type      : DataTypes.STRING(256),
+            allowNull : true
+        },
 
-            Description : {
-                type      : Sequelize.STRING(256),
-                allowNull : true
-            },
-
-            CreatedAt : Sequelize.DATE,
-            UpdatedAt : Sequelize.DATE,
-            DeletedAt : Sequelize.DATE
-        };
-    }
-
-    static Model: any = () => {
-
-        const db = DatabaseConnector.db();
-        const sequelize = db.sequelize;
-        const schema = RoleModel.Schema();
-
-        return sequelize.define(
-            RoleModel.ModelName,
-            schema,
-            {
-                createdAt       : 'CreatedAt',
-                updatedAt       : 'UpdatedAt',
-                deletedAt       : 'DeletedAt',
-                freezeTableName : true,
-                timestamps      : true,
-                paranoid        : true,
-                tableName       : RoleModel.TableName,
-            });
+        CreatedAt : DataTypes.DATE,
+        UpdatedAt : DataTypes.DATE,
+        DeletedAt : DataTypes.DATE
     };
+
+    static Model: any = sequelize.define(
+        RoleModel.ModelName,
+        RoleModel.Schema,
+        {
+            createdAt       : 'CreatedAt',
+            updatedAt       : 'UpdatedAt',
+            deletedAt       : 'DeletedAt',
+            freezeTableName : true,
+            timestamps      : true,
+            paranoid        : true,
+            tableName       : RoleModel.TableName,
+        });
 
     static associate = (models) => {
         //Add associations here...

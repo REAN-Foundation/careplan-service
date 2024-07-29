@@ -27,7 +27,7 @@ export interface AnimationUpdateModel {
 }
 
 export interface AnimationDto {
-    id: number;
+    id: uuid;
     AssetCode: string;
     Name: string;
     Transcript: string;
@@ -48,6 +48,7 @@ export interface AnimationSearchFilters extends BaseSearchFilters {
     AssetCategory ? : string;
     Tags ? : string;
     Version ? : string;
+    CreatedAt ? : Date;
 }
 
 export interface AnimationSearchResults extends BaseSearchResults {

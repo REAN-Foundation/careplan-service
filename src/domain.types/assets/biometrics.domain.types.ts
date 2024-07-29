@@ -51,7 +51,7 @@ export interface BiometricsUpdateModel {
 }
 
 export interface BiometricsDto {
-    id             : number;
+    id             : uuid;
     AssetCode      : string;
     Name           : string;
     Description    : string;
@@ -73,6 +73,7 @@ export interface BiometricsSearchFilters extends BaseSearchFilters {
     MeasurementUnit ?: string;
     Tags            ?: string;
     Version         ?: string;
+    CreatedAt       ?: Date;
 }
 
 export interface BiometricsSearchResults extends BaseSearchResults {

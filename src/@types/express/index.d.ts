@@ -9,7 +9,8 @@ declare global{
             context: string,
             resourceType: string,
             resourceId: string | number | null | undefined
-            resourceOwnerUserId: string
+            resourceOwnerUserId: string,
+            authorizeRequest: boolean
         }
     }
 }

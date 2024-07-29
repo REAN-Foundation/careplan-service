@@ -11,15 +11,15 @@ export class WordPowerMapper {
             return null;
         }
         const dto: WordPowerDto = {
-            id: wordPower.id,
-            AssetCode: wordPower.AssetCode,
-            Word: wordPower.Word,
-            Description: wordPower.Description,
-            AdditionalResources: wordPower.AdditionalResources,
-            AssetCategory: wordPower.AssetCategory,
-            OwnerUserId: wordPower.OwnerUserId,
-            Tags: wordPower.Tags,
-            Version: wordPower.Version,
+            id                  : wordPower.id,
+            AssetCode           : wordPower.AssetCode,
+            Name                : wordPower.Name,
+            Description         : wordPower.Description,
+            AdditionalResources : wordPower.AdditionalResources,
+            AssetCategory       : wordPower.AssetCategory,
+            OwnerUserId         : wordPower.OwnerUserId,
+            Tags                : wordPower.Tags,
+            Version             : wordPower.Version,
 
         };
         return dto;

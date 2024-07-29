@@ -19,6 +19,7 @@ import {
 import {
     Op
 } from 'sequelize';
+import { Helper } from '../../../common/helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -26,11 +27,11 @@ export class InfographicsService {
 
     //#region Models
 
-    Infographics = InfographicsModel.Model();
+    Infographics = InfographicsModel.Model;
 
-    FileResource = FileResourceModel.Model();
+    FileResource = FileResourceModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 
@@ -38,12 +39,20 @@ export class InfographicsService {
 
     create = async (createModel: InfographicsCreateModel) => {
         try {
+            if (!createModel.AssetCode) {
+                const count = await this.Infographics.count() + 1;
+                createModel.AssetCode = 'Infographics-' + count.toString();
+                const exists = await this.getByCode(createModel.AssetCode);
+                if (exists) {
+                    createModel.AssetCode = 'Infographics-' + Helper.generateDisplayId();
+                }
+            }
             var record = await this.Infographics.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create infographics!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -63,7 +72,20 @@ export class InfographicsService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve infographics!', error);
         }
-    }
+    };
+
+    getByCode = async (code) => {
+        try {
+            const record = await this.Infographics.findOne({
+                where : {
+                    AssetCode : code
+                }
+            });
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
+        }
+    };
 
     exists = async (id): Promise<boolean> => {
         try {
@@ -72,7 +94,7 @@ export class InfographicsService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of infographics!', error);
         }
-    }
+    };
 
     search = async (filters: InfographicsSearchFilters): Promise<InfographicsSearchResults> => {
         try {
@@ -103,7 +125,7 @@ export class InfographicsService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search infographics records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -121,7 +143,7 @@ export class InfographicsService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update infographics!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -134,7 +156,7 @@ export class InfographicsService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete infographics!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -194,7 +216,7 @@ export class InfographicsService {
         search.include.push(includeFileResourceAsFileResource);
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -218,7 +240,7 @@ export class InfographicsService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -239,7 +261,7 @@ export class InfographicsService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

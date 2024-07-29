@@ -41,7 +41,7 @@ export interface AppointmentUpdateModel {
 }
 
 export interface AppointmentDto {
-    id: number;
+    id: uuid;
     AssetCode: string;
     Name: string;
     Description: string;
@@ -61,6 +61,7 @@ export interface AppointmentSearchFilters extends BaseSearchFilters {
     AssetCategory ? : string;
     Tags ? : string;
     Version ? : string;
+    CreatedAt ? : Date;
 }
 
 export interface AppointmentSearchResults extends BaseSearchResults {

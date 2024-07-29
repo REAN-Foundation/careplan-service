@@ -1,6 +1,7 @@
-import {
-    DatabaseConnector
-} from '../../database.connector';
+import * as db from '../../database.connector';
+import { DataTypes } from 'sequelize';
+const sequelize = db.default.sequelize;
+import { AssetType } from '../../../domain.types/assets/asset.types';
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -10,80 +11,79 @@ export class WebLinkModel {
 
     static ModelName = 'WebLink';
 
-    static Schema = () => {
+    static Schema = {
+        id : {
+            type         : DataTypes.UUID,
+            allowNull    : false,
+            defaultValue : DataTypes.UUIDV4,
+            primaryKey   : true
+        },
+        DisplayId : {
+            type          : DataTypes.INTEGER,
+            allowNull     : false,
+            autoIncrement : true,
+            unique        : true
+        },
+        AssetCode : {
+            type      : DataTypes.STRING(256),
+            allowNull : true
+        },
+        AssetType : {
+            type         : DataTypes.STRING(128),
+            allowNull    : false,
+            defaultValue : AssetType.WebLink
+        },
+        Name : {
+            type      : DataTypes.STRING(256),
+            allowNull : false
+        },
+        Description : {
+            type      : DataTypes.TEXT,
+            allowNull : true
+        },
+        Url : {
+            type      : DataTypes.TEXT,
+            allowNull : true
+        },
+        AssetCategory : {
+            type         : DataTypes.STRING(128),
+            allowNull    : false,
+            defaultValue : 'Educational'
+        },
+        OwnerUserId : {
+            type      : DataTypes.UUID,
+            allowNull : true
+        },
+        Tags : {
+            type         : DataTypes.TEXT,
+            allowNull    : false,
+            defaultValue : '[]'
+        },
+        Version : {
+            type         : DataTypes.STRING(128),
+            allowNull    : false,
+            defaultValue : 'V1'
+        },
 
-        const db = DatabaseConnector.db();
-        const Sequelize: any = db.Sequelize;
-
-        return {
-            id : {
-                type          : Sequelize.INTEGER,
-                allowNull     : false,
-                autoIncrement : true,
-                primaryKey    : true
-            },
-            AssetCode : {
-                type      : Sequelize.STRING(256),
-                allowNull : false
-            },
-            Name : {
-                type      : Sequelize.STRING(256),
-                allowNull : false
-            },
-            Description : {
-                type      : Sequelize.TEXT,
-                allowNull : false
-            },
-            Url : {
-                type      : Sequelize.TEXT,
-                allowNull : true
-            },
-            AssetCategory : {
-                type         : Sequelize.STRING(128),
-                allowNull    : false,
-                defaultValue : 'Educational'
-            },
-            OwnerUserId : {
-                type      : Sequelize.UUID,
-                allowNull : true
-            },
-            Tags : {
-                type         : Sequelize.TEXT,
-                allowNull    : false,
-                defaultValue : []
-            },
-            Version : {
-                type         : Sequelize.STRING(128),
-                allowNull    : false,
-                defaultValue : 'V1'
-            },
-
-            CreatedAt : Sequelize.DATE,
-            UpdatedAt : Sequelize.DATE,
-            DeletedAt : Sequelize.DATE
-        };
-    }
-
-    static Model: any = () => {
-
-        const db = DatabaseConnector.db();
-        const sequelize = db.sequelize;
-        const schema = WebLinkModel.Schema();
-
-        return sequelize.define(
-            WebLinkModel.ModelName,
-            schema, {
-                createdAt       : 'CreatedAt',
-                updatedAt       : 'UpdatedAt',
-                deletedAt       : 'DeletedAt',
-                freezeTableName : true,
-                timestamps      : true,
-                paranoid        : true,
-                tableName       : WebLinkModel.TableName,
-            });
+        CreatedAt : DataTypes.DATE,
+        UpdatedAt : DataTypes.DATE,
+        DeletedAt : DataTypes.DATE
     };
 
-    static associate = (models) => {
+    static Model: any = sequelize.define(
+        WebLinkModel.ModelName,
+        WebLinkModel.Schema,
+        {
+            createdAt       : 'CreatedAt',
+            updatedAt       : 'UpdatedAt',
+            deletedAt       : 'DeletedAt',
+            freezeTableName : true,
+            timestamps      : true,
+            paranoid        : true,
+            tableName       : WebLinkModel.TableName,
+        });
+
+    static associate = () => {
 
         //Add associations here...
 

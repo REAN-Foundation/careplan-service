@@ -16,6 +16,7 @@ import {
 import {
     Op
 } from 'sequelize';
+import { Helper } from '../../../common/helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -23,9 +24,9 @@ export class MeditationService {
 
     //#region Models
 
-    Meditation = MeditationModel.Model();
+    Meditation = MeditationModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 
@@ -33,12 +34,20 @@ export class MeditationService {
 
     create = async (createModel: MeditationCreateModel) => {
         try {
+            if (!createModel.AssetCode) {
+                const count = await this.Meditation.count() + 1;
+                createModel.AssetCode = 'Meditation-' + count.toString();
+                const exists = await this.getByCode(createModel.AssetCode);
+                if (exists) {
+                    createModel.AssetCode = 'Meditation-' + Helper.generateDisplayId();
+                }
+            }
             var record = await this.Meditation.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create meditation!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -51,7 +60,20 @@ export class MeditationService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve meditation!', error);
         }
-    }
+    };
+
+    getByCode = async (code) => {
+        try {
+            const record = await this.Meditation.findOne({
+                where : {
+                    AssetCode : code
+                }
+            });
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
+        }
+    };
 
     exists = async (id): Promise < boolean > => {
         try {
@@ -60,7 +82,7 @@ export class MeditationService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of meditation!', error);
         }
-    }
+    };
 
     search = async (filters: MeditationSearchFilters): Promise < MeditationSearchResults > => {
         try {
@@ -91,7 +113,7 @@ export class MeditationService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search meditation records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -109,7 +131,7 @@ export class MeditationService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update meditation!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -122,7 +144,7 @@ export class MeditationService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete meditation!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -173,7 +195,7 @@ export class MeditationService {
         }
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -197,7 +219,7 @@ export class MeditationService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -218,7 +240,7 @@ export class MeditationService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

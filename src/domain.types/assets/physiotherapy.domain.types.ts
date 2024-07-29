@@ -27,7 +27,7 @@ export interface PhysiotherapyUpdateModel {
 }
 
 export interface PhysiotherapyDto {
-    id: number;
+    id: uuid;
     AssetCode: string;
     Name: string;
     Description: string;
@@ -47,6 +47,7 @@ export interface PhysiotherapySearchFilters extends BaseSearchFilters {
     AssetCategory ? : string;
     Tags ? : string;
     Version ? : string;
+    CreatedAt ? : Date;
 }
 
 export interface PhysiotherapySearchResults extends BaseSearchResults {

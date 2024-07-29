@@ -27,7 +27,7 @@ export interface VideoUpdateModel {
 }
 
 export interface VideoDto {
-    id: number;
+    id: uuid;
     AssetCode: string;
     Name: string;
     Transcript: string;
@@ -48,6 +48,7 @@ export interface VideoSearchFilters extends BaseSearchFilters {
     AssetCategory ? : string;
     Tags ? : string;
     Version ? : string;
+    CreatedAt ? : Date;
 }
 
 export interface VideoSearchResults extends BaseSearchResults {

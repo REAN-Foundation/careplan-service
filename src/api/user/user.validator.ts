@@ -16,7 +16,6 @@ export class UserValidator {
                 CountryCode : joi.string().max(10).optional(),
                 Phone       : joi.string().max(16).min(6).required(),
                 Email       : joi.string().max(256).required(),
-                BiocubeId   : joi.string().max(32).required(),
                 Gender      : joi.string().valid("Male", "Female", "Other").required(),
                 BirthDate   : joi.string().optional(),
                 Password    : joi.string().max(512).required(),
@@ -28,7 +27,7 @@ export class UserValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
     static validateSearchRequest = async (query) => {
         try {
@@ -54,7 +53,7 @@ export class UserValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
     static validateUpdateRequest = async (requestBody) => {
         try {
@@ -77,7 +76,7 @@ export class UserValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
     static validatePasswordChangeRequest = async (requestBody) => {
         try {
@@ -90,7 +89,7 @@ export class UserValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
     static validateResetPasswordLinkRequest = async (requestBody) => {
         try {
@@ -101,7 +100,7 @@ export class UserValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
     static validateSetPasswordRequest = async (requestBody) => {
         try {
@@ -113,7 +112,7 @@ export class UserValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
     static validateLoginWithPasswordRequest = async (requestBody) => {
         try {
@@ -128,7 +127,7 @@ export class UserValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
     static validateLoginWithOtpRequest = async (requestBody) => {
         try {
@@ -143,7 +142,7 @@ export class UserValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
     static validatePasswordResetRequest = async (requestBody) => {
         try {
@@ -155,7 +154,7 @@ export class UserValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
     static validateSendOtpRequest = async (requestBody) => {
         try {
@@ -169,6 +168,6 @@ export class UserValidator {
         } catch (error) {
             ErrorHandler.handleValidationError(error);
         }
-    }
+    };
 
 }

@@ -16,6 +16,7 @@ import {
 import {
     Op
 } from 'sequelize';
+import { Helper } from '../../../common/helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -23,9 +24,9 @@ export class BiometricsService {
 
     //#region Models
 
-    Biometrics = BiometricsModel.Model();
+    Biometrics = BiometricsModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 
@@ -33,12 +34,20 @@ export class BiometricsService {
 
     create = async (createModel: BiometricsCreateModel) => {
         try {
+            if (!createModel.AssetCode) {
+                const count = await this.Biometrics.count() + 1;
+                createModel.AssetCode = 'Biometrics-' + count.toString();
+                const exists = await this.getByCode(createModel.AssetCode);
+                if (exists) {
+                    createModel.AssetCode = 'Biometrics-' + Helper.generateDisplayId();
+                }
+            }
             var record = await this.Biometrics.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create biometrics!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -51,7 +60,20 @@ export class BiometricsService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve biometrics!', error);
         }
-    }
+    };
+
+    getByCode = async (code) => {
+        try {
+            const record = await this.Biometrics.findOne({
+                where : {
+                    AssetCode : code
+                }
+            });
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
+        }
+    };
 
     exists = async (id): Promise < boolean > => {
         try {
@@ -60,7 +82,7 @@ export class BiometricsService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of biometrics!', error);
         }
-    }
+    };
 
     search = async (filters: BiometricsSearchFilters): Promise < BiometricsSearchResults > => {
         try {
@@ -91,7 +113,7 @@ export class BiometricsService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search biometrics records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -109,7 +131,7 @@ export class BiometricsService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update biometrics!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -122,7 +144,7 @@ export class BiometricsService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete biometrics!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -175,7 +197,7 @@ export class BiometricsService {
         }
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -199,7 +221,7 @@ export class BiometricsService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -220,7 +242,7 @@ export class BiometricsService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

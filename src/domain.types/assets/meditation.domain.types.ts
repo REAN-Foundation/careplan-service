@@ -49,7 +49,7 @@ export interface MeditationUpdateModel {
 }
 
 export interface MeditationDto {
-    id                    : number;
+    id                    : uuid;
     AssetCode             : string;
     Name                  : string;
     Description           : string;
@@ -71,6 +71,7 @@ export interface MeditationSearchFilters extends BaseSearchFilters {
     AssetCategory          ?: string;
     Tags                   ?: string;
     Version                ?: string;
+    CreatedAt              ?: Date;
 }
 
 export interface MeditationSearchResults extends BaseSearchResults {

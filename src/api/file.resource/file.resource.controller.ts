@@ -1,13 +1,9 @@
 import express from 'express';
-import {
-    ResponseHandler
-} from '../../common/response.handler';
-import {
-    FileResourceControllerDelegate
-} from './file.resource.controller.delegate';
-import {
-    BaseController
-} from '../base.controller';
+import { ResponseHandler } from '../../common/response.handler';
+import { FileResourceControllerDelegate } from './file.resource.controller.delegate';
+import { BaseController } from '../base.controller';
+import { Loader } from '../../startup/loader';
+import { ErrorHandler } from '../../common/error.handler';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -19,21 +15,42 @@ export class FileResourceController extends BaseController {
 
     constructor() {
         super();
-        this._delegate = new FileResourceControllerDelegate();
+        this._delegate = Loader.Container.resolve(FileResourceControllerDelegate);
     }
 
     //#endregion
 
-    create = async (request: express.Request, response: express.Response): Promise < void > => {
+    upload = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('FileResource.Create', request, response);
-            const record = await this._delegate.create(request.body);
-            const message = 'File resource added successfully!';
+            await this.authorize('FileResource.Upload', request, response);
+            const record = await this._delegate.upload(request);
+            const message = 'File resource uploaded successfully!';
             ResponseHandler.success(request, response, message, 201, record);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }
-    }
+    };
+
+    download = async (request: express.Request, response: express.Response): Promise < void > => {
+        try {
+            const record = await this._delegate.getById(request.params.id);
+            if (!record.Public) {
+                var verified = await Loader.Authenticator.verifyUser(request);
+                if (!verified) {
+                    ErrorHandler.throwUnauthorizedUserError('User is not authorized to download the resource!');
+                }
+                await this.authorize('FileResource.Download', request, response);
+            }
+            var disposition = request.query.disposition as string;
+            if (!disposition) {
+                disposition = 'inline';
+            }
+            const downloadStream = await this._delegate.download(request.params.id, disposition, response);
+            downloadStream.pipe(response);
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
 
     getById = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
@@ -44,29 +61,7 @@ export class FileResourceController extends BaseController {
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }
-    }
-
-    search = async (request: express.Request, response: express.Response): Promise < void > => {
-        try {
-            await this.authorize('FileResource.Search', request, response);
-            const searchResults = await this._delegate.search(request.query);
-            const message = 'File resource records retrieved successfully!';
-            ResponseHandler.success(request, response, message, 200, searchResults);
-        } catch (error) {
-            ResponseHandler.handleError(request, response, error);
-        }
-    }
-
-    update = async (request: express.Request, response: express.Response): Promise < void > => {
-        try {
-            await this.authorize('FileResource.Update', request, response);
-            const updatedRecord = await this._delegate.update(request.params.id, request.body);
-            const message = 'File resource updated successfully!';
-            ResponseHandler.success(request, response, message, 200, updatedRecord);
-        } catch (error) {
-            ResponseHandler.handleError(request, response, error);
-        }
-    }
+    };
 
     delete = async (request: express.Request, response: express.Response): Promise < void > => {
         try {

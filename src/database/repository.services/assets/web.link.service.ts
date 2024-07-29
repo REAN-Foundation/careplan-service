@@ -9,13 +9,13 @@ import {
     ErrorHandler
 } from '../../../common/error.handler';
 import {
-    WebLinkCreateModel,
     WebLinkSearchFilters,
     WebLinkSearchResults
 } from '../../../domain.types/assets/web.link.domain.types';
 import {
     Op
 } from 'sequelize';
+import { Helper } from '../../../common/helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -23,22 +23,30 @@ export class WebLinkService {
 
     //#region Models
 
-    WebLink = WebLinkModel.Model();
+    WebLink = WebLinkModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 
     //#region Publics
 
-    create = async (createModel: WebLinkCreateModel) => {
+    create = async (createModel) => {
         try {
+            if (!createModel.AssetCode) {
+                const count = await this.WebLink.count() + 1;
+                createModel.AssetCode = 'WebLink-' + count.toString();
+                const exists = await this.getByCode(createModel.AssetCode);
+                if (exists) {
+                    createModel.AssetCode = 'WebLink-' + Helper.generateDisplayId();
+                }
+            }
             var record = await this.WebLink.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create web link!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -51,7 +59,20 @@ export class WebLinkService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve web link!', error);
         }
-    }
+    };
+
+    getByCode = async (code) => {
+        try {
+            const record = await this.WebLink.findOne({
+                where : {
+                    AssetCode : code
+                }
+            });
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
+        }
+    };
 
     exists = async (id): Promise < boolean > => {
         try {
@@ -60,7 +81,7 @@ export class WebLinkService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of web link!', error);
         }
-    }
+    };
 
     search = async (filters: WebLinkSearchFilters): Promise < WebLinkSearchResults > => {
         try {
@@ -91,7 +112,7 @@ export class WebLinkService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search web link records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -109,7 +130,7 @@ export class WebLinkService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update web link!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -122,7 +143,7 @@ export class WebLinkService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete web link!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -172,7 +193,7 @@ export class WebLinkService {
         }
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -196,7 +217,7 @@ export class WebLinkService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -217,7 +238,7 @@ export class WebLinkService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

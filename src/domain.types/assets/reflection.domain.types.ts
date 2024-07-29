@@ -25,7 +25,7 @@ export interface ReflectionUpdateModel {
 }
 
 export interface ReflectionDto {
-    id: number;
+    id: uuid;
     AssetCode: string;
     Name: string;
     Description: string;
@@ -43,6 +43,7 @@ export interface ReflectionSearchFilters extends BaseSearchFilters {
     AssetCategory ? : string;
     Tags ? : string;
     Version ? : string;
+    CreatedAt ? : Date;
 }
 
 export interface ReflectionSearchResults extends BaseSearchResults {

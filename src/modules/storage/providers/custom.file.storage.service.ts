@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { Logger } from '../../../common/logger';
+import { Helper } from '../../../common/helper';
 import { IFileStorageService } from '../interfaces/file.storage.service.interface';
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -25,8 +26,33 @@ export class CustomFileStorageService implements IFileStorageService {
             return null;
         }
     };
-    
-    upload = async (storageKey: string, localFilePath?: string): Promise<string> => {
+
+    upload = async (inputStream: any, storageKey: string): Promise<string> => {
+        return new Promise((resolve, reject) => {
+            try {
+                var storagePath = Helper.getStoragePath();
+                const fileLocation = path.join(storagePath, storageKey);
+                const fileDirectory = path.dirname(fileLocation);
+                if (!fs.existsSync(fileDirectory)){
+                    fs.mkdirSync(fileDirectory, { recursive: true });
+                }
+                const writeStream = fs.createWriteStream(fileLocation);
+                inputStream.pipe(writeStream);
+
+                writeStream.on('finish', async () => {
+                    Logger.instance().log('wrote all data to file');
+                    writeStream.end();
+                    resolve(storageKey);
+                });
+            }
+            catch (error) {
+                Logger.instance().log(error.message);
+                reject("Unable to create file resource!");
+            }
+        });
+    };
+
+    uploadLocally = async (storageKey: string, localFilePath: string): Promise<string> => {
         try {
             const fileContent = fs.readFileSync(localFilePath);
             const location = path.join(this._storagePath, storageKey);
@@ -43,7 +69,20 @@ export class CustomFileStorageService implements IFileStorageService {
         }
     };
 
-    download = async (storageKey: string, localFilePath: string): Promise<string> => {
+    download = async (storageKey: string): Promise<any> => {
+        try {
+            var storagePath = Helper.getStoragePath();
+            const fileLocation = path.join(storagePath, storageKey);
+            const stream = fs.createReadStream(fileLocation);
+            return stream;
+        }
+        catch (error) {
+            Logger.instance().log(error.message);
+            return null;
+        }
+    };
+
+    downloadLocally = async (storageKey: string, localFilePath: string): Promise<string> => {
         try {
             const location = path.join(this._storagePath, storageKey);
             const fileContent = fs.readFileSync(location);
@@ -89,7 +128,7 @@ export class CustomFileStorageService implements IFileStorageService {
             return false;
         }
     };
-    
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getShareableLink(storageKey: string, _durationInMinutes: number): string {
         return path.join(this._storagePath, storageKey);

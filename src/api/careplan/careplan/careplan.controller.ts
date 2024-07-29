@@ -27,29 +27,29 @@ export class CarePlanController extends BaseController{
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }
-    }
+    };
 
     getById = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('Careplan.GetById', request, response);
+            await this.authorize('Careplan.GetById', request, response, request.authorizeRequest);
             const record = await this._delegate.getById(request.params.id);
             const message = 'Care plan retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, record);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }
-    }
+    };
 
     search = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('Careplan.Search', request, response);
+            await this.authorize('Careplan.Search', request, response, request.authorizeRequest);
             const searchResults = await this._delegate.search(request.query);
             const message = 'Care plan records retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, searchResults);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }
-    }
+    };
 
     update = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
@@ -60,7 +60,7 @@ export class CarePlanController extends BaseController{
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }
-    }
+    };
 
     delete = async (request: express.Request, response: express.Response): Promise < void > => {
         try {

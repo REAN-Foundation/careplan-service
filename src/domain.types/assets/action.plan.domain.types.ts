@@ -25,7 +25,7 @@ export interface ActionPlanUpdateModel {
 }
 
 export interface ActionPlanDto {
-    id           : number;
+    id           : uuid;
     AssetCode    : string;
     Name         : string;
     Description  : string;
@@ -42,6 +42,7 @@ export interface ActionPlanSearchFilters extends BaseSearchFilters {
     AssetCategory?: string;
     Tags?         : string;
     Version?      : string;
+    CreatedAt?    : Date;
 }
 
 export interface ActionPlanSearchResults extends BaseSearchResults {

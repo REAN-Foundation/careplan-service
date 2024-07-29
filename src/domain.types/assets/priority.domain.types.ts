@@ -25,7 +25,7 @@ export interface PriorityUpdateModel {
 }
 
 export interface PriorityDto {
-    id: number;
+    id: uuid;
     AssetCode: string;
     Name: string;
     Description: string;
@@ -43,6 +43,7 @@ export interface PrioritySearchFilters extends BaseSearchFilters {
     AssetCategory ? : string;
     Tags ? : string;
     Version ? : string;
+    CreatedAt ? : Date;
 }
 
 export interface PrioritySearchResults extends BaseSearchResults {

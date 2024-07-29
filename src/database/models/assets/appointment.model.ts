@@ -1,7 +1,8 @@
 import { AppointmentTypeList } from '../../../domain.types/assets/appointment.domain.types';
-import {
-    DatabaseConnector
-} from '../../database.connector';
+import * as db from '../../database.connector';
+import { DataTypes } from 'sequelize';
+const sequelize = db.default.sequelize;
+import { AssetType } from '../../../domain.types/assets/asset.types';
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -11,81 +12,80 @@ export class AppointmentModel {
 
     static ModelName = 'Appointment';
 
-    static Schema = () => {
+    static Schema = {
+        id : {
+            type         : DataTypes.UUID,
+            allowNull    : false,
+            defaultValue : DataTypes.UUIDV4,
+            primaryKey   : true
+        },
+        DisplayId : {
+            type          : DataTypes.INTEGER,
+            allowNull     : false,
+            autoIncrement : true,
+            unique        : true
+        },
+        AssetCode : {
+            type      : DataTypes.STRING(256),
+            allowNull : true
+        },
+        AssetType : {
+            type         : DataTypes.STRING(128),
+            allowNull    : false,
+            defaultValue : AssetType.Appointment
+        },
+        Name : {
+            type      : DataTypes.STRING(256),
+            allowNull : false
+        },
+        Description : {
+            type      : DataTypes.TEXT,
+            allowNull : true
+        },
+        AppointmentType : {
+            type         : DataTypes.ENUM({ values: AppointmentTypeList }),
+            allowNull    : false,
+            defaultValue : 'Doctor'
+        },
+        AssetCategory : {
+            type         : DataTypes.STRING(128),
+            allowNull    : false,
+            defaultValue : 'Appointment'
+        },
+        OwnerUserId : {
+            type      : DataTypes.UUID,
+            allowNull : true
+        },
+        Tags : {
+            type         : DataTypes.TEXT,
+            allowNull    : false,
+            defaultValue : '[]'
+        },
+        Version : {
+            type         : DataTypes.STRING(128),
+            allowNull    : false,
+            defaultValue : 'V1'
+        },
 
-        const db = DatabaseConnector.db();
-        const Sequelize: any = db.Sequelize;
-
-        return {
-            id : {
-                type          : Sequelize.INTEGER,
-                allowNull     : false,
-                autoIncrement : true,
-                primaryKey    : true
-            },
-            AssetCode : {
-                type      : Sequelize.STRING(256),
-                allowNull : false
-            },
-            Name : {
-                type      : Sequelize.STRING(256),
-                allowNull : false
-            },
-            Description : {
-                type      : Sequelize.TEXT,
-                allowNull : false
-            },
-            AppointmentType : {
-                type         : Sequelize.ENUM(AppointmentTypeList),
-                allowNull    : false,
-                defaultValue : 'Doctor'
-            },
-            AssetCategory : {
-                type         : Sequelize.STRING(128),
-                allowNull    : false,
-                defaultValue : 'Appointment'
-            },
-            OwnerUserId : {
-                type      : Sequelize.UUID,
-                allowNull : true
-            },
-            Tags : {
-                type         : Sequelize.TEXT,
-                allowNull    : false,
-                defaultValue : []
-            },
-            Version : {
-                type         : Sequelize.STRING(128),
-                allowNull    : false,
-                defaultValue : 'V1'
-            },
-
-            CreatedAt : Sequelize.DATE,
-            UpdatedAt : Sequelize.DATE,
-            DeletedAt : Sequelize.DATE
-        };
-    }
-
-    static Model: any = () => {
-
-        const db = DatabaseConnector.db();
-        const sequelize = db.sequelize;
-        const schema = AppointmentModel.Schema();
-
-        return sequelize.define(
-            AppointmentModel.ModelName,
-            schema, {
-                createdAt       : 'CreatedAt',
-                updatedAt       : 'UpdatedAt',
-                deletedAt       : 'DeletedAt',
-                freezeTableName : true,
-                timestamps      : true,
-                paranoid        : true,
-                tableName       : AppointmentModel.TableName,
-            });
+        CreatedAt : DataTypes.DATE,
+        UpdatedAt : DataTypes.DATE,
+        DeletedAt : DataTypes.DATE
     };
 
-    static associate = (models) => {
+    static Model: any = sequelize.define(
+        AppointmentModel.ModelName,
+        AppointmentModel.Schema,
+        {
+            createdAt       : 'CreatedAt',
+            updatedAt       : 'UpdatedAt',
+            deletedAt       : 'DeletedAt',
+            freezeTableName : true,
+            timestamps      : true,
+            paranoid        : true,
+            tableName       : AppointmentModel.TableName,
+        });
+
+    static associate = () => {
 
         //Add associations here...
 

@@ -27,7 +27,7 @@ export interface AudioUpdateModel {
 }
 
 export interface AudioDto {
-    id: number;
+    id: uuid;
     AssetCode: string;
     Name: string;
     Transcript: string;
@@ -48,6 +48,7 @@ export interface AudioSearchFilters extends BaseSearchFilters {
     AssetCategory ? : string;
     Tags ? : string;
     Version ? : string;
+    CreatedAt ? : Date;
 }
 
 export interface AudioSearchResults extends BaseSearchResults {

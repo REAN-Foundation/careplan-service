@@ -22,6 +22,7 @@ import {
     AppointmentSearchFilters,
     AppointmentSearchResults
 } from '../../../domain.types/assets/appointment.domain.types';
+import { AssetHelper } from '../../../database/repository.services/assets/asset.helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -40,12 +41,13 @@ export class AppointmentControllerDelegate {
     create = async (requestBody: any) => {
         await validator.validateCreateRequest(requestBody);
         var createModel: AppointmentCreateModel = this.getCreateModel(requestBody);
-        const record = await this._service.create(createModel);
+        var record = await this._service.create(createModel);
         if (record === null) {
             throw new ApiError('Unable to create appointment!', 400);
         }
+        record = await AssetHelper.updateAssetCode(record, this._service);
         return this.getEnrichedDto(record);
-    }
+    };
 
     getById = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -53,7 +55,7 @@ export class AppointmentControllerDelegate {
             ErrorHandler.throwNotFoundError('Appointment with id ' + id.toString() + ' cannot be found!');
         }
         return this.getEnrichedDto(record);
-    }
+    };
 
     search = async (query: any) => {
         await validator.validateSearchRequest(query);
@@ -62,7 +64,7 @@ export class AppointmentControllerDelegate {
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
         return searchResults;
-    }
+    };
 
     update = async (id: uuid, requestBody: any) => {
         await validator.validateUpdateRequest(requestBody);
@@ -76,7 +78,7 @@ export class AppointmentControllerDelegate {
             throw new ApiError('Unable to update appointment!', 400);
         }
         return this.getEnrichedDto(updated);
-    }
+    };
 
     delete = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -87,7 +89,7 @@ export class AppointmentControllerDelegate {
         return {
             Deleted : appointmentDeleted
         };
-    }
+    };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -95,7 +97,7 @@ export class AppointmentControllerDelegate {
 
     getSearchFilters = (query) => {
 
-        var filters = {};
+        var filters = Helper.getDefaultSearchFilters(query);
 
         var assetCode = query.assetCode ? query.assetCode : null;
         if (assetCode != null) {
@@ -127,7 +129,7 @@ export class AppointmentControllerDelegate {
         }
 
         return filters;
-    }
+    };
 
     getUpdateModel = (requestBody): AppointmentUpdateModel => {
 
@@ -153,7 +155,7 @@ export class AppointmentControllerDelegate {
         }
 
         return updateModel;
-    }
+    };
 
     getCreateModel = (requestBody): AppointmentCreateModel => {
         return {
@@ -165,7 +167,7 @@ export class AppointmentControllerDelegate {
             Version         : requestBody.Version ? requestBody.Version : 'V1',
             OwnerUserId     : requestBody.OwnerUserId
         };
-    }
+    };
 
     getEnrichedDto = (record) => {
         if (record == null) {
@@ -182,7 +184,7 @@ export class AppointmentControllerDelegate {
             Tags            : JSON.parse(record.Tags),
             Version         : record.Version
         };
-    }
+    };
 
     getSearchDto = (record) => {
         if (record == null) {
@@ -197,9 +199,10 @@ export class AppointmentControllerDelegate {
             AssetCategory   : record.AssetCategory,
             OwnerUserId     : record.OwnerUserId,
             Tags            : JSON.parse(record.Tags),
-            Version         : record.Version
+            Version         : record.Version,
+            CreatedAt       : record.CreatedAt,
         };
-    }
+    };
 
     //#endregion
 

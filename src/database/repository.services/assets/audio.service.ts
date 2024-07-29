@@ -19,6 +19,7 @@ import {
 import {
     Op
 } from 'sequelize';
+import { Helper } from '../../../common/helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -26,11 +27,11 @@ export class AudioService {
 
     //#region Models
 
-    Audio = AudioModel.Model();
+    Audio = AudioModel.Model;
 
-    FileResource = FileResourceModel.Model();
+    FileResource = FileResourceModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 
@@ -38,12 +39,20 @@ export class AudioService {
 
     create = async (createModel: AudioCreateModel) => {
         try {
+            if (!createModel.AssetCode) {
+                const count = await this.Audio.count() + 1;
+                createModel.AssetCode = 'Audio-' + count.toString();
+                const exists = await this.getByCode(createModel.AssetCode);
+                if (exists) {
+                    createModel.AssetCode = 'Audio-' + Helper.generateDisplayId();
+                }
+            }
             var record = await this.Audio.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create audio!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -63,7 +72,20 @@ export class AudioService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve audio!', error);
         }
-    }
+    };
+
+    getByCode = async (code) => {
+        try {
+            const record = await this.Audio.findOne({
+                where : {
+                    AssetCode : code
+                }
+            });
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
+        }
+    };
 
     exists = async (id): Promise<boolean> => {
         try {
@@ -72,7 +94,7 @@ export class AudioService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of audio!', error);
         }
-    }
+    };
 
     search = async (filters: AudioSearchFilters): Promise<AudioSearchResults> => {
         try {
@@ -103,7 +125,7 @@ export class AudioService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search audio records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -121,7 +143,7 @@ export class AudioService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update audio!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -134,7 +156,7 @@ export class AudioService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete audio!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -194,7 +216,7 @@ export class AudioService {
         search.include.push(includeFileResourceAsFileResource);
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -218,7 +240,7 @@ export class AudioService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -239,7 +261,7 @@ export class AudioService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

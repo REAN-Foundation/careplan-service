@@ -27,7 +27,7 @@ export interface ArticleUpdateModel {
 }
 
 export interface ArticleDto {
-    id: number;
+    id: uuid;
     AssetCode: string;
     Name: string;
     Summary: string;
@@ -48,6 +48,7 @@ export interface ArticleSearchFilters extends BaseSearchFilters {
     AssetCategory ? : string;
     Tags ? : string;
     Version ? : string;
+    CreatedAt ? : Date;
 }
 
 export interface ArticleSearchResults extends BaseSearchResults {

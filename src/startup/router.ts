@@ -2,7 +2,7 @@ import express from "express";
 import { Logger } from "../common/logger";
 import { register as registerCareplanRoutes         } from "../api/careplan/careplan/careplan.routes";
 import { register as registerCareplanCategoryRoutes } from "../api/careplan/careplan.category/careplan.category.routes";
-import { register as registerCareplanScheduleRoutes } from "../api/careplan/careplan.schedule/careplan.schedule.routes";
+import { register as registerCareplanActivityRoutes } from "../api/careplan/careplan.activity/careplan.activity.routes";
 import { register as registerApiClientRoutes        } from "../api/api.client/api.client.routes";
 import { register as registerActionPlanRoutes       } from "../api/assets/action.plan/action.plan.routes";
 import { register as registerAnimationRoutes        } from "../api/assets/animation/animation.routes";
@@ -30,15 +30,17 @@ import { register as registerWebLinkRoutes          } from "../api/assets/web.li
 import { register as registerWebNewsFeedRoutes      } from "../api/assets/web.newsfeed/web.newsfeed.routes";
 import { register as registerWordPowerRoutes        } from "../api/assets/word.power/word.power.routes";
 import { register as registerEnrollmentRoutes       } from "../api/enrollment/enrollment/enrollment.routes";
-import { register as registerEnrollmentScheduleRoutes } from "../api/enrollment/enrollment.schedule/enrollment.schedule.routes";
+import { register as registerEnrollmentTaskRoutes } from "../api/enrollment/enrollment.task/enrollment.task.routes";
 import { register as registerFileREsourceRoutes       } from "../api/file.resource/file.resource.routes";
 import { register as registerTypesRoutes              } from "../api/types/types.routes";
 import { register as registerUserRoutes               } from "../api/user/user.routes";
-import { register as registerUserActivityResponseRoutes   } from "../api/user.responses/user.activity.response/user.activity.response.routes";
-import { register as registerUserSelectedActionPlanRoutes } from "../api/user.responses/user.selected.action.plan/user.selected.action.plan.routes";
-import { register as registerUserSelectedGoalRoutes       } from "../api/user.responses/user.selected.goal/user.selected.goal.routes";
-import { register as registerUserSelectedPriorityRoutes   } from "../api/user.responses/user.selected.priority/user.selected.priority.routes";
+import { register as registerParticipantActivityResponseRoutes   } from "../api/participant.responses/participant.activity.response/participant.activity.response.routes";
+import { register as registerParticipantSelectedActionPlanRoutes } from "../api/participant.responses/participant.selected.action.plan/participant.selected.action.plan.routes";
+import { register as registerParticipantSelectedGoalRoutes       } from "../api/participant.responses/participant.selected.goal/participant.selected.goal.routes";
+import { register as registerParticipantSelectedPriorityRoutes   } from "../api/participant.responses/participant.selected.priority/participant.selected.priority.routes";
 import { register as registerUserRoleRoutes               } from "../api/user.role/user.role.routes";
+import { register as registerParticipantRoutes            } from "../api/enrollment/participant/participant.routes";
+import { register as registerStatisticsRoutes            } from "../api/statistics/statistics.route";
 
 ////////////////////////////////////////////////////////////////////////////////////
 
@@ -65,7 +67,7 @@ export class Router {
                 registerCareplanCategoryRoutes(this._app);
                 registerApiClientRoutes(this._app);
                 registerCareplanCategoryRoutes(this._app);
-                registerCareplanScheduleRoutes(this._app);
+                registerCareplanActivityRoutes(this._app);
                 registerApiClientRoutes(this._app);
                 registerActionPlanRoutes(this._app);
                 registerAnimationRoutes(this._app);
@@ -93,15 +95,17 @@ export class Router {
                 registerWebNewsFeedRoutes(this._app);
                 registerWordPowerRoutes(this._app);
                 registerEnrollmentRoutes(this._app);
-                registerEnrollmentScheduleRoutes(this._app);
+                registerEnrollmentTaskRoutes(this._app);
                 registerFileREsourceRoutes(this._app);
                 registerTypesRoutes(this._app);
                 registerUserRoutes(this._app);
-                registerUserActivityResponseRoutes(this._app);
-                registerUserSelectedActionPlanRoutes(this._app);
-                registerUserSelectedGoalRoutes(this._app);
-                registerUserSelectedPriorityRoutes(this._app);
+                registerParticipantActivityResponseRoutes(this._app);
+                registerParticipantSelectedActionPlanRoutes(this._app);
+                registerParticipantSelectedGoalRoutes(this._app);
+                registerParticipantSelectedPriorityRoutes(this._app);
                 registerUserRoleRoutes(this._app);
+                registerParticipantRoutes(this._app);
+                registerStatisticsRoutes(this._app);
 
                 resolve(true);
 

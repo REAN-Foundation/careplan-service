@@ -25,7 +25,7 @@ export interface GoalUpdateModel {
 }
 
 export interface GoalDto {
-    id: number;
+    id: uuid;
     AssetCode: string;
     Name: string;
     Description: string;
@@ -43,6 +43,7 @@ export interface GoalSearchFilters extends BaseSearchFilters {
     AssetCategory ? : string;
     Tags ? : string;
     Version ? : string;
+    CreatedAt ? : Date;
 }
 
 export interface GoalSearchResults extends BaseSearchResults {

@@ -1,6 +1,6 @@
-import {
-    DatabaseConnector
-} from '../database.connector';
+import * as db from '../database.connector';
+import { DataTypes } from 'sequelize';
+const sequelize = db.default.sequelize;
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -10,68 +10,67 @@ export class FileResourceModel {
 
     static ModelName = 'FileResource';
 
-    static Schema = () => {
+    static Schema = {
+        id : {
+            type         : DataTypes.UUID,
+            allowNull    : false,
+            defaultValue : DataTypes.UUIDV4,
+            primaryKey   : true
+        },
+        StorageKey : {
+            type      : DataTypes.TEXT,
+            allowNull : true
+        },
+        OriginalFilename : {
+            type      : DataTypes.STRING(512),
+            allowNull : false
+        },
+        MimeType : {
+            type      : DataTypes.STRING(256),
+            allowNull : false
+        },
+        Public : {
+            type         : DataTypes.BOOLEAN,
+            allowNull    : false,
+            defaultValue : false
+        },
+        Size : {
+            type      : DataTypes.INTEGER,
+            allowNull : true,
+        },
+        Tags : {
+            type         : DataTypes.TEXT,
+            allowNull    : false,
+            defaultValue : '[]'
+        },
+        DownloadCount : {
+            type         : DataTypes.INTEGER,
+            allowNull    : false,
+            defaultValue : 0
+        },
+        UserId : {
+            type       : DataTypes.UUID,
+            allowNull  : true,
+            foreignKey : true
+        },
 
-        const db = DatabaseConnector.db();
-        const Sequelize: any = db.Sequelize;
-
-        return {
-            id : {
-                type         : Sequelize.UUID,
-                allowNull    : false,
-                defaultValue : Sequelize.UUIDV4,
-                primaryKey   : true
-            },
-            FileName : {
-                type      : Sequelize.STRING(256),
-                allowNull : true
-            },
-            UserId : {
-                type       : Sequelize.UUID,
-                allowNull  : false,
-                foreignKey : true,
-                unique     : false
-            },
-            IsPublicResource : {
-                type         : Sequelize.BOOLEAN,
-                allowNull    : false,
-                defaultValue : true
-            },
-            Tags : {
-                type         : Sequelize.TEXT,
-                allowNull    : false,
-                defaultValue : []
-            },
-            MimeType : {
-                type         : Sequelize.STRING(128),
-                allowNull    : true,
-                defaultValue : true
-            },
-
-            CreatedAt : Sequelize.DATE,
-            UpdatedAt : Sequelize.DATE,
-            DeletedAt : Sequelize.DATE
-        };
-    }
-
-    static Model: any = () => {
-
-        const db = DatabaseConnector.db();
-        const sequelize = db.sequelize;
-        const schema = FileResourceModel.Schema();
-
-        return sequelize.define(
-            FileResourceModel.ModelName,
-            schema, {
-                createdAt       : 'CreatedAt',
-                updatedAt       : 'UpdatedAt',
-                deletedAt       : 'DeletedAt',
-                freezeTableName : true,
-                timestamps      : true,
-                paranoid        : true,
-                tableName       : FileResourceModel.TableName,
-            });
+        CreatedAt : DataTypes.DATE,
+        UpdatedAt : DataTypes.DATE,
+        DeletedAt : DataTypes.DATE
     };
+
+    static Model: any = sequelize.define(
+        FileResourceModel.ModelName,
+        FileResourceModel.Schema,
+        {
+            createdAt       : 'CreatedAt',
+            updatedAt       : 'UpdatedAt',
+            deletedAt       : 'DeletedAt',
+            freezeTableName : true,
+            timestamps      : true,
+            paranoid        : true,
+            tableName       : FileResourceModel.TableName,
+        });
 
     static associate = (models) => {
 

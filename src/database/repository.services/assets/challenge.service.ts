@@ -16,6 +16,7 @@ import {
 import {
     Op
 } from 'sequelize';
+import { Helper } from '../../../common/helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -23,9 +24,9 @@ export class ChallengeService {
 
     //#region Models
 
-    Challenge = ChallengeModel.Model();
+    Challenge = ChallengeModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 
@@ -33,12 +34,33 @@ export class ChallengeService {
 
     create = async (createModel: ChallengeCreateModel) => {
         try {
+            if (!createModel.AssetCode) {
+                const count = await this.Challenge.count() + 1;
+                createModel.AssetCode = 'Challenge-' + count.toString();
+                const exists = await this.getByCode(createModel.AssetCode);
+                if (exists) {
+                    createModel.AssetCode = 'Challenge-' + Helper.generateDisplayId();
+                }
+            }
             var record = await this.Challenge.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create challenge!', error);
         }
-    }
+    };
+
+    getByCode = async (code) => {
+        try {
+            const record = await this.Challenge.findOne({
+                where : {
+                    AssetCode : code
+                }
+            });
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
+        }
+    };
 
     getById = async (id) => {
         try {
@@ -51,7 +73,7 @@ export class ChallengeService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve challenge!', error);
         }
-    }
+    };
 
     exists = async (id): Promise < boolean > => {
         try {
@@ -60,7 +82,7 @@ export class ChallengeService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of challenge!', error);
         }
-    }
+    };
 
     search = async (filters: ChallengeSearchFilters): Promise < ChallengeSearchResults > => {
         try {
@@ -91,7 +113,7 @@ export class ChallengeService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search challenge records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -109,7 +131,7 @@ export class ChallengeService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update challenge!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -122,7 +144,7 @@ export class ChallengeService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete challenge!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -167,7 +189,7 @@ export class ChallengeService {
         }
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -191,7 +213,7 @@ export class ChallengeService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -212,7 +234,7 @@ export class ChallengeService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

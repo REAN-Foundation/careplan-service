@@ -1,21 +1,8 @@
-import {
-    FileResourceModel
-} from '../models/file.resource.model';
-import {
-    UserModel
-} from '../models/user/user.model';
-
-import {
-    ErrorHandler
-} from '../../common/error.handler';
-import {
-    FileResourceCreateModel,
-    FileResourceSearchFilters,
-    FileResourceSearchResults
-} from '../../domain.types/file.resource.domain.types';
-import {
-    Op
-} from 'sequelize';
+import { FileResourceModel } from '../models/file.resource.model';
+import { UserModel } from '../models/user/user.model';
+import { ErrorHandler } from '../../common/error.handler';
+import { FileResourceCreateModel } from '../../domain.types/file.resource.domain.types';
+import { Op } from 'sequelize';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -23,9 +10,9 @@ export class FileResourceService {
 
     //#region Models
 
-    FileResource = FileResourceModel.Model();
+    FileResource = FileResourceModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 
@@ -38,7 +25,7 @@ export class FileResourceService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create file resource!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -59,18 +46,32 @@ export class FileResourceService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve file resource!', error);
         }
-    }
+    };
 
-    exists = async (id): Promise < boolean > => {
+    incrementDownloadCount = async (id) => {
+        try {
+            var record = await this.FileResource.findOne({
+                where : {
+                    id : id
+                }
+            });
+            record.DownloadCount = record.DownloadCount + 1;
+            await record.save();
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to update download count for file resource!', error);
+        }
+    };
+
+    exists = async (id): Promise<boolean> => {
         try {
             const record = await this.FileResource.findByPk(id);
             return record !== null;
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of file resource!', error);
         }
-    }
+    };
 
-    search = async (filters: FileResourceSearchFilters): Promise < FileResourceSearchResults > => {
+    search = async (filters): Promise<any> => {
         try {
 
             var search = this.getSearchModel(filters);
@@ -84,7 +85,7 @@ export class FileResourceService {
             } = this.addPaginationToSearch(search, filters);
 
             const foundResults = await this.FileResource.findAndCountAll(search);
-            const searchResults: FileResourceSearchResults = {
+            const searchResults = {
                 TotalCount     : foundResults.count,
                 RetrievedCount : foundResults.rows.length,
                 PageIndex      : pageIndex,
@@ -99,7 +100,7 @@ export class FileResourceService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search file resource records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -117,7 +118,7 @@ export class FileResourceService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update file resource!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -130,7 +131,7 @@ export class FileResourceService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete file resource!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -173,7 +174,7 @@ export class FileResourceService {
         search.include.push(includeUserAsUser);
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -197,7 +198,7 @@ export class FileResourceService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -218,7 +219,7 @@ export class FileResourceService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

@@ -22,6 +22,7 @@ import {
     WordPowerSearchFilters,
     WordPowerSearchResults
 } from '../../../domain.types/assets/word.power.domain.types';
+import { AssetHelper } from '../../../database/repository.services/assets/asset.helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -40,12 +41,13 @@ export class WordPowerControllerDelegate {
     create = async (requestBody: any) => {
         await validator.validateCreateRequest(requestBody);
         var createModel: WordPowerCreateModel = this.getCreateModel(requestBody);
-        const record = await this._service.create(createModel);
+        var record = await this._service.create(createModel);
         if (record === null) {
             throw new ApiError('Unable to create word power!', 400);
         }
+        record = await AssetHelper.updateAssetCode(record, this._service);
         return this.getEnrichedDto(record);
-    }
+    };
 
     getById = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -53,7 +55,7 @@ export class WordPowerControllerDelegate {
             ErrorHandler.throwNotFoundError('Word power with id ' + id.toString() + ' cannot be found!');
         }
         return this.getEnrichedDto(record);
-    }
+    };
 
     search = async (query: any) => {
         await validator.validateSearchRequest(query);
@@ -62,7 +64,7 @@ export class WordPowerControllerDelegate {
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
         return searchResults;
-    }
+    };
 
     update = async (id: uuid, requestBody: any) => {
         await validator.validateUpdateRequest(requestBody);
@@ -76,7 +78,7 @@ export class WordPowerControllerDelegate {
             throw new ApiError('Unable to update word power!', 400);
         }
         return this.getEnrichedDto(updated);
-    }
+    };
 
     delete = async (id: uuid) => {
         const record = await this._service.getById(id);
@@ -87,7 +89,7 @@ export class WordPowerControllerDelegate {
         return {
             Deleted : wordPowerDeleted
         };
-    }
+    };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -95,15 +97,15 @@ export class WordPowerControllerDelegate {
 
     getSearchFilters = (query) => {
 
-        var filters = {};
+        var filters = Helper.getDefaultSearchFilters(query);
 
         var assetCode = query.assetCode ? query.assetCode : null;
         if (assetCode != null) {
             filters['AssetCode'] = assetCode;
         }
-        var word = query.word ? query.word : null;
-        if (word != null) {
-            filters['Word'] = word;
+        var name = query.name ? query.name : null;
+        if (name != null) {
+            filters['Name'] = name;
         }
         var description = query.description ? query.description : null;
         if (description != null) {
@@ -127,7 +129,7 @@ export class WordPowerControllerDelegate {
         }
 
         return filters;
-    }
+    };
 
     getUpdateModel = (requestBody): WordPowerUpdateModel => {
 
@@ -136,8 +138,8 @@ export class WordPowerControllerDelegate {
         if (Helper.hasProperty(requestBody, 'AssetCode')) {
             updateModel.AssetCode = requestBody.AssetCode;
         }
-        if (Helper.hasProperty(requestBody, 'Word')) {
-            updateModel.Word = requestBody.Word;
+        if (Helper.hasProperty(requestBody, 'Name')) {
+            updateModel.Name = requestBody.Name;
         }
         if (Helper.hasProperty(requestBody, 'Description')) {
             updateModel.Description = requestBody.Description;
@@ -153,12 +155,12 @@ export class WordPowerControllerDelegate {
         }
 
         return updateModel;
-    }
+    };
 
     getCreateModel = (requestBody): WordPowerCreateModel => {
         return {
             AssetCode           : requestBody.AssetCode ? requestBody.AssetCode : null,
-            Word                : requestBody.Word ? requestBody.Word : null,
+            Name                : requestBody.Name ? requestBody.Name : null,
             Description         : requestBody.Description ? requestBody.Description : null,
             AdditionalResources : requestBody.AdditionalResources ?
                 JSON.stringify(requestBody.AdditionalResources) as string : JSON.stringify([]),
@@ -166,7 +168,7 @@ export class WordPowerControllerDelegate {
             Version     : requestBody.Version ? requestBody.Version : 'V1',
             OwnerUserId : requestBody.OwnerUserId
         };
-    }
+    };
 
     getEnrichedDto = (record) => {
         if (record == null) {
@@ -175,7 +177,7 @@ export class WordPowerControllerDelegate {
         return {
             id                  : record.id,
             AssetCode           : record.AssetCode,
-            Word                : record.Word,
+            Name                : record.Name,
             Description         : record.Description,
             AdditionalResources : JSON.parse(record.AdditionalResources),
             AssetCategory       : record.AssetCategory,
@@ -183,7 +185,7 @@ export class WordPowerControllerDelegate {
             Tags                : JSON.parse(record.Tags),
             Version             : record.Version
         };
-    }
+    };
 
     getSearchDto = (record) => {
         if (record == null) {
@@ -192,15 +194,16 @@ export class WordPowerControllerDelegate {
         return {
             id                  : record.id,
             AssetCode           : record.AssetCode,
-            Word                : record.Word,
+            Name                : record.Name,
             Description         : record.Description,
             AdditionalResources : JSON.parse(record.AdditionalResources),
             AssetCategory       : record.AssetCategory,
             OwnerUserId         : record.OwnerUserId,
             Tags                : JSON.parse(record.Tags),
-            Version             : record.Version
+            Version             : record.Version,
+            CreatedAt           : record.CreatedAt,
         };
-    }
+    };
 
     //#endregion
 

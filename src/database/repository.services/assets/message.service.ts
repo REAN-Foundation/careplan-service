@@ -16,6 +16,7 @@ import {
 import {
     Op
 } from 'sequelize';
+import { Helper } from '../../../common/helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -23,9 +24,9 @@ export class MessageService {
 
     //#region Models
 
-    Message = MessageModel.Model();
+    Message = MessageModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 
@@ -33,12 +34,20 @@ export class MessageService {
 
     create = async (createModel: MessageCreateModel) => {
         try {
+            if (!createModel.AssetCode) {
+                const count = await this.Message.count() + 1;
+                createModel.AssetCode = 'Message-' + count.toString();
+                const exists = await this.getByCode(createModel.AssetCode);
+                if (exists) {
+                    createModel.AssetCode = 'Message-' + Helper.generateDisplayId();
+                }
+            }
             var record = await this.Message.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create message!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -51,7 +60,20 @@ export class MessageService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve message!', error);
         }
-    }
+    };
+
+    getByCode = async (code) => {
+        try {
+            const record = await this.Message.findOne({
+                where : {
+                    AssetCode : code
+                }
+            });
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
+        }
+    };
 
     exists = async (id): Promise < boolean > => {
         try {
@@ -60,7 +82,7 @@ export class MessageService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of message!', error);
         }
-    }
+    };
 
     search = async (filters: MessageSearchFilters): Promise < MessageSearchResults > => {
         try {
@@ -91,7 +113,7 @@ export class MessageService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search message records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -109,7 +131,7 @@ export class MessageService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update message!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -122,7 +144,7 @@ export class MessageService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete message!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -143,6 +165,11 @@ export class MessageService {
         if (filters.Name) {
             search.where['Name'] = {
                 [Op.like] : '%' + filters.Name + '%'
+            };
+        }
+        if (filters.TemplateName) {
+            search.where['TemplateName'] = {
+                [Op.like] : '%' + filters.TemplateName + '%'
             };
         }
         if (filters.Description) {
@@ -170,7 +197,7 @@ export class MessageService {
         }
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -194,7 +221,7 @@ export class MessageService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -215,7 +242,7 @@ export class MessageService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

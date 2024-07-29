@@ -16,6 +16,7 @@ import {
 import {
     Op
 } from 'sequelize';
+import { Helper } from '../../../common/helper';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -23,9 +24,9 @@ export class PhysiotherapyService {
 
     //#region Models
 
-    Physiotherapy = PhysiotherapyModel.Model();
+    Physiotherapy = PhysiotherapyModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 
@@ -33,12 +34,20 @@ export class PhysiotherapyService {
 
     create = async (createModel: PhysiotherapyCreateModel) => {
         try {
+            if (!createModel.AssetCode) {
+                const count = await this.Physiotherapy.count() + 1;
+                createModel.AssetCode = 'Physiotherapy-' + count.toString();
+                const exists = await this.getByCode(createModel.AssetCode);
+                if (exists) {
+                    createModel.AssetCode = 'Physiotherapy-' + Helper.generateDisplayId();
+                }
+            }
             var record = await this.Physiotherapy.create(createModel);
             return await this.getById(record.id);
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create physiotherapy!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -51,7 +60,20 @@ export class PhysiotherapyService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve physiotherapy!', error);
         }
-    }
+    };
+
+    getByCode = async (code) => {
+        try {
+            const record = await this.Physiotherapy.findOne({
+                where : {
+                    AssetCode : code
+                }
+            });
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
+        }
+    };
 
     exists = async (id): Promise < boolean > => {
         try {
@@ -60,7 +82,7 @@ export class PhysiotherapyService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of physiotherapy!', error);
         }
-    }
+    };
 
     search = async (filters: PhysiotherapySearchFilters): Promise < PhysiotherapySearchResults > => {
         try {
@@ -91,7 +113,7 @@ export class PhysiotherapyService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search physiotherapy records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -109,7 +131,7 @@ export class PhysiotherapyService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update physiotherapy!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -122,7 +144,7 @@ export class PhysiotherapyService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete physiotherapy!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -170,7 +192,7 @@ export class PhysiotherapyService {
         }
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -194,7 +216,7 @@ export class PhysiotherapyService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -215,7 +237,7 @@ export class PhysiotherapyService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

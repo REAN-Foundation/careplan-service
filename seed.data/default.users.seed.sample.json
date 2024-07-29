@@ -9,7 +9,7 @@
         "Password": "<admin-password>"
     },
     {
-        "Role": "ContentModerator",
+        "Role": "Moderator",
         "FirstName": "Content",
         "LastName": "Moderator",
         "CountryCode": "+91",

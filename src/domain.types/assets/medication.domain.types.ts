@@ -25,7 +25,7 @@ export interface MedicationUpdateModel {
 }
 
 export interface MedicationDto {
-    id: number;
+    id: uuid;
     AssetCode: string;
     Name: string;
     Description: string;
@@ -43,6 +43,7 @@ export interface MedicationSearchFilters extends BaseSearchFilters {
     AssetCategory ? : string;
     Tags ? : string;
     Version ? : string;
+    CreatedAt ? : Date;
 }
 
 export interface MedicationSearchResults extends BaseSearchResults {

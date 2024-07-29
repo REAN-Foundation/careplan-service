@@ -23,11 +23,11 @@ export class UserRoleService {
 
     //#region Models
 
-    UserRole = UserRoleModel.Model();
+    UserRole = UserRoleModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
-    Role = RoleModel.Model();
+    Role = RoleModel.Model;
 
     //#endregion
 
@@ -40,7 +40,7 @@ export class UserRoleService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create user role!', error);
         }
-    }
+    };
 
     getById = async (id) => {
         try {
@@ -53,7 +53,7 @@ export class UserRoleService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve user role!', error);
         }
-    }
+    };
 
     exists = async (id): Promise < boolean > => {
         try {
@@ -62,7 +62,7 @@ export class UserRoleService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of user role!', error);
         }
-    }
+    };
 
     search = async (filters: UserRoleSearchFilters): Promise < UserRoleSearchResults > => {
         try {
@@ -93,7 +93,7 @@ export class UserRoleService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search user role records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -111,7 +111,7 @@ export class UserRoleService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update user role!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -124,7 +124,7 @@ export class UserRoleService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete user role!', error);
         }
-    }
+    };
 
     //#endregion
 
@@ -164,7 +164,7 @@ export class UserRoleService {
         search.include.push(includeRoleAsRole);
 
         return search;
-    }
+    };
 
     private addSortingToSearch = (search, filters) => {
 
@@ -188,7 +188,7 @@ export class UserRoleService {
             order,
             orderByColumn
         };
-    }
+    };
 
     private addPaginationToSearch = (search, filters) => {
 
@@ -209,7 +209,7 @@ export class UserRoleService {
             pageIndex,
             limit
         };
-    }
+    };
 
     //#endregion
 

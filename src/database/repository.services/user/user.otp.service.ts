@@ -6,7 +6,7 @@ import { Op } from 'sequelize';
 
 export class UserOtpService {
 
-    UserOtp = UserOtpModel.Model();
+    UserOtp = UserOtpModel.Model;
 
     create = async (userId, purpose) => {
         try {

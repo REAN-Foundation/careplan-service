@@ -4,6 +4,8 @@ import { UserModel } from '../../models/user/user.model';
 import { ErrorHandler } from '../../../common/error.handler';
 import { CareplanCreateModel } from '../../../domain.types/careplan/careplan.domain.types';
 import { CareplanDto, CareplanSearchFilters, CareplanSearchResults } from '../../../domain.types/careplan/careplan.domain.types';
+import { uuid } from '../../../domain.types/miscellaneous/system.types';
+import { Op } from 'sequelize';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -11,22 +13,22 @@ export class CareplanService {
 
     //#region Models
 
-    Careplan = CareplanModel.Model();
+    Careplan = CareplanModel.Model;
 
-    CareplanCategory = CareplanCategoryModel.Model();
+    CareplanCategory = CareplanCategoryModel.Model;
 
-    User = UserModel.Model();
+    User = UserModel.Model;
 
     //#endregion
 
     create = async (createModel: CareplanCreateModel): Promise<CareplanDto> => {
         try {
             var record = await this.Careplan.create(createModel);
-            return await exports.getById(record.id);
+            return await this.getById(record.id);
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create care plan!', error);
         }
-    }
+    };
 
     getById = async (id): Promise<CareplanDto> => {
         try {
@@ -46,16 +48,22 @@ export class CareplanService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve care plan!', error);
         }
-    }
+    };
 
-    exists = async (id): Promise<boolean> => {
+    exists = async (code): Promise<uuid> => {
         try {
-            const record = await this.Careplan.findByPk(id);
-            return record !== null;
+            const record = await this.Careplan.findOne(
+                {
+                    where : {
+                        Code : code
+                    }
+                }
+            );
+            return record.id;
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to determine existance of care plan!', error);
         }
-    }
+    };
 
     search = async (filters: CareplanSearchFilters): Promise<CareplanSearchResults> => {
         try {
@@ -72,7 +80,10 @@ export class CareplanService {
                 search.where['CategoryId'] = filters.CategoryId;
             }
             if (filters.Name) {
-                search.where['Name'] = filters.Name;
+                search.where['Name'] =
+                 {
+                     [Op.like] : '%' + filters.Name + '%'
+                 };
             }
             if (filters.Version) {
                 search.where['Version'] = filters.Version;
@@ -145,7 +156,7 @@ export class CareplanService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search care plan records!', error);
         }
-    }
+    };
 
     update = async (id, updateModel) => {
         try {
@@ -159,11 +170,11 @@ export class CareplanService {
                     throw new Error('Unable to update care plan!');
                 }
             }
-            return await exports.getById(id);
+            return await this.getById(id);
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to update care plan!', error);
         }
-    }
+    };
 
     delete = async (id) => {
         try {
@@ -176,7 +187,7 @@ export class CareplanService {
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete care plan!', error);
         }
-    }
+    };
 
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////

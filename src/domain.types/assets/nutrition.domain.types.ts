@@ -25,7 +25,7 @@ export interface NutritionUpdateModel {
 }
 
 export interface NutritionDto {
-    id: number;
+    id: uuid;
     AssetCode: string;
     Name: string;
     Description: string;
@@ -43,6 +43,7 @@ export interface NutritionSearchFilters extends BaseSearchFilters {
     AssetCategory ? : string;
     Tags ? : string;
     Version ? : string;
+    CreatedAt ? : Date;
 }
 
 export interface NutritionSearchResults extends BaseSearchResults {

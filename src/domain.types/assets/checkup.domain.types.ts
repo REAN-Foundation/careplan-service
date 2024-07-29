@@ -25,7 +25,7 @@ export interface CheckupUpdateModel {
 }
 
 export interface CheckupDto {
-    id: number;
+    id: uuid;
     AssetCode: string;
     Name: string;
     Description: string;
@@ -43,6 +43,7 @@ export interface CheckupSearchFilters extends BaseSearchFilters {
     AssetCategory ? : string;
     Tags ? : string;
     Version ? : string;
+    CreatedAt ? : Date;
 }
 
 export interface CheckupSearchResults extends BaseSearchResults {

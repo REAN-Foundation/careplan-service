@@ -25,7 +25,7 @@ export interface ChallengeUpdateModel {
 }
 
 export interface ChallengeDto {
-    id: number;
+    id: uuid;
     AssetCode: string;
     Name: string;
     Description: string;
@@ -43,6 +43,7 @@ export interface ChallengeSearchFilters extends BaseSearchFilters {
     AssetCategory ? : string;
     Tags ? : string;
     Version ? : string;
+    CreatedAt ? : Date;
 }
 
 export interface ChallengeSearchResults extends BaseSearchResults {
