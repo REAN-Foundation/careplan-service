@@ -1,7 +1,13 @@
 import express from 'express';
+import fs from 'fs';
 import { ResponseHandler } from '../../../common/response.handler';
 import { CareplanControllerDelegate } from './careplan.controller.delegate';
 import { BaseController } from '../../base.controller';
+import { Helper } from '../../../common/helper';
+import { ConfigurationManager } from '../../../config/configuration.manager';
+import { TimeHelper } from '../../../common/time.helper';
+import { DateStringFormat } from '../../../domain.types/miscellaneous/time.types';
+import path from 'path';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -73,4 +79,100 @@ export class CarePlanController extends BaseController{
         }
     };
 
+    export = async (request: express.Request, response: express.Response): Promise < void > => {
+        try {
+            await this.authorize('Careplan.Export', request, response, request.authorizeRequest);
+            const record = await this._delegate.export(request.params.id);
+          
+            const { filename, sourceFileLocation }
+                        = await CarePlanController.storeTemplateToFileLocally(record);
+            
+            var mimeType = Helper.getMimeType(sourceFileLocation);
+            response.setHeader('Content-type', mimeType);
+            response.setHeader('Content-disposition', 'attachment; filename=' + filename);
+            
+            var filestream = fs.createReadStream(sourceFileLocation);
+            filestream.pipe(response);
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
+
+    public static storeTemplateToFileLocally = async (careplanObj) => {
+        const name = careplanObj.Name;
+        const filename = Helper.strToFilename(name, 'json', '-');
+        const tempDownloadFolder = ConfigurationManager.DownloadTemporaryFolder();
+        const timestamp = TimeHelper.timestamp(new Date());
+        const dateFolder = TimeHelper.getDateString(new Date(), DateStringFormat.YYYY_MM_DD);
+        const sourceFolder = path.join(tempDownloadFolder, dateFolder, timestamp);
+        const sourceFileLocation = path.join(sourceFolder, filename);
+
+        await fs.promises.mkdir(sourceFolder, { recursive: true });
+
+        const jsonObj = CarePlanController.convertToJson(careplanObj);
+        const jsonStr = JSON.stringify(jsonObj, null, 2);
+        fs.writeFileSync(sourceFileLocation, jsonStr);
+        await Helper.sleep(500);
+
+        return { dateFolder, filename, sourceFileLocation };
+    };
+    
+    public static convertToJson = (CareplanObj):any => {
+        var careplan = {
+            Name        : CareplanObj.Name,
+            Description : CareplanObj.Description,
+            Version     : CareplanObj.Version,
+            Code        : CareplanObj.Code,
+            Tags        : CareplanObj.Tags,
+            Category    : {
+                Type        : CareplanObj.CareplanCategory.Type,
+                Description : CareplanObj.CareplanCategory.Description },
+            Assests            : [],
+            CareplanActivities : [],
+
+        };
+
+        for (var assetObj of CareplanObj.Assets) {
+            const asset = CarePlanController.assetToJson(assetObj);
+            careplan.Assests.push(asset);
+        }
+
+        for (var activityObj of CareplanObj.CareplanActivities) {
+            const activity = CarePlanController.activityToJson(activityObj);
+            careplan.CareplanActivities.push(activity);
+        }
+        return careplan;
+    };
+
+    private static assetToJson(assetObj) {
+
+        var asset = {
+            DisplayId   : assetObj.DisplayId,
+            AssetType   : assetObj.AssetType,
+            Name        : assetObj.Name,
+            Description : assetObj.Description,
+            AssetCode   : assetObj.AssetCode,
+            Tags        : assetObj.Tags,
+        };
+        return asset;
+    }
+
+    private static activityToJson(activityObj) {
+        var activity = {
+            AssetType : activityObj.CarepalnActivity.AssetType,
+            Day       : activityObj.CarepalnActivity.Day,
+            TimeSlot  : activityObj.CarepalnActivity.TimeSlot,
+            Asset     : {
+                DisplayId   : activityObj.Asset.DisplayId,
+                AssetType   : activityObj.Asset.AssetType,
+                Name        : activityObj.Asset.Name,
+                Description : activityObj.Asset.Description,
+                AssetCode   : activityObj.Asset.AssetCode,
+                Tags        : activityObj.Asset.Tags,
+            }
+        };
+        return activity;
+    }
+
 }
+

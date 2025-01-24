@@ -6,6 +6,35 @@ import { CareplanCreateModel } from '../../../domain.types/careplan/careplan.dom
 import { CareplanDto, CareplanSearchFilters, CareplanSearchResults } from '../../../domain.types/careplan/careplan.domain.types';
 import { uuid } from '../../../domain.types/miscellaneous/system.types';
 import { Op } from 'sequelize';
+import { CareplanActivityModel } from '../../../database/models/careplan/careplan.activity.model';
+import { CheckupModel } from '../../models/assets/checkup.model';
+import { ConsultationModel } from '../../models/assets/consultation.model';
+import { ExerciseModel } from '../../models/assets/exercise.model';
+import { InfographicsModel } from '../../models/assets/infographics.model';
+import { PriorityModel } from '../../models/assets/priority.model';
+import { ReflectionModel } from '../../models/assets/reflection.model';
+import { VideoModel } from '../../models/assets/video.model';
+import { WebNewsfeedModel } from '../../models/assets/web.newsfeed.model';
+import { WordPowerModel } from '../../models/assets/word.power.model';
+import { WebLinkModel } from '../../models/assets/web.link.model';
+import { ReminderModel } from '../../models/assets/reminder.model';
+import { PhysiotherapyModel } from '../../models/assets/physiotherapy.model';
+import { NutritionModel } from '../../models/assets/nutrition.model';
+import { ActionPlanModel } from '../../models/assets/action.plan.model';
+import { AnimationModel } from '../../models/assets/animation.model';
+import { AppointmentModel } from '../../models/assets/appointment.model';
+import { ArticleModel } from '../../models/assets/article.model';
+import { AssessmentModel } from '../../models/assets/assessment.model';
+import { AudioModel } from '../../models/assets/audio.model';
+import { BiometricsModel } from '../../models/assets/biometrics.model';
+import { ChallengeModel } from '../../models/assets/challenge.model';
+import { GoalModel } from '../../models/assets/goal.model';
+import { MeditationModel } from '../../models/assets/meditation.model';
+import { MessageModel } from '../../models/assets/message.model';
+import { MedicationModel } from '../../models/assets/medication.model';
+import { AssetType } from '../../../domain.types/assets/asset.types';
+import { TimeHelper } from '../../../common/time.helper';
+import { DateStringFormat } from '../../../domain.types/miscellaneous/time.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -19,6 +48,35 @@ export class CareplanService {
 
     User = UserModel.Model;
 
+    CareplanActivity = CareplanActivityModel.Model;
+
+    private assetModelMap = {
+        [AssetType.ActionPlan]    : ActionPlanModel.Model,
+        [AssetType.Animation]     : AnimationModel.Model,
+        [AssetType.Appointment]   : AppointmentModel.Model,
+        [AssetType.Article]       : ArticleModel.Model,
+        [AssetType.Assessment]    : AssessmentModel.Model,
+        [AssetType.Audio]         : AudioModel.Model,
+        [AssetType.Biometrics]    : BiometricsModel.Model,
+        [AssetType.Challenge]     : ChallengeModel.Model,
+        [AssetType.Checkup]       : CheckupModel.Model,
+        [AssetType.Consultation]  : ConsultationModel.Model,
+        [AssetType.Exercise]      : ExerciseModel.Model,
+        [AssetType.Goal]          : GoalModel.Model,
+        [AssetType.Infographics]  : InfographicsModel.Model,
+        [AssetType.Medication]    : MedicationModel.Model,
+        [AssetType.Meditation]    : MeditationModel.Model,
+        [AssetType.Message]       : MessageModel.Model,
+        [AssetType.Nutrition]     : NutritionModel.Model,
+        [AssetType.Physiotherapy] : PhysiotherapyModel.Model,
+        [AssetType.Priority]      : PriorityModel.Model,
+        [AssetType.Reflection]    : ReflectionModel.Model,
+        [AssetType.Reminder]      : ReminderModel.Model,
+        [AssetType.Video]         : VideoModel.Model,
+        [AssetType.WebLink]       : WebLinkModel.Model,
+        [AssetType.WebNewsfeed]   : WebNewsfeedModel.Model,
+        [AssetType.WordPower]     : WordPowerModel.Model,
+    };
     //#endregion
 
     create = async (createModel: CareplanCreateModel): Promise<CareplanDto> => {
@@ -186,6 +244,64 @@ export class CareplanService {
             return result === 1;
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to delete care plan!', error);
+        }
+    };
+
+    readCareplanObjToExport = async (careplanId: uuid) => {
+        var careplan = await this.getById(careplanId);
+        if (!careplan) {
+            return null;
+        }
+        var careplanActivities = await this.getCareplanActivitiesForExport(careplanId);
+        var { assets, activities } = await this.getcareplanActivitiesWithAssetsForExport(careplanActivities);
+        var carepalnObj = {
+            CareplanId         : careplan.id,
+            Code               : careplan.Code,
+            Name               : careplan.Name,
+            Description        : careplan.Description,
+            Tags               : careplan.Tags,
+            Version            : careplan.Version,
+            CareplanCategory   : careplan.Category,
+            CareplanActivities : activities,
+            Assets             : assets
+        };
+        return carepalnObj;
+    };
+
+    getCareplanActivitiesForExport = async (careplanId: uuid) => {
+        try {
+            var activities = await this.CareplanActivity.findAll({
+                where : {
+                    CareplanId : careplanId
+                }
+            });
+            return activities;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve care plan activities!', error);
+        }
+    };
+
+    getcareplanActivitiesWithAssetsForExport = async (carepalnActivities) => {
+        try {
+            var assets = [];
+            var activities = [];
+            var index = 0;
+            for await (var carepalnActivity of carepalnActivities) {
+                const { AssetType, AssetId } = carepalnActivity;
+                index++;
+                const model = this.assetModelMap[AssetType];
+                var asset = await model.findOne({ where: { id: AssetId } });
+                const sequence = index.toString().padStart(4, '0');
+                asset.AssetCode = `${TimeHelper.getDateString(new Date(), DateStringFormat.YYYY_MM_DD)}-${sequence}`;
+                assets.push(asset);
+                activities.push({
+                    CarepalnActivity : carepalnActivity,
+                    Asset            : asset
+                });
+            }
+            return { assets, activities };
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve assets!', error);
         }
     };
 

@@ -38,7 +38,7 @@ export interface CareplanDto  {
     IsActive: boolean;
     CreatedAt:Date;
     UpdatedAt:Date;
-    Type:CareplanCategoryDto[];
+    Category:CareplanCategoryDto[];
 }
 
 export interface CareplanSearchFilters extends BaseSearchFilters {

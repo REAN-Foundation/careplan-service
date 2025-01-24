@@ -71,6 +71,15 @@ export class CareplanControllerDelegate {
             Deleted : carePlanDeleted
         };
     };
+    
+    export = async (id: uuid) => {
+        const record: CareplanDto = await this._service.getById(id);
+        if (record === null) {
+            ErrorHandler.throwNotFoundError('Care plan with id ' + id.toString() + ' cannot be found!');
+        }
+        var careplanObj = await this._service.readCareplanObjToExport(record.id);
+        return careplanObj;
+    };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -205,7 +214,8 @@ export class CareplanControllerDelegate {
             IsActive    : record.IsActive,
             CreatedAt   : record.CreatedAt,
             UpdatedAt   : record.UpdatedAt,
-            Type        : record.Category.Type
+            Type        : record.Category.Type,
+            Category    : record.Category
         
         };
     };
