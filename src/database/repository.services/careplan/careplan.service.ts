@@ -419,7 +419,7 @@ export class  CareplanService {
             }
         }
         catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve asset id!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to create careplan activity!', error);
         }
     }
 
