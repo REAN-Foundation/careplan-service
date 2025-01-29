@@ -33,12 +33,14 @@ import { MeditationModel } from '../../models/assets/meditation.model';
 import { MessageModel } from '../../models/assets/message.model';
 import { MedicationModel } from '../../models/assets/medication.model';
 import { AssetType } from '../../../domain.types/assets/asset.types';
+import { CareplanCategoryCreateModel } from '../../../domain.types/careplan/careplan.category.domain.types';
+import { CareplanActivityCreateModel } from '../../../domain.types/careplan/careplan.activity.domain.types';
 import { TimeHelper } from '../../../common/time.helper';
 import { DateStringFormat } from '../../../domain.types/miscellaneous/time.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-export class CareplanService {
+export class  CareplanService {
 
     //#region Models
 
@@ -253,19 +255,55 @@ export class CareplanService {
             return null;
         }
         var careplanActivities = await this.getCareplanActivitiesForExport(careplanId);
-        var { assets, activities } = await this.getcareplanActivitiesWithAssetsForExport(careplanActivities);
+        var { assets, activities } = await this.getCareplanActivitiesWithAssetsForExport(careplanActivities);
         var carepalnObj = {
             CareplanId         : careplan.id,
             Code               : careplan.Code,
             Name               : careplan.Name,
             Description        : careplan.Description,
             Tags               : careplan.Tags,
+            IsActive           : careplan.IsActive,
             Version            : careplan.Version,
             CareplanCategory   : careplan.Category,
             CareplanActivities : activities,
             Assets             : assets
         };
         return carepalnObj;
+    };
+
+    import = async (careplan: CareplanCreateModel): Promise<CareplanDto> => {
+        try {
+            const existingCareplan = await this.Careplan.findOne({
+                where : {
+                    Code : careplan.Code
+                }
+            });
+
+            if (existingCareplan) {
+                await this.createAssets(careplan.Assets);
+                return existingCareplan;
+            }
+
+            const categoryId = await this.getCategoryId(careplan.Category);
+
+            const careplanModel: CareplanCreateModel = {
+                Code        : careplan.Code,
+                CategoryId  : categoryId,
+                Name        : careplan.Name,
+                Description : careplan.Description,
+                Version     : careplan.Version,
+                OwnerUserId : careplan.OwnerUserId,
+                Tags        : careplan.Tags ? JSON.stringify(careplan.Tags) as string : JSON.stringify([]),
+                IsActive    : careplan.IsActive,
+            };
+
+            var newCareplan = await this.Careplan.create(careplanModel);
+            await this.createAssets(careplan.Assets);
+            await this.createCareplanActivities(newCareplan.id, careplan.CareplanActivities);
+            return newCareplan;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve care plan!', error);
+        }
     };
 
     getCareplanActivitiesForExport = async (careplanId: uuid) => {
@@ -281,22 +319,27 @@ export class CareplanService {
         }
     };
 
-    getcareplanActivitiesWithAssetsForExport = async (carepalnActivities) => {
+    getCareplanActivitiesWithAssetsForExport = async (carepalnActivities) => {
         try {
             var assets = [];
             var activities = [];
-            var index = 0;
             for await (var carepalnActivity of carepalnActivities) {
                 const { AssetType, AssetId } = carepalnActivity;
-                index++;
                 const model = this.assetModelMap[AssetType];
-                var asset = await model.findOne({ where: { id: AssetId } });
-                const sequence = index.toString().padStart(4, '0');
+                var asset = await model.findOne({
+                    where      : { id: AssetId },
+                    attributes : {
+                        exclude : ['id', 'OwnerUserId', 'CreatedAt', 'UpdatedAt', 'DeletedAt'],
+                    },
+                });
+                const sequence = Math.floor(100000 + Math.random() * 900000);
                 asset.AssetCode = `${TimeHelper.getDateString(new Date(), DateStringFormat.YYYY_MM_DD)}-${sequence}`;
                 assets.push(asset);
+                carepalnActivity.AssetCode = asset.AssetCode;
+                carepalnActivity.DisplayId = asset.DisplayId;
                 activities.push({
                     CarepalnActivity : carepalnActivity,
-                    Asset            : asset
+                    Assets           : assets
                 });
             }
             return { assets, activities };
@@ -305,5 +348,82 @@ export class CareplanService {
         }
     };
 
+    getCategoryId = async (category:CareplanCategoryCreateModel): Promise<uuid> => {
+        try {
+            const existingCategory = await this.CareplanCategory.findOne({
+                where : { Type: category.Type }
+            });
+        
+            if (existingCategory) {
+                return existingCategory.id;
+            } else {
+                const newCategory = await this.CareplanCategory.create({
+                    Type        : category.Type,
+                    Description : category.Description
+                });
+                return newCategory.id;
+            }
+        }
+        catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve categoryId!', error);
+        }
+    }
+
+    createAssets = async (assets) => {
+        try {
+            for await (var asset of assets) {
+                const assetType = asset.AssetType;
+                const model = this.assetModelMap[assetType];
+                const exists = await this.getByDisplayId(model, asset.DisplayId);
+                if (asset.Tags && Array.isArray(asset.Tags)) {
+                    asset.Tags = JSON.stringify(asset.Tags);
+                }
+                if (!exists) {
+                    await model.create(asset);
+                }
+            }
+        }
+        catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve asset id!', error);
+        }
+    }
+
+    getByDisplayId = async (model, displayId: uuid) => {
+        try {
+            const record = await model.findOne({
+                where : {
+                    DisplayId : displayId
+                }
+            });
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
+        }
+    };
+    
+    createCareplanActivities = async (careplanId: uuid, careplan) => {
+        try {
+            for (const activity of careplan.CareplanActivities) {
+                const assetType = activity.AssetType;
+                const model = this.assetModelMap[assetType];
+                const asset = await this.getByDisplayId(model, activity.DisplayId);
+                const activityModel: CareplanActivityCreateModel = {
+                    CareplanId             : careplanId,
+                    AssetId                : asset.id,
+                    AssetType              : activity.AssetType,
+                    Day                    : activity.Day,
+                    TimeSlot               : activity.TimeSlot,
+                    IsRegistrationActivity : activity.IsRegistrationActivity,
+                };
+                await this.CareplanActivity.create(activityModel);
+            }
+        }
+        catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve asset id!', error);
+        }
+    }
+
 }
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
+

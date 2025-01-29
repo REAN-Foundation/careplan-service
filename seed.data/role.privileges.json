@@ -46,7 +46,7 @@
             "Careplan.Update",
             "Careplan.Delete",
             "Careplan.Export",
-            "Careplan.Import",
+            "Careplan.ImportFromFile",
 
             "ActionPlan.Create",
             "ActionPlan.Search",
@@ -236,7 +236,7 @@
             "Careplan.Update",
             "Careplan.Delete",
             "Careplan.Export",
-            "Careplan.Import",
+            "Careplan.ImportFromFile",
 
             "ActionPlan.Create",
             "ActionPlan.Search",

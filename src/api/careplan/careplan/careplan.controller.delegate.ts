@@ -1,3 +1,5 @@
+import express from 'express';
+import fs from 'fs';
 import { CareplanService } from '../../../database/repository.services/careplan/careplan.service';
 import { ErrorHandler } from '../../../common/error.handler';
 import { Helper } from '../../../common/helper';
@@ -79,6 +81,29 @@ export class CareplanControllerDelegate {
         }
         var careplanObj = await this._service.readCareplanObjToExport(record.id);
         return careplanObj;
+    };
+
+    import = async (request: express.Request) => {
+        const uploadedFilePath = request.file?.path;
+
+        if (!uploadedFilePath) {
+            throw new ApiError(422, 'Cannot find valid file to import!');
+        }
+        const originalFileName = request.file?.originalname ;
+        const fileContent = fs.readFileSync(uploadedFilePath, 'utf8');
+        const extension =  Helper.getFileExtension(originalFileName);
+        if (extension.toLowerCase() !== 'json') {
+            throw new Error(`Expected .json file extension!`);
+        }
+        const careplanModel =  JSON.parse(fileContent);
+        const record: CareplanDto = await this._service.import(careplanModel);
+        if (record === null) {
+            ErrorHandler.throwNotFoundError('Cannot import careplan!');
+        }
+        if (fs.existsSync(uploadedFilePath)) {
+            fs.rmSync(uploadedFilePath, { recursive: true, force: true });
+        }
+        return record;
     };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////

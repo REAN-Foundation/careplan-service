@@ -1,0 +1,168 @@
+{
+  "Name": "Heart careplan",
+  "Description": "Cardiac Care is a fixed benefit plan that offers a Base Benefit under which you receive lump sum benefit for any of the covered conditions.",
+  "Version": "1.0",
+  "Code": "HEART72",
+  "Tags": [],
+  "IsActive": true,
+  "Category": {
+      "Type": "Heart",
+      "Description": "Category representing all heart related careplans"
+  },
+  "Assets": [
+      {
+          "DisplayId": 7,
+          "AssetCode": "2025-01-28-191946",
+          "AssetType": "Appointment",
+          "Name": "Meet your doctor for checkup",
+          "Description": null,
+          "AppointmentType": "Doctor",
+          "AssetCategory": "Appointment",
+          "Tags": [],
+          "Version": "1.0"
+      },
+      {
+        "DisplayId": 8,
+        "AssetCode": "2025-01-28-191946",
+        "AssetType": "Appointment",
+        "Name": "Meet your doctor for checkup 1",
+        "Description": null,
+        "AppointmentType": "Doctor",
+        "AssetCategory": "Appointment",
+        "Tags": [],
+        "Version": "1.0"
+    },
+      {
+          "DisplayId": 6,
+          "AssetCode": "2025-01-28-311314",
+          "AssetType": "Biometrics",
+          "Name": "Blood glucose recognition",
+          "Description": "Measuring the blood glucose",
+          "AssetCategory": "Biometrics",
+          "BiometricsType": "Blood glucose",
+          "MeasurementUnit": "mmHg",
+          "Tags": [
+              "glucose"
+          ],
+          "Version": "V1"
+      },
+      {
+          "DisplayId": 3,
+          "AssetCode": "2025-01-28-748092",
+          "AssetType": "Checkup",
+          "Name": "Cholesterol and Blood Pressure",
+          "Description": " cholesterol test measures the level of cholesterol in your blood and can help indicate your risk of heart disease and stroke. ",
+          "AssetCategory": "Checkup",
+          "Tags": [
+              "Blood Pressure"
+          ],
+          "Version": "V1"
+      },
+      {
+          "DisplayId": 3,
+          "AssetCode": "2025-01-28-377340",
+          "AssetType": "Consultation",
+          "Name": "Consult doctor",
+          "Description": "Consult doctor if doctor is ill.",
+          "ConsultationType": "Tele-consultation",
+          "AssetCategory": "Consultation",
+          "Tags": [
+              "Consult"
+          ],
+          "Version": "V1"
+      },
+      {
+          "DisplayId": 1,
+          "AssetCode": "2025-01-28-365237",
+          "AssetType": "Meditation",
+          "Name": "Mindfulness meditation",
+          "Description": "Mindfulness meditation",
+          "MeditationType": "Mindfulness",
+          "RecommendedDurationMin": 12,
+          "AssetCategory": "Stress management",
+          "Tags": [
+              "Mindfulness"
+          ],
+          "Version": "V1"
+      },
+      {
+          "DisplayId": 1,
+          "AssetCode": "2025-01-28-265622",
+          "AssetType": "Web link",
+          "Name": "Rean foundation",
+          "Description": "Take steps to improve physical and mental fitness for longer term health outcomes.",
+          "Url": "https://www.reanfoundation.org/#",
+          "AssetCategory": "Educational",
+          "Tags": [
+              "Health"
+          ],
+          "Version": "V1"
+      },
+      {
+          "DisplayId": 2,
+          "AssetCode": "2025-01-28-637408",
+          "AssetType": "Exercise",
+          "Name": "Walking",
+          "Description": "Walk daily",
+          "ExerciseType": "Flexibility",
+          "IntensityLevel": "Hard",
+          "RecommendedDurationMin": 32,
+          "AssetCategory": "Exercise",
+          "Tags": [
+              "Walk"
+          ],
+          "Version": "V1"
+      }
+  ],
+  "CareplanActivities": [
+      {
+          "AssetType": "Appointment",
+          "Day": 21,
+          "TimeSlot": "Evening",
+          "AssetCode": "2025-01-28-191946",
+          "DisplayId": 1
+      },
+      {
+          "AssetType": "Biometrics",
+          "Day": 29,
+          "TimeSlot": "Late afternoon",
+          "AssetCode": "2025-01-28-311314",
+          "DisplayId": 2
+      },
+      {
+          "AssetType": "Checkup",
+          "Day": 1,
+          "TimeSlot": "Early morning",
+          "AssetCode": "2025-01-28-748092",
+          "DisplayId": 3
+      },
+      {
+          "AssetType": "Consultation",
+          "Day": 43,
+          "TimeSlot": "Evening",
+          "AssetCode": "2025-01-28-377340",
+          "DisplayId": 3
+      },
+      {
+          "AssetType": "Meditation",
+          "Day": 50,
+          "TimeSlot": "Night",
+          "AssetCode": "2025-01-28-365237",
+          "DisplayId": 1
+      },
+      {
+          "AssetType": "Web link",
+          "Day": 38,
+          "TimeSlot": "Afternoon",
+          "AssetCode": "2025-01-28-265622",
+          "DisplayId": 1
+      },
+      {
+          "AssetType": "Exercise",
+          "Day": 9,
+          "TimeSlot": "Morning",
+          "AssetCode": "2025-01-28-637408",
+          "DisplayId": 2
+      }
+  ]
+}

@@ -98,6 +98,17 @@ export class CarePlanController extends BaseController{
         }
     };
 
+    importFromFile = async (request: express.Request, response: express.Response): Promise < void > => {
+        try {
+            await this.authorize('Careplan.importFromFile', request, response, request.authorizeRequest);
+            const record = await this._delegate.import(request);
+            const message = 'Care plan imported successfully!';
+            ResponseHandler.success(request, response, message, 200, record);
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
+
     public static storeTemplateToFileLocally = async (careplanObj) => {
         const name = careplanObj.Name;
         const filename = Helper.strToFilename(name, 'json', '-');
@@ -123,19 +134,19 @@ export class CarePlanController extends BaseController{
             Description : CareplanObj.Description,
             Version     : CareplanObj.Version,
             Code        : CareplanObj.Code,
-            Tags        : CareplanObj.Tags,
+            Tags        : CareplanObj.Tags ? JSON.parse(CareplanObj.Tags) : [],
+            IsActive    : CareplanObj.IsActive,
             Category    : {
                 Type        : CareplanObj.CareplanCategory.Type,
                 Description : CareplanObj.CareplanCategory.Description },
-            Assests            : [],
+            Assets : CareplanObj.Assets.map(asset => ({
+                ...asset.dataValues,
+                Tags : Array.isArray(asset.dataValues.Tags) ? asset.dataValues.Tags :
+                    (asset.dataValues.Tags ? JSON.parse(asset.dataValues.Tags) : [])
+            })),
             CareplanActivities : [],
 
         };
-
-        for (var assetObj of CareplanObj.Assets) {
-            const asset = CarePlanController.assetToJson(assetObj);
-            careplan.Assests.push(asset);
-        }
 
         for (var activityObj of CareplanObj.CareplanActivities) {
             const activity = CarePlanController.activityToJson(activityObj);
@@ -144,32 +155,13 @@ export class CarePlanController extends BaseController{
         return careplan;
     };
 
-    private static assetToJson(assetObj) {
-
-        var asset = {
-            DisplayId   : assetObj.DisplayId,
-            AssetType   : assetObj.AssetType,
-            Name        : assetObj.Name,
-            Description : assetObj.Description,
-            AssetCode   : assetObj.AssetCode,
-            Tags        : assetObj.Tags,
-        };
-        return asset;
-    }
-
     private static activityToJson(activityObj) {
         var activity = {
             AssetType : activityObj.CarepalnActivity.AssetType,
             Day       : activityObj.CarepalnActivity.Day,
             TimeSlot  : activityObj.CarepalnActivity.TimeSlot,
-            Asset     : {
-                DisplayId   : activityObj.Asset.DisplayId,
-                AssetType   : activityObj.Asset.AssetType,
-                Name        : activityObj.Asset.Name,
-                Description : activityObj.Asset.Description,
-                AssetCode   : activityObj.Asset.AssetCode,
-                Tags        : activityObj.Asset.Tags,
-            }
+            AssetCode : activityObj.CarepalnActivity.AssetCode,
+            DisplayId : activityObj.CarepalnActivity.DisplayId,
         };
         return activity;
     }
