@@ -1,7 +1,7 @@
 
 import { BaseSearchFilters, BaseSearchResults } from "../miscellaneous/base.search.types";
 import { uuid } from "../miscellaneous/system.types";
-import { CareplanCategoryDto } from "./careplan.category.domain.types";
+import { CareplanCategoryCreateModel, CareplanCategoryDto } from "./careplan.category.domain.types";
 
 export interface CareplanCreateModel {
     id?: uuid;
@@ -13,6 +13,9 @@ export interface CareplanCreateModel {
     OwnerUserId: uuid;
     Tags?: string;
     IsActive?: boolean;
+    Category?:CareplanCategoryCreateModel;
+    Assets?:any[];
+    CareplanActivities?:any[];
 }
 
 export interface CareplanUpdateModel {
@@ -38,7 +41,7 @@ export interface CareplanDto  {
     IsActive: boolean;
     CreatedAt:Date;
     UpdatedAt:Date;
-    Type:CareplanCategoryDto[];
+    Category:CareplanCategoryDto[];
 }
 
 export interface CareplanSearchFilters extends BaseSearchFilters {

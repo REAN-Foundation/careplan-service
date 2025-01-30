@@ -1,3 +1,5 @@
+import express from 'express';
+import fs from 'fs';
 import { CareplanService } from '../../../database/repository.services/careplan/careplan.service';
 import { ErrorHandler } from '../../../common/error.handler';
 import { Helper } from '../../../common/helper';
@@ -5,6 +7,8 @@ import { ApiError } from '../../../common/api.error';
 import { CareplanValidator as validator } from './careplan.validator';
 import { CareplanCreateModel, CareplanDto, CareplanSearchFilters, CareplanSearchResults, CareplanUpdateModel } from '../../../domain.types/careplan/careplan.domain.types';
 import { uuid } from '../../../domain.types/miscellaneous/system.types';
+import path from 'path';
+import { ConfigurationManager } from '../../../config/configuration.manager';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -70,6 +74,50 @@ export class CareplanControllerDelegate {
         return {
             Deleted : carePlanDeleted
         };
+    };
+    
+    export = async (id: uuid) => {
+        const careplan = await this._service.getById(id);
+        if (careplan === null) {
+            ErrorHandler.throwNotFoundError('Care plan with id ' + id.toString() + ' cannot be found!');
+        }
+        const careplanObj = await this._service.readCareplanObjToExport(careplan);
+        return careplanObj;
+    };
+
+    import = async (request: express.Request) => {
+        const uploadedFilePath = request.file?.path;
+        const originalFileName = request.file?.originalname;
+        const UPLOAD_FOLDER = ConfigurationManager.UploadTemporaryFolder();
+        const normalizedPath = path.resolve(UPLOAD_FOLDER, uploadedFilePath);
+
+        if (!normalizedPath.startsWith(UPLOAD_FOLDER)) {
+            throw new ApiError(422, 'Cannot find valid file to import!');
+        }
+
+        if (!fs.existsSync(normalizedPath)) {
+            throw new ApiError(422, 'File not found!');
+        }
+
+        const fileContent = fs.readFileSync(normalizedPath, 'utf8');
+        const extension =  Helper.getFileExtension(originalFileName);
+
+        if (extension.toLowerCase() !== 'json') {
+            throw new Error(`Expected .json file extension!`);
+        }
+
+        const careplanModel =  JSON.parse(fileContent);
+        const careplan: CareplanDto = await this._service.import(careplanModel);
+
+        if (careplan === null) {
+            ErrorHandler.throwNotFoundError('Cannot import careplan!');
+        }
+
+        if (fs.existsSync(normalizedPath)) {
+            fs.rmSync(normalizedPath, { recursive: true, force: true });
+        }
+
+        return careplan;
     };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -205,7 +253,8 @@ export class CareplanControllerDelegate {
             IsActive    : record.IsActive,
             CreatedAt   : record.CreatedAt,
             UpdatedAt   : record.UpdatedAt,
-            Type        : record.Category.Type
+            Type        : record.Category.Type,
+            Category    : record.Category
         
         };
     };
