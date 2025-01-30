@@ -367,7 +367,7 @@ export class  CareplanService {
         catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve categoryId!', error);
         }
-    }
+    };
 
     createAssets = async (assets) => {
         try {
@@ -386,7 +386,7 @@ export class  CareplanService {
         catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve asset id!', error);
         }
-    }
+    };
 
     getByDisplayId = async (model, displayId: uuid) => {
         try {
@@ -421,7 +421,7 @@ export class  CareplanService {
         catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create careplan activity!', error);
         }
-    }
+    };
 
 }
 
