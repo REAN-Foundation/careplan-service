@@ -77,11 +77,11 @@ export class CareplanControllerDelegate {
     };
     
     export = async (id: uuid) => {
-        const record: CareplanDto = await this._service.getById(id);
-        if (record === null) {
+        const careplan = await this._service.getById(id);
+        if (careplan === null) {
             ErrorHandler.throwNotFoundError('Care plan with id ' + id.toString() + ' cannot be found!');
         }
-        var careplanObj = await this._service.readCareplanObjToExport(record.id);
+        const careplanObj = await this._service.readCareplanObjToExport(careplan);
         return careplanObj;
     };
 
@@ -107,9 +107,9 @@ export class CareplanControllerDelegate {
         }
 
         const careplanModel =  JSON.parse(fileContent);
-        const record: CareplanDto = await this._service.import(careplanModel);
+        const careplan: CareplanDto = await this._service.import(careplanModel);
 
-        if (record === null) {
+        if (careplan === null) {
             ErrorHandler.throwNotFoundError('Cannot import careplan!');
         }
 
@@ -117,7 +117,7 @@ export class CareplanControllerDelegate {
             fs.rmSync(normalizedPath, { recursive: true, force: true });
         }
 
-        return record;
+        return careplan;
     };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////

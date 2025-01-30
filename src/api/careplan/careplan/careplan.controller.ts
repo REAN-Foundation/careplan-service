@@ -82,10 +82,10 @@ export class CarePlanController extends BaseController{
     export = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
             await this.authorize('Careplan.Export', request, response, request.authorizeRequest);
-            const record = await this._delegate.export(request.params.id);
+            const careplanObj = await this._delegate.export(request.params.id);
           
             const { filename, sourceFileLocation }
-                        = await CarePlanController.storeTemplateToFileLocally(record);
+                        = await CarePlanController.storeTemplateToFileLocally(careplanObj);
             
             var mimeType = Helper.getMimeType(sourceFileLocation);
             response.setHeader('Content-type', mimeType);

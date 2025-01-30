@@ -249,14 +249,10 @@ export class  CareplanService {
         }
     };
 
-    readCareplanObjToExport = async (careplanId: uuid) => {
-        var careplan = await this.getById(careplanId);
-        if (!careplan) {
-            return null;
-        }
-        var careplanActivities = await this.getCareplanActivitiesForExport(careplanId);
-        var { assets, activities } = await this.getCareplanActivitiesWithAssetsForExport(careplanActivities);
-        var carepalnObj = {
+    readCareplanObjToExport = async (careplan ) => {
+        const careplanActivities = await this.getCareplanActivitiesForExport(careplan.id);
+        const { assets, activities } = await this.getCareplanActivitiesWithAssetsForExport(careplanActivities);
+        const carepalnObj = {
             CareplanId         : careplan.id,
             Code               : careplan.Code,
             Name               : careplan.Name,
@@ -296,9 +292,8 @@ export class  CareplanService {
                 Tags        : careplan.Tags ? JSON.stringify(careplan.Tags) as string : JSON.stringify([]),
                 IsActive    : careplan.IsActive,
             };
-
-            var newCareplan = await this.Careplan.create(careplanModel);
             await this.createAssets(careplan.Assets);
+            const newCareplan = await this.Careplan.create(careplanModel);
             await this.createCareplanActivities(newCareplan.id, careplan.CareplanActivities);
             return newCareplan;
         } catch (error) {
@@ -308,7 +303,7 @@ export class  CareplanService {
 
     getCareplanActivitiesForExport = async (careplanId: uuid) => {
         try {
-            var activities = await this.CareplanActivity.findAll({
+            const activities = await this.CareplanActivity.findAll({
                 where : {
                     CareplanId : careplanId
                 }
