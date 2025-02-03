@@ -42,6 +42,9 @@ export class EnrollmentTaskControllerDelegate {
         var filters: EnrollmentTaskSearchFilters = this.getSearchFilters(query);
         var searchResults: EnrollmentTaskSearchResults = await this._service.search(filters);
         var items = searchResults.Items.map(x => this.getSearchDto(x));
+        items.sort((a, b) => {
+            return a.CareplanActivityDay - b.CareplanActivityDay;
+        });
         searchResults.Items = items;
         return searchResults;
     };
@@ -134,6 +137,7 @@ export class EnrollmentTaskControllerDelegate {
             EnrollmentId           : record.EnrollmentId,
             ParticipantId          : record.ParticipantId,
             CareplanActivityId     : record.CareplanActivityId,
+            CareplanActivityDay    : record.CareplanActivity.Day,
             AssetId                : record.AssetId,
             AssetType              : record.AssetType,
             Asset                  : record.Asset,
