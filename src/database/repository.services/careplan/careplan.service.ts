@@ -396,9 +396,9 @@ export class  CareplanService {
         }
     };
     
-    createCareplanActivities = async (careplanId: uuid, careplan) => {
+    createCareplanActivities = async (careplanId: uuid, careplanActivities: any[]) => {
         try {
-            for (const activity of careplan.CareplanActivities) {
+            for (const activity of careplanActivities) {
                 const assetType = activity.AssetType;
                 const model = this.assetModelMap[assetType];
                 const asset = await this.getByDisplayId(model, activity.DisplayId);
