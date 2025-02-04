@@ -324,14 +324,13 @@ export class  CareplanService {
                 var asset = await model.findOne({
                     where      : { id: AssetId },
                     attributes : {
-                        exclude : ['id', 'OwnerUserId', 'CreatedAt', 'UpdatedAt', 'DeletedAt'],
+                        exclude : ['id','DisplayId', 'OwnerUserId', 'CreatedAt', 'UpdatedAt', 'DeletedAt'],
                     },
                 });
                 const sequence = Math.floor(100000 + Math.random() * 900000);
                 asset.AssetCode = `${TimeHelper.getDateString(new Date(), DateStringFormat.YYYY_MM_DD)}-${sequence}`;
                 assets.push(asset);
                 carepalnActivity.AssetCode = asset.AssetCode;
-                carepalnActivity.DisplayId = asset.DisplayId;
                 activities.push({
                     CarepalnActivity : carepalnActivity,
                     Assets           : assets
@@ -369,7 +368,7 @@ export class  CareplanService {
             for await (var asset of assets) {
                 const assetType = asset.AssetType;
                 const model = this.assetModelMap[assetType];
-                const exists = await this.getByDisplayId(model, asset.DisplayId);
+                const exists = await this.getByAssetcode(model, asset.AssetCode);
                 if (asset.Tags && Array.isArray(asset.Tags)) {
                     asset.Tags = JSON.stringify(asset.Tags);
                 }
@@ -383,16 +382,16 @@ export class  CareplanService {
         }
     };
 
-    getByDisplayId = async (model, displayId: uuid) => {
+    getByAssetcode = async (model, assetCode: string) => {
         try {
             const record = await model.findOne({
                 where : {
-                    DisplayId : displayId
+                    AssetCode : assetCode
                 }
             });
             return record;
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve action plan!', error);
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve asset!', error);
         }
     };
     
@@ -401,7 +400,7 @@ export class  CareplanService {
             for (const activity of careplanActivities) {
                 const assetType = activity.AssetType;
                 const model = this.assetModelMap[assetType];
-                const asset = await this.getByDisplayId(model, activity.DisplayId);
+                const asset = await this.getByAssetcode(model, activity.AssetCode);
                 const activityModel: CareplanActivityCreateModel = {
                     CareplanId             : careplanId,
                     AssetId                : asset.id,
