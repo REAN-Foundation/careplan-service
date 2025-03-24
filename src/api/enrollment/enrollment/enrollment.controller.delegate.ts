@@ -247,10 +247,10 @@ export class EnrollmentControllerDelegate {
             const totalTasks = scheduledActivities.length; // Total number of tasks
             const tasks = scheduledActivities;
 
-            const startHour: number = parseFloat(process.env.TEST_CAREPLAN_START_HOUR) ?? 14.5; // 9 AM + 05:30 IST
+            // const startHour: number = parseFloat(process.env.TEST_CAREPLAN_START_HOUR) ?? 14.5; // 9 AM + 05:30 IST
 
             // Calculate the interval between tasks
-            const interval = 15; // in minutes
+            // const interval = 15; // in minutes
 
             // Calculate the number of tasks per day
             const tasksPerDay = Math.ceil(totalTasks / 7);
@@ -276,14 +276,14 @@ export class EnrollmentControllerDelegate {
             schedule.forEach((tasks, day) => {
                 const dt = TimeHelper.addDuration(new Date(today), day + 1, DurationType.Day);
                 const dateString = dt.toISOString().split("T")[0];
-                let currentTime = startHour * 60; // Convert start hour to minutes
+                // let currentTime = startHour * 60; // Convert start hour to minutes
                 tasks.forEach( async task => {
-                    const hours = Math.floor(currentTime / 60);
-                    const minutes = currentTime % 60;
+                    // const hours = Math.floor(currentTime / 60);
+                    // const minutes = currentTime % 60;
                     // const scheduleDateTime =
                     //  new Date(`${dateString}T${hours}:${minutes.toString().padStart(2, '0')}:00`);
                     const scheduleDateTime = TimeHelper.addDuration(new Date(), 340, DurationType.Minute); // 05:30, 05*60 + 30+ 10 = 340
-                    currentTime += interval;
+                    // currentTime += interval;
 
                     var createModel: EnrollmentTaskCreateModel = {
                         EnrollmentId       : record.id,
