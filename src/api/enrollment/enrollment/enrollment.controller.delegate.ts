@@ -280,7 +280,8 @@ export class EnrollmentControllerDelegate {
                 tasks.forEach( async task => {
                     const hours = Math.floor(currentTime / 60);
                     const minutes = currentTime % 60;
-                    const scheduleDateTime = new Date(`${dateString}T${hours}:${minutes.toString().padStart(2, '0')}:00`);
+                    // const scheduleDateTime = new Date(`${dateString}T${hours}:${minutes.toString().padStart(2, '0')}:00`);
+                    const scheduleDateTime = TimeHelper.addDuration(new Date(), 340, DurationType.Minute); // 05:30, 05*60 + 30+ 10 = 340
                     currentTime += interval;
 
                     var createModel: EnrollmentTaskCreateModel = {
