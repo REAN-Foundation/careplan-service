@@ -92,7 +92,7 @@ export class EnrollmentControllerDelegate {
             ErrorHandler.throwInternalServerError('Unable to update displayId!');
         }
         if (requestBody.IsTest === true) {
-            await this.generateScheduledTasks_Testing(record);
+            await this.generateScheduledTasks_Testing(record, requestBody.ScheduleType);
         } else {
             await this.generateRegistrationTasks(record);
             await this.generateScheduledTasks(record);
@@ -238,7 +238,7 @@ export class EnrollmentControllerDelegate {
         }
     };
 
-    generateScheduledTasks_Testing = async(record) => {
+    generateScheduledTasks_Testing = async(record, scheduleType) => {
 
         try {
 
@@ -280,7 +280,14 @@ export class EnrollmentControllerDelegate {
                 tasks.forEach( async task => {
                     const hours = Math.floor(currentTime / 60);
                     const minutes = currentTime % 60;
-                    const scheduleDateTime = new Date(`${dateString}T${hours}:${minutes.toString().padStart(2, '0')}:00`);
+                    
+                    let scheduleDateTime = new Date();
+
+                    if (scheduleType === 'WithinWeek') {
+                        scheduleDateTime = new Date(`${dateString}T${hours}:${minutes.toString().padStart(2, '0')}:00`);
+                    } else {
+                        scheduleDateTime = TimeHelper.addDuration(new Date(), 340, DurationType.Minute); // 05:30, 05*60 + 30+ 10 = 340
+                    }
                     currentTime += interval;
 
                     var createModel: EnrollmentTaskCreateModel = {

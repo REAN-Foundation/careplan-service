@@ -23,6 +23,7 @@ export class EnrollmentValidator {
                 DayOffset      : joi.number().optional(),
                 EnrollmentDate : joi.date().iso().optional(),
                 IsTest         : joi.boolean().optional(),
+                ScheduleType   : joi.string().optional()
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
