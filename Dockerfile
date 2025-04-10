@@ -1,4 +1,3 @@
-
 FROM node:hydrogen-alpine3.15 AS builder
 ADD . /app
 RUN apk add bash
@@ -19,7 +18,6 @@ RUN npm install
 RUN npm run build
 
 # RUN npm run build
-
 
 FROM node:hydrogen-alpine3.15
 RUN apk add bash
