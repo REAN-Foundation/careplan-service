@@ -45,6 +45,8 @@
             "Careplan.GetById",
             "Careplan.Update",
             "Careplan.Delete",
+            "Careplan.Export",
+            "Careplan.ImportFromFile",
 
             "ActionPlan.Create",
             "ActionPlan.Search",
@@ -233,6 +235,8 @@
             "Careplan.GetById",
             "Careplan.Update",
             "Careplan.Delete",
+            "Careplan.Export",
+            "Careplan.ImportFromFile",
 
             "ActionPlan.Create",
             "ActionPlan.Search",

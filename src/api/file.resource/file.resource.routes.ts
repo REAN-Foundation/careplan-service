@@ -1,6 +1,7 @@
 import express from 'express';
 import { FileResourceController } from './file.resource.controller';
 import { Loader } from '../../startup/loader';
+import { expressFileUploadMiddleware } from '../../startup/file.upload.middleware';
 
 ///////////////////////////////////////////////////////////////////////////////////
 
@@ -9,6 +10,7 @@ export const register = (app: express.Application): void => {
     const router = express.Router();
     const authenticator = Loader.Authenticator;
     const controller = new FileResourceController();
+    expressFileUploadMiddleware(router);
 
     router.post('/upload', authenticator.authenticateUser, controller.upload);
     router.get('/download/:id', controller.download);

@@ -197,7 +197,7 @@ export class EnrollmentTaskService {
         search.include.push(includeUserAsUser);
         const includeCareplanActivityAsCareplanActivity = {
             model    : this.CareplanActivity,
-            required : false,
+            required : true,
             as       : 'CareplanActivity',
             where    : {}
         };
@@ -235,7 +235,7 @@ export class EnrollmentTaskService {
 
         if (filters.OrderBy) {
             //In case the 'order-by attribute' is on associated model
-            //search['order'] = [[ '<AssociatedModel>', filters.OrderBy, order]];
+            search['order'] = [[ '<AssociatedModel>', filters.OrderBy, order]];
         }
         return {
             order,
