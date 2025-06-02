@@ -55,6 +55,10 @@ export class CareplanModel {
             allowNull    : false,
             defaultValue : true,
         },
+        TenantId : {
+            type      : DataTypes.UUID,
+            allowNull : true
+        },
 
         CreatedAt : DataTypes.DATE,
         UpdatedAt : DataTypes.DATE,

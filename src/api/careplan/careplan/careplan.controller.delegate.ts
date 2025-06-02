@@ -146,6 +146,10 @@ export class CareplanControllerDelegate {
         if (ownerUserId != null) {
             filters['OwnerUserId'] = ownerUserId;
         }
+        var tenantId = query.tenantId ? query.tenantId : null;
+        if (tenantId != null) {
+            filters['TenantId'] = tenantId;
+        }
         var tags = query.tags ? query.tags : null;
         if (tags != null) {
             filters['Tags'] = tags;
@@ -195,6 +199,9 @@ export class CareplanControllerDelegate {
         if (Helper.hasProperty(requestBody, 'OwnerUserId')) {
             updateModel.OwnerUserId = requestBody.OwnerUserId;
         }
+        if (Helper.hasProperty(requestBody, 'TenantId')) {
+            updateModel.TenantId = requestBody.TenantId;
+        }
         if (Helper.hasProperty(requestBody, 'Tags')) {
             updateModel.Tags = JSON.stringify(requestBody.Tags);
         }
@@ -209,6 +216,7 @@ export class CareplanControllerDelegate {
             Description : requestBody.Description ? requestBody.Description : null,
             Version     : requestBody.Version ? requestBody.Version : 'V1',
             OwnerUserId : requestBody.OwnerUserId ? requestBody.OwnerUserId : null,
+            TenantId    : requestBody.TenantId ? requestBody.TenantId : null,
             Tags        : requestBody.Tags ? JSON.stringify(requestBody.Tags) as string : JSON.stringify([]),
         };
     };
@@ -227,6 +235,7 @@ export class CareplanControllerDelegate {
             Description : record.Description,
             Version     : record.Version,
             OwnerUserId : record.OwnerUserId,
+            TenantId    : record.TenantId,
             Tags        : JSON.parse(record.Tags),
             IsActive    : record.IsActive,
             CreatedAt   : record.CreatedAt,
@@ -249,6 +258,7 @@ export class CareplanControllerDelegate {
             Description : record.Description,
             Version     : record.Version,
             OwnerUserId : record.OwnerUserId,
+            TenantId    : record.TenantId,
             Tags        : JSON.parse(record.Tags),
             IsActive    : record.IsActive,
             CreatedAt   : record.CreatedAt,
