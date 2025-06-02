@@ -348,6 +348,10 @@ export class EnrollmentControllerDelegate {
         if (endDate != null) {
             filters['EndDate'] = endDate;
         }
+        var tenantId = query.tenantId ? query.tenantId : null;
+        if (tenantId != null) {
+            filters['TenantId'] = tenantId;
+        }
         var orderBy = query.orderBy ? query.orderBy : null;
         if (orderBy != null) {
             filters['OrderBy'] = orderBy;
@@ -390,6 +394,10 @@ export class EnrollmentControllerDelegate {
             updateModel.DayOffset = requestBody.DayOffset;
         }
 
+        if (Helper.hasProperty(requestBody, 'TenantId')) {
+            updateModel.TenantId = requestBody.TenantId;
+        }
+
         return updateModel;
     };
 
@@ -403,7 +411,8 @@ export class EnrollmentControllerDelegate {
             WeekOffset     : requestBody.WeekOffset ? requestBody.WeekOffset : 0,
             DayOffset      : requestBody.DayOffset ? requestBody.DayOffset : 0,
             EnrollmentDate : requestBody.EnrollmentDate ? requestBody.EnrollmentDate : new Date(),
-            IsTest         : requestBody.IsTest ? requestBody.IsTest : false
+            IsTest         : requestBody.IsTest ? requestBody.IsTest : false,
+            TenantId       : requestBody.TenantId ? requestBody.TenantId : null
         };
     };
 
@@ -424,6 +433,7 @@ export class EnrollmentControllerDelegate {
             WeekOffset     : record.WeekOffset,
             DayOffset      : record.DayOffset,
             ProgressStatus : record.ProgressStatus,
+            TenantId       : record.TenantId,
             Careplan       : record.Careplan,
             Participant    : record.Participant,
             Category       : record.Careplan.Catrgory,
@@ -449,6 +459,7 @@ export class EnrollmentControllerDelegate {
             WeekOffset     : record.WeekOffset,
             DayOffset      : record.DayOffset,
             ProgressStatus : record.ProgressStatus,
+            TenantId       : record.TenantId,
             Careplan       : record.Careplan,
             Participant    : record.Participant,
 
