@@ -1,0 +1,9 @@
+[
+    "Careplan.Create",
+    "Careplan.GetById",
+    "Careplan.Search",
+    "Careplan.Update",
+    "Careplan.Delete",
+    "Careplan.Export",
+    "Careplan.ImportFromFile"
+]

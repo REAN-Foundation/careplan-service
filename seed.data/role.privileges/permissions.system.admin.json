@@ -1,0 +1,9 @@
+{
+   "Careplan":{
+        "Create": true,
+        "Delete": true,
+        "GetById": true,
+        "Search": true,
+        "Update": true
+    }
+}
