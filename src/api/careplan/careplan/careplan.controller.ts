@@ -26,7 +26,7 @@ export class CarePlanController extends BaseController{
 
     create = async (request: express.Request, response: express.Response): Promise <void> => {
         try {
-            await this.authorize('Careplan.Create', request, response);
+            // await this.authorize('Careplan.Create', request, response);
             const record = await this._delegate.create(request.body);
             const message = 'Care plan added successfully!';
             ResponseHandler.success(request, response, message, 201, record);
@@ -37,7 +37,7 @@ export class CarePlanController extends BaseController{
 
     getById = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('Careplan.GetById', request, response, request.authorizeRequest);
+            // await this.authorize('Careplan.GetById', request, response, request.authorizeRequest);
             const record = await this._delegate.getById(request.params.id);
             const message = 'Care plan retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, record);
@@ -48,7 +48,7 @@ export class CarePlanController extends BaseController{
 
     search = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('Careplan.Search', request, response, request.authorizeRequest);
+            // await this.authorize('Careplan.Search', request, response, request.authorizeRequest);
             const searchResults = await this._delegate.search(request.query);
             const message = 'Care plan records retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, searchResults);
@@ -59,7 +59,7 @@ export class CarePlanController extends BaseController{
 
     update = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('Careplan.Update', request, response);
+            // await this.authorize('Careplan.Update', request, response);
             const updatedRecord = await this._delegate.update(request.params.id, request.body);
             const message = 'Care plan updated successfully!';
             ResponseHandler.success(request, response, message, 200, updatedRecord);
@@ -70,7 +70,7 @@ export class CarePlanController extends BaseController{
 
     delete = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('Careplan.Delete', request, response);
+            // await this.authorize('Careplan.Delete', request, response);
             const result = await this._delegate.delete(request.params.id);
             const message = 'Care plan deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);
@@ -81,7 +81,7 @@ export class CarePlanController extends BaseController{
 
     export = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('Careplan.Export', request, response, request.authorizeRequest);
+            // await this.authorize('Careplan.Export', request, response, request.authorizeRequest);
             const careplanObj = await this._delegate.export(request.params.id);
           
             const { filename, sourceFileLocation }
@@ -100,7 +100,7 @@ export class CarePlanController extends BaseController{
 
     importFromFile = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('Careplan.importFromFile', request, response, request.authorizeRequest);
+            // await this.authorize('Careplan.importFromFile', request, response, request.authorizeRequest);
             const record = await this._delegate.import(request);
             const message = 'Care plan imported successfully!';
             ResponseHandler.success(request, response, message, 200, record);

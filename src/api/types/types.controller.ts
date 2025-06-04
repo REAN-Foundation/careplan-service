@@ -28,7 +28,7 @@ export class TypesController extends BaseController {
 
     getRoleTypes = async (request: express.Request, response: express.Response): Promise<void> => {
         try {
-            await this.authorize('Types.GetRoleTypes', request, response, false);
+            // await this.authorize('Types.GetRoleTypes', request, response, false);
 
             const types = await this._roleService.getAllRoles();
             if (types === null || types.length === 0) {
@@ -54,7 +54,7 @@ export class TypesController extends BaseController {
 
     getCareplanCategories = async (request: express.Request, response: express.Response): Promise<void> => {
         try {
-            await this.authorize('Types.GetCareplanCategories', request, response, false);
+            // await this.authorize('Types.GetCareplanCategories', request, response, false);
             const categories = await this._careplanCategoryService.getCareplanCategories();
             ResponseHandler.success(request, response, 'Careplan categories retrieved successfully!', 200, {
                 CareplanCategories : categories,
@@ -67,7 +67,7 @@ export class TypesController extends BaseController {
 
     getAssetTypes = async (request: express.Request, response: express.Response): Promise<void> => {
         try {
-            await this.authorize('Types.GetAssetTypes', request, response, false);
+            // await this.authorize('Types.GetAssetTypes', request, response, false);
             const assetTypes = AssetTypeList;
             ResponseHandler.success(request, response, 'Asset types retrieved successfully!', 200, {
                 AssetTypes : assetTypes,
@@ -80,7 +80,7 @@ export class TypesController extends BaseController {
 
     getTimeSlots = async (request: express.Request, response: express.Response): Promise<void> => {
         try {
-            await this.authorize('Types.GetSlotTypes', request, response, false);
+            // await this.authorize('Types.GetSlotTypes', request, response, false);
             const slotTypes = TimeSlotList;
             ResponseHandler.success(request, response, 'Slot types retrieved successfully!', 200, {
                 SlotTypes : slotTypes,

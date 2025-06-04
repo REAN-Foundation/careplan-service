@@ -26,7 +26,7 @@ export class MessageController extends BaseController {
 
     create = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('Message.Create', request, response);
+            // await this.authorize('Message.Create', request, response);
             if (request.currentUser) {
                 request.body.OwnerUserId = request.currentUser.UserId;
             }
@@ -40,7 +40,7 @@ export class MessageController extends BaseController {
 
     getById = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('Message.GetById', request, response);
+            // await this.authorize('Message.GetById', request, response);
             const record = await this._delegate.getById(request.params.id);
             const message = 'Message retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, record);
@@ -51,7 +51,7 @@ export class MessageController extends BaseController {
 
     search = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('Message.Search', request, response);
+            // await this.authorize('Message.Search', request, response);
             const searchResults = await this._delegate.search(request.query);
             const message = 'Message records retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, searchResults);
@@ -62,7 +62,7 @@ export class MessageController extends BaseController {
 
     update = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('Message.Update', request, response);
+            // await this.authorize('Message.Update', request, response);
             const updatedRecord = await this._delegate.update(request.params.id, request.body);
             const message = 'Message updated successfully!';
             ResponseHandler.success(request, response, message, 200, updatedRecord);
@@ -73,7 +73,7 @@ export class MessageController extends BaseController {
 
     delete = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('Message.Delete', request, response);
+            // await this.authorize('Message.Delete', request, response);
             const result = await this._delegate.delete(request.params.id);
             const message = 'Message deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);

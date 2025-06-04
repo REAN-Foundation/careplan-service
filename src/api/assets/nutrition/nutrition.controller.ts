@@ -26,7 +26,7 @@ export class NutritionController extends BaseController {
 
     create = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('Nutrition.Create', request, response);
+            // await this.authorize('Nutrition.Create', request, response);
             if (request.currentUser) {
                 request.body.OwnerUserId = request.currentUser.UserId;
             }
@@ -40,7 +40,7 @@ export class NutritionController extends BaseController {
 
     getById = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('Nutrition.GetById', request, response);
+            // await this.authorize('Nutrition.GetById', request, response);
             const record = await this._delegate.getById(request.params.id);
             const message = 'Nutrition retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, record);
@@ -51,7 +51,7 @@ export class NutritionController extends BaseController {
 
     search = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('Nutrition.Search', request, response);
+            // await this.authorize('Nutrition.Search', request, response);
             const searchResults = await this._delegate.search(request.query);
             const message = 'Nutrition records retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, searchResults);
@@ -62,7 +62,7 @@ export class NutritionController extends BaseController {
 
     update = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('Nutrition.Update', request, response);
+            // await this.authorize('Nutrition.Update', request, response);
             const updatedRecord = await this._delegate.update(request.params.id, request.body);
             const message = 'Nutrition updated successfully!';
             ResponseHandler.success(request, response, message, 200, updatedRecord);
@@ -73,7 +73,7 @@ export class NutritionController extends BaseController {
 
     delete = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('Nutrition.Delete', request, response);
+            // await this.authorize('Nutrition.Delete', request, response);
             const result = await this._delegate.delete(request.params.id);
             const message = 'Nutrition deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);

@@ -26,7 +26,7 @@ export class ParticipantSelectedActionPlanController extends BaseController {
 
     create = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('ParticipantSelectedActionPlan.Create', request, response, false);
+            // await this.authorize('ParticipantSelectedActionPlan.Create', request, response, false);
             const record = await this._delegate.create(request.body);
             const message = 'Participant selected action plan added successfully!';
             ResponseHandler.success(request, response, message, 201, record);
@@ -37,7 +37,7 @@ export class ParticipantSelectedActionPlanController extends BaseController {
 
     getById = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('ParticipantSelectedActionPlan.GetById', request, response, false);
+            // await this.authorize('ParticipantSelectedActionPlan.GetById', request, response, false);
             const record = await this._delegate.getById(request.params.id);
             const message = 'Participant selected action plan retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, record);
@@ -48,7 +48,7 @@ export class ParticipantSelectedActionPlanController extends BaseController {
 
     search = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('ParticipantSelectedActionPlan.Search', request, response, false);
+            // await this.authorize('ParticipantSelectedActionPlan.Search', request, response, false);
             const searchResults = await this._delegate.search(request.query);
             const message = 'Participant selected action plan records retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, searchResults);
@@ -59,7 +59,7 @@ export class ParticipantSelectedActionPlanController extends BaseController {
 
     update = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('ParticipantSelectedActionPlan.Update', request, response, false);
+            // await this.authorize('ParticipantSelectedActionPlan.Update', request, response, false);
             const updatedRecord = await this._delegate.update(request.params.id, request.body);
             const message = 'Participant selected action plan updated successfully!';
             ResponseHandler.success(request, response, message, 200, updatedRecord);
@@ -70,7 +70,7 @@ export class ParticipantSelectedActionPlanController extends BaseController {
 
     delete = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('ParticipantSelectedActionPlan.Delete', request, response, false);
+            // await this.authorize('ParticipantSelectedActionPlan.Delete', request, response, false);
             const result = await this._delegate.delete(request.params.id);
             const message = 'Participant selected action plan deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);

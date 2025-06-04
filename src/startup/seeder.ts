@@ -38,7 +38,7 @@ export class Seeder {
             // await this.seedDefaultRoles();
             await this._rolePrivilegeService.seedRolePrivileges();
             // await this.seedInternalClients();
-            await this.seedDefaultUsers();
+            // await this.seedDefaultUsers();
             await this.seedDefaultCareplanCategories();
         } catch (error) {
             Logger.instance().log(error.message);

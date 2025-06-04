@@ -112,12 +112,12 @@ export class UserControllerDelegate {
         const user: UserDto = await this._service.getById(loginModel.User.id);
         const loginSession = await this._service.createUserLoginSession(user.id);
         const currentUser: CurrentUser = this.constructCurrentUser(user, loginSession.id);
-        const accessToken = await Loader.Authorizer.generateUserSessionToken(currentUser);
+        // const accessToken = await Loader.Authorizer.generateUserSessionToken(currentUser);
         const expiresIn: number = ConfigurationManager.JwtExpiresIn();
         const validTill = new Date(Date.now() + expiresIn * 1000);
         return {
             User             : currentUser,
-            AccessToken      : accessToken,
+            // AccessToken      : accessToken,
             SessionValidTill : validTill
         };
     };
@@ -151,13 +151,13 @@ export class UserControllerDelegate {
         const user = await this._service.getById(loginModel.User.id);
         const loginSession = await this._service.createUserLoginSession(user.id);
         const currentUser: CurrentUser = this.constructCurrentUser(user, loginSession.id);
-        const accessToken = await Loader.Authorizer.generateUserSessionToken(currentUser);
+        // const accessToken = await Loader.Authorizer.generateUserSessionToken(currentUser);
         currentUser['ImageUrl'] = user.ImageUrl ?? '';
         const expiresIn: number = ConfigurationManager.JwtExpiresIn();
         const validTill = new Date(Date.now() + expiresIn * 1000);
         return {
             User             : currentUser,
-            AccessToken      : accessToken,
+            // AccessToken      : accessToken,
             SessionValidTill : validTill
         };
     };
@@ -345,7 +345,9 @@ export class UserControllerDelegate {
             DisplayName   : Helper.constructPersonDisplayName(user.Prefix, user.FirstName, user.LastName),
             SessionId     : sessionId,
             Phone         : user.CountryCode + '-' + user.Phone,
-            Email         : user.Email
+            Email         : user.Email,
+            TenantId      : user.TenantId,
+            TenantName    : user.TenantName
         };
     };
 

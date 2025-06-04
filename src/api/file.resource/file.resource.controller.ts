@@ -22,7 +22,7 @@ export class FileResourceController extends BaseController {
 
     upload = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('FileResource.Upload', request, response);
+            // await this.authorize('FileResource.Upload', request, response);
             const record = await this._delegate.upload(request);
             const message = 'File resource uploaded successfully!';
             ResponseHandler.success(request, response, message, 201, record);
@@ -35,11 +35,11 @@ export class FileResourceController extends BaseController {
         try {
             const record = await this._delegate.getById(request.params.id);
             if (!record.Public) {
-                var verified = await Loader.Authenticator.verifyUser(request);
-                if (!verified) {
-                    ErrorHandler.throwUnauthorizedUserError('User is not authorized to download the resource!');
-                }
-                await this.authorize('FileResource.Download', request, response);
+                // var verified = await Loader.Authenticator.verifyUser(request);
+                // if (!verified) {
+                //     ErrorHandler.throwUnauthorizedUserError('User is not authorized to download the resource!');
+                // }
+                // await this.authorize('FileResource.Download', request, response);
             }
             var disposition = request.query.disposition as string;
             if (!disposition) {
@@ -54,7 +54,7 @@ export class FileResourceController extends BaseController {
 
     getById = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('FileResource.GetById', request, response);
+            // await this.authorize('FileResource.GetById', request, response);
             const record = await this._delegate.getById(request.params.id);
             const message = 'File resource retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, record);
@@ -65,7 +65,7 @@ export class FileResourceController extends BaseController {
 
     delete = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('FileResource.Delete', request, response);
+            // await this.authorize('FileResource.Delete', request, response);
             const result = await this._delegate.delete(request.params.id);
             const message = 'File resource deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);

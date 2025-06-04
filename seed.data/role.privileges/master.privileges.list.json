@@ -143,7 +143,7 @@
     "UserActivityResponse.GetById",
     "UserActivityResponse.Update",
     "UserActivityResponse.Delete",
-    "Types.CareplanCategory",
-    "Types.AssetType",
-    "Types.TimeSlot"
+    "Types.CareplanCategories",
+    "Types.AssetTypes",
+    "Types.TimeSlots"
 ]
