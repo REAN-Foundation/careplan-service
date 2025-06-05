@@ -219,29 +219,61 @@ export class EnrollmentTaskService {
         return search;
     };
 
+    // private addSortingToSearch = (search, filters) => {
+
+    //     let orderByColumn = 'ScheduledDate';
+    //     if (filters.OrderBy) {
+    //         orderByColumn = filters.OrderBy;
+    //     }
+    //     let order = 'ASC';
+    //     if (filters.Order === 'descending') {
+    //         order = 'DESC';
+    //     }
+    //     search['order'] = [
+    //         [orderByColumn, order]
+    //     ];
+    //     if (filters.OrderBy) {
+    //         //In case the 'order-by attribute' is on associated model
+    //         search['order'] = [[ '<AssociatedModel>', filters.OrderBy, order]];
+    //     }
+    //     return {
+    //         order,
+    //         orderByColumn
+    //     };
+    // };
     private addSortingToSearch = (search, filters) => {
+    let orderByColumn = 'ScheduledDate';
+    let order = 'ASC';
 
-        let orderByColumn = 'ScheduledDate';
-        if (filters.OrderBy) {
-            orderByColumn = filters.OrderBy;
-        }
-        let order = 'ASC';
-        if (filters.Order === 'descending') {
-            order = 'DESC';
-        }
-        search['order'] = [
-            [orderByColumn, order]
-        ];
+    if (filters.OrderBy) {
+        orderByColumn = filters.OrderBy;
+    }
 
-        if (filters.OrderBy) {
-            //In case the 'order-by attribute' is on associated model
-            search['order'] = [[ '<AssociatedModel>', filters.OrderBy, order]];
-        }
-        return {
-            order,
-            orderByColumn
-        };
+    if (filters.Order === 'descending') {
+        order = 'DESC';
+    }
+
+    const baseTableColumns = [
+        'ScheduledDate',
+        'AssetType',
+        'TimeSlot',
+        'IsRegistrationActivity',
+        'CreatedAt',
+        'UpdatedAt'
+    ];
+
+    if (baseTableColumns.includes(orderByColumn)) {
+        search['order'] = [[orderByColumn, order]];
+    } else {
+        
+        search['order'] = [[ '<AssociatedModel>', orderByColumn, order]];
+    }
+
+    return {
+        order,
+        orderByColumn
     };
+};
 
     private addPaginationToSearch = (search, filters) => {
 
