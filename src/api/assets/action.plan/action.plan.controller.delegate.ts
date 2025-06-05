@@ -115,6 +115,10 @@ export class ActionPlanControllerDelegate {
         if (assetCategory != null) {
             filters['AssetCategory'] = assetCategory;
         }
+        var tenantId = query.tenantId ? query.tenantId : null;
+        if (tenantId != null) {
+            filters['TenantId'] = tenantId;
+        }
         var tags = query.tags ? query.tags : null;
         if (tags != null) {
             filters['Tags'] = tags;
@@ -140,6 +144,9 @@ export class ActionPlanControllerDelegate {
         if (Helper.hasProperty(requestBody, 'Description')) {
             updateModel.Description = requestBody.Description;
         }
+        if (Helper.hasProperty(requestBody, 'TenantId')) {
+            updateModel.TenantId = requestBody.TenantId;
+        }
         if (Helper.hasProperty(requestBody, 'Tags')) {
             updateModel.Tags = JSON.stringify(requestBody.Tags);
         }
@@ -155,6 +162,7 @@ export class ActionPlanControllerDelegate {
             AssetCode   : requestBody.AssetCode ? requestBody.AssetCode : null,
             Name        : requestBody.Name ? requestBody.Name : null,
             Description : requestBody.Description ? requestBody.Description : null,
+            TenantId    : requestBody.TenantId ? requestBody.TenantId : null,
             Tags        : requestBody.Tags ? JSON.stringify(requestBody.Tags) as string : JSON.stringify([]),
             Version     : requestBody.Version ? requestBody.Version : 'V1',
             OwnerUserId : requestBody.OwnerUserId
@@ -172,6 +180,7 @@ export class ActionPlanControllerDelegate {
             Description   : record.Description,
             AssetCategory : record.AssetCategory,
             OwnerUserId   : record.OwnerUserId,
+            TenantId    : record.TenantId,
             Tags          : JSON.parse(record.Tags),
             Version       : record.Version
         };

@@ -18,6 +18,9 @@ export class ActionPlanValidator {
                 OwnerUserId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
+                TenantId : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -31,6 +34,7 @@ export class ActionPlanValidator {
                 AssetCode   : joi.string().max(256).optional(),
                 Name        : joi.string().max(256).optional(),
                 Description : joi.string().optional().allow(null, ''),
+                TenantId    : joi.string().guid({version : ['uuidv4']}).optional(),
                 Tags        : joi.array().items(joi.string()).optional(),
                 Version     : joi.string().max(128).optional()
             });
@@ -47,6 +51,7 @@ export class ActionPlanValidator {
                 name          : joi.string().max(256).optional(),
                 description   : joi.string().optional(),
                 assetCategory : joi.string().max(128).optional(),
+                TenantId      : joi.string().guid({version : ['uuidv4']}).optional(),
                 tags          : joi.array().items(joi.string()).optional(),
                 version       : joi.string().max(128).optional(),
                 order         : joi.string().max(128).optional(),
