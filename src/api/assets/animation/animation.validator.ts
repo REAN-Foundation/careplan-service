@@ -19,6 +19,9 @@ export class AnimationValidator {
                 OwnerUserId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
+                TenantId : joi.string().guid({
+                                    version : ['uuidv4']
+                                }).optional(),
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -34,6 +37,7 @@ export class AnimationValidator {
                 Transcript : joi.string().optional().allow(null, ''),
                 Url        : joi.string().optional().allow(null, ''),
                 Tags       : joi.array().items(joi.string()).optional(),
+                TenantId   : joi.string().guid({version : ['uuidv4']}).optional(),
                 Version    : joi.string().max(128).optional()
             });
             return await schema.validateAsync(requestBody);
@@ -52,6 +56,7 @@ export class AnimationValidator {
                 assetCategory : joi.string().max(128).optional(),
                 tags          : joi.array().items(joi.string()).optional(),
                 version       : joi.string().max(128).optional(),
+                TenantId      : joi.string().guid({version : ['uuidv4']}).optional(),
                 order         : joi.string().max(128).optional(),
                 orderBy       : joi.string().max(128).optional(),
                 itemsPerPage  : joi.number().max(128).optional(),
