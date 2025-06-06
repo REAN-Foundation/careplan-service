@@ -13,6 +13,7 @@ export interface GoalCreateModel {
     Tags ? : string;
     Version ? : string;
     OwnerUserId? : uuid;
+    TenantId?: uuid;
 }
 
 export interface GoalUpdateModel {
@@ -22,6 +23,7 @@ export interface GoalUpdateModel {
     Tags ? : string;
     Version ? : string;
     OwnerUserId? : uuid;
+    TenantId?: uuid;
 }
 
 export interface GoalDto {
@@ -31,6 +33,7 @@ export interface GoalDto {
     Description: string;
     AssetCategory: string;
     OwnerUserId: uuid;
+    TenantId: uuid;
     Tags: string[];
     Version: string;
 
@@ -43,6 +46,7 @@ export interface GoalSearchFilters extends BaseSearchFilters {
     AssetCategory ? : string;
     Tags ? : string;
     Version ? : string;
+    TenantId?: uuid;
     CreatedAt ? : Date;
 }
 
