@@ -18,6 +18,9 @@ export class ChallengeValidator {
                 OwnerUserId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
+                TenantId : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -32,7 +35,8 @@ export class ChallengeValidator {
                 Name        : joi.string().max(256).optional(),
                 Description : joi.string().optional().allow(null, ''),
                 Tags        : joi.array().items(joi.string()).optional(),
-                Version     : joi.string().max(128).optional()
+                Version     : joi.string().max(128).optional(),
+                TenantId    : joi.string().guid({version : ['uuidv4']}).optional(),
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -48,6 +52,7 @@ export class ChallengeValidator {
                 description   : joi.string().optional(),
                 assetCategory : joi.string().max(128).optional(),
                 tags          : joi.array().items(joi.string()).optional(),
+                TenantId      : joi.string().guid({version : ['uuidv4']}).optional(),
                 version       : joi.string().max(128).optional(),
                 order         : joi.string().max(128).optional(),
                 orderBy       : joi.string().max(128).optional(),
