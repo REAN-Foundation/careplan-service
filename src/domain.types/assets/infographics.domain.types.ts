@@ -14,6 +14,7 @@ export interface InfographicsCreateModel {
     Tags        ?: string;
     Version     ?: string;
     OwnerUserId ?: uuid;
+    TenantId    ?: uuid;
 }
 
 export interface InfographicsUpdateModel {
@@ -24,6 +25,7 @@ export interface InfographicsUpdateModel {
     Tags        ?: string;
     Version     ?: string;
     OwnerUserId ?: uuid;
+    TenantId    ?: uuid;
 }
 
 export interface InfographicsDto {
@@ -35,9 +37,9 @@ export interface InfographicsDto {
     FileResourceId: uuid;
     AssetCategory : string;
     OwnerUserId   : uuid;
+    TenantId      : uuid;
     Tags          : string[];
     Version       : string;
-
 }
 
 export interface InfographicsSearchFilters extends BaseSearchFilters {
@@ -48,6 +50,7 @@ export interface InfographicsSearchFilters extends BaseSearchFilters {
     AssetCategory ?: string;
     Tags          ?: string;
     Version       ?: string;
+    TenantId      ?: uuid;
     CreatedAt     ?: Date;
 }
 
