@@ -18,6 +18,7 @@ export class WebNewsfeedMapper {
             Url           : webNewsfeed.Url,
             AssetCategory : webNewsfeed.AssetCategory,
             OwnerUserId   : webNewsfeed.OwnerUserId,
+            TenantId      : webNewsfeed.TenantId,
             Tags          : webNewsfeed.Tags,
             Version       : webNewsfeed.Version,
 
