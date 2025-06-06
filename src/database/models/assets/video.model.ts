@@ -62,6 +62,10 @@ export class VideoModel {
             foreignKey : true,
             unique     : false
         },
+        TenantId : {
+            type      : DataTypes.UUID,
+            allowNull : true
+        },
         Tags : {
             type         : DataTypes.TEXT,
             allowNull    : false,

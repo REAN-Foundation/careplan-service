@@ -127,6 +127,10 @@ export class VideoControllerDelegate {
         if (version != null) {
             filters['Version'] = version;
         }
+        var tenantId = query.tenantId ? query.tenantId : null;
+        if (tenantId != null) {
+            filters['TenantId'] = tenantId;
+        }
 
         return filters;
     };
@@ -153,6 +157,9 @@ export class VideoControllerDelegate {
         if (Helper.hasProperty(requestBody, 'Version')) {
             updateModel.Version = requestBody.Version;
         }
+        if (Helper.hasProperty(requestBody, 'TenantId')) {
+            updateModel.TenantId = requestBody.TenantId;
+        }
 
         return updateModel;
     };
@@ -165,7 +172,8 @@ export class VideoControllerDelegate {
             Url         : requestBody.Url ? requestBody.Url : null,
             Tags        : requestBody.Tags ? JSON.stringify(requestBody.Tags) as string : JSON.stringify([]),
             Version     : requestBody.Version ? requestBody.Version : 'V1',
-            OwnerUserId : requestBody.OwnerUserId
+            OwnerUserId : requestBody.OwnerUserId,
+            TenantId    : requestBody.TenantId ? requestBody.TenantId : null,
         };
     };
 
@@ -182,6 +190,7 @@ export class VideoControllerDelegate {
             FileResourceId : record.FileResourceId,
             AssetCategory  : record.AssetCategory,
             OwnerUserId    : record.OwnerUserId,
+            TenantId       : record.TenantId,
             Tags           : JSON.parse(record.Tags),
             Version        : record.Version
         };
@@ -200,6 +209,7 @@ export class VideoControllerDelegate {
             FileResourceId : record.FileResourceId,
             AssetCategory  : record.AssetCategory,
             OwnerUserId    : record.OwnerUserId,
+            TenantId       : record.TenantId,
             Tags           : JSON.parse(record.Tags),
             Version        : record.Version,
             CreatedAt      : record.CreatedAt,

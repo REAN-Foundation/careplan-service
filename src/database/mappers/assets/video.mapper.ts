@@ -19,6 +19,7 @@ export class VideoMapper {
             FileResourceId : video.FileResourceId,
             AssetCategory  : video.AssetCategory,
             OwnerUserId    : video.OwnerUserId,
+            TenantId       : video.TenantId,
             Tags           : video.Tags,
             Version        : video.Version,
 

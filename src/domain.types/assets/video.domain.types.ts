@@ -14,6 +14,7 @@ export interface VideoCreateModel {
     Tags ? : string;
     Version ? : string;
     OwnerUserId ? : uuid;
+    TenantId?: uuid;
 }
 
 export interface VideoUpdateModel {
@@ -24,6 +25,7 @@ export interface VideoUpdateModel {
     Tags ? : string;
     Version ? : string;
     OwnerUserId ? : uuid;
+    TenantId?: uuid;
 }
 
 export interface VideoDto {
@@ -35,6 +37,7 @@ export interface VideoDto {
     FileResourceId: uuid;
     AssetCategory: string;
     OwnerUserId: uuid;
+    TenantId: uuid;
     Tags: string[];
     Version: string;
 
@@ -48,6 +51,7 @@ export interface VideoSearchFilters extends BaseSearchFilters {
     AssetCategory ? : string;
     Tags ? : string;
     Version ? : string;
+    TenantId?: uuid;
     CreatedAt ? : Date;
 }
 
