@@ -67,9 +67,7 @@ export class MessageValidator {
                 messageType  : joi.string().valid("Educational", "Status", "Unknown").optional(),
                 tags         : joi.array().items(joi.string()).optional(),
                 version      : joi.string().max(128).optional(),
-                tenantId     : joi.string().guid({
-                    version : ['uuidv4']
-                }).optional(),
+                tenantId     : joi.string().guid({version : ['uuidv4']}).optional(),
                 order        : joi.string().max(128).optional(),
                 orderBy      : joi.string().max(128).optional(),
                 itemsPerPage : joi.number().max(128).optional(),

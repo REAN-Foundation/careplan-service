@@ -61,9 +61,7 @@ export class BiometricsValidator {
                 assetCategory   : joi.string().max(128).optional(),
                 biometricsType  : joi.string().valid("Blood pressure", "Blood glucose", "Blood oxygen saturation", "Body height", "Body weight", "Body temperature", "Pulse", "Other").optional(),
                 measurementUnit : joi.string().max(128).optional(),
-                TenantId : joi.string().guid({
-                    version : ['uuidv4']
-                }).optional(),
+                tenantId        : joi.string().guid({version : ['uuidv4']}).optional(),
                 tags            : joi.array().items(joi.string()).optional(),
                 version         : joi.string().max(128).optional(),
                 order           : joi.string().max(128).optional(),
