@@ -209,6 +209,7 @@ export class AnimationControllerDelegate {
             FileResourceId : record.FileResourceId,
             AssetCategory  : record.AssetCategory,
             OwnerUserId    : record.OwnerUserId,
+            TenantId       : record.TenantId,
             Tags           : JSON.parse(record.Tags),
             Version        : record.Version,
             CreatedAt      : record.CreatedAt,
