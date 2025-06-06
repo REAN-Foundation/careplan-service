@@ -20,6 +20,9 @@ export class MeditationValidator {
                 OwnerUserId            : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
+                TenantId : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -36,7 +39,8 @@ export class MeditationValidator {
                 MeditationType         : joi.string().valid("Mindfulness", "Spiritual", "Focused", "Mantra", "Progressive relaxation", "Transcendental", "Visualization").optional(),
                 RecommendedDurationMin : joi.number().integer().optional(),
                 Tags                   : joi.array().items(joi.string()).optional(),
-                Version                : joi.string().max(128).optional()
+                Version                : joi.string().max(128).optional(),
+                TenantId               : joi.string().guid({version : ['uuidv4']}).optional(),
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -55,6 +59,7 @@ export class MeditationValidator {
                 assetCategory          : joi.string().max(128).optional(),
                 tags                   : joi.array().items(joi.string()).optional(),
                 version                : joi.string().max(128).optional(),
+                tenantId               : joi.string().guid({version : ['uuidv4']}).optional(),
                 order                  : joi.string().max(128).optional(),
                 orderBy                : joi.string().max(128).optional(),
                 itemsPerPage           : joi.number().max(128).optional(),
