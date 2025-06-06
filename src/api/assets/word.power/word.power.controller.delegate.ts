@@ -127,6 +127,10 @@ export class WordPowerControllerDelegate {
         if (version != null) {
             filters['Version'] = version;
         }
+        var tenantId = query.tenantId ? query.tenantId : null;
+        if (tenantId != null) {
+            filters['TenantId'] = tenantId;
+        }
 
         return filters;
     };
@@ -153,6 +157,9 @@ export class WordPowerControllerDelegate {
         if (Helper.hasProperty(requestBody, 'Version')) {
             updateModel.Version = requestBody.Version;
         }
+        if (Helper.hasProperty(requestBody, 'TenantId')) {
+            updateModel.TenantId = requestBody.TenantId;
+        }
 
         return updateModel;
     };
@@ -166,7 +173,8 @@ export class WordPowerControllerDelegate {
                 JSON.stringify(requestBody.AdditionalResources) as string : JSON.stringify([]),
             Tags        : requestBody.Tags ? JSON.stringify(requestBody.Tags) as string : JSON.stringify([]),
             Version     : requestBody.Version ? requestBody.Version : 'V1',
-            OwnerUserId : requestBody.OwnerUserId
+            OwnerUserId : requestBody.OwnerUserId,
+            TenantId    : requestBody.TenantId ? requestBody.TenantId : null,
         };
     };
 
@@ -182,6 +190,7 @@ export class WordPowerControllerDelegate {
             AdditionalResources : JSON.parse(record.AdditionalResources),
             AssetCategory       : record.AssetCategory,
             OwnerUserId         : record.OwnerUserId,
+            TenantId            : record.TenantId,
             Tags                : JSON.parse(record.Tags),
             Version             : record.Version
         };
@@ -199,6 +208,7 @@ export class WordPowerControllerDelegate {
             AdditionalResources : JSON.parse(record.AdditionalResources),
             AssetCategory       : record.AssetCategory,
             OwnerUserId         : record.OwnerUserId,
+            TenantId            : record.TenantId,
             Tags                : JSON.parse(record.Tags),
             Version             : record.Version,
             CreatedAt           : record.CreatedAt,
