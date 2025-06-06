@@ -125,6 +125,10 @@ export class AssessmentControllerDelegate {
         if (template != null) {
             filters['Template'] = template;
         }
+        var tenantId = query.tenantId ? query.tenantId : null;
+        if (tenantId != null) {
+            filters['TenantId'] = tenantId;
+        }
         var tags = query.tags ? query.tags : null;
         if (tags != null) {
             filters['Tags'] = tags;
@@ -153,6 +157,9 @@ export class AssessmentControllerDelegate {
         if (Helper.hasProperty(requestBody, 'Template')) {
             updateModel.Template = requestBody.Template;
         }
+        if (Helper.hasProperty(requestBody, 'TenantId')) {
+            updateModel.TenantId = requestBody.TenantId;
+        }
         if (Helper.hasProperty(requestBody, 'Tags')) {
             updateModel.Tags = JSON.stringify(requestBody.Tags);
         }
@@ -174,6 +181,7 @@ export class AssessmentControllerDelegate {
             Template              : requestBody.Template ? requestBody.Template : '{}',
             ReferenceTemplateCode : requestBody.ReferenceTemplateCode ? requestBody.ReferenceTemplateCode : null,
             ReferenceTemplateId   : requestBody.ReferenceTemplateId ? requestBody.ReferenceTemplateId : null,
+            TenantId    : requestBody.TenantId ? requestBody.TenantId : null,
             Tags                  : requestBody.Tags ? JSON.stringify(requestBody.Tags) as string : JSON.stringify([]),
             Version               : requestBody.Version ? requestBody.Version : 'V1',
             OwnerUserId           : requestBody.OwnerUserId
@@ -194,6 +202,7 @@ export class AssessmentControllerDelegate {
             ReferenceTemplateCode : record.ReferenceTemplateCode,
             ReferenceTemplateId   : record.ReferenceTemplateId,
             OwnerUserId           : record.OwnerUserId,
+            TenantId              : record.TenantId,
             Tags                  : JSON.parse(record.Tags),
             Version               : record.Version
         };
@@ -213,6 +222,7 @@ export class AssessmentControllerDelegate {
             ReferenceTemplateCode : record.ReferenceTemplateCode,
             ReferenceTemplateId   : record.ReferenceTemplateId,
             OwnerUserId           : record.OwnerUserId,
+            TenantId              : record.TenantId,
             Tags                  : JSON.parse(record.Tags),
             Version               : record.Version,
             CreatedAt             : record.CreatedAt,
