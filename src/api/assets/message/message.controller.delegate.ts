@@ -131,6 +131,10 @@ export class MessageControllerDelegate {
         if (version != null) {
             filters['Version'] = version;
         }
+        var tenantId = query.tenantId ? query.tenantId : null;
+        if (tenantId != null) {
+            filters['TenantId'] = tenantId;
+        }
 
         return filters;
     };
@@ -169,6 +173,9 @@ export class MessageControllerDelegate {
         if (Helper.hasProperty(requestBody, 'Version')) {
             updateModel.Version = requestBody.Version;
         }
+        if (Helper.hasProperty(requestBody, 'TenantId')) {
+            updateModel.TenantId = requestBody.TenantId;
+        }
 
         return updateModel;
     };
@@ -187,7 +194,9 @@ export class MessageControllerDelegate {
             Tags        : requestBody.Tags ? JSON.stringify(requestBody.Tags) as string : JSON.stringify([]),
             Url         : requestBody.Url ? requestBody.Url : null,
             Version     : requestBody.Version ? requestBody.Version : 'V1',
-            OwnerUserId : requestBody.OwnerUserId
+            OwnerUserId : requestBody.OwnerUserId,
+            TenantId    : requestBody.TenantId ? requestBody.TenantId : null,
+
         };
     };
 
@@ -206,6 +215,7 @@ export class MessageControllerDelegate {
             AssetCategory     : record.AssetCategory,
             MessageType       : record.MessageType,
             OwnerUserId       : record.OwnerUserId,
+            TenantId          : record.TenantId,
             Tags              : JSON.parse(record.Tags),
             Url               : record.Url,
             Version           : record.Version
@@ -227,6 +237,7 @@ export class MessageControllerDelegate {
             AssetCategory     : record.AssetCategory,
             MessageType       : record.MessageType,
             OwnerUserId       : record.OwnerUserId,
+            TenantId          : record.TenantId,
             Tags              : JSON.parse(record.Tags),
             Url               : record.Url,
             Version           : record.Version,
