@@ -123,6 +123,10 @@ export class BiometricsControllerDelegate {
         if (measurementUnit != null) {
             filters['MeasurementUnit'] = measurementUnit;
         }
+        var tenantId = query.tenantId ? query.tenantId : null;
+        if (tenantId != null) {
+            filters['TenantId'] = tenantId;
+        }
         var tags = query.tags ? query.tags : null;
         if (tags != null) {
             filters['Tags'] = tags;
@@ -154,6 +158,9 @@ export class BiometricsControllerDelegate {
         if (Helper.hasProperty(requestBody, 'MeasurementUnit')) {
             updateModel.MeasurementUnit = requestBody.MeasurementUnit;
         }
+        if (Helper.hasProperty(requestBody, 'TenantId')) {
+            updateModel.TenantId = requestBody.TenantId;
+        }
         if (Helper.hasProperty(requestBody, 'Tags')) {
             updateModel.Tags = JSON.stringify(requestBody.Tags);
         }
@@ -171,6 +178,7 @@ export class BiometricsControllerDelegate {
             Description     : requestBody.Description ? requestBody.Description : null,
             BiometricsType  : requestBody.BiometricsType ? requestBody.BiometricsType : 'Other',
             MeasurementUnit : requestBody.MeasurementUnit ? requestBody.MeasurementUnit : null,
+            TenantId    : requestBody.TenantId ? requestBody.TenantId : null,
             Tags            : requestBody.Tags ? JSON.stringify(requestBody.Tags) as string : JSON.stringify([]),
             Version         : requestBody.Version ? requestBody.Version : 'V1',
             OwnerUserId     : requestBody.OwnerUserId
@@ -190,6 +198,7 @@ export class BiometricsControllerDelegate {
             BiometricsType  : record.BiometricsType,
             MeasurementUnit : record.MeasurementUnit,
             OwnerUserId     : record.OwnerUserId,
+            TenantId        : record.TenantId,
             Tags            : JSON.parse(record.Tags),
             Version         : record.Version
         };
@@ -208,6 +217,7 @@ export class BiometricsControllerDelegate {
             BiometricsType  : record.BiometricsType,
             MeasurementUnit : record.MeasurementUnit,
             OwnerUserId     : record.OwnerUserId,
+            TenantId        : record.TenantId,
             Tags            : JSON.parse(record.Tags),
             Version         : record.Version,
             CreatedAt       : record.CreatedAt,
