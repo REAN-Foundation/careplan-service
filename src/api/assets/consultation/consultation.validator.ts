@@ -19,6 +19,10 @@ export class ConsultationValidator {
                 OwnerUserId      : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
+                TenantId : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
+
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -34,7 +38,11 @@ export class ConsultationValidator {
                 Description      : joi.string().optional().allow(null, ''),
                 ConsultationType : joi.string().valid("Tele-consultation", "Visit-consultation", "Other").optional(),
                 Tags             : joi.array().items(joi.string()).optional(),
-                Version          : joi.string().max(128).optional()
+                Version          : joi.string().max(128).optional(),
+                TenantId         : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
+
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -52,6 +60,7 @@ export class ConsultationValidator {
                 assetCategory    : joi.string().max(128).optional(),
                 tags             : joi.array().items(joi.string()).optional(),
                 version          : joi.string().max(128).optional(),
+                TenantId         : joi.string().guid({version : ['uuidv4']}).optional(),
                 order            : joi.string().max(128).optional(),
                 orderBy          : joi.string().max(128).optional(),
                 itemsPerPage     : joi.number().max(128).optional(),
