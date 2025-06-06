@@ -119,6 +119,12 @@ export class AudioControllerDelegate {
         if (assetCategory != null) {
             filters['AssetCategory'] = assetCategory;
         }
+        
+        var tenantId = query.tenantId ? query.tenantId : null;
+        if (tenantId != null) {
+            filters['TenantId'] = tenantId;
+        }
+
         var tags = query.tags ? query.tags : null;
         if (tags != null) {
             filters['Tags'] = tags;
@@ -147,6 +153,9 @@ export class AudioControllerDelegate {
         if (Helper.hasProperty(requestBody, 'Url')) {
             updateModel.Url = requestBody.Url;
         }
+        if (Helper.hasProperty(requestBody, 'TenantId')) {
+            updateModel.TenantId = requestBody.TenantId;
+        }
         if (Helper.hasProperty(requestBody, 'Tags')) {
             updateModel.Tags = JSON.stringify(requestBody.Tags);
         }
@@ -165,7 +174,8 @@ export class AudioControllerDelegate {
             Url         : requestBody.Url ? requestBody.Url : null,
             Tags        : requestBody.Tags ? JSON.stringify(requestBody.Tags) as string : JSON.stringify([]),
             Version     : requestBody.Version ? requestBody.Version : 'V1',
-            OwnerUserId : requestBody.OwnerUserId
+            OwnerUserId : requestBody.OwnerUserId,
+            TenantId    : requestBody.TenantId ? requestBody.TenantId : null,
         };
     };
 
@@ -182,6 +192,7 @@ export class AudioControllerDelegate {
             FileResourceId : record.FileResourceId,
             AssetCategory  : record.AssetCategory,
             OwnerUserId    : record.OwnerUserId,
+            TenantId              : record.TenantId,
             Tags           : JSON.parse(record.Tags),
             Version        : record.Version
         };
@@ -200,6 +211,7 @@ export class AudioControllerDelegate {
             FileResourceId : record.FileResourceId,
             AssetCategory  : record.AssetCategory,
             OwnerUserId    : record.OwnerUserId,
+            TenantId              : record.TenantId,
             Tags           : JSON.parse(record.Tags),
             Version        : record.Version,
             CreatedAt      : record.CreatedAt,

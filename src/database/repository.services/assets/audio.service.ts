@@ -194,6 +194,10 @@ export class AudioService {
                 [Op.like] : '%' + filters.AssetCategory + '%'
             };
         }
+        if (filters.TenantId) {
+                search.where['TenantId'] = filters.TenantId;
+            }
+
         if (filters.Tags) {
             search.where['Tags'] = {
                 [Op.like] : '%' + filters.Tags + '%'
