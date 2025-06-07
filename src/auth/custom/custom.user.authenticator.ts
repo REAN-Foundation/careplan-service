@@ -63,8 +63,18 @@ export class CustomUserAuthenticator implements IUserAuthenticator {
             // synchronous verification
             var user = jwt.verify(token, process.env.USER_ACCESS_TOKEN_SECRET) as JwtPayload;
 
-            // const apiURL = `/users/validate/${user.id}`;
+            // For checking the user exist or not
+            // const apiURL = `/users/validate/${user.UserId}`;
             // const result = await NeedleService.needleRequestForREAN("get", apiURL);
+
+            // if (result.HTTPCode !== 200 && result.Status !== 'success') {
+            //     res = {
+            //         Result        : false,
+            //         Message       : 'Unauthorized user access',
+            //         HttpErrorCode : 401,
+            //     };
+            //     return res;
+            // }
 
             var sessionId = user.SessionId ?? null;
             if (!sessionId) {

@@ -1,7 +1,7 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import { Logger } from '../../common/logger';
-import { IAuthorizer } from '../authorizer.interface';
+// import { IAuthorizer } from '../authorizer.interface';
 import { Injector } from '../../startup/injector';
 import { PermissionHandler } from './permission.handler';
 import { Loader } from '../../startup/loader';
