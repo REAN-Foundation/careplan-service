@@ -10,13 +10,13 @@ import {
 
 export class ParticipantAuth {
 
-    static readonly _baseContext = `Asset.Appointment`;
+    static readonly _baseContext = `Participant`;
 
     static readonly create: AuthOptions = {
         ...DefaultAuthOptions,
         Context     : `${this._baseContext}.Create`,
         Ownership   : ResourceOwnership.System,
-        ActionScope : ActionScope.Tenant,
+        ActionScope : ActionScope.Public,
         RequestType : RequestType.CreateOne,
     };
 
@@ -24,7 +24,7 @@ export class ParticipantAuth {
         ...DefaultAuthOptions,
         Context     : `${this._baseContext}.Update`,
         Ownership   : ResourceOwnership.System,
-        ActionScope : ActionScope.Tenant,
+        ActionScope : ActionScope.Public,
         RequestType : RequestType.UpdateOne,
     };
 
@@ -32,7 +32,7 @@ export class ParticipantAuth {
         ...DefaultAuthOptions,
         Context     : `${this._baseContext}.Delete`,
         Ownership   : ResourceOwnership.System,
-        ActionScope : ActionScope.Tenant,
+        ActionScope : ActionScope.Public,
         RequestType : RequestType.DeleteOne,
     };
 
@@ -40,7 +40,7 @@ export class ParticipantAuth {
         ...DefaultAuthOptions,
         Context             : `${this._baseContext}.Search`,
         Ownership           : ResourceOwnership.System,
-        ActionScope         : ActionScope.Tenant,
+        ActionScope         : ActionScope.Public,
         RequestType         : RequestType.Search,
         CustomAuthorization : true,
     };
@@ -49,7 +49,7 @@ export class ParticipantAuth {
         ...DefaultAuthOptions,
         Context     : `${this._baseContext}.GetById`,
         Ownership   : ResourceOwnership.System,
-        ActionScope : ActionScope.Tenant,
+        ActionScope : ActionScope.Public,
         RequestType : RequestType.GetOne,
     };
 
