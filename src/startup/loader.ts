@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { container, DependencyContainer } from 'tsyringe';
 // import { Authenticator } from '../auth/authenticator';
-import { Authorizer } from '../auth/authorizer';
+// import { Authorizer } from '../auth/authorizer';
 import { Logger } from '../common/logger';
 import { Injector } from './injector';
 import { Scheduler } from './scheduler';
