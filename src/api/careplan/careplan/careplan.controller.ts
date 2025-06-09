@@ -49,7 +49,7 @@ export class CarePlanController extends BaseController{
     search = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
             // await this.authorize('Careplan.Search', request, response, request.authorizeRequest);
-            const searchResults = await this._delegate.search(request.query);
+            const searchResults = await this._delegate.search(request);
             const message = 'Care plan records retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, searchResults);
         } catch (error) {
