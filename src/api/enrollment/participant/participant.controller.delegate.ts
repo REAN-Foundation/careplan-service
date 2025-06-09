@@ -1,3 +1,4 @@
+import express from 'express';
 import { ParticipantService } from '../../../database/repository.services/enrollment/participant.service';
 import { ErrorHandler } from '../../../common/error.handler';
 import { ApiError } from '../../../common/api.error';
@@ -62,9 +63,10 @@ export class ParticipantControllerDelegate {
         return this.getEnrichedDto(record);
     };
 
-    search = async (query) => {
-        await validator.validateSearchRequest(query);
-        var filters: ParticipantSearchFilters = this.getSearchFilters(query);
+    search = async (request: express.Request) => {
+        await validator.validateSearchRequest(request.query);
+        var filters: ParticipantSearchFilters = this.getSearchFilters(request.query);
+        filters = await this.authorizeSearch(request, filters);
         var searchResults: ParticipantSearchResults = await this._service.search(filters);
         var items = searchResults.Items.map(x => this.getPublicDto(x));
         searchResults.Items = items;
@@ -117,10 +119,6 @@ export class ParticipantControllerDelegate {
         if (participantReferenceId != null) {
             filters['ParticipantReferenceId'] = participantReferenceId;
         }
-        var tenantId = query.tenantId ? query.tenantId : null;
-        if (tenantId != null) {
-            filters['TenantId'] = tenantId;
-        }
         var gender = query.gender ? query.gender : null;
         if (gender != null) {
             filters['Gender'] = gender;
@@ -143,6 +141,25 @@ export class ParticipantControllerDelegate {
         }
         return filters;
     };
+
+     authorizeSearch = async (
+            request: express.Request,
+            searchFilters: ParticipantSearchFilters): Promise<ParticipantSearchFilters> => {
+    
+            if (request.currentClient?.IsPrivileged) {
+                return searchFilters;
+            }
+    
+            if (searchFilters.TenantId != null) {
+                if (searchFilters.TenantId !== request.currentUser.TenantId) {
+                    throw new ApiError(403, 'Forbidden');
+                }
+            }
+            else {
+                searchFilters.TenantId = request.currentUser.TenantId;
+            }
+            return searchFilters;
+        };
 
     //This function returns a response DTO which is enriched with available resource data
 
