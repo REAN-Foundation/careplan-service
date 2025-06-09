@@ -12,6 +12,7 @@ export interface ParticipantModel {
     Gender     : Gender;
     BirthDate  : Date;
     Country?   : string;
+    TenantId?  : uuid;
 }
 
 export interface ParticipantDto {
@@ -27,6 +28,8 @@ export interface ParticipantDto {
     Gender     : Gender;
     BirthDate  : Date;
     Country    : string;
+    TenantId   : uuid;
+
 }
 
 export interface ParticipantSearchFilters extends BaseSearchFilters {
@@ -36,6 +39,8 @@ export interface ParticipantSearchFilters extends BaseSearchFilters {
     Email?    : string;
     ParticipantReferenceId? : string;
     DisplayId?: number;
+    TenantId?: uuid;
+
 }
 
 export interface ParticipantSearchResults extends BaseSearchResults {

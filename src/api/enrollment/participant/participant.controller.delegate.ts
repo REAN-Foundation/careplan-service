@@ -117,6 +117,10 @@ export class ParticipantControllerDelegate {
         if (participantReferenceId != null) {
             filters['ParticipantReferenceId'] = participantReferenceId;
         }
+        var tenantId = query.tenantId ? query.tenantId : null;
+        if (tenantId != null) {
+            filters['TenantId'] = tenantId;
+        }
         var gender = query.gender ? query.gender : null;
         if (gender != null) {
             filters['Gender'] = gender;
@@ -160,7 +164,8 @@ export class ParticipantControllerDelegate {
             BirthDate              : record.BirthDate,
             Country                : record.Country,
             AddedByUserId          : record.AddedByUserId,
-            LastUpdatedByUserId    : record.LastUpdatedByUserId
+            LastUpdatedByUserId    : record.LastUpdatedByUserId,
+            TenantId              : record.TenantId,
         };
     };
 
@@ -183,6 +188,7 @@ export class ParticipantControllerDelegate {
             Gender                 : record.Gender,
             BirthDate              : record.BirthDate,
             Country                : record.Country,
+            TenantId              : record.TenantId,
         };
     };
 
