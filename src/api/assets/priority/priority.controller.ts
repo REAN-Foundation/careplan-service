@@ -52,7 +52,7 @@ export class PriorityController extends BaseController {
     search = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
             // await this.authorize('Priority.Search', request, response);
-            const searchResults = await this._delegate.search(request.query);
+            const searchResults = await this._delegate.search(request);
             const message = 'Priority records retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, searchResults);
         } catch (error) {

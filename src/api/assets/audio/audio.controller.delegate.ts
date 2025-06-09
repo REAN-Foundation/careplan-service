@@ -1,3 +1,4 @@
+import express from 'express';
 import {
     AudioService
 } from '../../../database/repository.services/assets/audio.service';
@@ -57,9 +58,10 @@ export class AudioControllerDelegate {
         return this.getEnrichedDto(record);
     };
 
-    search = async (query: any) => {
-        await validator.validateSearchRequest(query);
-        var filters: AudioSearchFilters = this.getSearchFilters(query);
+    search = async (request: express.Request) => {
+        await validator.validateSearchRequest(request.query);
+        var filters: AudioSearchFilters = this.getSearchFilters(request.query);
+        filters = await this.authorizeSearch(request, filters);
         var searchResults: AudioSearchResults = await this._service.search(filters);
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
@@ -119,12 +121,6 @@ export class AudioControllerDelegate {
         if (assetCategory != null) {
             filters['AssetCategory'] = assetCategory;
         }
-        
-        var tenantId = query.tenantId ? query.tenantId : null;
-        if (tenantId != null) {
-            filters['TenantId'] = tenantId;
-        }
-
         var tags = query.tags ? query.tags : null;
         if (tags != null) {
             filters['Tags'] = tags;
@@ -178,6 +174,25 @@ export class AudioControllerDelegate {
             TenantId    : requestBody.TenantId ? requestBody.TenantId : null,
         };
     };
+
+    authorizeSearch = async (
+            request: express.Request,
+            searchFilters: AudioSearchFilters): Promise<AudioSearchFilters> => {
+    
+            if (request.currentClient?.IsPrivileged) {
+                return searchFilters;
+            }
+    
+            if (searchFilters.TenantId != null) {
+                if (searchFilters.TenantId !== request.currentUser.TenantId) {
+                    throw new ApiError(403, 'Forbidden');
+                }
+            }
+            else {
+                searchFilters.TenantId = request.currentUser.TenantId;
+            }
+            return searchFilters;
+        };
 
     getEnrichedDto = (record) => {
         if (record == null) {

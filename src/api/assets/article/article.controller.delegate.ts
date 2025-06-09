@@ -1,3 +1,4 @@
+import express from 'express';
 import {
     ArticleService
 } from '../../../database/repository.services/assets/article.service';
@@ -57,9 +58,10 @@ export class ArticleControllerDelegate {
         return this.getEnrichedDto(record);
     };
 
-    search = async (query: any) => {
-        await validator.validateSearchRequest(query);
-        var filters: ArticleSearchFilters = this.getSearchFilters(query);
+    search = async (request: express.Request) => {
+        await validator.validateSearchRequest(request.query);
+        var filters: ArticleSearchFilters = this.getSearchFilters(request.query);
+        filters = await this.authorizeSearch(request, filters);
         var searchResults: ArticleSearchResults = await this._service.search(filters);
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
@@ -176,6 +178,25 @@ export class ArticleControllerDelegate {
             TenantId    : requestBody.TenantId ? requestBody.TenantId : null,
         };
     };
+
+    authorizeSearch = async (
+            request: express.Request,
+            searchFilters: ArticleSearchFilters): Promise<ArticleSearchFilters> => {
+    
+            if (request.currentClient?.IsPrivileged) {
+                return searchFilters;
+            }
+    
+            if (searchFilters.TenantId != null) {
+                if (searchFilters.TenantId !== request.currentUser.TenantId) {
+                    throw new ApiError(403, 'Forbidden');
+                }
+            }
+            else {
+                searchFilters.TenantId = request.currentUser.TenantId;
+            }
+            return searchFilters;
+        };
 
     getEnrichedDto = (record) => {
         if (record == null) {

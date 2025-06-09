@@ -43,7 +43,7 @@ export class ParticipantController extends BaseController {
     search = async (request: express.Request, response: express.Response): Promise <void> => {
         try {
             // await this.authorize('Participant.Search', request, response, false);
-            const searchResults = await this._delegate.search(request.query);
+            const searchResults = await this._delegate.search(request);
             const message = 'Participant records retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, searchResults);
         } catch (error) {

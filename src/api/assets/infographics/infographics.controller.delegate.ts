@@ -1,3 +1,4 @@
+import express from 'express';
 import {
     InfographicsService
 } from '../../../database/repository.services/assets/infographics.service';
@@ -57,9 +58,10 @@ export class InfographicsControllerDelegate {
         return this.getEnrichedDto(record);
     };
 
-    search = async (query: any) => {
-        await validator.validateSearchRequest(query);
-        var filters: InfographicsSearchFilters = this.getSearchFilters(query);
+    search = async (request: express.Request) => {
+        await validator.validateSearchRequest(request.query);
+        var filters: InfographicsSearchFilters = this.getSearchFilters(request.query);
+         filters = await this.authorizeSearch(request, filters);
         var searchResults: InfographicsSearchResults = await this._service.search(filters);
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
@@ -127,10 +129,6 @@ export class InfographicsControllerDelegate {
         if (version != null) {
             filters['Version'] = version;
         }
-        var tenantId = query.tenantId ? query.tenantId : null;
-        if (tenantId != null) {
-            filters['TenantId'] = tenantId;
-        }
 
         return filters;
     };
@@ -176,6 +174,25 @@ export class InfographicsControllerDelegate {
             TenantId    : requestBody.TenantId ? requestBody.TenantId : null
         };
     };
+
+    authorizeSearch = async (
+            request: express.Request,
+            searchFilters: InfographicsSearchFilters): Promise<InfographicsSearchFilters> => {
+    
+            if (request.currentClient?.IsPrivileged) {
+                return searchFilters;
+            }
+    
+            if (searchFilters.TenantId != null) {
+                if (searchFilters.TenantId !== request.currentUser.TenantId) {
+                    throw new ApiError(403, 'Forbidden');
+                }
+            }
+            else {
+                searchFilters.TenantId = request.currentUser.TenantId;
+            }
+            return searchFilters;
+        };
 
     getEnrichedDto = (record) => {
         if (record == null) {
