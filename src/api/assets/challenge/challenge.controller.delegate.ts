@@ -1,3 +1,4 @@
+import express from 'express';
 import {
     ChallengeService
 } from '../../../database/repository.services/assets/challenge.service';
@@ -57,9 +58,10 @@ export class ChallengeControllerDelegate {
         return this.getEnrichedDto(record);
     };
 
-    search = async (query: any) => {
-        await validator.validateSearchRequest(query);
-        var filters: ChallengeSearchFilters = this.getSearchFilters(query);
+    search = async (request: express.Request) => {
+        await validator.validateSearchRequest(request.query);
+        var filters: ChallengeSearchFilters = this.getSearchFilters(request.query);
+        filters = await this.authorizeSearch(request, filters);
         var searchResults: ChallengeSearchResults = await this._service.search(filters);
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
@@ -123,10 +125,6 @@ export class ChallengeControllerDelegate {
         if (version != null) {
             filters['Version'] = version;
         }
-        var tenantId = query.tenantId ? query.tenantId : null;
-        if (tenantId != null) {
-            filters['TenantId'] = tenantId;
-        }
 
         return filters;
     };
@@ -168,6 +166,25 @@ export class ChallengeControllerDelegate {
             TenantId    : requestBody.TenantId ? requestBody.TenantId : null,
         };
     };
+
+    authorizeSearch = async (
+            request: express.Request,
+            searchFilters: ChallengeSearchFilters): Promise<ChallengeSearchFilters> => {
+    
+            if (request.currentClient?.IsPrivileged) {
+                return searchFilters;
+            }
+    
+            if (searchFilters.TenantId != null) {
+                if (searchFilters.TenantId !== request.currentUser.TenantId) {
+                    throw new ApiError(403, 'Forbidden');
+                }
+            }
+            else {
+                searchFilters.TenantId = request.currentUser.TenantId;
+            }
+            return searchFilters;
+        };
 
     getEnrichedDto = (record) => {
         if (record == null) {
