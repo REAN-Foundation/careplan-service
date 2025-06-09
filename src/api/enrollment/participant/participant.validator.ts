@@ -17,7 +17,8 @@ export class ParticipantValidator {
                 ParticipantReferenceId : joi.string().max(256).optional(),
                 Gender                 : joi.string().valid("Male", "Female", "Other").required(),
                 BirthDate              : joi.string().optional(),
-                Country                : joi.string().max(64).optional().allow(null)
+                Country                : joi.string().max(64).optional().allow(null),
+                TenantId               : joi.string().guid({version : ['uuidv4']}).optional(),
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -36,12 +37,13 @@ export class ParticipantValidator {
                 email                  : joi.string().max(256).optional(),
                 gender                 : joi.string().valid("Male", "Female", "Other").optional(),
                 country                : joi.string().max(64).optional(),
+                tenantId               : joi.string().guid({version : ['uuidv4']}).optional(),
                 addedByUserId          : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
                 lastUpdatedByUserId : joi.string().guid({
                     version : ['uuidv4']
-                }).optional()
+                }).optional(),
             });
             return await schema.validateAsync(query);
 
@@ -61,6 +63,7 @@ export class ParticipantValidator {
                 ParticipantReferenceId : joi.string().max(256).optional(),
                 Gender                 : joi.string().valid("Male", "Female", "Other").optional(),
                 Country                : joi.string().max(64).optional(),
+                TenantId               : joi.string().guid({version : ['uuidv4']}).optional(),
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
