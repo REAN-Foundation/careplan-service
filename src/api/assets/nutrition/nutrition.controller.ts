@@ -52,7 +52,7 @@ export class NutritionController extends BaseController {
     search = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
             // await this.authorize('Nutrition.Search', request, response);
-            const searchResults = await this._delegate.search(request.query);
+            const searchResults = await this._delegate.search(request);
             const message = 'Nutrition records retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, searchResults);
         } catch (error) {
