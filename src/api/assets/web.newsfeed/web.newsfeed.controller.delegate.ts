@@ -1,3 +1,4 @@
+import express from 'express';
 import {
     WebNewsfeedService
 } from '../../../database/repository.services/assets/web.newsfeed.service';
@@ -57,9 +58,10 @@ export class WebNewsfeedControllerDelegate {
         return this.getEnrichedDto(record);
     };
 
-    search = async (query: any) => {
-        await validator.validateSearchRequest(query);
-        var filters: WebNewsfeedSearchFilters = this.getSearchFilters(query);
+    search = async (request: express.Request) => {
+        await validator.validateSearchRequest(request.query);
+        var filters: WebNewsfeedSearchFilters = this.getSearchFilters(request.query);
+        filters = await this.authorizeSearch(request, filters);
         var searchResults: WebNewsfeedSearchResults = await this._service.search(filters);
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
@@ -127,11 +129,6 @@ export class WebNewsfeedControllerDelegate {
         if (version != null) {
             filters['Version'] = version;
         }
-        var tenantId = query.tenantId ? query.tenantId : null;
-        if (tenantId != null) {
-            filters['TenantId'] = tenantId;
-        }
-
         return filters;
     };
 
@@ -176,6 +173,25 @@ export class WebNewsfeedControllerDelegate {
             TenantId    : requestBody.TenantId ? requestBody.TenantId : null,
         };
     };
+    
+    authorizeSearch = async (
+            request: express.Request,
+            searchFilters: WebNewsfeedSearchFilters): Promise<WebNewsfeedSearchFilters> => {
+    
+            if (request.currentClient?.IsPrivileged) {
+                return searchFilters;
+            }
+    
+            if (searchFilters.TenantId != null) {
+                if (searchFilters.TenantId !== request.currentUser.TenantId) {
+                    throw new ApiError(403, 'Forbidden');
+                }
+            }
+            else {
+                searchFilters.TenantId = request.currentUser.TenantId;
+            }
+            return searchFilters;
+        };
 
     getEnrichedDto = (record) => {
         if (record == null) {

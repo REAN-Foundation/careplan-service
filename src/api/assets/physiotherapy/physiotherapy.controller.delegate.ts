@@ -129,10 +129,6 @@ export class PhysiotherapyControllerDelegate {
         if (version != null) {
             filters['Version'] = version;
         }
-        var tenantId = query.tenantId ? query.tenantId : null;
-        if (tenantId != null) {
-            filters['TenantId'] = tenantId;
-        }
 
         return filters;
     };
