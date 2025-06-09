@@ -1,3 +1,4 @@
+import express from 'express';
 import { CareplanCategoryService } from '../../../database/repository.services/careplan/careplan.category.service';
 import { ErrorHandler } from '../../../common/error.handler';
 import { Helper } from '../../../common/helper';
@@ -45,9 +46,10 @@ export class CareplanCategoryControllerDelegate {
         return this.getEnrichedDto(record);
     };
 
-    search = async (query: any) => {
-        await validator.validateSearchRequest(query);
-        var filters: CareplanCategorySearchFilters = this.getSearchFilters(query);
+    search = async (request: express.Request) => {
+        await validator.validateSearchRequest(request.query);
+        var filters: CareplanCategorySearchFilters = this.getSearchFilters(request.query);
+        filters = await this.authorizeSearch(request, filters);
         var searchResults: CareplanCategorySearchResults = await this._service.search(filters);
         var items = searchResults.Items.map(x => this.getPublicDto(x));
         searchResults.Items = items;
@@ -115,6 +117,25 @@ export class CareplanCategoryControllerDelegate {
             Description : requestBody.Description ? requestBody.Description : null
         };
     };
+
+    authorizeSearch = async (
+            request: express.Request,
+            searchFilters: CareplanCategorySearchFilters): Promise<CareplanCategorySearchFilters> => {
+    
+            if (request.currentClient?.IsPrivileged) {
+                return searchFilters;
+            }
+    
+            if (searchFilters.TenantId != null) {
+                if (searchFilters.TenantId !== request.currentUser.TenantId) {
+                    throw new ApiError(403, 'Forbidden');
+                }
+            }
+            else {
+                searchFilters.TenantId = request.currentUser.TenantId;
+            }
+            return searchFilters;
+        };
 
     //This function returns a response DTO which is enriched with available resource data
 
