@@ -16,7 +16,7 @@ export class StatisticsAuth {
         ...DefaultAuthOptions,
         Context             : `${this._baseContext}.Search`,
         Ownership           : ResourceOwnership.System,
-        ActionScope         : ActionScope.Tenant,
+        ActionScope         : ActionScope.Public,
         RequestType         : RequestType.Search,
         CustomAuthorization : true,
     };
