@@ -215,17 +215,47 @@
         "GetById": true,
         "Search": true
     },
-    "UserActivityResponse":{
+    "Types":{
+        "CareplanCategory": true,
+        "AssetType": true,
+        "TimeSlot": true
+    },
+     "ParticipantActivityResponse":{
         "Create": true,
         "Delete": true,
         "GetById": true,
         "Search": true,
         "Update": true
     },
-    "Types":{
-        "CareplanCategory": true,
-        "AssetType": true,
-        "TimeSlot": true
+    "ParticipantSelectedActionPlan":{
+        "Create": true,
+        "Delete": true,
+        "GetById": true,
+        "Search": true,
+        "Update": true
+    },
+    "ParticipantSelectedGoal":{
+        "Create": true,
+        "Delete": true,
+        "GetById": true,
+        "Search": true,
+        "Update": true
+    },
+   "ParticipantSelectedPriority":{
+        "Create": true,
+        "Delete": true,
+        "GetById": true,
+        "Search": true,
+        "Update": true
+    },
+       "FileResource":{
+        "Upload": true,
+        "Download": true,
+        "GetById": true,
+        "Delete": true
+    },
+    "Statistics":{
+        "Search": true
     }
 }
 
