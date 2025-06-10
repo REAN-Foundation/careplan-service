@@ -183,8 +183,8 @@ export class AssessmentService {
             };
         }
         if (filters.TenantId) {
-                search.where['TenantId'] = filters.TenantId;
-            }
+            search.where['TenantId'] = filters.TenantId;
+        }
 
         if (filters.Tags) {
             search.where['Tags'] = {

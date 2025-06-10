@@ -133,45 +133,45 @@ export class RolePrivilegeService {
         }
     };
 
-      seedRolePrivileges = async () => {
-          try {
-              const roles = await this.getAllRoles();
-              for await (const r of roles) {
-                  const seederFile = r.SeederFile;
-                  if (seederFile == null) {
-                      continue;
-                  }
-                  var filepath = path.join(process.cwd(), 'seed.data', 'role.privileges', seederFile);
-                  var fileBuffer = fs.readFileSync(filepath, 'utf8');
-                  const privilegeMap = JSON.parse(fileBuffer);
-                  const privileges = Helper.convertPrivilegeMapToPrivilegeList(privilegeMap);
+    seedRolePrivileges = async () => {
+        try {
+            const roles = await this.getAllRoles();
+            for await (const r of roles) {
+                const seederFile = r.SeederFile;
+                if (seederFile == null) {
+                    continue;
+                }
+                var filepath = path.join(process.cwd(), 'seed.data', 'role.privileges', seederFile);
+                var fileBuffer = fs.readFileSync(filepath, 'utf8');
+                const privilegeMap = JSON.parse(fileBuffer);
+                const privileges = Helper.convertPrivilegeMapToPrivilegeList(privilegeMap);
 
-                  for (const p of privileges) {
-                      var keys = Object.keys(p);
-                      var privilege = keys[0];
-                      var enabled = p[privilege];
+                for (const p of privileges) {
+                    var keys = Object.keys(p);
+                    var privilege = keys[0];
+                    var enabled = p[privilege];
 
-                      const rp = await this.getRolePrivilege(r.id, privilege);
-                      if (rp == null) {
-                          await this.create({
-                              RoleId    : r.id,
-                              RoleName  : r.RoleName,
-                              Privilege : privilege,
-                              Scope     : r.Scope,
-                              Enabled   : enabled,
-                          });
-                      } else {
-                          if (rp.Enabled !== enabled) {
-                              await this.enable(rp.id, enabled);
-                          }
-                      }
-                  }
-              }
-          } catch (error) {
-              ErrorHandler.throwDbAccessError('Error occurred while seeding role-privileges!', error);
-          }
+                    const rp = await this.getRolePrivilege(r.id, privilege);
+                    if (rp == null) {
+                        await this.create({
+                            RoleId    : r.id,
+                            RoleName  : r.RoleName,
+                            Privilege : privilege,
+                            Scope     : r.Scope,
+                            Enabled   : enabled,
+                        });
+                    } else {
+                        if (rp.Enabled !== enabled) {
+                            await this.enable(rp.id, enabled);
+                        }
+                    }
+                }
+            }
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('Error occurred while seeding role-privileges!', error);
+        }
           
-      };
+    };
 
       getAllRoles = async () => {
           const apiURL = '/types/person-roles';

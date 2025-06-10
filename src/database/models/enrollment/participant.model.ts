@@ -90,9 +90,9 @@ export class ParticipantModel {
             tableName       : ParticipantModel.TableName,
         });
     
-        static associate = () => {
-            //Add associations here...
+    static associate = () => {
+        //Add associations here...
     
-        };
+    };
 
 }

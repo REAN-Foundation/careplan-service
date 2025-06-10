@@ -67,4 +67,5 @@ export class RolePermissionModel {
         //Add associations here...
 
     };
+    
 }

@@ -2,7 +2,7 @@ import express from 'express';
 import jwt from 'jsonwebtoken';
 import { Logger } from '../../common/logger';
 // import { IAuthorizer } from '../authorizer.interface';
-import { Injector } from '../../startup/injector';
+// import { Injector } from '../../startup/injector';
 import { PermissionHandler } from './permission.handler';
 import { Loader } from '../../startup/loader';
 import { RolePrivilegeService } from '../../database/repository.services/role.privilege.service';
@@ -44,7 +44,8 @@ export class CustomAuthorizer implements IUserAuthorizer {
             if (!currentUser) {
                 //If the user is not authenticated, then check if the resource access is public
                 if (publicAccess || optionalUserAuth) {
-                    // To check whether a particular resource is available for public access, e.g. a profile image download
+                    // To check whether a particular resource is available for public access,
+                    //  e.g. a profile image download
                     return true;
                 }
                 // If the resource is not public, then the user must be authenticated

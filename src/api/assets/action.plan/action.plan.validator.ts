@@ -34,7 +34,7 @@ export class ActionPlanValidator {
                 AssetCode   : joi.string().max(256).optional(),
                 Name        : joi.string().max(256).optional(),
                 Description : joi.string().optional().allow(null, ''),
-                TenantId    : joi.string().guid({version : ['uuidv4']}).optional(),
+                TenantId    : joi.string().guid({ version: ['uuidv4'] }).optional(),
                 Tags        : joi.array().items(joi.string()).optional(),
                 Version     : joi.string().max(128).optional()
             });
@@ -52,14 +52,14 @@ export class ActionPlanValidator {
                 description   : joi.string().optional(),
                 assetCategory : joi.string().max(128).optional(),
                 tenantId      : joi.string().guid({
-                                    version : ['uuidv4']
-                                }).optional(),
-                tags          : joi.array().items(joi.string()).optional(),
-                version       : joi.string().max(128).optional(),
-                order         : joi.string().max(128).optional(),
-                orderBy       : joi.string().max(128).optional(),
-                itemsPerPage  : joi.number().max(128).optional(),
-                pageIndex     : joi.number().max(128).optional(),
+                    version : ['uuidv4']
+                }).optional(),
+                tags         : joi.array().items(joi.string()).optional(),
+                version      : joi.string().max(128).optional(),
+                order        : joi.string().max(128).optional(),
+                orderBy      : joi.string().max(128).optional(),
+                itemsPerPage : joi.number().max(128).optional(),
+                pageIndex    : joi.number().max(128).optional(),
                 
             });
             return await schema.validateAsync(query);

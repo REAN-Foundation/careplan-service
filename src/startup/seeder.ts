@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { Helper } from "../common/helper";
 import { Logger } from "../common/logger";
-import * as RolePrivilegesList from '../../seed.data/role.privileges.json';
+// import * as RolePrivilegesList from '../../seed.data/role.privileges.json';
 import { RoleService } from '../database/repository.services/role.service';
 import { UserRoleService } from '../database/repository.services/user/user.role.service';
 import { RolePrivilegeService } from '../database/repository.services/role.privilege.service';

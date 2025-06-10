@@ -592,53 +592,53 @@ export class Helper {
         return null;
     };
 
-public static convertPrivilegeMapToPrivilegeList = (privilegeMap) => {
-    const x = (privilegeMap) => {
-        const privileges = [];
-        const keys = Object.keys(privilegeMap);
-        for (var key of keys) {
-            var value = privilegeMap[key];
-            if (typeof value === "object") {
-                var subPrivileges = x(value);
-                for (var subPrivilege of subPrivileges) {
-                    privileges.push(key + "." + subPrivilege);
+    public static convertPrivilegeMapToPrivilegeList = (privilegeMap) => {
+        const x = (privilegeMap) => {
+            const privileges = [];
+            const keys = Object.keys(privilegeMap);
+            for (var key of keys) {
+                var value = privilegeMap[key];
+                if (typeof value === "object") {
+                    var subPrivileges = x(value);
+                    for (var subPrivilege of subPrivileges) {
+                        privileges.push(key + "." + subPrivilege);
+                    }
+                } else {
+                    privileges.push(key);
                 }
-            } else {
-                privileges.push(key);
             }
-        }
-        return privileges;
-    };
+            return privileges;
+        };
 
-    const list = x(privilegeMap);
+        const list = x(privilegeMap);
 
-    const tokenValue = (privilegeMap, tokens) => {
-        var currentLevel = privilegeMap;
-        for (var i = 0; i < tokens.length; i++) {
-            var key = tokens[i];
-            if (Helper.hasProperty(currentLevel, key)) {
-                currentLevel = currentLevel[key];
-                continue;
+        const tokenValue = (privilegeMap, tokens) => {
+            var currentLevel = privilegeMap;
+            for (var i = 0; i < tokens.length; i++) {
+                var key = tokens[i];
+                if (Helper.hasProperty(currentLevel, key)) {
+                    currentLevel = currentLevel[key];
+                    continue;
+                }
+                else {
+                    return undefined;
+                }
             }
-            else {
-                return undefined;
+            return currentLevel;
+        };
+        const refined = [];
+        for (var i = 0; i < list.length; i++) {
+            var p = list[i];
+            const tokens = p.split('.');
+            var value = tokenValue(privilegeMap, tokens);
+            if (p.endsWith(".Enabled")) {
+                p = p.replace(/\.Enabled$/, '');
             }
+            refined.push({
+                [p] : value,
+            });
         }
-        return currentLevel;
+        return refined;
     };
-    const refined = [];
-    for (var i = 0; i < list.length; i++) {
-        var p = list[i];
-        const tokens = p.split('.');
-        var value = tokenValue(privilegeMap, tokens);
-        if (p.endsWith(".Enabled")) {
-            p = p.replace(/\.Enabled$/, '');
-        }
-        refined.push({
-            [p] : value,
-        });
-    }
-    return refined;
-};
 
 }

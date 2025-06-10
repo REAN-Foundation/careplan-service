@@ -205,8 +205,8 @@ export class AnimationService {
             };
         }
         if (filters.TenantId) {
-                search.where['TenantId'] = filters.TenantId;
-            }
+            search.where['TenantId'] = filters.TenantId;
+        }
         const includeFileResourceAsFileResource = {
             model    : this.FileResource,
             required : false,

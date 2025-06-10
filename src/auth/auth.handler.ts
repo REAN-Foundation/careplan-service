@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { Injector } from '../startup/injector';
-import { uuid } from '../domain.types/miscellaneous/system.types';
+// import { uuid } from '../domain.types/miscellaneous/system.types';
 import { AuthOptions, RequestType, ResourceOwnership, ActionScope } from './auth.types';
 import { ResponseHandler } from '../common/response.handler';
 import { Loader } from '../startup/loader';
@@ -43,7 +43,7 @@ export class AuthHandler {
         middlewares.push(contextSetter);
 
         //Line-up the auth middleware chain
-        const clientAppAuth = options.ClientAppAuth ?? false;
+        // const clientAppAuth = options.ClientAppAuth ?? false;
         const systemOwnedResource = options.Ownership === ResourceOwnership.System;
         const publicAccess = options.ActionScope === ActionScope.Public;
 
@@ -57,7 +57,7 @@ export class AuthHandler {
         const alternateAuth = options.AlternateAuth ?? false;
         if (alternateAuth) {
             return middlewares;
-            // }
+    
         }
 
         // If the request is about the user registration. For example, Sign-up, Sign-in, OTP, ... etc.
@@ -98,21 +98,6 @@ export class AuthHandler {
         }
         return true;
     };
-
-    // public static generateUserSessionToken = async (user: any): Promise<string> => {
-    //     var authenticator = Loader.Container.resolve(UserAuthenticator);
-    //     return await authenticator.generateUserSessionToken(user);
-    // };
-
-    // public static generateRefreshToken = async (userId: uuid, sessionId: uuid, tenantId: string): Promise<string> => {
-    //     var authenticator = Injector.Container.resolve(UserAuthenticator);
-    //     return await authenticator.generateRefreshToken(userId, sessionId, tenantId);
-    // };
-
-    // public static rotateUserSessionToken = async (refreshToken: string): Promise<string> => {
-    //     var authenticator = Injector.Container.resolve(UserAuthenticator);
-    //     return await authenticator.rotateUserSessionToken(refreshToken);
-    // };
 
     private static getResourceId = (request: Request, resourceIdName?: string): string | number | null | undefined => {
         var resourceId = null;

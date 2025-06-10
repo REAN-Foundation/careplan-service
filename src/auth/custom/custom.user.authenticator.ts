@@ -4,10 +4,10 @@ import { Logger } from '../../common/logger';
 import { IUserAuthenticator } from '../interfaces/user.authenticator.interface';
 import { ActionScope, AuthResult } from '../auth.types';
 import { CurrentUser } from '../../domain.types/miscellaneous/current.user';
-import { ConfigurationManager } from '../../config/configuration.manager';
+// import { ConfigurationManager } from '../../config/configuration.manager';
 
-import { Injector } from '../../startup/injector';
-import { NeedleService } from '.././../common/needle.service';
+// import { Injector } from '../../startup/injector';
+// import { NeedleService } from '.././../common/needle.service';
 
 /////////////////////////////////////////////////////////////////////////////////
 
@@ -91,18 +91,6 @@ export class CustomUserAuthenticator implements IUserAuthenticator {
 
                 return res;
             }
-
-            // var isValidUserLoginSession = await this._userService.isValidUserLoginSession(sessionId);
-
-            // if (!isValidUserLoginSession) {
-            //     res = {
-            //         Result        : false,
-            //         Message       : 'Invalid or expired user login session.',
-            //         HttpErrorCode : 403,
-            //     };
-
-            //     return res;
-            // }
 
             request.currentUser = user as CurrentUser;
             request.currentUserTenantId = request.currentUser?.TenantId;

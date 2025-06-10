@@ -197,7 +197,7 @@ export class ExerciseService {
             };
         }
         if (filters.TenantId) {
-                search.where['TenantId'] = filters.TenantId;
+            search.where['TenantId'] = filters.TenantId;
         }
 
         return search;

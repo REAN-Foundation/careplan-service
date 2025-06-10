@@ -183,24 +183,24 @@ export class MeditationControllerDelegate {
         };
     };
 
-     authorizeSearch = async (
-         request: express.Request,
-         searchFilters: MeditationSearchFilters): Promise<MeditationSearchFilters> => {
+    authorizeSearch = async (
+        request: express.Request,
+        searchFilters: MeditationSearchFilters): Promise<MeditationSearchFilters> => {
     
-         if (request.currentClient?.IsPrivileged) {
-             return searchFilters;
-         }
+        if (request.currentClient?.IsPrivileged) {
+            return searchFilters;
+        }
     
-         if (searchFilters.TenantId != null) {
-             if (searchFilters.TenantId !== request.currentUser.TenantId) {
-                 throw new ApiError(403, 'Forbidden');
-             }
-         }
-         else {
-             searchFilters.TenantId = request.currentUser.TenantId;
-         }
-         return searchFilters;
-     };
+        if (searchFilters.TenantId != null) {
+            if (searchFilters.TenantId !== request.currentUser.TenantId) {
+                throw new ApiError(403, 'Forbidden');
+            }
+        }
+        else {
+            searchFilters.TenantId = request.currentUser.TenantId;
+        }
+        return searchFilters;
+    };
 
     getEnrichedDto = (record) => {
         if (record == null) {

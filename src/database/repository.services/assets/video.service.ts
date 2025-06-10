@@ -205,7 +205,7 @@ export class VideoService {
             };
         }
         if (filters.TenantId) {
-                search.where['TenantId'] = filters.TenantId;
+            search.where['TenantId'] = filters.TenantId;
         }
         const includeFileResourceAsFileResource = {
             model    : this.FileResource,

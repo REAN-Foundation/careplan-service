@@ -193,7 +193,7 @@ export class WebNewsfeedService {
             };
         }
         if (filters.TenantId) {
-                search.where['TenantId'] = filters.TenantId;
+            search.where['TenantId'] = filters.TenantId;
         }
 
         return search;
