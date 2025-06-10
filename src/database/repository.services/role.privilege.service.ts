@@ -87,31 +87,31 @@ export class RolePrivilegeService {
         }
     };
 
-        getRolePrivilege = async (roleId: number, privilege: string): Promise<RolePrivilegeDto> => {
-            try {
-                const rp = await this.RolePermission.findOne({
-                    where : {
-                        RoleId    : roleId,
-                        Privilege : { [Op.like]: '%' + privilege + '%' },
-                    },
-                });
-                if (rp == null) {
-                    return null;
-                }
-                const dto: RolePrivilegeDto = {
-                    id        : rp.id,
-                    RoleId    : rp.RoleId,
-                    RoleName  : rp.RoleName,
-                    Privilege : rp.Privilege,
-                    Scope     : rp.Scope,
-                    Enabled   : rp.Enabled,
-                };
-                return dto;
-            } catch (error) {
-                Logger.instance().log(error.message);
-                throw new ApiError(500, error.message);
+    getRolePrivilege = async (roleId: number, privilege: string): Promise<RolePrivilegeDto> => {
+        try {
+            const rp = await this.RolePermission.findOne({
+                where : {
+                    RoleId    : roleId,
+                    Privilege : { [Op.like]: '%' + privilege + '%' },
+                },
+            });
+            if (rp == null) {
+                return null;
             }
-        };
+            const dto: RolePrivilegeDto = {
+                id        : rp.id,
+                RoleId    : rp.RoleId,
+                RoleName  : rp.RoleName,
+                Privilege : rp.Privilege,
+                Scope     : rp.Scope,
+                Enabled   : rp.Enabled,
+            };
+            return dto;
+        } catch (error) {
+            Logger.instance().log(error.message);
+            throw new ApiError(500, error.message);
+        }
+    };
 
     enable = async (id: string, enable: boolean): Promise<RolePrivilegeDto> => {
         try {

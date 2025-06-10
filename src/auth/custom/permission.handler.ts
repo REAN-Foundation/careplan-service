@@ -113,7 +113,8 @@ export class PermissionHandler {
             // The resources may or may not require user authentication
             // Will be checked specific to the resource visibility...
             // Some resources of a given type may be publicly visible and some may not be
-            // For example, File resource - a user profile image file may be publicly visible, but the user document files may not be
+            // For example, File resource - a user profile image file may be publicly visible,
+            //  but the user document files may not be
             return true;
         }
 
