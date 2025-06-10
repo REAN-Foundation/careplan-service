@@ -168,23 +168,23 @@ export class MedicationControllerDelegate {
     };
 
     authorizeSearch = async (
-            request: express.Request,
-            searchFilters: MedicationSearchFilters): Promise<MedicationSearchFilters> => {
+        request: express.Request,
+        searchFilters: MedicationSearchFilters): Promise<MedicationSearchFilters> => {
     
-            if (request.currentClient?.IsPrivileged) {
-                return searchFilters;
-            }
-    
-            if (searchFilters.TenantId != null) {
-                if (searchFilters.TenantId !== request.currentUser.TenantId) {
-                    throw new ApiError(403, 'Forbidden');
-                }
-            }
-            else {
-                searchFilters.TenantId = request.currentUser.TenantId;
-            }
+        if (request.currentClient?.IsPrivileged) {
             return searchFilters;
-        };
+        }
+    
+        if (searchFilters.TenantId != null) {
+            if (searchFilters.TenantId !== request.currentUser.TenantId) {
+                throw new ApiError(403, 'Forbidden');
+            }
+        }
+        else {
+            searchFilters.TenantId = request.currentUser.TenantId;
+        }
+        return searchFilters;
+    };
 
     getEnrichedDto = (record) => {
         if (record == null) {

@@ -2,9 +2,6 @@ import express from 'express';
 import {
     ActionPlanController
 } from './action.plan.controller';
-import {
-    Loader
-} from '../../../startup/loader';
 import { auth } from '../../../auth/auth.handler';
 import { ActionplanAuth } from './action.plan.auth';
 
@@ -13,7 +10,6 @@ import { ActionplanAuth } from './action.plan.auth';
 export const register = (app: express.Application): void => {
 
     const router = express.Router();
-    // const authenticator = Loader.Authenticator;
     const controller = new ActionPlanController();
 
     router.post('/', auth(ActionplanAuth.create), controller.create);
@@ -21,12 +17,6 @@ export const register = (app: express.Application): void => {
     router.get('/:id', auth(ActionplanAuth.getById), controller.getById);
     router.put('/:id', auth(ActionplanAuth.update), controller.update);
     router.delete('/:id', auth(ActionplanAuth.delete), controller.delete);
-
-    // router.post('/', authenticator.authenticateUser, controller.create);
-    // router.get('/search', authenticator.authenticateUser, controller.search);
-    // router.get('/:id', authenticator.authenticateUser, controller.getById);
-    // router.put('/:id', authenticator.authenticateUser, controller.update);
-    // router.delete('/:id', authenticator.authenticateUser, controller.delete);
 
     app.use('/api/v1/assets/action-plans', router);
 };

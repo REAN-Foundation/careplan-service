@@ -176,23 +176,23 @@ export class AudioControllerDelegate {
     };
 
     authorizeSearch = async (
-            request: express.Request,
-            searchFilters: AudioSearchFilters): Promise<AudioSearchFilters> => {
+        request: express.Request,
+        searchFilters: AudioSearchFilters): Promise<AudioSearchFilters> => {
     
-            if (request.currentClient?.IsPrivileged) {
-                return searchFilters;
-            }
-    
-            if (searchFilters.TenantId != null) {
-                if (searchFilters.TenantId !== request.currentUser.TenantId) {
-                    throw new ApiError(403, 'Forbidden');
-                }
-            }
-            else {
-                searchFilters.TenantId = request.currentUser.TenantId;
-            }
+        if (request.currentClient?.IsPrivileged) {
             return searchFilters;
-        };
+        }
+    
+        if (searchFilters.TenantId != null) {
+            if (searchFilters.TenantId !== request.currentUser.TenantId) {
+                throw new ApiError(403, 'Forbidden');
+            }
+        }
+        else {
+            searchFilters.TenantId = request.currentUser.TenantId;
+        }
+        return searchFilters;
+    };
 
     getEnrichedDto = (record) => {
         if (record == null) {
@@ -207,7 +207,7 @@ export class AudioControllerDelegate {
             FileResourceId : record.FileResourceId,
             AssetCategory  : record.AssetCategory,
             OwnerUserId    : record.OwnerUserId,
-            TenantId              : record.TenantId,
+            TenantId       : record.TenantId,
             Tags           : JSON.parse(record.Tags),
             Version        : record.Version
         };
@@ -226,7 +226,7 @@ export class AudioControllerDelegate {
             FileResourceId : record.FileResourceId,
             AssetCategory  : record.AssetCategory,
             OwnerUserId    : record.OwnerUserId,
-            TenantId              : record.TenantId,
+            TenantId       : record.TenantId,
             Tags           : JSON.parse(record.Tags),
             Version        : record.Version,
             CreatedAt      : record.CreatedAt,

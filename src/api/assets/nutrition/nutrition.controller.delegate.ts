@@ -167,23 +167,23 @@ export class NutritionControllerDelegate {
     };
 
     authorizeSearch = async (
-            request: express.Request,
-            searchFilters: NutritionSearchFilters): Promise<NutritionSearchFilters> => {
+        request: express.Request,
+        searchFilters: NutritionSearchFilters): Promise<NutritionSearchFilters> => {
     
-            if (request.currentClient?.IsPrivileged) {
-                return searchFilters;
-            }
-    
-            if (searchFilters.TenantId != null) {
-                if (searchFilters.TenantId !== request.currentUser.TenantId) {
-                    throw new ApiError(403, 'Forbidden');
-                }
-            }
-            else {
-                searchFilters.TenantId = request.currentUser.TenantId;
-            }
+        if (request.currentClient?.IsPrivileged) {
             return searchFilters;
-        };
+        }
+    
+        if (searchFilters.TenantId != null) {
+            if (searchFilters.TenantId !== request.currentUser.TenantId) {
+                throw new ApiError(403, 'Forbidden');
+            }
+        }
+        else {
+            searchFilters.TenantId = request.currentUser.TenantId;
+        }
+        return searchFilters;
+    };
 
     getEnrichedDto = (record) => {
         if (record == null) {

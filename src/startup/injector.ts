@@ -5,18 +5,6 @@ import { AuthInjector } from '../auth/auth.injector';
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-// export class Injector {
-
-//     static registerInjections(container: DependencyContainer) {
-//         //Auth
-//         AuthInjector.registerInjections(container);
-
-//         //Modules
-//         ModuleInjector.registerInjections(container);
-//     }
-
-// }
-
 export class Injector {
 
     private static _container: DependencyContainer = container;

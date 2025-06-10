@@ -26,7 +26,6 @@ export class ReflectionController extends BaseController {
 
     create = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            // await this.authorize('Reflection.Create', request, response);
             if (request.currentUser) {
                 request.body.OwnerUserId = request.currentUser.UserId;
             }
@@ -40,7 +39,6 @@ export class ReflectionController extends BaseController {
 
     getById = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            // await this.authorize('Reflection.GetById', request, response);
             const record = await this._delegate.getById(request.params.id);
             const message = 'Reflection retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, record);
@@ -51,7 +49,6 @@ export class ReflectionController extends BaseController {
 
     search = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            // await this.authorize('Reflection.Search', request, response);
             const searchResults = await this._delegate.search(request);
             const message = 'Reflection records retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, searchResults);
@@ -62,7 +59,6 @@ export class ReflectionController extends BaseController {
 
     update = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            // await this.authorize('Reflection.Update', request, response);
             const updatedRecord = await this._delegate.update(request.params.id, request.body);
             const message = 'Reflection updated successfully!';
             ResponseHandler.success(request, response, message, 200, updatedRecord);
@@ -73,7 +69,6 @@ export class ReflectionController extends BaseController {
 
     delete = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            // await this.authorize('Reflection.Delete', request, response);
             const result = await this._delegate.delete(request.params.id);
             const message = 'Reflection deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);

@@ -43,6 +43,7 @@ export class ParticipantControllerDelegate {
             ParticipantReferenceId : requestBody.ParticipantReferenceId ? requestBody.ParticipantReferenceId : null,
             Gender                 : requestBody.Gender ? requestBody.Gender : 'Male',
             BirthDate              : new Date(birthDate),
+            TenantId               : requestBody.TenantId ? requestBody.TenantId : null
         };
 
         await UserHelper.getValidParticipantCreateModel(requestBody);
@@ -143,25 +144,25 @@ export class ParticipantControllerDelegate {
     };
 
      authorizeSearch = async (
-            request: express.Request,
-            searchFilters: ParticipantSearchFilters): Promise<ParticipantSearchFilters> => {
+         request: express.Request,
+         searchFilters: ParticipantSearchFilters): Promise<ParticipantSearchFilters> => {
     
-            if (request.currentClient?.IsPrivileged) {
-                return searchFilters;
-            }
+         if (request.currentClient?.IsPrivileged) {
+             return searchFilters;
+         }
     
-            if (searchFilters.TenantId != null) {
-                if (searchFilters.TenantId !== request.currentUser.TenantId) {
-                    throw new ApiError(403, 'Forbidden');
-                }
-            }
-            else {
-                searchFilters.TenantId = request.currentUser.TenantId;
-            }
-            return searchFilters;
-        };
+         if (searchFilters.TenantId != null) {
+             if (searchFilters.TenantId !== request.currentUser.TenantId) {
+                 throw new ApiError(403, 'Forbidden');
+             }
+         }
+         else {
+             searchFilters.TenantId = request.currentUser.TenantId;
+         }
+         return searchFilters;
+     };
 
-    //This function returns a response DTO which is enriched with available resource data
+     //This function returns a response DTO which is enriched with available resource data
 
     getEnrichedDto = (record) => {
         if (record == null) {
@@ -182,7 +183,7 @@ export class ParticipantControllerDelegate {
             Country                : record.Country,
             AddedByUserId          : record.AddedByUserId,
             LastUpdatedByUserId    : record.LastUpdatedByUserId,
-            TenantId              : record.TenantId,
+            TenantId               : record.TenantId,
         };
     };
 
@@ -205,7 +206,7 @@ export class ParticipantControllerDelegate {
             Gender                 : record.Gender,
             BirthDate              : record.BirthDate,
             Country                : record.Country,
-            TenantId              : record.TenantId,
+            TenantId               : record.TenantId,
         };
     };
 

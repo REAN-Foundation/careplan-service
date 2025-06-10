@@ -130,23 +130,23 @@ export class CareplanCategoryControllerDelegate {
     };
 
     authorizeSearch = async (
-            request: express.Request,
-            searchFilters: CareplanCategorySearchFilters): Promise<CareplanCategorySearchFilters> => {
+        request: express.Request,
+        searchFilters: CareplanCategorySearchFilters): Promise<CareplanCategorySearchFilters> => {
     
-            if (request.currentClient?.IsPrivileged) {
-                return searchFilters;
-            }
-    
-            if (searchFilters.TenantId != null) {
-                if (searchFilters.TenantId !== request.currentUser.TenantId) {
-                    throw new ApiError(403, 'Forbidden');
-                }
-            }
-            else {
-                searchFilters.TenantId = request.currentUser.TenantId;
-            }
+        if (request.currentClient?.IsPrivileged) {
             return searchFilters;
-        };
+        }
+    
+        if (searchFilters.TenantId != null) {
+            if (searchFilters.TenantId !== request.currentUser.TenantId) {
+                throw new ApiError(403, 'Forbidden');
+            }
+        }
+        else {
+            searchFilters.TenantId = request.currentUser.TenantId;
+        }
+        return searchFilters;
+    };
 
     //This function returns a response DTO which is enriched with available resource data
 
@@ -158,7 +158,7 @@ export class CareplanCategoryControllerDelegate {
             id          : record.id,
             Type        : record.Type,
             Description : record.Description,
-            TenantId              : record.TenantId,
+            TenantId    : record.TenantId,
         };
     };
 

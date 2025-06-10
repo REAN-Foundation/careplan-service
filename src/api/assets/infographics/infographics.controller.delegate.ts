@@ -61,7 +61,7 @@ export class InfographicsControllerDelegate {
     search = async (request: express.Request) => {
         await validator.validateSearchRequest(request.query);
         var filters: InfographicsSearchFilters = this.getSearchFilters(request.query);
-         filters = await this.authorizeSearch(request, filters);
+        filters = await this.authorizeSearch(request, filters);
         var searchResults: InfographicsSearchResults = await this._service.search(filters);
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
@@ -176,23 +176,23 @@ export class InfographicsControllerDelegate {
     };
 
     authorizeSearch = async (
-            request: express.Request,
-            searchFilters: InfographicsSearchFilters): Promise<InfographicsSearchFilters> => {
+        request: express.Request,
+        searchFilters: InfographicsSearchFilters): Promise<InfographicsSearchFilters> => {
     
-            if (request.currentClient?.IsPrivileged) {
-                return searchFilters;
-            }
-    
-            if (searchFilters.TenantId != null) {
-                if (searchFilters.TenantId !== request.currentUser.TenantId) {
-                    throw new ApiError(403, 'Forbidden');
-                }
-            }
-            else {
-                searchFilters.TenantId = request.currentUser.TenantId;
-            }
+        if (request.currentClient?.IsPrivileged) {
             return searchFilters;
-        };
+        }
+    
+        if (searchFilters.TenantId != null) {
+            if (searchFilters.TenantId !== request.currentUser.TenantId) {
+                throw new ApiError(403, 'Forbidden');
+            }
+        }
+        else {
+            searchFilters.TenantId = request.currentUser.TenantId;
+        }
+        return searchFilters;
+    };
 
     getEnrichedDto = (record) => {
         if (record == null) {

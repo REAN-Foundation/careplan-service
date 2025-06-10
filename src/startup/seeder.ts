@@ -50,35 +50,6 @@ export class Seeder {
         await Helper.createTempUploadFolder();
     };
 
-    // private seedRolePrivileges = async () => {
-    //     try {
-    //         const arr = RolePrivilegesList['default'];
-    //         for (let i = 0; i < arr.length; i++) {
-    //             const rp = arr[i];
-    //             const roleName = rp['Role'];
-    //             const privileges = rp['Privileges'];
-
-    //             const role = await this._roleService.getByName(roleName);
-    //             if (role == null) {
-    //                 continue;
-    //             }
-    //             for (const privilege of privileges) {
-    //                 const exists = await this._rolePrivilegeService.hasPrivilegeForRole(role.id, privilege);
-    //                 if (!exists) {
-    //                     await this._rolePrivilegeService.create({
-    //                         RoleId    : role.id,
-    //                         RoleName  : role.RoleName,
-    //                         Privilege : privilege,
-    //                     });
-    //                 }
-    //             }
-    //         }
-    //     } catch (error) {
-    //         Logger.instance().log('Error occurred while seeding role-privileges!');
-    //     }
-    //     Logger.instance().log('Seeded role-privileges successfully!');
-    // };
-
     private seedDefaultUsers = async () => {
 
         const defaultUsers = this.loadJSONSeedFile('default.users.seed.json');

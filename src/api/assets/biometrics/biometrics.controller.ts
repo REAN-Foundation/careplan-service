@@ -26,7 +26,6 @@ export class BiometricsController extends BaseController {
 
     create = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            // await this.authorize('Biometrics.Create', request, response);
             if (request.currentUser) {
                 request.body.OwnerUserId = request.currentUser.UserId;
             }
@@ -40,7 +39,6 @@ export class BiometricsController extends BaseController {
 
     getById = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            // await this.authorize('Biometrics.GetById', request, response);
             const record = await this._delegate.getById(request.params.id);
             const message = 'Biometrics retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, record);
@@ -51,7 +49,6 @@ export class BiometricsController extends BaseController {
 
     search = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            // await this.authorize('Biometrics.Search', request, response);
             const searchResults = await this._delegate.search(request);
             const message = 'Biometrics records retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, searchResults);

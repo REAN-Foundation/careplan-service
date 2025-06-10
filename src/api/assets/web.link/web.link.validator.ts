@@ -38,7 +38,7 @@ export class WebLinkValidator {
                 Url         : joi.string().optional().allow(null, ''),
                 Tags        : joi.array().items(joi.string()).optional(),
                 Version     : joi.string().max(128).optional(),
-                TenantId : joi.string().guid({
+                TenantId    : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
 
@@ -59,7 +59,7 @@ export class WebLinkValidator {
                 assetCategory : joi.string().max(128).optional(),
                 tags          : joi.array().items(joi.string()).optional(),
                 version       : joi.string().max(128).optional(),
-                tenantId      : joi.string().guid({version : ['uuidv4']}).optional(),
+                tenantId      : joi.string().guid({ version: ['uuidv4'] }).optional(),
                 order         : joi.string().max(128).optional(),
                 orderBy       : joi.string().max(128).optional(),
                 itemsPerPage  : joi.number().max(128).optional(),
