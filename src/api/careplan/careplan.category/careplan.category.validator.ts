@@ -10,7 +10,7 @@ export class CareplanCategoryValidator {
             const schema = joi.object({
                 Type        : joi.string().max(256).required(),
                 Description : joi.string().max(512).optional(),
-                TenantId    : joi.string().guid({version : ['uuidv4']}).optional(),
+                TenantId    : joi.string().guid({ version: ['uuidv4'] }).optional(),
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -23,7 +23,7 @@ export class CareplanCategoryValidator {
             const schema = joi.object({
                 type        : joi.string().max(256).optional(),
                 description : joi.string().max(512).optional(),
-                tenantId    : joi.string().guid({version : ['uuidv4']}).optional(),
+                tenantId    : joi.string().guid({ version: ['uuidv4'] }).optional(),
             });
             return await schema.validateAsync(query);
 
@@ -37,7 +37,7 @@ export class CareplanCategoryValidator {
             const schema = joi.object({
                 Type        : joi.string().max(256).optional(),
                 Description : joi.string().max(512).optional(),
-                TenantId    : joi.string().guid({version : ['uuidv4']}).optional(),
+                TenantId    : joi.string().guid({ version: ['uuidv4'] }).optional(),
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {

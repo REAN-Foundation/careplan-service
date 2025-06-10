@@ -75,7 +75,7 @@ export class CareplanCategoryService {
                 search.where['Type'] = {
                     [Op.like] : '%' + filters.Type + '%'
                 };
-            };
+            }
             
             if (filters.TenantId) {
                 search.where['TenantId'] = filters.TenantId;
