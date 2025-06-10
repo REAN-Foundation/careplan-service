@@ -26,7 +26,6 @@ export class AppointmentController extends BaseController {
 
     create = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            // await this.authorize('Appointment.Create', request, response);
             if (request.currentUser) {
                 request.body.OwnerUserId = request.currentUser.UserId;
             }
@@ -40,7 +39,6 @@ export class AppointmentController extends BaseController {
 
     getById = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            // await this.authorize('Appointment.GetById', request, response);
             const record = await this._delegate.getById(request.params.id);
             const message = 'Appointment retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, record);
@@ -51,7 +49,6 @@ export class AppointmentController extends BaseController {
 
     search = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            // await this.authorize('Appointment.Search', request, response);
             const searchResults = await this._delegate.search(request);
             const message = 'Appointment records retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, searchResults);
@@ -62,7 +59,6 @@ export class AppointmentController extends BaseController {
 
     update = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            // await this.authorize('Appointment.Update', request, response);
             const updatedRecord = await this._delegate.update(request.params.id, request.body);
             const message = 'Appointment updated successfully!';
             ResponseHandler.success(request, response, message, 200, updatedRecord);
@@ -73,7 +69,6 @@ export class AppointmentController extends BaseController {
 
     delete = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            // await this.authorize('Appointment.Delete', request, response);
             const result = await this._delegate.delete(request.params.id);
             const message = 'Appointment deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);

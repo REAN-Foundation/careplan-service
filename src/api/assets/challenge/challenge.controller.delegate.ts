@@ -168,23 +168,23 @@ export class ChallengeControllerDelegate {
     };
 
     authorizeSearch = async (
-            request: express.Request,
-            searchFilters: ChallengeSearchFilters): Promise<ChallengeSearchFilters> => {
+        request: express.Request,
+        searchFilters: ChallengeSearchFilters): Promise<ChallengeSearchFilters> => {
     
-            if (request.currentClient?.IsPrivileged) {
-                return searchFilters;
-            }
-    
-            if (searchFilters.TenantId != null) {
-                if (searchFilters.TenantId !== request.currentUser.TenantId) {
-                    throw new ApiError(403, 'Forbidden');
-                }
-            }
-            else {
-                searchFilters.TenantId = request.currentUser.TenantId;
-            }
+        if (request.currentClient?.IsPrivileged) {
             return searchFilters;
-        };
+        }
+    
+        if (searchFilters.TenantId != null) {
+            if (searchFilters.TenantId !== request.currentUser.TenantId) {
+                throw new ApiError(403, 'Forbidden');
+            }
+        }
+        else {
+            searchFilters.TenantId = request.currentUser.TenantId;
+        }
+        return searchFilters;
+    };
 
     getEnrichedDto = (record) => {
         if (record == null) {
@@ -197,7 +197,7 @@ export class ChallengeControllerDelegate {
             Description   : record.Description,
             AssetCategory : record.AssetCategory,
             OwnerUserId   : record.OwnerUserId,
-            TenantId              : record.TenantId,
+            TenantId      : record.TenantId,
             Tags          : JSON.parse(record.Tags),
             Version       : record.Version
         };
@@ -214,7 +214,7 @@ export class ChallengeControllerDelegate {
             Description   : record.Description,
             AssetCategory : record.AssetCategory,
             OwnerUserId   : record.OwnerUserId,
-            TenantId              : record.TenantId,
+            TenantId      : record.TenantId,
             Tags          : JSON.parse(record.Tags),
             Version       : record.Version,
             CreatedAt     : record.CreatedAt,

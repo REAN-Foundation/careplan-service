@@ -176,7 +176,7 @@ export class BiometricsControllerDelegate {
             Description     : requestBody.Description ? requestBody.Description : null,
             BiometricsType  : requestBody.BiometricsType ? requestBody.BiometricsType : 'Other',
             MeasurementUnit : requestBody.MeasurementUnit ? requestBody.MeasurementUnit : null,
-            TenantId    : requestBody.TenantId ? requestBody.TenantId : null,
+            TenantId        : requestBody.TenantId ? requestBody.TenantId : null,
             Tags            : requestBody.Tags ? JSON.stringify(requestBody.Tags) as string : JSON.stringify([]),
             Version         : requestBody.Version ? requestBody.Version : 'V1',
             OwnerUserId     : requestBody.OwnerUserId
@@ -184,23 +184,23 @@ export class BiometricsControllerDelegate {
     };
 
     authorizeSearch = async (
-            request: express.Request,
-            searchFilters: BiometricsSearchFilters): Promise<BiometricsSearchFilters> => {
+        request: express.Request,
+        searchFilters: BiometricsSearchFilters): Promise<BiometricsSearchFilters> => {
     
-            if (request.currentClient?.IsPrivileged) {
-                return searchFilters;
-            }
-    
-            if (searchFilters.TenantId != null) {
-                if (searchFilters.TenantId !== request.currentUser.TenantId) {
-                    throw new ApiError(403, 'Forbidden');
-                }
-            }
-            else {
-                searchFilters.TenantId = request.currentUser.TenantId;
-            }
+        if (request.currentClient?.IsPrivileged) {
             return searchFilters;
-        };
+        }
+    
+        if (searchFilters.TenantId != null) {
+            if (searchFilters.TenantId !== request.currentUser.TenantId) {
+                throw new ApiError(403, 'Forbidden');
+            }
+        }
+        else {
+            searchFilters.TenantId = request.currentUser.TenantId;
+        }
+        return searchFilters;
+    };
 
     getEnrichedDto = (record) => {
         if (record == null) {

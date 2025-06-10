@@ -1,6 +1,5 @@
 import express from 'express';
 import { CareplanCategoryController } from './careplan.category.controller';
-import { Loader } from '../../../startup/loader';
 import { CareplanCategoryAuth } from './careplan.category.auth';
 import { auth } from '../../../auth/auth.handler';
 
@@ -9,7 +8,6 @@ import { auth } from '../../../auth/auth.handler';
 export const register = (app: express.Application): void => {
 
     const router = express.Router();
-    // const authenticator = Loader.Authenticator;
     const controller = new CareplanCategoryController();
 
     router.post('/', auth(CareplanCategoryAuth.create), controller.create);
@@ -18,11 +16,5 @@ export const register = (app: express.Application): void => {
     router.put('/:id', auth(CareplanCategoryAuth.update), controller.update);
     router.delete('/:id', auth(CareplanCategoryAuth.delete), controller.delete);
     
-    // router.post('/', authenticator.authenticateUser, controller.create);
-    // router.get('/search', authenticator.authenticateClientOrUser, controller.search);
-    // router.get('/:id', authenticator.authenticateClientOrUser, controller.getById);
-    // router.put('/:id', authenticator.authenticateUser, controller.update);
-    // router.delete('/:id', authenticator.authenticateUser, controller.delete);
-
     app.use('/api/v1/careplan-categories', router);
 };

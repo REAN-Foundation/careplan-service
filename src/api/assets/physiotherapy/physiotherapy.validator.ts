@@ -56,7 +56,7 @@ export class PhysiotherapyValidator {
                 description            : joi.string().optional(),
                 recommendedDurationMin : joi.number().integer().optional(),
                 assetCategory          : joi.string().max(128).optional(),
-                tenantId               : joi.string().guid({version : ['uuidv4']}).optional(),
+                tenantId               : joi.string().guid({ version: ['uuidv4'] }).optional(),
                 tags                   : joi.array().items(joi.string()).optional(),
                 version                : joi.string().max(128).optional(),
                 order                  : joi.string().max(128).optional(),

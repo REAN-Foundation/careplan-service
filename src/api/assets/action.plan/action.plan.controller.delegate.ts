@@ -59,14 +59,14 @@ export class ActionPlanControllerDelegate {
     };
 
      search = async (request: express.Request) => {
-            await validator.validateSearchRequest(request.query);
-            var filters: ActionPlanSearchFilters = this.getSearchFilters(request.query);
-            filters = await this.authorizeSearch(request, filters);
-            var searchResults: ActionPlanSearchResults = await this._service.search(filters);
-            var items = searchResults.Items.map(x => this.getSearchDto(x));
-            searchResults.Items = items;
-            return searchResults;
-        };
+         await validator.validateSearchRequest(request.query);
+         var filters: ActionPlanSearchFilters = this.getSearchFilters(request.query);
+         filters = await this.authorizeSearch(request, filters);
+         var searchResults: ActionPlanSearchResults = await this._service.search(filters);
+         var items = searchResults.Items.map(x => this.getSearchDto(x));
+         searchResults.Items = items;
+         return searchResults;
+     };
 
     update = async (id: uuid, requestBody: any) => {
         await validator.validateUpdateRequest(requestBody);
@@ -197,7 +197,7 @@ export class ActionPlanControllerDelegate {
             Description   : record.Description,
             AssetCategory : record.AssetCategory,
             OwnerUserId   : record.OwnerUserId,
-            TenantId    : record.TenantId,
+            TenantId      : record.TenantId,
             Tags          : JSON.parse(record.Tags),
             Version       : record.Version
         };

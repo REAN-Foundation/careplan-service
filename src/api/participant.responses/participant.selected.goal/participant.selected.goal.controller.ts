@@ -26,7 +26,6 @@ export class ParticipantSelectedGoalController extends BaseController {
 
     create = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            // await this.authorize('ParticipantSelectedGoal.Create', request, response, false);
             const record = await this._delegate.create(request.body);
             const message = 'Participant selected goal added successfully!';
             ResponseHandler.success(request, response, message, 201, record);
@@ -37,7 +36,6 @@ export class ParticipantSelectedGoalController extends BaseController {
 
     getById = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            // await this.authorize('ParticipantSelectedGoal.GetById', request, response, false);
             const record = await this._delegate.getById(request.params.id);
             const message = 'Participant selected goal retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, record);
@@ -48,7 +46,6 @@ export class ParticipantSelectedGoalController extends BaseController {
 
     search = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            // await this.authorize('ParticipantSelectedGoal.Search', request, response, false);
             const searchResults = await this._delegate.search(request.query);
             const message = 'Participant selected goal records retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, searchResults);
@@ -59,7 +56,6 @@ export class ParticipantSelectedGoalController extends BaseController {
 
     update = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            // await this.authorize('ParticipantSelectedGoal.Update', request, response, false);
             const updatedRecord = await this._delegate.update(request.params.id, request.body);
             const message = 'Participant selected goal updated successfully!';
             ResponseHandler.success(request, response, message, 200, updatedRecord);
@@ -70,7 +66,6 @@ export class ParticipantSelectedGoalController extends BaseController {
 
     delete = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            // await this.authorize('ParticipantSelectedGoal.Delete', request, response, false);
             const result = await this._delegate.delete(request.params.id);
             const message = 'Participant selected goal deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);

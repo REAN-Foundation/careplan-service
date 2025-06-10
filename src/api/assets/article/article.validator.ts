@@ -20,8 +20,8 @@ export class ArticleValidator {
                     version : ['uuidv4']
                 }).optional(),
                 TenantId : joi.string().guid({
-                                    version : ['uuidv4']
-                                }).optional()
+                    version : ['uuidv4']
+                }).optional()
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -38,9 +38,9 @@ export class ArticleValidator {
                 Url       : joi.string().optional().allow(null, ''),
                 Tags      : joi.array().items(joi.string()).optional(),
                 Version   : joi.string().max(128).optional(),
-                TenantId : joi.string().guid({
-                                    version : ['uuidv4']
-                                }).optional(),
+                TenantId  : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -58,13 +58,13 @@ export class ArticleValidator {
                 assetCategory : joi.string().max(128).optional(),
                 tags          : joi.array().items(joi.string()).optional(),
                 version       : joi.string().max(128).optional(),
-                tenantId : joi.string().guid({
-                                    version : ['uuidv4']
-                                }).optional(),
-                order         : joi.string().max(128).optional(),
-                orderBy       : joi.string().max(128).optional(),
-                itemsPerPage  : joi.number().max(128).optional(),
-                pageIndex     : joi.number().max(128).optional(),
+                tenantId      : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
+                order        : joi.string().max(128).optional(),
+                orderBy      : joi.string().max(128).optional(),
+                itemsPerPage : joi.number().max(128).optional(),
+                pageIndex    : joi.number().max(128).optional(),
                
             });
             return await schema.validateAsync(query);

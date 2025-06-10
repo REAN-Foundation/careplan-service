@@ -179,7 +179,7 @@ export class AssessmentControllerDelegate {
             Template              : requestBody.Template ? requestBody.Template : '{}',
             ReferenceTemplateCode : requestBody.ReferenceTemplateCode ? requestBody.ReferenceTemplateCode : null,
             ReferenceTemplateId   : requestBody.ReferenceTemplateId ? requestBody.ReferenceTemplateId : null,
-            TenantId    : requestBody.TenantId ? requestBody.TenantId : null,
+            TenantId              : requestBody.TenantId ? requestBody.TenantId : null,
             Tags                  : requestBody.Tags ? JSON.stringify(requestBody.Tags) as string : JSON.stringify([]),
             Version               : requestBody.Version ? requestBody.Version : 'V1',
             OwnerUserId           : requestBody.OwnerUserId
@@ -187,24 +187,23 @@ export class AssessmentControllerDelegate {
     };
 
     authorizeSearch = async (
-                request: express.Request,
-                searchFilters: AssessmentSearchFilters): Promise<AssessmentSearchFilters> => {
+        request: express.Request,
+        searchFilters: AssessmentSearchFilters): Promise<AssessmentSearchFilters> => {
         
-                if (request.currentClient?.IsPrivileged) {
-                    return searchFilters;
-                }
+        if (request.currentClient?.IsPrivileged) {
+            return searchFilters;
+        }
         
-                if (searchFilters.TenantId != null) {
-                    if (searchFilters.TenantId !== request.currentUser.TenantId) {
-                        throw new ApiError(403, 'Forbidden');
-                    }
-                }
-                else {
-                    searchFilters.TenantId = request.currentUser.TenantId;
-                }
-                return searchFilters;
-            };
-    
+        if (searchFilters.TenantId != null) {
+            if (searchFilters.TenantId !== request.currentUser.TenantId) {
+                throw new ApiError(403, 'Forbidden');
+            }
+        }
+        else {
+            searchFilters.TenantId = request.currentUser.TenantId;
+        }
+        return searchFilters;
+    };
 
     getEnrichedDto = (record) => {
         if (record == null) {

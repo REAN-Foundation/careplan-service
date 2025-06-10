@@ -42,7 +42,7 @@ export class ExerciseValidator {
                 RecommendedDurationMin : joi.number().integer().optional(),
                 Tags                   : joi.array().items(joi.string()).optional(),
                 Version                : joi.string().max(128).optional(),
-                TenantId               : joi.string().guid({version : ['uuidv4']}).optional(),
+                TenantId               : joi.string().guid({ version: ['uuidv4'] }).optional(),
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -60,7 +60,7 @@ export class ExerciseValidator {
                 intensityLevel         : joi.string().valid("None", "Minimal", "Moderate", "Somewhat hard", "Hard", "Harder", "Very hard", "Extremely hard", "Maximum effort").optional(),
                 recommendedDurationMin : joi.number().integer().optional(),
                 assetCategory          : joi.string().max(128).optional(),
-                tenantId               : joi.string().guid({version : ['uuidv4']}).optional(),
+                tenantId               : joi.string().guid({ version: ['uuidv4'] }).optional(),
                 tags                   : joi.array().items(joi.string()).optional(),
                 version                : joi.string().max(128).optional(),
                 order                  : joi.string().max(128).optional(),
