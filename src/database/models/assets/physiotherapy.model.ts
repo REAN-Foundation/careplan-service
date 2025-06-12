@@ -52,10 +52,8 @@ export class PhysiotherapyModel {
             defaultValue : 'Exercise'
         },
         OwnerUserId : {
-            type       : DataTypes.UUID,
-            allowNull  : false,
-            foreignKey : true,
-            unique     : false
+            type      : DataTypes.UUID,
+            allowNull : true
         },
         Tags : {
             type         : DataTypes.TEXT,
@@ -86,15 +84,9 @@ export class PhysiotherapyModel {
             tableName       : PhysiotherapyModel.TableName,
         });
 
-    static associate = (models) => {
+    static associate = () => {
 
         //Add associations here...
-
-        models.Physiotherapy.belongsTo(models.User, {
-            sourceKey : 'OwnerUserId',
-            targetKey : 'id',
-            as        : 'OwnerUser'
-        });
 
     };
 
