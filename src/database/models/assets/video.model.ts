@@ -57,10 +57,8 @@ export class VideoModel {
             defaultValue : 'Educational'
         },
         OwnerUserId : {
-            type       : DataTypes.UUID,
-            allowNull  : false,
-            foreignKey : true,
-            unique     : false
+            type      : DataTypes.UUID,
+            allowNull : true
         },
         Tags : {
             type         : DataTypes.TEXT,
@@ -99,12 +97,6 @@ export class VideoModel {
             sourceKey : 'FileResourceId',
             targetKey : 'id',
             as        : 'FileResource'
-        });
-
-        models.Video.belongsTo(models.User, {
-            sourceKey : 'OwnerUserId',
-            targetKey : 'id',
-            as        : 'OwnerUser'
         });
 
     };
