@@ -134,6 +134,7 @@
     "Enrollment.Create",
     "Enrollment.Search",
     "Enrollment.GetById",
+    "Enrollment.GetEnrollmentStats",
     "Enrollment.Update",
     "Enrollment.Delete",
     "EnrollmentTask.Search",

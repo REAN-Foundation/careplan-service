@@ -38,16 +38,23 @@ export class EnrollmentAuth {
 
     static readonly search: AuthOptions = {
         ...DefaultAuthOptions,
-        Context             : `${this._baseContext}.Search`,
-        Ownership           : ResourceOwnership.System,
-        ActionScope         : ActionScope.Public,
-        RequestType         : RequestType.Search,
-        CustomAuthorization : true,
+        Context     : `${this._baseContext}.Search`,
+        Ownership   : ResourceOwnership.System,
+        ActionScope : ActionScope.Public,
+        RequestType : RequestType.Search,
     };
 
     static readonly getById: AuthOptions = {
         ...DefaultAuthOptions,
         Context     : `${this._baseContext}.GetById`,
+        Ownership   : ResourceOwnership.System,
+        ActionScope : ActionScope.Public,
+        RequestType : RequestType.GetOne,
+    };
+
+    static readonly getEnrollmentStats: AuthOptions = {
+        ...DefaultAuthOptions,
+        Context     : `${this._baseContext}.GetEnrollmentStats`,
         Ownership   : ResourceOwnership.System,
         ActionScope : ActionScope.Public,
         RequestType : RequestType.GetOne,

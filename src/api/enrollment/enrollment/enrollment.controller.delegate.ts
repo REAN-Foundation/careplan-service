@@ -1,4 +1,5 @@
 /* eslint-disable key-spacing */
+import express from 'express';
 import {
     EnrollmentService
 } from '../../../database/repository.services/enrollment/enrollment.service';
@@ -109,9 +110,10 @@ export class EnrollmentControllerDelegate {
         return this.getEnrichedDto(record);
     };
 
-    search = async (query: any) => {
-        await validator.validateSearchRequest(query);
-        var filters: EnrollmentSearchFilters = this.getSearchFilters(query);
+    search = async (request:express.Request ) => {
+        await validator.validateSearchRequest(request.query);
+        var filters: EnrollmentSearchFilters = this.getSearchFilters(request.query);
+        filters = await this.authorizeSearch(request, filters);
         var searchResults: EnrollmentSearchResults = await this._service.search(filters);
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
@@ -314,7 +316,8 @@ export class EnrollmentControllerDelegate {
 
     getSearchFilters = (query) => {
 
-        var filters = {};
+        // var filters = {};
+        var filters = Helper.getDefaultSearchFilters(query);
 
         var careplanId = query.careplanId ? query.careplanId : null;
         if (careplanId != null) {
@@ -480,6 +483,25 @@ export class EnrollmentControllerDelegate {
             TotalWeek    : record.TotalWeek
             
         };
+    };
+
+    authorizeSearch = async (
+        request: express.Request,
+        searchFilters: EnrollmentSearchFilters): Promise<EnrollmentSearchFilters> => {
+            
+        if (request.currentClient?.IsPrivileged) {
+            return searchFilters;
+        }
+            
+        if (searchFilters.TenantId != null) {
+            if (searchFilters.TenantId !== request.currentUser.TenantId) {
+                throw new ApiError(403, 'Forbidden');
+            }
+        }
+        else {
+            searchFilters.TenantId = request.currentUser.TenantId;
+        }
+        return searchFilters;
     };
 
     //#endregion

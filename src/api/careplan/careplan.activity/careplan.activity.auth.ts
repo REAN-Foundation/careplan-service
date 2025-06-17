@@ -38,11 +38,10 @@ export class CareplanActivityAuth {
 
     static readonly search: AuthOptions = {
         ...DefaultAuthOptions,
-        Context             : `${this._baseContext}.Search`,
-        Ownership           : ResourceOwnership.System,
-        ActionScope         : ActionScope.Tenant,
-        RequestType         : RequestType.Search,
-        CustomAuthorization : true,
+        Context     : `${this._baseContext}.Search`,
+        Ownership   : ResourceOwnership.System,
+        ActionScope : ActionScope.Tenant,
+        RequestType : RequestType.Search,
     };
 
     static readonly getById: AuthOptions = {
