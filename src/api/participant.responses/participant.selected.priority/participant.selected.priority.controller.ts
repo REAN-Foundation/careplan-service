@@ -26,7 +26,6 @@ export class ParticipantSelectedPriorityController extends BaseController {
 
     create = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('ParticipantSelectedPriority.Create', request, response, false);
             const record = await this._delegate.create(request.body);
             const message = 'Participant selected priority added successfully!';
             ResponseHandler.success(request, response, message, 201, record);
@@ -37,7 +36,6 @@ export class ParticipantSelectedPriorityController extends BaseController {
 
     getById = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('ParticipantSelectedPriority.GetById', request, response, false);
             const record = await this._delegate.getById(request.params.id);
             const message = 'Participant selected priority retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, record);
@@ -48,7 +46,6 @@ export class ParticipantSelectedPriorityController extends BaseController {
 
     search = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('ParticipantSelectedPriority.Search', request, response, false);
             const searchResults = await this._delegate.search(request.query);
             const message = 'Participant selected priority records retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, searchResults);
@@ -59,7 +56,6 @@ export class ParticipantSelectedPriorityController extends BaseController {
 
     update = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('ParticipantSelectedPriority.Update', request, response, false);
             const updatedRecord = await this._delegate.update(request.params.id, request.body);
             const message = 'Participant selected priority updated successfully!';
             ResponseHandler.success(request, response, message, 200, updatedRecord);
@@ -70,7 +66,6 @@ export class ParticipantSelectedPriorityController extends BaseController {
 
     delete = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('ParticipantSelectedPriority.Delete', request, response, false);
             const result = await this._delegate.delete(request.params.id);
             const message = 'Participant selected priority deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);

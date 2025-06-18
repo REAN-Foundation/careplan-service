@@ -20,6 +20,7 @@ export class AssessmentMapper {
             ReferenceTemplateCode : assessment.ReferenceTemplateCode,
             ReferenceTemplateId   : assessment.ReferenceTemplateId,
             OwnerUserId           : assessment.OwnerUserId,
+            TenantId              : assessment.TenantId,
             Tags                  : assessment.Tags,
             Version               : assessment.Version,
 

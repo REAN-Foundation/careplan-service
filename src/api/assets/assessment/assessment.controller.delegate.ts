@@ -1,3 +1,4 @@
+import express from 'express';
 import {
     AssessmentService
 } from '../../../database/repository.services/assets/assessment.service';
@@ -59,9 +60,10 @@ export class AssessmentControllerDelegate {
         return this.getEnrichedDto(record);
     };
 
-    search = async (query: any) => {
-        await validator.validateSearchRequest(query);
-        var filters: AssessmentSearchFilters = this.getSearchFilters(query);
+    search = async (request: express.Request) => {
+        await validator.validateSearchRequest(request.query);
+        var filters: AssessmentSearchFilters = this.getSearchFilters(request.query);
+        filters = await this.authorizeSearch(request, filters);
         var searchResults: AssessmentSearchResults = await this._service.search(filters);
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
@@ -153,6 +155,9 @@ export class AssessmentControllerDelegate {
         if (Helper.hasProperty(requestBody, 'Template')) {
             updateModel.Template = requestBody.Template;
         }
+        if (Helper.hasProperty(requestBody, 'TenantId')) {
+            updateModel.TenantId = requestBody.TenantId;
+        }
         if (Helper.hasProperty(requestBody, 'Tags')) {
             updateModel.Tags = JSON.stringify(requestBody.Tags);
         }
@@ -174,10 +179,30 @@ export class AssessmentControllerDelegate {
             Template              : requestBody.Template ? requestBody.Template : '{}',
             ReferenceTemplateCode : requestBody.ReferenceTemplateCode ? requestBody.ReferenceTemplateCode : null,
             ReferenceTemplateId   : requestBody.ReferenceTemplateId ? requestBody.ReferenceTemplateId : null,
+            TenantId              : requestBody.TenantId ? requestBody.TenantId : null,
             Tags                  : requestBody.Tags ? JSON.stringify(requestBody.Tags) as string : JSON.stringify([]),
             Version               : requestBody.Version ? requestBody.Version : 'V1',
             OwnerUserId           : requestBody.OwnerUserId
         };
+    };
+
+    authorizeSearch = async (
+        request: express.Request,
+        searchFilters: AssessmentSearchFilters): Promise<AssessmentSearchFilters> => {
+        
+        if (request.currentClient?.IsPrivileged) {
+            return searchFilters;
+        }
+        
+        if (searchFilters.TenantId != null) {
+            if (searchFilters.TenantId !== request.currentUser.TenantId) {
+                throw new ApiError(403, 'Forbidden');
+            }
+        }
+        else {
+            searchFilters.TenantId = request.currentUser.TenantId;
+        }
+        return searchFilters;
     };
 
     getEnrichedDto = (record) => {
@@ -194,6 +219,7 @@ export class AssessmentControllerDelegate {
             ReferenceTemplateCode : record.ReferenceTemplateCode,
             ReferenceTemplateId   : record.ReferenceTemplateId,
             OwnerUserId           : record.OwnerUserId,
+            TenantId              : record.TenantId,
             Tags                  : JSON.parse(record.Tags),
             Version               : record.Version
         };
@@ -213,6 +239,7 @@ export class AssessmentControllerDelegate {
             ReferenceTemplateCode : record.ReferenceTemplateCode,
             ReferenceTemplateId   : record.ReferenceTemplateId,
             OwnerUserId           : record.OwnerUserId,
+            TenantId              : record.TenantId,
             Tags                  : JSON.parse(record.Tags),
             Version               : record.Version,
             CreatedAt             : record.CreatedAt,

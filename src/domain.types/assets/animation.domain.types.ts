@@ -14,6 +14,7 @@ export interface AnimationCreateModel {
     Tags ? : string;
     Version ? : string;
     OwnerUserId?: uuid;
+    TenantId?   : uuid;
 }
 
 export interface AnimationUpdateModel {
@@ -24,6 +25,7 @@ export interface AnimationUpdateModel {
     Tags ? : string;
     Version ? : string;
     OwnerUserId?: uuid;
+    TenantId?   : uuid;
 }
 
 export interface AnimationDto {
@@ -37,6 +39,7 @@ export interface AnimationDto {
     OwnerUserId: uuid;
     Tags: string[];
     Version: string;
+    TenantId   : uuid;
 
 }
 
@@ -49,6 +52,7 @@ export interface AnimationSearchFilters extends BaseSearchFilters {
     Tags ? : string;
     Version ? : string;
     CreatedAt ? : Date;
+    TenantId?   : uuid;
 }
 
 export interface AnimationSearchResults extends BaseSearchResults {

@@ -187,6 +187,9 @@ export class ActionPlanService {
                 [Op.like] : '%' + filters.Version + '%'
             };
         }
+        if (filters.TenantId) {
+            search.where['TenantId'] = filters.TenantId;
+        }
 
         return search;
     };

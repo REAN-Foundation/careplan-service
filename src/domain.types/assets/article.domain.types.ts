@@ -14,6 +14,7 @@ export interface ArticleCreateModel {
     Tags ? : string;
     Version ? : string;
     OwnerUserId?: uuid;
+    TenantId?   : uuid;
 }
 
 export interface ArticleUpdateModel {
@@ -24,6 +25,7 @@ export interface ArticleUpdateModel {
     Tags ? : string;
     Version ? : string;
     OwnerUserId?: uuid;
+    TenantId?   : uuid;
 }
 
 export interface ArticleDto {
@@ -35,6 +37,7 @@ export interface ArticleDto {
     FileResourceId: uuid;
     AssetCategory: string;
     OwnerUserId: uuid;
+    TenantId   : uuid;
     Tags: string[];
     Version: string;
 
@@ -49,6 +52,7 @@ export interface ArticleSearchFilters extends BaseSearchFilters {
     Tags ? : string;
     Version ? : string;
     CreatedAt ? : Date;
+    TenantId?   : uuid;
 }
 
 export interface ArticleSearchResults extends BaseSearchResults {

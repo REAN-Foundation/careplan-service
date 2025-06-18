@@ -1,3 +1,4 @@
+import express from 'express';
 import {
     ConsultationService
 } from '../../../database/repository.services/assets/consultation.service';
@@ -57,9 +58,10 @@ export class ConsultationControllerDelegate {
         return this.getEnrichedDto(record);
     };
 
-    search = async (query: any) => {
-        await validator.validateSearchRequest(query);
-        var filters: ConsultationSearchFilters = this.getSearchFilters(query);
+    search = async (request: express.Request) => {
+        await validator.validateSearchRequest(request.query);
+        var filters: ConsultationSearchFilters = this.getSearchFilters(request.query);
+        filters = await this.authorizeSearch(request, filters);
         var searchResults: ConsultationSearchResults = await this._service.search(filters);
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
@@ -153,6 +155,9 @@ export class ConsultationControllerDelegate {
         if (Helper.hasProperty(requestBody, 'Version')) {
             updateModel.Version = requestBody.Version;
         }
+        if (Helper.hasProperty(requestBody, 'TenantId')) {
+            updateModel.TenantId = requestBody.TenantId;
+        }
 
         return updateModel;
     };
@@ -165,8 +170,29 @@ export class ConsultationControllerDelegate {
             ConsultationType : requestBody.ConsultationType ? requestBody.ConsultationType : 'Tele-consultation',
             Tags             : requestBody.Tags ? JSON.stringify(requestBody.Tags) as string : JSON.stringify([]),
             Version          : requestBody.Version ? requestBody.Version : 'V1',
-            OwnerUserId      : requestBody.OwnerUserId
+            OwnerUserId      : requestBody.OwnerUserId,
+            TenantId         : requestBody.TenantId ? requestBody.TenantId : null,
+
         };
+    };
+    
+    authorizeSearch = async (
+        request: express.Request,
+        searchFilters: ConsultationSearchFilters): Promise<ConsultationSearchFilters> => {
+    
+        if (request.currentClient?.IsPrivileged) {
+            return searchFilters;
+        }
+    
+        if (searchFilters.TenantId != null) {
+            if (searchFilters.TenantId !== request.currentUser.TenantId) {
+                throw new ApiError(403, 'Forbidden');
+            }
+        }
+        else {
+            searchFilters.TenantId = request.currentUser.TenantId;
+        }
+        return searchFilters;
     };
 
     getEnrichedDto = (record) => {
@@ -181,6 +207,7 @@ export class ConsultationControllerDelegate {
             ConsultationType : record.ConsultationType,
             AssetCategory    : record.AssetCategory,
             OwnerUserId      : record.OwnerUserId,
+            TenantId         : record.TenantId,
             Tags             : JSON.parse(record.Tags),
             Version          : record.Version
         };
@@ -198,6 +225,7 @@ export class ConsultationControllerDelegate {
             ConsultationType : record.ConsultationType,
             AssetCategory    : record.AssetCategory,
             OwnerUserId      : record.OwnerUserId,
+            TenantId         : record.TenantId,
             Tags             : JSON.parse(record.Tags),
             Version          : record.Version,
             CreatedAt        : record.CreatedAt,

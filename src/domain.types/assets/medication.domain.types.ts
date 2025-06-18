@@ -13,6 +13,7 @@ export interface MedicationCreateModel {
     Tags ? : string;
     Version ? : string;
     OwnerUserId ? : uuid;
+    TenantId?: uuid;
 }
 
 export interface MedicationUpdateModel {
@@ -22,6 +23,7 @@ export interface MedicationUpdateModel {
     Tags ? : string;
     Version ? : string;
     OwnerUserId ? : uuid;
+    TenantId?: uuid;
 }
 
 export interface MedicationDto {
@@ -31,6 +33,7 @@ export interface MedicationDto {
     Description: string;
     AssetCategory: string;
     OwnerUserId: uuid;
+    TenantId: uuid;
     Tags: string[];
     Version: string;
 
@@ -43,6 +46,7 @@ export interface MedicationSearchFilters extends BaseSearchFilters {
     AssetCategory ? : string;
     Tags ? : string;
     Version ? : string;
+    TenantId?: uuid;
     CreatedAt ? : Date;
 }
 

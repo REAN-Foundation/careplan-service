@@ -19,6 +19,7 @@ export class MeditationMapper {
             RecommendedDurationMin : meditation.RecommendedDurationMin,
             AssetCategory          : meditation.AssetCategory,
             OwnerUserId            : meditation.OwnerUserId,
+            TenantId               : meditation.TenantId,
             Tags                   : meditation.Tags,
             Version                : meditation.Version,
 

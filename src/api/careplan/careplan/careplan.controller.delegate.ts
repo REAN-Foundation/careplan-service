@@ -42,9 +42,10 @@ export class CareplanControllerDelegate {
         return this.getEnrichedDto(record);
     };
 
-    search = async (query: any) => {
-        await validator.validateSearchRequest(query);
-        var filters: CareplanSearchFilters = this.getSearchFilters(query);
+    search = async (request: express.Request) => {
+        await validator.validateSearchRequest(request.query);
+        var filters: CareplanSearchFilters = this.getSearchFilters(request.query);
+        filters = await this.authorizeSearch(request, filters);
         var searchResults: CareplanSearchResults = await this._service.search(filters);
         var items = searchResults.Items.map(x => this.getPublicDto(x));
         searchResults.Items = items;
@@ -146,6 +147,10 @@ export class CareplanControllerDelegate {
         if (ownerUserId != null) {
             filters['OwnerUserId'] = ownerUserId;
         }
+        // var tenantId = query.tenantId ? query.tenantId : null;
+        // if (tenantId != null) {
+        //     filters['TenantId'] = tenantId;
+        // }
         var tags = query.tags ? query.tags : null;
         if (tags != null) {
             filters['Tags'] = tags;
@@ -195,6 +200,9 @@ export class CareplanControllerDelegate {
         if (Helper.hasProperty(requestBody, 'OwnerUserId')) {
             updateModel.OwnerUserId = requestBody.OwnerUserId;
         }
+        if (Helper.hasProperty(requestBody, 'TenantId')) {
+            updateModel.TenantId = requestBody.TenantId;
+        }
         if (Helper.hasProperty(requestBody, 'Tags')) {
             updateModel.Tags = JSON.stringify(requestBody.Tags);
         }
@@ -209,8 +217,28 @@ export class CareplanControllerDelegate {
             Description : requestBody.Description ? requestBody.Description : null,
             Version     : requestBody.Version ? requestBody.Version : 'V1',
             OwnerUserId : requestBody.OwnerUserId ? requestBody.OwnerUserId : null,
+            TenantId    : requestBody.TenantId ? requestBody.TenantId : null,
             Tags        : requestBody.Tags ? JSON.stringify(requestBody.Tags) as string : JSON.stringify([]),
         };
+    };
+
+    authorizeSearch = async (
+        request: express.Request,
+        searchFilters: CareplanSearchFilters): Promise<CareplanSearchFilters> => {
+
+        if (request.currentClient?.IsPrivileged) {
+            return searchFilters;
+        }
+
+        if (searchFilters.TenantId != null) {
+            if (searchFilters.TenantId !== request.currentUser.TenantId) {
+                throw new ApiError(403, 'Forbidden');
+            }
+        }
+        else {
+            searchFilters.TenantId = request.currentUser.TenantId;
+        }
+        return searchFilters;
     };
 
     //This function returns a response DTO which is enriched with available resource data
@@ -227,6 +255,7 @@ export class CareplanControllerDelegate {
             Description : record.Description,
             Version     : record.Version,
             OwnerUserId : record.OwnerUserId,
+            TenantId    : record.TenantId,
             Tags        : JSON.parse(record.Tags),
             IsActive    : record.IsActive,
             CreatedAt   : record.CreatedAt,
@@ -249,6 +278,7 @@ export class CareplanControllerDelegate {
             Description : record.Description,
             Version     : record.Version,
             OwnerUserId : record.OwnerUserId,
+            TenantId    : record.TenantId,
             Tags        : JSON.parse(record.Tags),
             IsActive    : record.IsActive,
             CreatedAt   : record.CreatedAt,

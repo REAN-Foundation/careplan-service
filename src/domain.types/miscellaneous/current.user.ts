@@ -8,4 +8,6 @@ export interface CurrentUser {
     CurrentRoleId   : number;
     CurrentRoleName?: string;
     SessionId       : string;
+    TenantId        : string;
+    TenantName      : string;
 }

@@ -28,6 +28,7 @@ export interface AppointmentCreateModel {
     Tags            ?: string;
     Version         ?: string;
     OwnerUserId?: uuid;
+    TenantId?   : uuid;
 }
 
 export interface AppointmentUpdateModel {
@@ -38,6 +39,7 @@ export interface AppointmentUpdateModel {
     Tags ? : string;
     Version ? : string;
     OwnerUserId?: uuid;
+    TenantId?   : uuid;
 }
 
 export interface AppointmentDto {
@@ -48,6 +50,7 @@ export interface AppointmentDto {
     AppointmentType: AppointmentType;
     AssetCategory: string;
     OwnerUserId: uuid;
+    TenantId   : uuid;
     Tags: string[];
     Version: string;
 
@@ -60,6 +63,7 @@ export interface AppointmentSearchFilters extends BaseSearchFilters {
     AppointmentType ? : AppointmentType;
     AssetCategory ? : string;
     Tags ? : string;
+    TenantId?   : uuid;
     Version ? : string;
     CreatedAt ? : Date;
 }

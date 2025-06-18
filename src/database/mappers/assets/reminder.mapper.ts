@@ -17,6 +17,7 @@ export class ReminderMapper {
             Description   : reminder.Description,
             AssetCategory : reminder.AssetCategory,
             OwnerUserId   : reminder.OwnerUserId,
+            TenantId      : reminder.TenantId,
             Tags          : reminder.Tags,
             Version       : reminder.Version,
 

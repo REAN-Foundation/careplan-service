@@ -26,7 +26,6 @@ export class PhysiotherapyController extends BaseController {
 
     create = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('Physiotherapy.Create', request, response);
             if (request.currentUser) {
                 request.body.OwnerUserId = request.currentUser.UserId;
             }
@@ -40,7 +39,6 @@ export class PhysiotherapyController extends BaseController {
 
     getById = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('Physiotherapy.GetById', request, response);
             const record = await this._delegate.getById(request.params.id);
             const message = 'Physiotherapy retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, record);
@@ -51,8 +49,7 @@ export class PhysiotherapyController extends BaseController {
 
     search = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('Physiotherapy.Search', request, response);
-            const searchResults = await this._delegate.search(request.query);
+            const searchResults = await this._delegate.search(request);
             const message = 'Physiotherapy records retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, searchResults);
         } catch (error) {
@@ -62,7 +59,6 @@ export class PhysiotherapyController extends BaseController {
 
     update = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('Physiotherapy.Update', request, response);
             const updatedRecord = await this._delegate.update(request.params.id, request.body);
             const message = 'Physiotherapy updated successfully!';
             ResponseHandler.success(request, response, message, 200, updatedRecord);
@@ -73,7 +69,6 @@ export class PhysiotherapyController extends BaseController {
 
     delete = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('Physiotherapy.Delete', request, response);
             const result = await this._delegate.delete(request.params.id);
             const message = 'Physiotherapy deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);

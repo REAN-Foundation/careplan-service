@@ -19,6 +19,7 @@ export class AudioMapper {
             FileResourceId : audio.FileResourceId,
             AssetCategory  : audio.AssetCategory,
             OwnerUserId    : audio.OwnerUserId,
+            TenantId       : audio.TenantId,
             Tags           : audio.Tags,
             Version        : audio.Version,
 
