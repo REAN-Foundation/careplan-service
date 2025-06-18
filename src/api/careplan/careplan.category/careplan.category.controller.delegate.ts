@@ -49,7 +49,7 @@ export class CareplanCategoryControllerDelegate {
     search = async (request: express.Request) => {
         await validator.validateSearchRequest(request.query);
         var filters: CareplanCategorySearchFilters = this.getSearchFilters(request.query);
-        filters = await this.authorizeSearch(request, filters);
+        // filters = await this.authorizeSearch(request, filters);
         var searchResults: CareplanCategorySearchResults = await this._service.search(filters);
         var items = searchResults.Items.map(x => this.getPublicDto(x));
         searchResults.Items = items;
