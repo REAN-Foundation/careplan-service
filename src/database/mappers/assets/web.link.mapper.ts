@@ -18,6 +18,7 @@ export class WebLinkMapper {
             Url           : webLink.Url,
             AssetCategory : webLink.AssetCategory,
             OwnerUserId   : webLink.OwnerUserId,
+            TenantId      : webLink.TenantId,
             Tags          : webLink.Tags,
             Version       : webLink.Version,
 

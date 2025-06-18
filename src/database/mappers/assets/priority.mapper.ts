@@ -17,6 +17,7 @@ export class PriorityMapper {
             Description   : priority.Description,
             AssetCategory : priority.AssetCategory,
             OwnerUserId   : priority.OwnerUserId,
+            TenantId      : priority.TenantId,
             Tags          : priority.Tags,
             Version       : priority.Version,
 

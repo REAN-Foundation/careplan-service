@@ -19,6 +19,9 @@ export class CareplanValidator {
                 OwnerUserId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
+                TenantId : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
                
             });
             return await schema.validateAsync(requestBody);
@@ -38,6 +41,9 @@ export class CareplanValidator {
                 version     : joi.string().max(32).optional(),
                 tags        : joi.array().items(joi.string()).optional(),
                 ownerUserId : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
+                tenantId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
                 isActive     : joi.boolean().optional(),
@@ -66,6 +72,9 @@ export class CareplanValidator {
                 Version     : joi.string().max(32).optional(),
                 Tags        : joi.array().items(joi.string()).optional(),
                 OwnerUserId : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
+                TenantId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
             });

@@ -60,6 +60,10 @@ export class ActionPlanModel {
             allowNull    : false,
             defaultValue : 'V1'
         },
+        TenantId : {
+            type      : DataTypes.UUID,
+            allowNull : true
+        },
 
         CreatedAt : DataTypes.DATE,
         UpdatedAt : DataTypes.DATE,

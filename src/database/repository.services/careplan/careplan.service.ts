@@ -151,6 +151,9 @@ export class  CareplanService {
             if (filters.OwnerUserId) {
                 search.where['OwnerUserId'] = filters.OwnerUserId;
             }
+            if (filters.TenantId) {
+                search.where['TenantId'] = filters.TenantId;
+            }
             if (filters.Tags) {
                 search.where['Tags'] = filters.Tags;
             }

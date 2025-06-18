@@ -18,6 +18,7 @@ export class ConsultationMapper {
             ConsultationType : consultation.ConsultationType,
             AssetCategory    : consultation.AssetCategory,
             OwnerUserId      : consultation.OwnerUserId,
+            TenantId         : consultation.TenantId,
             Tags             : consultation.Tags,
             Version          : consultation.Version,
 

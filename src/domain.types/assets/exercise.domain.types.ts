@@ -54,6 +54,8 @@ export interface ExerciseCreateModel {
     Tags?                  : string;
     Version?               : string;
     OwnerUserId?           : uuid;
+    TenantId?              : uuid;
+
 }
 
 export interface ExerciseUpdateModel {
@@ -65,7 +67,9 @@ export interface ExerciseUpdateModel {
     RecommendedDurationMin?: number;
     Tags?                  : string;
     Version?               : string;
-    OwnerUserId? : uuid;
+    OwnerUserId?           : uuid;
+    TenantId?              : uuid;
+
 }
 
 export interface ExerciseDto {
@@ -78,6 +82,7 @@ export interface ExerciseDto {
     RecommendedDurationMin: number;
     AssetCategory         : string;
     OwnerUserId           : uuid;
+    TenantId              : uuid;
     Tags                  : string[];
     Version               : string;
 
@@ -93,6 +98,8 @@ export interface ExerciseSearchFilters extends BaseSearchFilters {
     AssetCategory?         : string;
     Tags?                  : string;
     Version?               : string;
+    TenantId?              : uuid;
+
     CreatedAt ?            : Date;
 }
 

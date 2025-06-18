@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { DependencyContainer } from 'tsyringe';
-import { CustomAuthenticator } from './custom/custom.authenticator';
-import { CustomAuthorizer } from './custom/custom.authorizer';
+import { CustomAuthorizer } from './custom/custom.user.authorizer';
+import { CustomUserAuthenticator } from './custom/custom.user.authenticator';
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -9,8 +9,8 @@ export class AuthInjector {
 
     static registerInjections(container: DependencyContainer) {
 
-        container.register('IAuthenticator', CustomAuthenticator);
-        container.register('IAuthorizer', CustomAuthorizer);
+        container.register('IUserAuthenticator', CustomUserAuthenticator);
+        container.register('IUserAuthorizer', CustomAuthorizer);
 
     }
 

@@ -204,6 +204,9 @@ export class AnimationService {
                 [Op.like] : '%' + filters.Version + '%'
             };
         }
+        if (filters.TenantId) {
+            search.where['TenantId'] = filters.TenantId;
+        }
         const includeFileResourceAsFileResource = {
             model    : this.FileResource,
             required : false,

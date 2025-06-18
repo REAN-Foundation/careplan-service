@@ -14,6 +14,7 @@ export interface WordPowerCreateModel {
     Tags                ?: string;
     Version             ?: string;
     OwnerUserId         ?: uuid;
+    TenantId            ?: uuid;
 }
 
 export interface WordPowerUpdateModel {
@@ -24,6 +25,7 @@ export interface WordPowerUpdateModel {
     Tags                ?: string;
     Version             ?: string;
     OwnerUserId         ?: uuid;
+    TenantId            ?: uuid;
 }
 
 export interface WordPowerDto {
@@ -34,6 +36,7 @@ export interface WordPowerDto {
     AdditionalResources: string[];
     AssetCategory      : string;
     OwnerUserId        : uuid;
+    TenantId           : uuid;
     Tags               : string[];
     Version            : string;
 
@@ -47,6 +50,7 @@ export interface WordPowerSearchFilters extends BaseSearchFilters {
     AssetCategory       ?: string;
     Tags                ?: string;
     Version             ?: string;
+    TenantId            ?: uuid;
     CreatedAt           ?: Date;
 }
 

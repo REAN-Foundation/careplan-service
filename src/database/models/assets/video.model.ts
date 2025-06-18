@@ -57,10 +57,12 @@ export class VideoModel {
             defaultValue : 'Educational'
         },
         OwnerUserId : {
-            type       : DataTypes.UUID,
-            allowNull  : false,
-            foreignKey : true,
-            unique     : false
+            type      : DataTypes.UUID,
+            allowNull : true
+        },
+        TenantId : {
+            type      : DataTypes.UUID,
+            allowNull : true
         },
         Tags : {
             type         : DataTypes.TEXT,

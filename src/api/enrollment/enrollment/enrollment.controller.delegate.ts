@@ -1,4 +1,5 @@
 /* eslint-disable key-spacing */
+import express from 'express';
 import {
     EnrollmentService
 } from '../../../database/repository.services/enrollment/enrollment.service';
@@ -109,9 +110,10 @@ export class EnrollmentControllerDelegate {
         return this.getEnrichedDto(record);
     };
 
-    search = async (query: any) => {
-        await validator.validateSearchRequest(query);
-        var filters: EnrollmentSearchFilters = this.getSearchFilters(query);
+    search = async (request:express.Request ) => {
+        await validator.validateSearchRequest(request.query);
+        var filters: EnrollmentSearchFilters = this.getSearchFilters(request.query);
+        filters = await this.authorizeSearch(request, filters);
         var searchResults: EnrollmentSearchResults = await this._service.search(filters);
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
@@ -314,7 +316,8 @@ export class EnrollmentControllerDelegate {
 
     getSearchFilters = (query) => {
 
-        var filters = {};
+        // var filters = {};
+        var filters = Helper.getDefaultSearchFilters(query);
 
         var careplanId = query.careplanId ? query.careplanId : null;
         if (careplanId != null) {
@@ -347,6 +350,10 @@ export class EnrollmentControllerDelegate {
         var endDate = query.endDate ? query.endDate : null;
         if (endDate != null) {
             filters['EndDate'] = endDate;
+        }
+        var tenantId = query.tenantId ? query.tenantId : null;
+        if (tenantId != null) {
+            filters['TenantId'] = tenantId;
         }
         var orderBy = query.orderBy ? query.orderBy : null;
         if (orderBy != null) {
@@ -390,6 +397,10 @@ export class EnrollmentControllerDelegate {
             updateModel.DayOffset = requestBody.DayOffset;
         }
 
+        if (Helper.hasProperty(requestBody, 'TenantId')) {
+            updateModel.TenantId = requestBody.TenantId;
+        }
+
         return updateModel;
     };
 
@@ -403,7 +414,8 @@ export class EnrollmentControllerDelegate {
             WeekOffset     : requestBody.WeekOffset ? requestBody.WeekOffset : 0,
             DayOffset      : requestBody.DayOffset ? requestBody.DayOffset : 0,
             EnrollmentDate : requestBody.EnrollmentDate ? requestBody.EnrollmentDate : new Date(),
-            IsTest         : requestBody.IsTest ? requestBody.IsTest : false
+            IsTest         : requestBody.IsTest ? requestBody.IsTest : false,
+            TenantId       : requestBody.TenantId ? requestBody.TenantId : null
         };
     };
 
@@ -424,6 +436,7 @@ export class EnrollmentControllerDelegate {
             WeekOffset     : record.WeekOffset,
             DayOffset      : record.DayOffset,
             ProgressStatus : record.ProgressStatus,
+            TenantId       : record.TenantId,
             Careplan       : record.Careplan,
             Participant    : record.Participant,
             Category       : record.Careplan.Catrgory,
@@ -449,6 +462,7 @@ export class EnrollmentControllerDelegate {
             WeekOffset     : record.WeekOffset,
             DayOffset      : record.DayOffset,
             ProgressStatus : record.ProgressStatus,
+            TenantId       : record.TenantId,
             Careplan       : record.Careplan,
             Participant    : record.Participant,
 
@@ -469,6 +483,25 @@ export class EnrollmentControllerDelegate {
             TotalWeek    : record.TotalWeek
             
         };
+    };
+
+    authorizeSearch = async (
+        request: express.Request,
+        searchFilters: EnrollmentSearchFilters): Promise<EnrollmentSearchFilters> => {
+            
+        if (request.currentClient?.IsPrivileged) {
+            return searchFilters;
+        }
+            
+        if (searchFilters.TenantId != null) {
+            if (searchFilters.TenantId !== request.currentUser.TenantId) {
+                throw new ApiError(403, 'Forbidden');
+            }
+        }
+        else {
+            searchFilters.TenantId = request.currentUser.TenantId;
+        }
+        return searchFilters;
     };
 
     //#endregion

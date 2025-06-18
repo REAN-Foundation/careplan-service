@@ -22,7 +22,8 @@ export class ParticipantMapper {
             ParticipantReferenceId : enrollment.ParticipantReferenceId,
             Gender                 : enrollment.Gender,
             BirthDate              : enrollment.BirthDate,
-            Country                : enrollment.Country
+            Country                : enrollment.Country,
+            TenantId               : enrollment.TenantId
 
         };
         return dto;
