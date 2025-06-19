@@ -66,7 +66,7 @@ export class CareplanAuth {
         Context     : `${this._baseContext}.Export`,
         Ownership   : ResourceOwnership.System,
         ActionScope : ActionScope.Tenant,
-        RequestType : RequestType.CreateOne,
+        RequestType : RequestType.GetOne,
     };
 
 }
