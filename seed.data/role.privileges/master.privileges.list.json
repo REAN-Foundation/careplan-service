@@ -120,7 +120,7 @@
     "Careplan.Update",
     "Careplan.Delete",
     "Careplan.Export",
-    "Careplan.ImportFromFile",
+    "Careplan.Import",
     "CareplanActivity.Create",
     "CareplanActivity.GetById",
     "CareplanActivity.Search",
