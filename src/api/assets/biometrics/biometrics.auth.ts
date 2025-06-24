@@ -10,7 +10,7 @@ import {
 
 export class BiometricsAuth {
 
-    static readonly _baseContext = `Asset.Biometrics`;
+    static readonly _baseContext = `Asset.Biometric`;
 
     static readonly create: AuthOptions = {
         ...DefaultAuthOptions,
