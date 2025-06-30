@@ -108,8 +108,7 @@ export class CareplanControllerDelegate {
         }
 
         const careplanModel =  JSON.parse(fileContent);
-        const careplan: CareplanDto = await this._service.import(careplanModel);
-
+        const careplan: CareplanDto = await this._service.import(careplanModel,request);
         if (careplan === null) {
             ErrorHandler.throwNotFoundError('Cannot import careplan!');
         }
