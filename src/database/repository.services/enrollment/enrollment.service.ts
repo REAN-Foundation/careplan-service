@@ -249,16 +249,17 @@ export class EnrollmentService {
         ////////////////////////////////////////////
 
         if (filters.StartDate && filters.EndDate) {
-            search.where['StartDate'] = {
-                [Op.between]: [new Date(filters.StartDate), new Date(filters.EndDate)]
-            };
+            search.where[Op.and] = [
+                { StartDate: { [Op.gte]: new Date(filters.StartDate) } },
+                { EndDate: { [Op.lte]: new Date(filters.EndDate) } }
+            ];
         } else if (filters.StartDate) {
             search.where['StartDate'] = {
-                [Op.gte]: new Date(filters.StartDate)
+                [Op.eq] : new Date(filters.StartDate)
             };
         } else if (filters.EndDate) {
             search.where['EndDate'] = {
-                [Op.lte]: new Date(filters.EndDate)
+                [Op.eq] : new Date(filters.EndDate)
             };
         }
 
