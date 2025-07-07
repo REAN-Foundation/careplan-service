@@ -18,6 +18,7 @@ export class AppointmentMapper {
             AppointmentType : appointment.AppointmentType,
             AssetCategory   : appointment.AssetCategory,
             OwnerUserId     : appointment.OwnerUserId,
+            TenantId        : appointment.TenantId,
             Tags            : appointment.Tags,
             Version         : appointment.Version,
 

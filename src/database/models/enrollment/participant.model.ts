@@ -67,6 +67,10 @@ export class ParticipantModel {
             type      : DataTypes.STRING(64),
             allowNull : true
         },
+        TenantId : {
+            type      : DataTypes.UUID,
+            allowNull : true
+        },
 
         CreatedAt : DataTypes.DATE,
         UpdatedAt : DataTypes.DATE,
@@ -86,9 +90,9 @@ export class ParticipantModel {
             tableName       : ParticipantModel.TableName,
         });
     
-        static associate = () => {
-            //Add associations here...
+    static associate = () => {
+        //Add associations here...
     
-        };
+    };
 
 }

@@ -19,6 +19,7 @@ export class InfographicsMapper {
             FileResourceId : infographics.FileResourceId,
             AssetCategory  : infographics.AssetCategory,
             OwnerUserId    : infographics.OwnerUserId,
+            TenantId       : infographics.TenantId,
             Tags           : infographics.Tags,
             Version        : infographics.Version,
 

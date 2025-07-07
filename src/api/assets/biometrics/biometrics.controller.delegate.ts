@@ -1,3 +1,4 @@
+import express from 'express';
 import {
     BiometricsService
 } from '../../../database/repository.services/assets/biometrics.service';
@@ -57,9 +58,10 @@ export class BiometricsControllerDelegate {
         return this.getEnrichedDto(record);
     };
 
-    search = async (query: any) => {
-        await validator.validateSearchRequest(query);
-        var filters: BiometricsSearchFilters = this.getSearchFilters(query);
+    search = async (request: express.Request) => {
+        await validator.validateSearchRequest(request.query);
+        var filters: BiometricsSearchFilters = this.getSearchFilters(request.query);
+        filters = await this.authorizeSearch(request, filters);
         var searchResults: BiometricsSearchResults = await this._service.search(filters);
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
@@ -154,6 +156,9 @@ export class BiometricsControllerDelegate {
         if (Helper.hasProperty(requestBody, 'MeasurementUnit')) {
             updateModel.MeasurementUnit = requestBody.MeasurementUnit;
         }
+        if (Helper.hasProperty(requestBody, 'TenantId')) {
+            updateModel.TenantId = requestBody.TenantId;
+        }
         if (Helper.hasProperty(requestBody, 'Tags')) {
             updateModel.Tags = JSON.stringify(requestBody.Tags);
         }
@@ -171,10 +176,30 @@ export class BiometricsControllerDelegate {
             Description     : requestBody.Description ? requestBody.Description : null,
             BiometricsType  : requestBody.BiometricsType ? requestBody.BiometricsType : 'Other',
             MeasurementUnit : requestBody.MeasurementUnit ? requestBody.MeasurementUnit : null,
+            TenantId        : requestBody.TenantId ? requestBody.TenantId : null,
             Tags            : requestBody.Tags ? JSON.stringify(requestBody.Tags) as string : JSON.stringify([]),
             Version         : requestBody.Version ? requestBody.Version : 'V1',
             OwnerUserId     : requestBody.OwnerUserId
         };
+    };
+
+    authorizeSearch = async (
+        request: express.Request,
+        searchFilters: BiometricsSearchFilters): Promise<BiometricsSearchFilters> => {
+    
+        if (request.currentClient?.IsPrivileged) {
+            return searchFilters;
+        }
+    
+        if (searchFilters.TenantId != null) {
+            if (searchFilters.TenantId !== request.currentUser.TenantId) {
+                throw new ApiError(403, 'Forbidden');
+            }
+        }
+        else {
+            searchFilters.TenantId = request.currentUser.TenantId;
+        }
+        return searchFilters;
     };
 
     getEnrichedDto = (record) => {
@@ -190,6 +215,7 @@ export class BiometricsControllerDelegate {
             BiometricsType  : record.BiometricsType,
             MeasurementUnit : record.MeasurementUnit,
             OwnerUserId     : record.OwnerUserId,
+            TenantId        : record.TenantId,
             Tags            : JSON.parse(record.Tags),
             Version         : record.Version
         };
@@ -208,6 +234,7 @@ export class BiometricsControllerDelegate {
             BiometricsType  : record.BiometricsType,
             MeasurementUnit : record.MeasurementUnit,
             OwnerUserId     : record.OwnerUserId,
+            TenantId        : record.TenantId,
             Tags            : JSON.parse(record.Tags),
             Version         : record.Version,
             CreatedAt       : record.CreatedAt,

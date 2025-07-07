@@ -17,6 +17,7 @@ export class GoalMapper {
             Description   : goal.Description,
             AssetCategory : goal.AssetCategory,
             OwnerUserId   : goal.OwnerUserId,
+            TenantId      : goal.TenantId,
             Tags          : goal.Tags,
             Version       : goal.Version,
 

@@ -1,40 +1,88 @@
 import express from 'express';
-import { Authorizer } from '../auth/authorizer';
+// import { Authorizer } from '../auth/authorizer';
 import { ApiError } from '../common/api.error';
-import { Loader } from '../startup/loader';
+// import { Loader } from '../startup/loader';
+import { PermissionHandler } from '../auth/custom/permission.handler';
+import { uuid } from '../domain.types/miscellaneous/system.types';
+import { NeedleService } from '../common/needle.service';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
 export class BaseController {
-   
-    _authorizer: Authorizer = null;
 
-    constructor() {
-        this._authorizer = Loader.Authorizer;
-    }
-
-    authorize = async (
-        context: string,
+    public authorize = async (
         request: express.Request,
-        response: express.Response,
-        authorize = true) => {
+        resourceOwnerUserId?: uuid,
+        resourceTenantId?: uuid): Promise<void> => {
 
-        if (context === undefined || context === null) {
-            throw new ApiError('Invalid request context', 500);
+        if (request.currentClient?.IsPrivileged) {
+            return;
         }
-        const tokens = context.split('.');
-        if (tokens.length < 2) {
-            throw new ApiError('Invalid request context', 500);
+
+        let ownerUserId = resourceOwnerUserId ?? null;
+        let tenantId = resourceTenantId ?? null;
+
+        if (ownerUserId) {
+            const apiURL = `/users/validate/${ownerUserId}`;
+            const result = await NeedleService.needleRequestForREAN("get", apiURL);
+            const user = result.Data;
+            // const userService = Loader.Container.resolve(UserService);
+            // const user = await userService.getById(ownerUserId);
+            if (user) {
+                ownerUserId = user.id;
+                tenantId = tenantId ?? user.TenantId;
+            }
         }
-        const resourceType = tokens[0];
-        request.context = context;
-        request.resourceType = resourceType;
-        if (request.params.id !== undefined && request.params.id !== null) {
-            request.resourceId = request.params.id;
+
+        if (tenantId == null) {
+            // If tenant is not provided, get the default tenant
+            // const tenantService = Loader.Container.resolve(TenantService);
+            const apiURL = `/tenants/search?code=default`;
+            const result = await NeedleService.needleRequestForREAN("get", apiURL);
+            const tenant = result.Data;
+            // const tenant = await tenantService.getTenantWithCode('default');
+            if (tenant) {
+                tenantId = tenant.id;
+            }
         }
-        if (authorize) {
-            await Loader.Authorizer.authorize(request, response);
+
+        request.resourceOwnerUserId = ownerUserId;
+        request.resourceTenantId = tenantId;
+
+        const permitted = await PermissionHandler.checkFineGrained(request);
+        if (!permitted) {
+            throw new ApiError(403, 'Permission denied.');
         }
     };
+   
+    // _authorizer: Authorizer = null;
+
+    // constructor() {
+    //     this._authorizer = Loader.Authorizer;
+    // }
+
+    // authorize = async (
+    //     context: string,
+    //     request: express.Request,
+    //     response: express.Response,
+    //     authorize = true) => {
+
+    //     if (context === undefined || context === null) {
+    //         throw new ApiError('Invalid request context', 500);
+    //     }
+    //     const tokens = context.split('.');
+    //     if (tokens.length < 2) {
+    //         throw new ApiError('Invalid request context', 500);
+    //     }
+    //     const resourceType = tokens[0];
+    //     request.context = context;
+    //     // request.resourceType = resourceType;
+    //     if (request.params.id !== undefined && request.params.id !== null) {
+    //         request.resourceId = request.params.id;
+    //     }
+    //     if (authorize) {
+    //         await Loader.Authorizer.authorize(request, response);
+    //     }
+    // };
 
 }

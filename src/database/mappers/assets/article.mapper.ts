@@ -19,6 +19,7 @@ export class ArticleMapper {
             FileResourceId : article.FileResourceId,
             AssetCategory  : article.AssetCategory,
             OwnerUserId    : article.OwnerUserId,
+            TenantId       : article.TenantId,
             Tags           : article.Tags,
             Version        : article.Version,
 

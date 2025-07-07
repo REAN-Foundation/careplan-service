@@ -17,6 +17,7 @@ export class ChallengeMapper {
             Description   : challenge.Description,
             AssetCategory : challenge.AssetCategory,
             OwnerUserId   : challenge.OwnerUserId,
+            TenantId      : challenge.TenantId,
             Tags          : challenge.Tags,
             Version       : challenge.Version,
 

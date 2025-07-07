@@ -19,6 +19,9 @@ export class AssessmentValidator {
                 OwnerUserId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
+                TenantId : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
                 ReferenceTemplateCode : joi.string().max(256).optional(),
             });
             return await schema.validateAsync(requestBody);
@@ -36,7 +39,8 @@ export class AssessmentValidator {
                 Template              : joi.string().optional().allow(null, ''),
                 Tags                  : joi.array().items(joi.string()).optional(),
                 Version               : joi.string().max(128).optional(),
-                ReferenceTemplateCode : joi.string().max(256).optional()
+                ReferenceTemplateCode : joi.string().max(256).optional(),
+                TenantId              : joi.string().guid({ version: ['uuidv4'] }).optional()
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -52,6 +56,7 @@ export class AssessmentValidator {
                 description   : joi.string().optional(),
                 assetCategory : joi.string().max(128).optional(),
                 template      : joi.string().optional(),
+                tenantId      : joi.string().guid({ version: ['uuidv4'] }).optional(),
                 tags          : joi.array().items(joi.string()).optional(),
                 version       : joi.string().max(128).optional(),
                 order         : joi.string().max(128).optional(),

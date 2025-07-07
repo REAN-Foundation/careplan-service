@@ -26,6 +26,7 @@ export interface ConsultationCreateModel {
     Tags ? : string;
     Version ? : string;
     OwnerUserId ? : uuid;
+    TenantId?: uuid;
 }
 
 export interface ConsultationUpdateModel {
@@ -36,6 +37,7 @@ export interface ConsultationUpdateModel {
     Tags ? : string;
     Version ? : string;
     OwnerUserId ? : uuid;
+    TenantId?: uuid;
 }
 
 export interface ConsultationDto {
@@ -46,6 +48,7 @@ export interface ConsultationDto {
     ConsultationType: ConsultationType;
     AssetCategory: string;
     OwnerUserId: uuid;
+    TenantId: uuid;
     Tags: string[];
     Version: string;
 
@@ -58,6 +61,7 @@ export interface ConsultationSearchFilters extends BaseSearchFilters {
     ConsultationType ? : ConsultationType;
     AssetCategory ? : string;
     Tags ? : string;
+    TenantId?: uuid;
     Version ? : string;
     CreatedAt ? : Date;
 }

@@ -26,7 +26,6 @@ export class EnrollmentTaskController extends BaseController {
 
     getById = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('EnrollmentTask.GetById', request, response, false);
             const record = await this._delegate.getById(request.params.id);
             const message = 'Enrollment schedule retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, record);
@@ -37,7 +36,6 @@ export class EnrollmentTaskController extends BaseController {
 
     search = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('EnrollmentTask.Search', request, response, false);
             const searchResults = await this._delegate.search(request.query);
             const message = 'Enrollment schedule records retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, searchResults);

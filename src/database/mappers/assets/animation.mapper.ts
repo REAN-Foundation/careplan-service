@@ -19,6 +19,7 @@ export class AnimationMapper {
             FileResourceId : animation.FileResourceId,
             AssetCategory  : animation.AssetCategory,
             OwnerUserId    : animation.OwnerUserId,
+            TenantId       : animation.TenantId,
             Tags           : animation.Tags,
             Version        : animation.Version,
 

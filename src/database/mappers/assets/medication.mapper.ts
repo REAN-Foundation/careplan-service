@@ -17,6 +17,7 @@ export class MedicationMapper {
             Description   : medication.Description,
             AssetCategory : medication.AssetCategory,
             OwnerUserId   : medication.OwnerUserId,
+            TenantId      : medication.TenantId,
             Tags          : medication.Tags,
             Version       : medication.Version,
 
