@@ -40,6 +40,10 @@ export class EnrollmentModel {
             foreignKey : true,
             unique     : false
         },
+        TenantId : {
+            type      : DataTypes.UUID,
+            allowNull : true
+        },
         StartDate : {
             type      : DataTypes.DATE,
             allowNull : false

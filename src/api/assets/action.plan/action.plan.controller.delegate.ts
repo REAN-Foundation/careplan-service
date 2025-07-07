@@ -1,3 +1,4 @@
+import express from 'express';
 import {
     ActionPlanService
 } from '../../../database/repository.services/assets/action.plan.service';
@@ -57,9 +58,10 @@ export class ActionPlanControllerDelegate {
         return this.getEnrichedDto(record);
     };
 
-    search = async (query: any) => {
-        await validator.validateSearchRequest(query);
-        var filters: ActionPlanSearchFilters = this.getSearchFilters(query);
+    search = async (request: express.Request) => {
+        await validator.validateSearchRequest(request.query);
+        var filters: ActionPlanSearchFilters = this.getSearchFilters(request.query);
+        filters = await this.authorizeSearch(request, filters);
         var searchResults: ActionPlanSearchResults = await this._service.search(filters);
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
@@ -140,6 +142,9 @@ export class ActionPlanControllerDelegate {
         if (Helper.hasProperty(requestBody, 'Description')) {
             updateModel.Description = requestBody.Description;
         }
+        if (Helper.hasProperty(requestBody, 'TenantId')) {
+            updateModel.TenantId = requestBody.TenantId;
+        }
         if (Helper.hasProperty(requestBody, 'Tags')) {
             updateModel.Tags = JSON.stringify(requestBody.Tags);
         }
@@ -155,10 +160,30 @@ export class ActionPlanControllerDelegate {
             AssetCode   : requestBody.AssetCode ? requestBody.AssetCode : null,
             Name        : requestBody.Name ? requestBody.Name : null,
             Description : requestBody.Description ? requestBody.Description : null,
+            TenantId    : requestBody.TenantId ? requestBody.TenantId : null,
             Tags        : requestBody.Tags ? JSON.stringify(requestBody.Tags) as string : JSON.stringify([]),
             Version     : requestBody.Version ? requestBody.Version : 'V1',
             OwnerUserId : requestBody.OwnerUserId
         };
+    };
+
+    authorizeSearch = async (
+        request: express.Request,
+        searchFilters: ActionPlanSearchFilters): Promise<ActionPlanSearchFilters> => {
+
+        if (request.currentClient?.IsPrivileged) {
+            return searchFilters;
+        }
+
+        if (searchFilters.TenantId != null) {
+            if (searchFilters.TenantId !== request.currentUser.TenantId) {
+                throw new ApiError(403, 'Forbidden');
+            }
+        }
+        else {
+            searchFilters.TenantId = request.currentUser.TenantId;
+        }
+        return searchFilters;
     };
 
     getEnrichedDto = (record) => {
@@ -172,6 +197,7 @@ export class ActionPlanControllerDelegate {
             Description   : record.Description,
             AssetCategory : record.AssetCategory,
             OwnerUserId   : record.OwnerUserId,
+            TenantId      : record.TenantId,
             Tags          : JSON.parse(record.Tags),
             Version       : record.Version
         };

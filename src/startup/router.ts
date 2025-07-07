@@ -3,7 +3,7 @@ import { Logger } from "../common/logger";
 import { register as registerCareplanRoutes         } from "../api/careplan/careplan/careplan.routes";
 import { register as registerCareplanCategoryRoutes } from "../api/careplan/careplan.category/careplan.category.routes";
 import { register as registerCareplanActivityRoutes } from "../api/careplan/careplan.activity/careplan.activity.routes";
-import { register as registerApiClientRoutes        } from "../api/api.client/api.client.routes";
+// import { register as registerApiClientRoutes        } from "../api/api.client/api.client.routes";
 import { register as registerActionPlanRoutes       } from "../api/assets/action.plan/action.plan.routes";
 import { register as registerAnimationRoutes        } from "../api/assets/animation/animation.routes";
 import { register as registerAppointmentRoutes      } from "../api/assets/appointment/appointment.routes";
@@ -33,12 +33,12 @@ import { register as registerEnrollmentRoutes       } from "../api/enrollment/en
 import { register as registerEnrollmentTaskRoutes } from "../api/enrollment/enrollment.task/enrollment.task.routes";
 import { register as registerFileREsourceRoutes       } from "../api/file.resource/file.resource.routes";
 import { register as registerTypesRoutes              } from "../api/types/types.routes";
-import { register as registerUserRoutes               } from "../api/user/user.routes";
+// import { register as registerUserRoutes               } from "../api/user/user.routes";
 import { register as registerParticipantActivityResponseRoutes   } from "../api/participant.responses/participant.activity.response/participant.activity.response.routes";
 import { register as registerParticipantSelectedActionPlanRoutes } from "../api/participant.responses/participant.selected.action.plan/participant.selected.action.plan.routes";
 import { register as registerParticipantSelectedGoalRoutes       } from "../api/participant.responses/participant.selected.goal/participant.selected.goal.routes";
 import { register as registerParticipantSelectedPriorityRoutes   } from "../api/participant.responses/participant.selected.priority/participant.selected.priority.routes";
-import { register as registerUserRoleRoutes               } from "../api/user.role/user.role.routes";
+// import { register as registerUserRoleRoutes               } from "../api/user.role/user.role.routes";
 import { register as registerParticipantRoutes            } from "../api/enrollment/participant/participant.routes";
 import { register as registerStatisticsRoutes            } from "../api/statistics/statistics.route";
 
@@ -65,10 +65,10 @@ export class Router {
 
                 registerCareplanRoutes(this._app);
                 registerCareplanCategoryRoutes(this._app);
-                registerApiClientRoutes(this._app);
+                // registerApiClientRoutes(this._app);
                 registerCareplanCategoryRoutes(this._app);
                 registerCareplanActivityRoutes(this._app);
-                registerApiClientRoutes(this._app);
+                // registerApiClientRoutes(this._app);
                 registerActionPlanRoutes(this._app);
                 registerAnimationRoutes(this._app);
                 registerAppointmentRoutes(this._app);
@@ -98,12 +98,12 @@ export class Router {
                 registerEnrollmentTaskRoutes(this._app);
                 registerFileREsourceRoutes(this._app);
                 registerTypesRoutes(this._app);
-                registerUserRoutes(this._app);
+                // registerUserRoutes(this._app);
                 registerParticipantActivityResponseRoutes(this._app);
                 registerParticipantSelectedActionPlanRoutes(this._app);
                 registerParticipantSelectedGoalRoutes(this._app);
                 registerParticipantSelectedPriorityRoutes(this._app);
-                registerUserRoleRoutes(this._app);
+                // registerUserRoleRoutes(this._app);
                 registerParticipantRoutes(this._app);
                 registerStatisticsRoutes(this._app);
 

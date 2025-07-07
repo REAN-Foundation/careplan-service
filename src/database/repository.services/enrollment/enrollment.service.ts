@@ -239,11 +239,28 @@ export class EnrollmentService {
         if (filters.DisplayId) {
             search.where['DisplayId'] = filters.DisplayId;
         }
-        if (filters.StartDate) {
-            search.where['StartDate'] = filters.StartDate;
-        }
-        if (filters.EndDate) {
-            search.where['EndDate'] = filters.EndDate;
+        // if (filters.StartDate) {
+        //     search.where['StartDate'] = filters.StartDate;
+        // }
+        // if (filters.EndDate) {
+        //     search.where['EndDate'] = filters.EndDate;
+        // }
+
+        ////////////////////////////////////////////
+
+        if (filters.StartDate && filters.EndDate) {
+            search.where[Op.and] = [
+                { StartDate: { [Op.gte]: new Date(filters.StartDate) } },
+                { EndDate: { [Op.lte]: new Date(filters.EndDate) } }
+            ];
+        } else if (filters.StartDate) {
+            search.where['StartDate'] = {
+                [Op.eq] : new Date(filters.StartDate)
+            };
+        } else if (filters.EndDate) {
+            search.where['EndDate'] = {
+                [Op.eq] : new Date(filters.EndDate)
+            };
         }
 
         const includeCareplanAsCareplan = {

@@ -20,7 +20,7 @@ export class CareplanCategoryController extends BaseController {
 
     create = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('CareplanCategory.Create', request, response);
+            // await this.authorize('CareplanCategory.Create', request, response);
             const record = await this._delegate.create(request.body);
             const message = 'Careplan category added successfully!';
             ResponseHandler.success(request, response, message, 201, record);
@@ -31,7 +31,7 @@ export class CareplanCategoryController extends BaseController {
 
     getById = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('CareplanCategory.GetById', request, response);
+            // await this.authorize('CareplanCategory.GetById', request, response);
             const record = await this._delegate.getById(request.params.id);
             const message = 'Careplan category retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, record);
@@ -42,8 +42,8 @@ export class CareplanCategoryController extends BaseController {
 
     search = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('CareplanCategory.Search', request, response);
-            const searchResults = await this._delegate.search(request.query);
+            // await this.authorize('CareplanCategory.Search', request, response);
+            const searchResults = await this._delegate.search(request);
             const message = 'Careplan category records retrieved successfully!';
             ResponseHandler.success(request, response, message, 200, searchResults);
         } catch (error) {
@@ -53,7 +53,7 @@ export class CareplanCategoryController extends BaseController {
 
     update = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('CareplanCategory.Update', request, response);
+            // await this.authorize('CareplanCategory.Update', request, response);
             const updatedRecord = await this._delegate.update(request.params.id, request.body);
             const message = 'Careplan category updated successfully!';
             ResponseHandler.success(request, response, message, 200, updatedRecord);
@@ -64,7 +64,7 @@ export class CareplanCategoryController extends BaseController {
 
     delete = async (request: express.Request, response: express.Response): Promise < void > => {
         try {
-            await this.authorize('CareplanCategory.Delete', request, response);
+            // await this.authorize('CareplanCategory.Delete', request, response);
             const result = await this._delegate.delete(request.params.id);
             const message = 'Careplan category deleted successfully!';
             ResponseHandler.success(request, response, message, 200, result);

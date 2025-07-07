@@ -13,6 +13,7 @@ export interface ReflectionCreateModel {
     Tags ? : string;
     Version ? : string;
     OwnerUserId ? : uuid;
+    TenantId?: uuid;
 }
 
 export interface ReflectionUpdateModel {
@@ -22,6 +23,7 @@ export interface ReflectionUpdateModel {
     Tags ? : string;
     Version ? : string;
     OwnerUserId ? : uuid;
+    TenantId?: uuid;
 }
 
 export interface ReflectionDto {
@@ -31,6 +33,7 @@ export interface ReflectionDto {
     Description: string;
     AssetCategory: string;
     OwnerUserId: uuid;
+    TenantId: uuid;
     Tags: string[];
     Version: string;
 
@@ -43,6 +46,7 @@ export interface ReflectionSearchFilters extends BaseSearchFilters {
     AssetCategory ? : string;
     Tags ? : string;
     Version ? : string;
+    TenantId?: uuid;
     CreatedAt ? : Date;
 }
 

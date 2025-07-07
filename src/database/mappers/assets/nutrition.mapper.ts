@@ -17,6 +17,7 @@ export class NutritionMapper {
             Description   : nutrition.Description,
             AssetCategory : nutrition.AssetCategory,
             OwnerUserId   : nutrition.OwnerUserId,
+            TenantId      : nutrition.TemplateButtonIds,
             Tags          : nutrition.Tags,
             Version       : nutrition.Version,
 

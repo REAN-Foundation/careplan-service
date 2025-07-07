@@ -68,6 +68,9 @@ export class ParticipantService {
                     [Op.like] : '%' + filters.ParticipantReferenceId + '%'
                 };
             }
+            if (filters.TenantId) {
+                search.where['TenantId'] = filters.TenantId;
+            }
             if (filters.Gender) {
                 search.where['Gender'] = filters.Gender;
             }

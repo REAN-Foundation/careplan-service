@@ -182,6 +182,10 @@ export class AssessmentService {
                 [Op.like] : '%' + filters.Template + '%'
             };
         }
+        if (filters.TenantId) {
+            search.where['TenantId'] = filters.TenantId;
+        }
+
         if (filters.Tags) {
             search.where['Tags'] = {
                 [Op.like] : '%' + filters.Tags + '%'

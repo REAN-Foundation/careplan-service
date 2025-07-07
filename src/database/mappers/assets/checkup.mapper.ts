@@ -17,6 +17,7 @@ export class CheckupMapper {
             Description   : checkup.Description,
             AssetCategory : checkup.AssetCategory,
             OwnerUserId   : checkup.OwnerUserId,
+            TenantId      : checkup.TenantId,
             Tags          : checkup.Tags,
             Version       : checkup.Version,
 

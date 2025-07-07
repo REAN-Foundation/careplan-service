@@ -1,3 +1,4 @@
+import express from 'express';
 import { CareplanCategoryService } from '../../../database/repository.services/careplan/careplan.category.service';
 import { ErrorHandler } from '../../../common/error.handler';
 import { Helper } from '../../../common/helper';
@@ -45,9 +46,10 @@ export class CareplanCategoryControllerDelegate {
         return this.getEnrichedDto(record);
     };
 
-    search = async (query: any) => {
-        await validator.validateSearchRequest(query);
-        var filters: CareplanCategorySearchFilters = this.getSearchFilters(query);
+    search = async (request: express.Request) => {
+        await validator.validateSearchRequest(request.query);
+        var filters: CareplanCategorySearchFilters = this.getSearchFilters(request.query);
+        // filters = await this.authorizeSearch(request, filters);
         var searchResults: CareplanCategorySearchResults = await this._service.search(filters);
         var items = searchResults.Items.map(x => this.getPublicDto(x));
         searchResults.Items = items;
@@ -93,6 +95,28 @@ export class CareplanCategoryControllerDelegate {
         if (description != null) {
             filters['Description'] = description;
         }
+
+        var tenantId = query.tenantId ? query.tenantId : null;
+        if (tenantId != null) {
+            filters['TenantId'] = tenantId;
+        }
+        var orderBy = query.orderBy ? query.orderBy : 'CreatedAt';
+        if (orderBy != null) {
+            filters['OrderBy'] = orderBy;
+        }
+        var order = query.order ? query.order : 'ASC';
+        if (order != null) {
+            filters['Order'] = order;
+        }
+        var itemsPerPage = query.itemsPerPage ? query.itemsPerPage : null;
+        if (itemsPerPage != null) {
+            filters['ItemsPerPage'] = parseInt(itemsPerPage);
+        }
+        var pageIndex = query.pageIndex ? query.pageIndex : null;
+        if (pageIndex != null) {
+            filters['PageIndex'] = parseInt(pageIndex);
+        }
+
         return filters;
     };
 
@@ -106,14 +130,38 @@ export class CareplanCategoryControllerDelegate {
         if (Helper.hasProperty(requestBody, 'Description')) {
             updateModel.Description = requestBody.Description;
         }
+
+        if (Helper.hasProperty(requestBody, 'TenantId')) {
+            updateModel.TenantId = requestBody.TenantId;
+        }
         return updateModel;
     };
 
     getCreateModel = (requestBody): CareplanCategoryCreateModel => {
         return {
             Type        : requestBody.Type ? requestBody.Type : null,
-            Description : requestBody.Description ? requestBody.Description : null
+            Description : requestBody.Description ? requestBody.Description : null,
+            TenantId    : requestBody.TenantId ? requestBody.TenantId : null,
         };
+    };
+
+    authorizeSearch = async (
+        request: express.Request,
+        searchFilters: CareplanCategorySearchFilters): Promise<CareplanCategorySearchFilters> => {
+    
+        if (request.currentClient?.IsPrivileged) {
+            return searchFilters;
+        }
+    
+        if (searchFilters.TenantId != null) {
+            if (searchFilters.TenantId !== request.currentUser.TenantId) {
+                throw new ApiError(403, 'Forbidden');
+            }
+        }
+        else {
+            searchFilters.TenantId = request.currentUser.TenantId;
+        }
+        return searchFilters;
     };
 
     //This function returns a response DTO which is enriched with available resource data
@@ -125,7 +173,8 @@ export class CareplanCategoryControllerDelegate {
         return {
             id          : record.id,
             Type        : record.Type,
-            Description : record.Description
+            Description : record.Description,
+            TenantId    : record.TenantId,
         };
     };
 

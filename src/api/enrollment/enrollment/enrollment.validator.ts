@@ -23,6 +23,10 @@ export class EnrollmentValidator {
                 DayOffset      : joi.number().optional(),
                 EnrollmentDate : joi.date().iso().optional(),
                 IsTest         : joi.boolean().optional(),
+                ScheduleType   : joi.string().optional(),
+                TenantId       : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -40,7 +44,10 @@ export class EnrollmentValidator {
                     version : ['uuidv4']
                 }).optional(),
                 StartDate : joi.date().iso().optional(),
-                EndDate   : joi.date().iso().optional()
+                EndDate   : joi.date().iso().optional(),
+                TenantId  : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -54,9 +61,12 @@ export class EnrollmentValidator {
                 careplanId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
-                displayId      : joi.string().optional(),
-                startDate      : joi.date().iso().optional(),
-                endDate        : joi.date().iso().optional(),
+                displayId : joi.string().optional(),
+                startDate : joi.date().iso().optional(),
+                endDate   : joi.date().iso().optional(),
+                tenantId  : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
                 progressStatus : joi.string().valid("Pending", "In-progress", "Completed", "Cancelled", "Delayed", "Unknown").optional(),
                 pageIndex      : joi.number().min(0).optional(),
                 itemsPerPage   : joi.number().min(1).optional(),

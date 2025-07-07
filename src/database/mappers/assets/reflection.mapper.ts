@@ -17,6 +17,7 @@ export class ReflectionMapper {
             Description   : reflection.Description,
             AssetCategory : reflection.AssetCategory,
             OwnerUserId   : reflection.OwnerUserId,
+            TenantId      : reflection.TenantId,
             Tags          : reflection.Tags,
             Version       : reflection.Version,
 

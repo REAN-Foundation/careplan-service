@@ -18,6 +18,7 @@ export class PhysiotherapyMapper {
             RecommendedDurationMin : physiotherapy.RecommendedDurationMin,
             AssetCategory          : physiotherapy.AssetCategory,
             OwnerUserId            : physiotherapy.OwnerUserId,
+            TenantId               : physiotherapy.TenantId,
             Tags                   : physiotherapy.Tags,
             Version                : physiotherapy.Version,
 

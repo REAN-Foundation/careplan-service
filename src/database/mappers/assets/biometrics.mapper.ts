@@ -19,6 +19,7 @@ export class BiometricsMapper {
             BiometricsType  : biometrics.BiometricsType,
             MeasurementUnit : biometrics.MeasurementUnit,
             OwnerUserId     : biometrics.OwnerUserId,
+            TenantId        : biometrics.TenantId,
             Tags            : biometrics.Tags,
             Version         : biometrics.Version,
 

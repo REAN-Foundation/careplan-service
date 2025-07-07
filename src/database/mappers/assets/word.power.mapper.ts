@@ -18,6 +18,7 @@ export class WordPowerMapper {
             AdditionalResources : wordPower.AdditionalResources,
             AssetCategory       : wordPower.AssetCategory,
             OwnerUserId         : wordPower.OwnerUserId,
+            TenantId            : wordPower.TenantId,
             Tags                : wordPower.Tags,
             Version             : wordPower.Version,
 
