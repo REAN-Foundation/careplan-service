@@ -231,13 +231,18 @@ export class EnrollmentService {
             search.where['CareplanId'] = filters.CareplanId;
         }
         if (filters.CareplanName) {
-            search.where['CareplanName'] = filters.CareplanName;
+            search.where['CareplanName'] =
+            {
+                [Op.like] : '%' + filters.CareplanName + '%'
+            };
         }
         if (filters.ProgressStatus) {
             search.where['ProgressStatus'] = filters.ProgressStatus;
         }
         if (filters.DisplayId) {
-            search.where['DisplayId'] = filters.DisplayId;
+            search.where['DisplayId'] =  {
+                [Op.like] : '%' + filters.DisplayId + '%'
+            };
         }
         // if (filters.StartDate) {
         //     search.where['StartDate'] = filters.StartDate;
@@ -250,8 +255,8 @@ export class EnrollmentService {
 
         if (filters.StartDate && filters.EndDate) {
             search.where[Op.and] = [
-                { StartDate: { [Op.gte]: new Date(filters.StartDate) } },
-                { EndDate: { [Op.lte]: new Date(filters.EndDate) } }
+                { StartDate: { [Op.lte]: new Date(filters.EndDate) } },
+                { EndDate: { [Op.gte]: new Date(filters.StartDate) } }
             ];
         } else if (filters.StartDate) {
             search.where['StartDate'] = {
