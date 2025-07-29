@@ -56,7 +56,7 @@ export class GoalValidator {
                 version       : joi.string().max(128).optional(),
                 order         : joi.string().max(128).optional(),
                 orderBy       : joi.string().max(128).optional(),
-                itemsPerPage  : joi.number().max(128).optional(),
+                itemsPerPage  : joi.number().optional(),
                 pageIndex     : joi.number().max(128).optional(),
                 
             });

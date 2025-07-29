@@ -49,7 +49,7 @@ export class CareplanCategoryValidator {
         try {
             const schema = joi.object({
                 Type        : joi.string().max(256).optional(),
-                Description : joi.string().max(512).optional(),
+                Description : joi.string().max(512).allow('', null).optional(),
                 TenantId    : joi
                     .string()
                     .guid({ version: ['uuidv4'] })

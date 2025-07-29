@@ -242,6 +242,11 @@ export class  CareplanService {
 
     delete = async (id) => {
         try {
+            await this.CareplanActivity.destroy({
+                where : {
+                    CareplanId : id
+                }
+            });
             var result = await this.Careplan.destroy({
                 where : {
                     id : id
