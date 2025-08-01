@@ -155,7 +155,7 @@ export class MessageControllerDelegate {
         if (Helper.hasProperty(requestBody, 'TemplateButtonIds')) {
             updateModel.TemplateButtonIds = JSON.stringify(requestBody.TemplateButtonIds);
         }
-        if (Helper.hasProperty(requestBody, 'Description')) {
+        if (Helper.hasProperty(requestBody, 'Description') || requestBody.Description === "") {
             updateModel.Description = requestBody.Description;
         }
         if (Helper.hasProperty(requestBody, 'MessageType')) {
@@ -186,7 +186,7 @@ export class MessageControllerDelegate {
                 JSON.stringify(requestBody.TemplateVariables) as string : JSON.stringify([]),
             TemplateButtonIds : requestBody.TemplateButtonIds ?
                 JSON.stringify(requestBody.TemplateButtonIds) as string : JSON.stringify([]),
-            Description : requestBody.Description ? requestBody.Description : null,
+            Description : requestBody.Description ?? null,
             MessageType : requestBody.MessageType ? requestBody.MessageType : 'Unknown',
             Tags        : requestBody.Tags ? JSON.stringify(requestBody.Tags) as string : JSON.stringify([]),
             Url         : requestBody.Url ? requestBody.Url : null,
