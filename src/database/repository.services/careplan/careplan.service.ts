@@ -134,8 +134,14 @@ export class  CareplanService {
                 include : []
             };
 
+            // if (filters.Code) {
+            //     search.where['Code'] = filters.Code;
+            // }
             if (filters.Code) {
-                search.where['Code'] = filters.Code;
+                search.where['Code'] =
+                 {
+                     [Op.like] : '%' + filters.Code + '%'
+                 };
             }
             if (filters.CategoryId) {
                 search.where['CategoryId'] = filters.CategoryId;

@@ -241,40 +241,33 @@ export class EnrollmentControllerDelegate {
     };
 
     generateScheduledTasks_Testing = async(record, scheduleType) => {
-
         try {
-
             const scheduledActivities =
                 await this._careplanActivityService.getScheduledActivities(record.CareplanId);
             const totalTasks = scheduledActivities.length; // Total number of tasks
             const tasks = scheduledActivities;
-
             const startHour: number = parseFloat(process.env.TEST_CAREPLAN_START_HOUR) ?? 14.5; // 9 AM + 05:30 IST
-
             // Calculate the interval between tasks
             const interval = 15; // in minutes
-
             // Calculate the number of tasks per day
             const tasksPerDay = Math.ceil(totalTasks / 7);
-
             // Initialize the schedule
             const schedule = [];
-
             // Distribute tasks evenly over 7 days
             for (let day = 0; day < 7; day++) {
                 const dailyTasks = [];
                 const startSequence = day * tasksPerDay;
                 const endSequence = Math.min((day + 1) * tasksPerDay, totalTasks);
-
                 for (let i = startSequence; i < endSequence; i++) {
                     dailyTasks.push(tasks[i]);
                 }
-
                 schedule.push(dailyTasks);
             }
-            const today = new Date().toISOString().split("T")[0];
-
+            const today = new Date().toISOString()
+                .split("T")[0];
             // Display the schedule
+            let count = 0;
+            let delay = 0; // in minutes
             schedule.forEach((tasks, day) => {
                 const dt = TimeHelper.addDuration(new Date(today), day + 1, DurationType.Day);
                 const dateString = dt.toISOString().split("T")[0];
@@ -282,33 +275,32 @@ export class EnrollmentControllerDelegate {
                 tasks.forEach( async task => {
                     const hours = Math.floor(currentTime / 60);
                     const minutes = currentTime % 60;
-                    
                     let scheduleDateTime = new Date();
-
                     if (scheduleType === 'WithinWeek') {
                         scheduleDateTime = new Date(`${dateString}T${hours}:${minutes.toString().padStart(2, '0')}:00`);
                     } else {
-                        scheduleDateTime = TimeHelper.addDuration(new Date(), 340, DurationType.Minute); // 05:30, 05*60 + 30+ 10 = 340
+                        if (count >= totalTasks / 2) {
+                            delay = 20;
+                        }
+                        scheduleDateTime = TimeHelper.addDuration(new Date(), 350 + delay, DurationType.Minute); // 05:30, 05*60 + 30+ 10 = 340
                     }
                     currentTime += interval;
-
                     var createModel: EnrollmentTaskCreateModel = {
-                        EnrollmentId       : record.id,
-                        ParticipantId      : record.ParticipantId,
-                        CareplanId         : record.CareplanId,
-                        CareplanActivityId : task.id,
-                        AssetId            : task.AssetId,
-                        AssetType          : task.AssetType,
-                        TimeSlot           : task.TimeSlot,
+                        EnrollmentId           : record.id,
+                        ParticipantId          : record.ParticipantId,
+                        CareplanId             : record.CareplanId,
+                        CareplanActivityId     : task.id,
+                        AssetId                : task.AssetId,
+                        AssetType              : task.AssetType,
+                        TimeSlot               : task.TimeSlot,
                         IsRegistrationActivity : false,
-                        ScheduledDate      : scheduleDateTime
+                        ScheduledDate          : scheduleDateTime
                     };
-    
+                    count++;
                     const activity = await this._enrollmentTaskService.create(createModel);
                     Logger.instance().log(`Scheduled activity for day: ${dateString} \n${JSON.stringify(activity, null, 2)}`);
                 });
             });
-
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create enrollment scheduled tasks for testing!', error);
         }
