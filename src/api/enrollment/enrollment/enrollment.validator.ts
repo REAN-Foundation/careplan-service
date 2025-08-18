@@ -34,7 +34,9 @@ export class EnrollmentValidator {
                     IntervalMinutes : joi.number().integer().min(0).max(1440).optional()
                         .error(() => new Error("IntervalMinutes must be a positive integer between 15 and 1440 (24 hours)")),
                     StartFromTomorrow : joi.boolean().optional()
-                        .error(() => new Error("StartFromTomorrow must be a boolean value"))
+                        .error(() => new Error("StartFromTomorrow must be a boolean value")),
+                    Timezone : joi.string().max(10).optional()
+                        .error(() => new Error("Timezone must be a string with a format like '+05:30' or '-05:00'")),
                 }).optional(),
                 TenantId : joi.string().guid({
                     version : ['uuidv4']

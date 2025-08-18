@@ -93,7 +93,8 @@ export class EnrollmentControllerDelegate {
             ErrorHandler.throwInternalServerError('Unable to update displayId!');
         }
         if (requestBody.IsTest === true) {
-            await this.generateScheduledTasks_Testing(record, requestBody.ScheduleConfig);
+            const scheduleConfig = this.getScheduleConfig(requestBody?.ScheduleConfig);
+            await this.generateScheduledTasks_Testing(record, scheduleConfig);
         } else {
             await this.generateRegistrationTasks(record);
             await this.generateScheduledTasks(record);
@@ -514,6 +515,40 @@ export class EnrollmentControllerDelegate {
         return searchFilters;
     };
 
+    private getScheduleConfig = (config: any): any => {
+        try {
+            const timezoneOffsetMinutes = TimeHelper.getTimezoneOffsets(config?.Timezone, DurationType.Minute);
+    
+            const targetTimeMinutes = (config?.StartHour * 60) + config?.StartMinutes;
+    
+            const systemTimeMinutes = targetTimeMinutes - timezoneOffsetMinutes;
+    
+            let adjustedTimeMinutes = systemTimeMinutes;
+            const minutesInDay = 24 * 60;
+    
+            if (adjustedTimeMinutes < 0) {
+                adjustedTimeMinutes += minutesInDay;
+            } else if (adjustedTimeMinutes >= minutesInDay) {
+                adjustedTimeMinutes -= minutesInDay;
+            }
+    
+            const systemHour = Math.floor(adjustedTimeMinutes / 60);
+            const systemMinutes = adjustedTimeMinutes % 60;
+    
+            const result: any = {
+                NumberOfDays: config?.NumberOfDays,
+                StartHour: systemHour,
+                StartMinutes: systemMinutes,
+                IntervalMinutes: config?.IntervalMinutes,
+                StartFromTomorrow: config?.StartFromTomorrow
+            };
+            return result;
+    
+        } catch (error) {
+            Logger.instance().log(`Failed to process schedule configuration: ${error.message}`);
+            return config;
+        }
+    };
     //#endregion
 
 }
