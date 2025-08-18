@@ -20,6 +20,7 @@ export interface EnrollmentCreateModel {
     EnrollmentDate ?: Date;
     IsTest         ?: boolean;
     TenantId       ?: uuid;
+    ScheduleConfig ?: ScheduleConfig;
 }
 
 export interface EnrollmentUpdateModel {
@@ -64,4 +65,11 @@ export interface EnrollmentSearchFilters extends BaseSearchFilters {
 
 export interface EnrollmentSearchResults extends BaseSearchResults {
     Items: EnrollmentDto[];
+}
+
+export interface ScheduleConfig {
+    NumberOfDays: number;
+    StartHour: number;
+    IntervalMinutes: number;
+    StartFromTomorrow: boolean;
 }
