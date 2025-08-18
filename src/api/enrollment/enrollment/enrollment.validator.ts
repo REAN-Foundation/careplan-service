@@ -29,6 +29,8 @@ export class EnrollmentValidator {
                         .error(() => new Error("NumberOfDays must be a positive integer between 1 and 90")),
                     StartHour : joi.number().integer().min(0).max(23).optional()
                         .error(() => new Error("StartHour must be an integer between 0 and 23")),
+                    StartMinutes : joi.number().integer().min(0).max(59).optional()
+                        .error(() => new Error("StartMinute must be an integer between 0 and 59")),
                     IntervalMinutes : joi.number().integer().min(0).max(1440).optional()
                         .error(() => new Error("IntervalMinutes must be a positive integer between 15 and 1440 (24 hours)")),
                     StartFromTomorrow : joi.boolean().optional()

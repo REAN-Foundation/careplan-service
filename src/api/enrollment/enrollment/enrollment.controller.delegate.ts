@@ -292,7 +292,7 @@ export class EnrollmentControllerDelegate {
 
     private async scheduleTasksForDay(tasks, scheduleDate, config, record) {
         const dateString = TimeHelper.getDateString(scheduleDate, DateStringFormat.YYYY_MM_DD);
-        let currentTime = config.StartHour * 60;
+        let currentTime = config.StartHour * 60 + config.StartMinutes;
 
         for (const task of tasks) {
             const hours = Math.floor(currentTime / 60);
