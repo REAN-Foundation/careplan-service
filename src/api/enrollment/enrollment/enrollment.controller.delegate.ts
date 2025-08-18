@@ -243,11 +243,11 @@ export class EnrollmentControllerDelegate {
     generateScheduledTasks_Testing = async(record, scheduleConfig) => {
         try {
             const config = {
-                NumberOfDays: 7,                    // How many days to spread tasks over
-                StartHour: 9,                       // Start time (9 AM)
-                IntervalMinutes: 30,                // Time between tasks
-                StartFromTomorrow: true,            // Start from tomorrow or today
-                ...scheduleConfig                   // Override with any custom config
+                NumberOfDays: 7,
+                StartHour: 9,
+                IntervalMinutes: 30,
+                StartFromTomorrow: true,
+                ...scheduleConfig
             };
 
             const scheduledActivities = await this._careplanActivityService.getScheduledActivities(record.CareplanId);
@@ -260,35 +260,24 @@ export class EnrollmentControllerDelegate {
 
             Logger.instance().log(`Testing: Scheduling ${totalTasks} tasks over ${config.NumberOfDays} days`);
 
-            // Validate schedule configuration using TimeHelper
             const startDate = new Date();
             const endDate = TimeHelper.addDuration(startDate, config.NumberOfDays, DurationType.Day);
             Logger.instance().log(`Testing: Schedule period: ${TimeHelper.getDateString(startDate, DateStringFormat.YYYY_MM_DD)} to ${TimeHelper.getDateString(endDate, DateStringFormat.YYYY_MM_DD)}`);
             
-            // // Validate interval configuration
-            // if (config.IntervalMinutes < 1) {
-            //     Logger.instance().log(`Warning: Interval ${config.IntervalMinutes} minutes is very short, this may create many tasks`);
-            // }
-
             const tasksPerDay = Math.ceil(totalTasks / config.NumberOfDays);
             let taskIndex = 0;
 
-            // Schedule tasks day by day
             for (let day = 0; day < config.NumberOfDays && taskIndex < totalTasks; day++) {
                 const dayTasks = scheduledActivities.slice(taskIndex, taskIndex + tasksPerDay);
-                
-                // Calculate date for this day using TimeHelper
-                let scheduleDate = new Date();
+                let scheduleDate;
+                const today = new Date().toISOString()
+                    .split("T")[0];
                 if (config.StartFromTomorrow) {
-                    scheduleDate = TimeHelper.addDuration(scheduleDate, day + 1, DurationType.Day);
+                    scheduleDate = TimeHelper.addDuration(new Date(today), day + 1, DurationType.Day);
                 } else {
-                    scheduleDate = TimeHelper.addDuration(scheduleDate, day, DurationType.Day);
+                    scheduleDate = TimeHelper.addDuration(new Date(today), day, DurationType.Day);
                 }
                 
-                // Set to start of day for consistent scheduling
-                scheduleDate = TimeHelper.startOf(scheduleDate, DurationType.Day);
-
-                // Schedule tasks for this day
                 await this.scheduleTasksForDay(dayTasks, scheduleDate, config, record);
                 
                 taskIndex += dayTasks.length;
@@ -301,20 +290,17 @@ export class EnrollmentControllerDelegate {
         }
     };
 
-    // Helper method to schedule tasks for a specific day
     private async scheduleTasksForDay(tasks, scheduleDate, config, record) {
         const dateString = TimeHelper.getDateString(scheduleDate, DateStringFormat.YYYY_MM_DD);
-        let currentTime = config.StartHour * 60; // Convert to minutes
+        let currentTime = config.StartHour * 60;
 
         for (const task of tasks) {
             const hours = Math.floor(currentTime / 60);
             const minutes = currentTime % 60;
             
-            // Create schedule date using TimeHelper for consistent time handling
             let scheduleDateTime = TimeHelper.addDuration(scheduleDate, hours, DurationType.Hour);
             scheduleDateTime = TimeHelper.addDuration(scheduleDateTime, minutes, DurationType.Minute);
             
-            // Create the enrollment task
             const createModel = {
                 EnrollmentId: record.id,
                 ParticipantId: record.ParticipantId,
@@ -337,8 +323,6 @@ export class EnrollmentControllerDelegate {
             currentTime += config.IntervalMinutes;
         }
     }
-
-
 
     getSearchFilters = (query) => {
 
