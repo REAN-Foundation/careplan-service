@@ -263,7 +263,7 @@ export class EnrollmentControllerDelegate {
 
             for (let day = 0; day < scheduleConfig.NumberOfDays && taskIndex < totalTasks; day++) {
                 const dayTasks = scheduledActivities.slice(taskIndex, taskIndex + tasksPerDay);
-                let scheduleDate;
+                let scheduleDate =  new Date();
                 const today = new Date().toISOString()
                     .split("T")[0];
                 if (scheduleConfig.StartFromTomorrow) {
@@ -308,7 +308,7 @@ export class EnrollmentControllerDelegate {
             };
 
             try {
-                const activity = await this._enrollmentTaskService.create(createModel);
+                await this._enrollmentTaskService.create(createModel);
                 Logger.instance().log(`Testing: Scheduled task ${task.id} for ${dateString} at ${hours}:${minutes.toString().padStart(2, '0')}`);
             } catch (error) {
                 ErrorHandler.throwDbAccessError(`Testing: Failed to create task ${task.id}`, error);
