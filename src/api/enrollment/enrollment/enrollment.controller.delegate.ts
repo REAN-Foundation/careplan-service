@@ -93,8 +93,8 @@ export class EnrollmentControllerDelegate {
             ErrorHandler.throwInternalServerError('Unable to update displayId!');
         }
         if (requestBody.IsTest === true) {
-            const scheduleConfig = this.getScheduleConfig(requestBody?.ScheduleConfig);
-            await this.generateScheduledTasks_Testing(record, scheduleConfig);
+            // const scheduleConfig = this.getScheduleConfig(requestBody?.ScheduleConfig);
+            await this.generateScheduledTasks_Testing(record, requestBody?.ScheduleConfig);
         } else {
             await this.generateRegistrationTasks(record);
             await this.generateScheduledTasks(record);
@@ -243,13 +243,6 @@ export class EnrollmentControllerDelegate {
 
     generateScheduledTasks_Testing = async(record, scheduleConfig) => {
         try {
-            const config = {
-                NumberOfDays: 7,
-                StartHour: 9,
-                IntervalMinutes: 30,
-                StartFromTomorrow: true,
-                ...scheduleConfig
-            };
 
             const scheduledActivities = await this._careplanActivityService.getScheduledActivities(record.CareplanId);
             const totalTasks = scheduledActivities.length;
@@ -259,27 +252,27 @@ export class EnrollmentControllerDelegate {
                 return;
             }
 
-            Logger.instance().log(`Testing: Scheduling ${totalTasks} tasks over ${config.NumberOfDays} days`);
+            Logger.instance().log(`Testing: Scheduling ${totalTasks} tasks over ${scheduleConfig.NumberOfDays} days`);
 
             const startDate = new Date();
-            const endDate = TimeHelper.addDuration(startDate, config.NumberOfDays, DurationType.Day);
+            const endDate = TimeHelper.addDuration(startDate, scheduleConfig.NumberOfDays, DurationType.Day);
             Logger.instance().log(`Testing: Schedule period: ${TimeHelper.getDateString(startDate, DateStringFormat.YYYY_MM_DD)} to ${TimeHelper.getDateString(endDate, DateStringFormat.YYYY_MM_DD)}`);
             
-            const tasksPerDay = Math.ceil(totalTasks / config.NumberOfDays);
+            const tasksPerDay = Math.ceil(totalTasks / scheduleConfig.NumberOfDays);
             let taskIndex = 0;
 
-            for (let day = 0; day < config.NumberOfDays && taskIndex < totalTasks; day++) {
+            for (let day = 0; day < scheduleConfig.NumberOfDays && taskIndex < totalTasks; day++) {
                 const dayTasks = scheduledActivities.slice(taskIndex, taskIndex + tasksPerDay);
                 let scheduleDate;
                 const today = new Date().toISOString()
                     .split("T")[0];
-                if (config.StartFromTomorrow) {
+                if (scheduleConfig.StartFromTomorrow) {
                     scheduleDate = TimeHelper.addDuration(new Date(today), day + 1, DurationType.Day);
                 } else {
                     scheduleDate = TimeHelper.addDuration(new Date(today), day, DurationType.Day);
                 }
                 
-                await this.scheduleTasksForDay(dayTasks, scheduleDate, config, record);
+                await this.scheduleTasksForDay(dayTasks, scheduleDate, scheduleConfig, record);
                 
                 taskIndex += dayTasks.length;
             }
@@ -291,9 +284,9 @@ export class EnrollmentControllerDelegate {
         }
     };
 
-    private async scheduleTasksForDay(tasks, scheduleDate, config, record) {
+    private async scheduleTasksForDay(tasks, scheduleDate, scheduleConfig, record) {
         const dateString = TimeHelper.getDateString(scheduleDate, DateStringFormat.YYYY_MM_DD);
-        let currentTime = config.StartHour * 60 + config.StartMinutes;
+        let currentTime = scheduleConfig.StartHour * 60 + scheduleConfig.StartMinutes;
 
         for (const task of tasks) {
             const hours = Math.floor(currentTime / 60);
@@ -321,7 +314,7 @@ export class EnrollmentControllerDelegate {
                 ErrorHandler.throwDbAccessError(`Testing: Failed to create task ${task.id}`, error);
             }
 
-            currentTime += config.IntervalMinutes;
+            currentTime += scheduleConfig.IntervalMinutes;
         }
     }
 
