@@ -27,7 +27,7 @@ import {
 } from '../../../domain.types/enrollment/enrollment.domain.types';
 import { EnrollmentTaskCreateModel } from '../../../domain.types/enrollment/enrollment.task.domain.types';
 import { TimeHelper } from '../../../common/time.helper';
-import { DurationType } from '../../../domain.types/miscellaneous/time.types';
+import { DurationType, DateStringFormat } from '../../../domain.types/miscellaneous/time.types';
 import { Logger } from '../../../common/logger';
 import { ParticipantService } from '../../../database/repository.services/enrollment/participant.service';
 import { CareplanService } from '../../../database/repository.services/careplan/careplan.service';
@@ -63,7 +63,7 @@ export class EnrollmentControllerDelegate {
 
     //#endregion
 
-    create = async (requestBody: any) => {
+    create = async (requestBody: EnrollmentCreateModel) => {
 
         await validator.validateCreateRequest(requestBody);
 
@@ -93,7 +93,8 @@ export class EnrollmentControllerDelegate {
             ErrorHandler.throwInternalServerError('Unable to update displayId!');
         }
         if (requestBody.IsTest === true) {
-            await this.generateScheduledTasks_Testing(record, requestBody.ScheduleType);
+            // const scheduleConfig = this.getScheduleConfig(requestBody?.ScheduleConfig);
+            await this.generateScheduledTasks_Testing(record, requestBody?.ScheduleConfig);
         } else {
             await this.generateRegistrationTasks(record);
             await this.generateScheduledTasks(record);
@@ -240,71 +241,82 @@ export class EnrollmentControllerDelegate {
         }
     };
 
-    generateScheduledTasks_Testing = async(record, scheduleType) => {
+    generateScheduledTasks_Testing = async(record, scheduleConfig) => {
         try {
-            const scheduledActivities =
-                await this._careplanActivityService.getScheduledActivities(record.CareplanId);
-            const totalTasks = scheduledActivities.length; // Total number of tasks
-            const tasks = scheduledActivities;
-            const startHour: number = parseFloat(process.env.TEST_CAREPLAN_START_HOUR) ?? 14.5; // 9 AM + 05:30 IST
-            // Calculate the interval between tasks
-            const interval = 15; // in minutes
-            // Calculate the number of tasks per day
-            const tasksPerDay = Math.ceil(totalTasks / 7);
-            // Initialize the schedule
-            const schedule = [];
-            // Distribute tasks evenly over 7 days
-            for (let day = 0; day < 7; day++) {
-                const dailyTasks = [];
-                const startSequence = day * tasksPerDay;
-                const endSequence = Math.min((day + 1) * tasksPerDay, totalTasks);
-                for (let i = startSequence; i < endSequence; i++) {
-                    dailyTasks.push(tasks[i]);
-                }
-                schedule.push(dailyTasks);
+
+            const scheduledActivities = await this._careplanActivityService.getScheduledActivities(record.CareplanId);
+            const totalTasks = scheduledActivities.length;
+            
+            if (totalTasks === 0) {
+                Logger.instance().log('No activities found for testing');
+                return;
             }
-            const today = new Date().toISOString()
-                .split("T")[0];
-            // Display the schedule
-            let count = 0;
-            let delay = 0; // in minutes
-            schedule.forEach((tasks, day) => {
-                const dt = TimeHelper.addDuration(new Date(today), day + 1, DurationType.Day);
-                const dateString = dt.toISOString().split("T")[0];
-                let currentTime = startHour * 60; // Convert start hour to minutes
-                tasks.forEach( async task => {
-                    const hours = Math.floor(currentTime / 60);
-                    const minutes = currentTime % 60;
-                    let scheduleDateTime = new Date();
-                    if (scheduleType === 'WithinWeek') {
-                        scheduleDateTime = new Date(`${dateString}T${hours}:${minutes.toString().padStart(2, '0')}:00`);
-                    } else {
-                        if (count >= totalTasks / 2) {
-                            delay = 20;
-                        }
-                        scheduleDateTime = TimeHelper.addDuration(new Date(), 350 + delay, DurationType.Minute); // 05:30, 05*60 + 30+ 10 = 340
-                    }
-                    currentTime += interval;
-                    var createModel: EnrollmentTaskCreateModel = {
-                        EnrollmentId           : record.id,
-                        ParticipantId          : record.ParticipantId,
-                        CareplanId             : record.CareplanId,
-                        CareplanActivityId     : task.id,
-                        AssetId                : task.AssetId,
-                        AssetType              : task.AssetType,
-                        TimeSlot               : task.TimeSlot,
-                        IsRegistrationActivity : false,
-                        ScheduledDate          : scheduleDateTime
-                    };
-                    count++;
-                    const activity = await this._enrollmentTaskService.create(createModel);
-                    Logger.instance().log(`Scheduled activity for day: ${dateString} \n${JSON.stringify(activity, null, 2)}`);
-                });
-            });
+
+            Logger.instance().log(`Testing: Scheduling ${totalTasks} tasks over ${scheduleConfig.NumberOfDays} days`);
+
+            const startDate = new Date();
+            const endDate = TimeHelper.addDuration(startDate, scheduleConfig.NumberOfDays, DurationType.Day);
+            Logger.instance().log(`Testing: Schedule period: ${TimeHelper.getDateString(startDate, DateStringFormat.YYYY_MM_DD)} to ${TimeHelper.getDateString(endDate, DateStringFormat.YYYY_MM_DD)}`);
+            
+            const tasksPerDay = Math.ceil(totalTasks / scheduleConfig.NumberOfDays);
+            let taskIndex = 0;
+
+            for (let day = 0; day < scheduleConfig.NumberOfDays && taskIndex < totalTasks; day++) {
+                const dayTasks = scheduledActivities.slice(taskIndex, taskIndex + tasksPerDay);
+                let scheduleDate =  new Date();
+                const today = new Date().toISOString()
+                    .split("T")[0];
+                if (scheduleConfig.StartFromTomorrow) {
+                    scheduleDate = TimeHelper.addDuration(new Date(today), day + 1, DurationType.Day);
+                } else {
+                    scheduleDate = TimeHelper.addDuration(new Date(today), day, DurationType.Day);
+                }
+                
+                await this.scheduleTasksForDay(dayTasks, scheduleDate, scheduleConfig, record);
+                
+                taskIndex += dayTasks.length;
+            }
+
+            Logger.instance().log(`Testing: Successfully scheduled ${taskIndex} tasks`);
+            
         } catch (error) {
-            ErrorHandler.throwDbAccessError('DB Error: Unable to create enrollment scheduled tasks for testing!', error);
+            ErrorHandler.throwDbAccessError('Testing Error:', error);
         }
     };
+
+    private async scheduleTasksForDay(tasks, scheduleDate, scheduleConfig, record) {
+        const dateString = TimeHelper.getDateString(scheduleDate, DateStringFormat.YYYY_MM_DD);
+        let currentTime = scheduleConfig.StartHour * 60 + scheduleConfig.StartMinutes;
+
+        for (const task of tasks) {
+            const hours = Math.floor(currentTime / 60);
+            const minutes = currentTime % 60;
+            
+            let scheduleDateTime = TimeHelper.addDuration(scheduleDate, hours, DurationType.Hour);
+            scheduleDateTime = TimeHelper.addDuration(scheduleDateTime, minutes, DurationType.Minute);
+            
+            const createModel = {
+                EnrollmentId: record.id,
+                ParticipantId: record.ParticipantId,
+                CareplanId: record.CareplanId,
+                CareplanActivityId: task.id,
+                AssetId: task.AssetId,
+                AssetType: task.AssetType,
+                TimeSlot: task.TimeSlot,
+                IsRegistrationActivity: false,
+                ScheduledDate: scheduleDateTime
+            };
+
+            try {
+                await this._enrollmentTaskService.create(createModel);
+                Logger.instance().log(`Testing: Scheduled task ${task.id} for ${dateString} at ${hours}:${minutes.toString().padStart(2, '0')}`);
+            } catch (error) {
+                ErrorHandler.throwDbAccessError(`Testing: Failed to create task ${task.id}`, error);
+            }
+
+            currentTime += scheduleConfig.IntervalMinutes;
+        }
+    }
 
     getSearchFilters = (query) => {
 
@@ -496,6 +508,40 @@ export class EnrollmentControllerDelegate {
         return searchFilters;
     };
 
+    private getScheduleConfig = (config: any): any => {
+        try {
+            const timezoneOffsetMinutes = TimeHelper.getTimezoneOffsets(config?.Timezone, DurationType.Minute);
+    
+            const targetTimeMinutes = (config?.StartHour * 60) + config?.StartMinutes;
+    
+            const systemTimeMinutes = targetTimeMinutes - timezoneOffsetMinutes;
+    
+            let adjustedTimeMinutes = systemTimeMinutes;
+            const minutesInDay = 24 * 60;
+    
+            if (adjustedTimeMinutes < 0) {
+                adjustedTimeMinutes += minutesInDay;
+            } else if (adjustedTimeMinutes >= minutesInDay) {
+                adjustedTimeMinutes -= minutesInDay;
+            }
+    
+            const systemHour = Math.floor(adjustedTimeMinutes / 60);
+            const systemMinutes = adjustedTimeMinutes % 60;
+    
+            const result: any = {
+                NumberOfDays: config?.NumberOfDays,
+                StartHour: systemHour,
+                StartMinutes: systemMinutes,
+                IntervalMinutes: config?.IntervalMinutes,
+                StartFromTomorrow: config?.StartFromTomorrow
+            };
+            return result;
+    
+        } catch (error) {
+            Logger.instance().log(`Failed to process schedule configuration: ${error.message}`);
+            return config;
+        }
+    };
     //#endregion
 
 }
