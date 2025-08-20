@@ -33,6 +33,7 @@ import { ParticipantService } from '../../../database/repository.services/enroll
 import { CareplanService } from '../../../database/repository.services/careplan/careplan.service';
 import { CareplanActivityService } from '../../../database/repository.services/careplan/careplan.activity.service';
 import { ParticipantActivityResponseService } from '../../../database/repository.services/participant.responses/participant.activity.response.service';
+import { TimeSlot } from '../../../domain.types/assets/asset.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -218,7 +219,8 @@ export class EnrollmentControllerDelegate {
                 let dt = null;
                
                 dt = TimeHelper.addDuration(startDate, daysToAdd, DurationType.Day);
-                dt = TimeHelper.addDuration(dt, 540, DurationType.Minute);
+                const timeInMinutes = this.getTimeFromTimeSlot(act.TimeSlot);
+                dt = TimeHelper.addDuration(dt, timeInMinutes, DurationType.Minute);
 
                 var createModel: EnrollmentTaskCreateModel = {
                     EnrollmentId       : record.id,
@@ -540,6 +542,30 @@ export class EnrollmentControllerDelegate {
         } catch (error) {
             Logger.instance().log(`Failed to process schedule configuration: ${error.message}`);
             return config;
+        }
+    };
+
+    private getTimeFromTimeSlot = (timeSlot: TimeSlot): number => {
+        switch (timeSlot) {
+            case TimeSlot.EarlyMorning:
+                return 6 * 60;
+            case TimeSlot.Morning:
+                return 9 * 60;
+            case TimeSlot.Afternoon:
+                return 14 * 60;
+            case TimeSlot.LateAfternoon:
+                return 16 * 60;
+            case TimeSlot.Evening:
+                return 18 * 60;
+            case TimeSlot.Night:
+                return 20 * 60;
+            case TimeSlot.LateNight:
+                return 22 * 60;
+            case TimeSlot.WholeDay:
+                return 9 * 60;
+            case TimeSlot.Unspecified:
+            default:
+                return 9 * 60;
         }
     };
     //#endregion
