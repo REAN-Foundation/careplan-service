@@ -18,13 +18,12 @@ RUN npm run build
 
 
 FROM node:18.20.8-alpine3.21
-RUN apk add bash
+RUN apk add bash gcc musl-dev python3-dev libffi-dev openssl-dev cargo make
 RUN apk add --no-cache \
         python3 \
         py3-pip \
     && rm -rf /var/cache/apk/*
-
-RUN pip3 install --break-system-packages awscli
+RUN pip3 install --break-system-packages azure-cli
 RUN apk add --update alpine-sdk
 RUN apk update
 RUN apk upgrade
@@ -35,7 +34,8 @@ COPY package*.json /app/
 RUN npm install pm2 -g
 RUN npm install sharp
 COPY --from=builder ./app/dist/ .
-
+COPY entrypoint.sh /app/entrypoint.sh
+RUN dos2unix /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
 # ENTRYPOINT ["/bin/sh", "./entrypoint.sh"]
-ENTRYPOINT ["/bin/bash", "-c", "./entrypoint.sh"]
+ENTRYPOINT ["/bin/bash", "-c", "/app/entrypoint.sh"]

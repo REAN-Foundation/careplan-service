@@ -5,7 +5,7 @@
         "Authorization": "Custom"
     },
     "FileStorage" : {
-        "Provider": "Custom"
+        "Provider": "Azure-Storage"
     },
     "Communication" : {
         "SMS": {
