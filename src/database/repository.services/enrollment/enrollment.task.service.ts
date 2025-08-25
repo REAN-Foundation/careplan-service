@@ -137,6 +137,20 @@ export class EnrollmentTaskService {
             ErrorHandler.throwDbAccessError('DB Error: Unable to search enrollment schedule records!', error);
         }
     };
+
+    deleteByParticipantId = async (participantId) => {
+        try {
+            var result = await this.EnrollmentTask.destroy({
+                where : {
+                    ParticipantId : participantId
+                },
+                force : true
+            });
+            return result > 0;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to delete enrollment tasks by participant ID!', error);
+        }
+    };
     
     //#endregion
 

@@ -159,6 +159,20 @@ export class ParticipantSelectedActionPlanService {
         }
     };
 
+    deleteByParticipantId = async (participantId) => {
+        try {
+            var result = await this.ParticipantSelectedActionPlan.destroy({
+                where : {
+                    ParticipantId : participantId
+                },
+                force : true
+            });
+            return result > 0;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to delete participant selected action plans by participant ID!', error);
+        }
+    };
+
     //#endregion
 
     //#region Privates

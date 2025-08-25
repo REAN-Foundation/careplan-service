@@ -11,6 +11,12 @@ import {
 } from '../../../domain.types/enrollment/participant.domain.types';
 import { uuid } from '../../../domain.types/miscellaneous/system.types';
 import { UserHelper } from '../../../api/user.helper';
+import { EnrollmentService } from '../../../database/repository.services/enrollment/enrollment.service';
+import { EnrollmentTaskService } from '../../../database/repository.services/enrollment/enrollment.task.service';
+import { ParticipantActivityResponseService } from '../../../database/repository.services/participant.responses/participant.activity.response.service';
+import { ParticipantSelectedGoalService } from '../../../database/repository.services/participant.responses/participant.selected.goal.service';
+import { ParticipantSelectedActionPlanService } from '../../../database/repository.services/participant.responses/participant.selected.action.plan.service';
+import { ParticipantSelectedPriorityService } from '../../../database/repository.services/participant.responses/participant.selected.priority.service';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -20,8 +26,26 @@ export class ParticipantControllerDelegate {
 
     _service: ParticipantService = null;
 
+    _enrollmentService: EnrollmentService = null;
+
+    _enrollmentTaskService: EnrollmentTaskService = null;
+
+    _participantActivityResponseService: ParticipantActivityResponseService = null;
+
+    _participantSelectedGoalService: ParticipantSelectedGoalService = null;
+
+    _participantSelectedActionPlanService: ParticipantSelectedActionPlanService = null;
+
+    _participantSelectedPriorityService: ParticipantSelectedPriorityService = null;
+
     constructor() {
         this._service = new ParticipantService();
+        this._enrollmentService = new EnrollmentService();
+        this._enrollmentTaskService = new EnrollmentTaskService();
+        this._participantActivityResponseService = new ParticipantActivityResponseService();
+        this._participantSelectedGoalService = new ParticipantSelectedGoalService();
+        this._participantSelectedActionPlanService = new ParticipantSelectedActionPlanService();
+        this._participantSelectedPriorityService = new ParticipantSelectedPriorityService();
     }
 
     //#endregion
@@ -91,13 +115,31 @@ export class ParticipantControllerDelegate {
 
     delete = async (id: uuid) => {
         const record: ParticipantDto = await this._service.getById(id);
+        
         if (record == null) {
             ErrorHandler.throwNotFoundError('Participant with id ' + id.toString() + ' cannot be found!');
         }
-        const userDeleted: boolean = await this._service.delete(id);
-        return {
-            Deleted : userDeleted
-        };
+
+        try {
+            await this._participantActivityResponseService.deleteByParticipantId(id);
+
+            await this._participantSelectedGoalService.deleteByParticipantId(id);
+
+            await this._participantSelectedActionPlanService.deleteByParticipantId(id);
+
+            await this._participantSelectedPriorityService.deleteByParticipantId(id);
+
+            await this._enrollmentTaskService.deleteByParticipantId(id);
+            
+            await this._enrollmentService.deleteByParticipantId(id);
+            
+            const userDeleted: boolean = await this._service.delete(id);
+            return {
+                Deleted : userDeleted
+            };
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to delete participant and associated data!', error);
+        }
     };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
