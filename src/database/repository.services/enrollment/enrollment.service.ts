@@ -156,6 +156,20 @@ export class EnrollmentService {
         }
     };
 
+    deleteByParticipantId = async (participantId) => {
+        try {
+            var result = await this.Enrollment.destroy({
+                where : {
+                    ParticipantId : participantId
+                },
+                force : true
+            });
+            return result > 0;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to delete enrollments by participant ID!', error);
+        }
+    };
+
     getEnrollmentStats = async (participantId) => {
         try {
             const totalTasks = await this.EnrollmentTask.findAll({

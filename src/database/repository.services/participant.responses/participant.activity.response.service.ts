@@ -163,6 +163,20 @@ export class ParticipantActivityResponseService {
         }
     };
 
+    deleteByParticipantId = async (participantId) => {
+        try {
+            var result = await this.ParticipantActivityResponse.destroy({
+                where : {
+                    ParticipantId : participantId
+                },
+                force : true
+            });
+            return result > 0;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to delete participant activity responses by participant ID!', error);
+        }
+    };
+
     //#endregion
 
     //#region Privates
