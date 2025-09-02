@@ -14,6 +14,7 @@ export interface PhysiotherapyCreateModel {
     Tags ? : string;
     Version ? : string;
     OwnerUserId ? : uuid;
+    TenantId?: uuid;
 }
 
 export interface PhysiotherapyUpdateModel {
@@ -24,6 +25,7 @@ export interface PhysiotherapyUpdateModel {
     Tags ? : string;
     Version ? : string;
     OwnerUserId ? : uuid;
+    TenantId?: uuid;
 }
 
 export interface PhysiotherapyDto {
@@ -34,6 +36,7 @@ export interface PhysiotherapyDto {
     RecommendedDurationMin: number;
     AssetCategory: string;
     OwnerUserId: uuid;
+    TenantId: uuid;
     Tags: string[];
     Version: string;
 
@@ -47,6 +50,7 @@ export interface PhysiotherapySearchFilters extends BaseSearchFilters {
     AssetCategory ? : string;
     Tags ? : string;
     Version ? : string;
+    TenantId?: uuid;
     CreatedAt ? : Date;
 }
 

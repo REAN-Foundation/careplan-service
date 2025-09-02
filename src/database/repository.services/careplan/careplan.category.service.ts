@@ -76,6 +76,10 @@ export class CareplanCategoryService {
                     [Op.like] : '%' + filters.Type + '%'
                 };
             }
+            
+            if (filters.TenantId) {
+                search.where['TenantId'] = filters.TenantId;
+            }
 
             //Sorting
             let orderByColumn = 'CreatedAt';

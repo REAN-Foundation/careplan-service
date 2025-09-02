@@ -2,12 +2,13 @@ import * as joi from 'joi';
 import {
     ErrorHandler
 } from '../../../common/error.handler';
+import { EnrollmentCreateModel } from '../../../domain.types/enrollment/enrollment.domain.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 export class EnrollmentValidator {
 
-    static validateCreateRequest = async (requestBody) => {
+    static validateCreateRequest = async (requestBody: EnrollmentCreateModel) => {
         try {
             const schema = joi.object({
                 CareplanId : joi.string().guid({
@@ -23,7 +24,23 @@ export class EnrollmentValidator {
                 DayOffset      : joi.number().optional(),
                 EnrollmentDate : joi.date().iso().optional(),
                 IsTest         : joi.boolean().optional(),
-                ScheduleType   : joi.string().optional()
+                ScheduleConfig : joi.object({
+                    NumberOfDays : joi.number().integer().min(1).max(90).optional()
+                        .error(() => new Error("NumberOfDays must be a positive integer between 1 and 90")),
+                    StartHour : joi.number().integer().min(0).max(23).optional()
+                        .error(() => new Error("StartHour must be an integer between 0 and 23")),
+                    StartMinutes : joi.number().integer().min(0).max(59).optional()
+                        .error(() => new Error("StartMinute must be an integer between 0 and 59")),
+                    IntervalMinutes : joi.number().integer().min(0).max(1440).optional()
+                        .error(() => new Error("IntervalMinutes must be a positive integer between 15 and 1440 (24 hours)")),
+                    StartFromTomorrow : joi.boolean().optional()
+                        .error(() => new Error("StartFromTomorrow must be a boolean value")),
+                    Timezone : joi.string().max(10).optional()
+                        .error(() => new Error("Timezone must be a string with a format like '+05:30' or '-05:00'")),
+                }).optional(),
+                TenantId : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -41,7 +58,10 @@ export class EnrollmentValidator {
                     version : ['uuidv4']
                 }).optional(),
                 StartDate : joi.date().iso().optional(),
-                EndDate   : joi.date().iso().optional()
+                EndDate   : joi.date().iso().optional(),
+                TenantId  : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -55,9 +75,12 @@ export class EnrollmentValidator {
                 careplanId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
-                displayId      : joi.string().optional(),
-                startDate      : joi.date().iso().optional(),
-                endDate        : joi.date().iso().optional(),
+                displayId : joi.string().optional(),
+                startDate : joi.date().iso().optional(),
+                endDate   : joi.date().iso().optional(),
+                tenantId  : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
                 progressStatus : joi.string().valid("Pending", "In-progress", "Completed", "Cancelled", "Delayed", "Unknown").optional(),
                 pageIndex      : joi.number().min(0).optional(),
                 itemsPerPage   : joi.number().min(1).optional(),

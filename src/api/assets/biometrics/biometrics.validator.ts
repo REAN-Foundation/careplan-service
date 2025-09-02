@@ -20,6 +20,10 @@ export class BiometricsValidator {
                 OwnerUserId     : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
+                TenantId : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
+
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -35,8 +39,12 @@ export class BiometricsValidator {
                 Description     : joi.string().optional().allow(null, ''),
                 BiometricsType  : joi.string().valid("Blood pressure", "Blood glucose", "Blood oxygen saturation", "Body height", "Body weight", "Body temperature", "Pulse", "Other").optional(),
                 MeasurementUnit : joi.string().optional().allow(null, ''),
-                Tags            : joi.array().items(joi.string()).optional(),
-                Version         : joi.string().max(128).optional()
+                TenantId        : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
+
+                Tags    : joi.array().items(joi.string()).optional(),
+                Version : joi.string().max(128).optional()
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -53,11 +61,12 @@ export class BiometricsValidator {
                 assetCategory   : joi.string().max(128).optional(),
                 biometricsType  : joi.string().valid("Blood pressure", "Blood glucose", "Blood oxygen saturation", "Body height", "Body weight", "Body temperature", "Pulse", "Other").optional(),
                 measurementUnit : joi.string().max(128).optional(),
+                tenantId        : joi.string().guid({ version: ['uuidv4'] }).optional(),
                 tags            : joi.array().items(joi.string()).optional(),
                 version         : joi.string().max(128).optional(),
                 order           : joi.string().max(128).optional(),
                 orderBy         : joi.string().max(128).optional(),
-                itemsPerPage    : joi.number().max(128).optional(),
+                itemsPerPage    : joi.number().optional(),
                 pageIndex       : joi.number().max(128).optional(),
                 
             });

@@ -68,6 +68,9 @@ export class ParticipantService {
                     [Op.like] : '%' + filters.ParticipantReferenceId + '%'
                 };
             }
+            if (filters.TenantId) {
+                search.where['TenantId'] = filters.TenantId;
+            }
             if (filters.Gender) {
                 search.where['Gender'] = filters.Gender;
             }
@@ -153,7 +156,8 @@ export class ParticipantService {
             var result = await this.Participant.destroy({
                 where : {
                     id : id
-                }
+                },
+                force : true
             });
             return result === 1;
         } catch (error) {

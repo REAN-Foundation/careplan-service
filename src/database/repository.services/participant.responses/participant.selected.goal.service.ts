@@ -159,6 +159,20 @@ export class ParticipantSelectedGoalService {
         }
     };
 
+    deleteByParticipantId = async (participantId) => {
+        try {
+            var result = await this.ParticipantSelectedGoal.destroy({
+                where : {
+                    ParticipantId : participantId
+                },
+                force : true
+            });
+            return result > 0;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to delete participant selected goals by participant ID!', error);
+        }
+    };
+
     //#endregion
 
     //#region Privates

@@ -20,6 +20,7 @@ export class ExerciseMapper {
             RecommendedDurationMin : exercise.RecommendedDurationMin,
             AssetCategory          : exercise.AssetCategory,
             OwnerUserId            : exercise.OwnerUserId,
+            TenantId               : exercise.TenantId,
             Tags                   : exercise.Tags,
             Version                : exercise.Version,
 

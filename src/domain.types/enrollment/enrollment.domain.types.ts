@@ -19,6 +19,8 @@ export interface EnrollmentCreateModel {
     DayOffset      ?: number;
     EnrollmentDate ?: Date;
     IsTest         ?: boolean;
+    TenantId       ?: uuid;
+    ScheduleConfig ?: ScheduleConfig;
 }
 
 export interface EnrollmentUpdateModel {
@@ -29,6 +31,7 @@ export interface EnrollmentUpdateModel {
     WeekOffset     ?: number;
     DayOffset      ?: number;
     EnrollmentDate ?: Date;
+    TenantId       ?: uuid;
 }
 
 export interface EnrollmentDto {
@@ -43,6 +46,7 @@ export interface EnrollmentDto {
     EnrollmentDate: Date;
     WeekOffset   ?: number;
     DayOffset    ?: number;
+    TenantId     ?: uuid;
     ProgressStatus: ProgressStatus;
     Careplan      : CareplanDto[];
     Participant   : ParticipantDto[];
@@ -50,6 +54,7 @@ export interface EnrollmentDto {
 
 export interface EnrollmentSearchFilters extends BaseSearchFilters {
     CareplanId     ?: uuid;
+    TenantId       ?: uuid;
     CareplanName   ?: string;
     PlanCode       ?: string;
     ProgressStatus ?: ProgressStatus;
@@ -60,4 +65,11 @@ export interface EnrollmentSearchFilters extends BaseSearchFilters {
 
 export interface EnrollmentSearchResults extends BaseSearchResults {
     Items: EnrollmentDto[];
+}
+
+export interface ScheduleConfig {
+    NumberOfDays: number;
+    StartHour: number;
+    IntervalMinutes: number;
+    StartFromTomorrow: boolean;
 }

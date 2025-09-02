@@ -1,3 +1,4 @@
+import express from 'express';
 import { CareplanModel } from '../../models/careplan/careplan.model';
 import { CareplanCategoryModel } from '../../models/careplan/careplan.category.model';
 import { UserModel } from '../../models/user/user.model';
@@ -133,8 +134,14 @@ export class  CareplanService {
                 include : []
             };
 
+            // if (filters.Code) {
+            //     search.where['Code'] = filters.Code;
+            // }
             if (filters.Code) {
-                search.where['Code'] = filters.Code;
+                search.where['Code'] =
+                 {
+                     [Op.like] : '%' + filters.Code + '%'
+                 };
             }
             if (filters.CategoryId) {
                 search.where['CategoryId'] = filters.CategoryId;
@@ -150,6 +157,9 @@ export class  CareplanService {
             }
             if (filters.OwnerUserId) {
                 search.where['OwnerUserId'] = filters.OwnerUserId;
+            }
+            if (filters.TenantId) {
+                search.where['TenantId'] = filters.TenantId;
             }
             if (filters.Tags) {
                 search.where['Tags'] = filters.Tags;
@@ -238,6 +248,11 @@ export class  CareplanService {
 
     delete = async (id) => {
         try {
+            await this.CareplanActivity.destroy({
+                where : {
+                    CareplanId : id
+                }
+            });
             var result = await this.Careplan.destroy({
                 where : {
                     id : id
@@ -267,7 +282,7 @@ export class  CareplanService {
         return carepalnObj;
     };
 
-    import = async (careplan: CareplanCreateModel): Promise<CareplanDto> => {
+    import = async (careplan: CareplanCreateModel,request: express.Request): Promise<CareplanDto> =>  {
         try {
             const existingCareplan = await this.Careplan.findOne({
                 where : {
@@ -276,7 +291,7 @@ export class  CareplanService {
             });
 
             if (existingCareplan) {
-                await this.createAssets(careplan.Assets);
+                await this.createAssets(careplan.Assets,request);
                 return existingCareplan;
             }
 
@@ -291,8 +306,9 @@ export class  CareplanService {
                 OwnerUserId : careplan.OwnerUserId,
                 Tags        : careplan.Tags ? JSON.stringify(careplan.Tags) as string : JSON.stringify([]),
                 IsActive    : careplan.IsActive,
+                TenantId    : request.currentUser.TenantId
             };
-            await this.createAssets(careplan.Assets);
+            await this.createAssets(careplan.Assets,request);
             const newCareplan = await this.Careplan.create(careplanModel);
             await this.createCareplanActivities(newCareplan.id, careplan.CareplanActivities);
             return newCareplan;
@@ -363,10 +379,11 @@ export class  CareplanService {
         }
     };
 
-    createAssets = async (assets) => {
+    createAssets = async (assets,request) => {
         try {
             for await (var asset of assets) {
                 const assetType = asset.AssetType;
+                asset.TenantId = request.currentUser.TenantId;
                 const model = this.assetModelMap[assetType];
                 const exists = await this.getByAssetcode(model, asset.AssetCode);
                 if (asset.Tags && Array.isArray(asset.Tags)) {

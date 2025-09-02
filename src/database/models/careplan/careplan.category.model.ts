@@ -25,6 +25,10 @@ export class CareplanCategoryModel {
             type      : DataTypes.STRING(512),
             allowNull : true
         },
+        TenantId : {
+            type      : DataTypes.UUID,
+            allowNull : true
+        },
 
         CreatedAt : DataTypes.DATE,
         UpdatedAt : DataTypes.DATE,

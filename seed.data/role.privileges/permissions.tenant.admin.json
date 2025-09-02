@@ -1,0 +1,266 @@
+{
+    "Asset":{
+        "Actionplan":{
+            "Create": true,
+            "Search": true,
+            "GetById": true,
+            "Update": true,
+            "Delete": true
+        },
+        "Animation":{
+            "Create": true,
+            "Search": true,
+            "GetById": true,
+            "Update": true,
+            "Delete": true
+        },
+        "Appointment":{
+            "Create": true,
+            "Search": true,
+            "GetById": true,
+            "Update": true,
+            "Delete": true
+        },
+        "Article":{
+            "Create": true,
+            "Search": true,
+            "GetById": true,
+            "Update": true,
+            "Delete": true
+        },
+        "Assessment":{
+            "Create": true,
+            "Search": true,
+            "GetById": true,
+            "Update": true,
+            "Delete": true
+        },
+        "Audio":{
+            "Create": true,
+            "Search": true,
+            "GetById": true,
+            "Update": true,
+            "Delete": true
+        },
+        "Biometric":{
+            "Create": true,
+            "Search": true,
+            "GetById": true,
+            "Update": true,
+            "Delete": true
+        },
+        "Challenge":{
+            "Create": true,
+            "Search": true,
+            "GetById": true,
+            "Update": true,
+            "Delete": true
+        },
+        "Checkup":{
+            "Create": true,
+            "Search": true,
+            "GetById": true,
+            "Update": true,
+            "Delete": true
+        },
+        "Consultation":{
+            "Create": true,
+            "Search": true,
+            "GetById": true,
+            "Update": true,
+            "Delete": true
+        },
+        "Exercise":{
+            "Create": true,
+            "Search": true,
+            "GetById": true,
+            "Update": true,
+            "Delete": true
+        },
+        "Goal":{
+            "Create": true,
+            "Search": true,
+            "GetById": true,
+            "Update": true,
+            "Delete": true
+        },
+        "Infographics":{
+            "Create": true,
+            "Search": true,
+            "GetById": true,
+            "Update": true,
+            "Delete": true
+        },
+        "Medication":{
+            "Create": true,
+            "Search": true,
+            "GetById": true,
+            "Update": true,
+            "Delete": true
+        },
+        "Meditation":{
+            "Create": true,
+            "Search": true,
+            "GetById": true,
+            "Update": true,
+            "Delete": true
+        },
+        "Message":{
+            "Create": true,
+            "Search": true,
+            "GetById": true,
+            "Update": true,
+            "Delete": true
+        },
+        "Nutrition":{
+            "Create": true,
+            "Search": true,
+            "GetById": true,
+            "Update": true,
+            "Delete": true
+        },
+        "Physiotherapy":{
+            "Create": true,
+            "Search": true,
+            "GetById": true,
+            "Update": true,
+            "Delete": true
+        },
+        "Priority":{
+            "Create": true,
+            "Search": true,
+            "GetById": true,
+            "Update": true,
+            "Delete": true
+        },
+        "Reflection":{
+            "Create": true,
+            "Search": true,
+            "GetById": true,
+            "Update": true,
+            "Delete": true
+        },
+        "Reminder":{
+            "Create": true,
+            "Search": true,
+            "GetById": true,
+            "Update": true,
+            "Delete": true
+        },
+        "Video":{
+            "Create": true,
+            "Search": true,
+            "GetById": true,
+            "Update": true,
+            "Delete": true
+        },
+        "WebLink":{
+            "Create": true,
+            "Search": true,
+            "GetById": true,
+            "Update": true,
+            "Delete": true
+        },
+        "WebNewsfeed":{
+            "Create": true,
+            "Search": true,
+            "GetById": true,
+            "Update": true,
+            "Delete": true
+        },
+        "WordPower":{
+            "Create": true,
+            "Search": true,
+            "GetById": true,
+            "Update": true,
+            "Delete": true
+        }
+    },
+    "CareplanCategory":{
+        "Create": true,
+        "Delete": true,
+        "GetById": true,
+        "Search": true,
+        "Update": true
+    },
+    "Careplan":{
+        "Create": true,
+        "Delete": true,
+        "GetById": true,
+        "Search": true,
+        "Update": true,
+        "Export": true,
+        "Import": true
+    },
+    "CareplanActivity":{
+        "Create": true,
+        "Delete": true,
+        "GetById": true,
+        "Search": true,
+        "Update": true
+    },
+    "Participant":{
+        "Create": true,
+        "Delete": true,
+        "GetById": true,
+        "Search": true,
+        "Update": true
+    },
+    "Enrollment":{
+        "Create": true,
+        "Delete": true,
+        "GetById": true,
+        "Search": true,
+        "Update": true,
+        "GetEnrollmentStats": true
+    },
+    "EnrollmentTask":{
+        "GetById": true,
+        "Search": true
+    },
+    "Types":{
+        "CareplanCategory": true,
+        "AssetType": true,
+        "TimeSlot": true
+    },
+     "ParticipantActivityResponse":{
+        "Create": true,
+        "Delete": true,
+        "GetById": true,
+        "Search": true,
+        "Update": true
+    },
+    "ParticipantSelectedActionPlan":{
+        "Create": true,
+        "Delete": true,
+        "GetById": true,
+        "Search": true,
+        "Update": true
+    },
+    "ParticipantSelectedGoal":{
+        "Create": true,
+        "Delete": true,
+        "GetById": true,
+        "Search": true,
+        "Update": true
+    },
+   "ParticipantSelectedPriority":{
+        "Create": true,
+        "Delete": true,
+        "GetById": true,
+        "Search": true,
+        "Update": true
+    },
+       "FileResource":{
+        "Upload": true,
+        "Download": true,
+        "GetById": true,
+        "Delete": true
+    },
+    "Statistics":{
+        "Search": true
+    }
+}
+
+  
+

@@ -18,6 +18,7 @@ export class MessageMapper {
             AssetCategory : message.AssetCategory ,
             MessageType   : message.MessageType,
             OwnerUserId   : message.OwnerUserId,
+            TenantId      : message.TemplateButtonIds,
             Tags          : message.Tags,
             Url           : message.Url,
             Version       : message.Version,

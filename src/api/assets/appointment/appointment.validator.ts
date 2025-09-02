@@ -19,6 +19,9 @@ export class AppointmentValidator {
                 OwnerUserId     : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
+                TenantId : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -33,6 +36,7 @@ export class AppointmentValidator {
                 Name            : joi.string().max(256).optional(),
                 Description     : joi.string().optional().allow(null, ''),
                 AppointmentType : joi.string().valid("Doctor", "Lab", "Physiotherapy", "Other").optional(),
+                TenantId        : joi.string().guid({ version: ['uuidv4'] }).optional(),
                 Tags            : joi.array().items(joi.string()).optional(),
                 Version         : joi.string().max(128).optional()
             });
@@ -51,11 +55,14 @@ export class AppointmentValidator {
                 appointmentType : joi.string().valid("Doctor", "Lab", "Physiotherapy", "Other").optional(),
                 assetCategory   : joi.string().max(128).optional(),
                 tags            : joi.array().items(joi.string()).optional(),
-                version         : joi.string().max(128).optional(),
-                order           : joi.string().max(128).optional(),
-                orderBy         : joi.string().max(128).optional(),
-                itemsPerPage    : joi.number().max(128).optional(),
-                pageIndex       : joi.number().max(128).optional(),
+                tenantId        : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
+                version      : joi.string().max(128).optional(),
+                order        : joi.string().max(128).optional(),
+                orderBy      : joi.string().max(128).optional(),
+                itemsPerPage : joi.number().optional(),
+                pageIndex    : joi.number().max(128).optional(),
               
             });
             return await schema.validateAsync(query);

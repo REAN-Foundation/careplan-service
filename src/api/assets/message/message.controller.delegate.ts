@@ -1,3 +1,4 @@
+import express from 'express';
 import {
     MessageService
 } from '../../../database/repository.services/assets/message.service';
@@ -57,9 +58,10 @@ export class MessageControllerDelegate {
         return this.getEnrichedDto(record);
     };
 
-    search = async (query: any) => {
-        await validator.validateSearchRequest(query);
-        var filters: MessageSearchFilters = this.getSearchFilters(query);
+    search = async (request: express.Request) => {
+        await validator.validateSearchRequest(request.query);
+        var filters: MessageSearchFilters = this.getSearchFilters(request.query);
+        filters = await this.authorizeSearch(request, filters);
         var searchResults: MessageSearchResults = await this._service.search(filters);
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         searchResults.Items = items;
@@ -131,7 +133,6 @@ export class MessageControllerDelegate {
         if (version != null) {
             filters['Version'] = version;
         }
-
         return filters;
     };
 
@@ -154,7 +155,7 @@ export class MessageControllerDelegate {
         if (Helper.hasProperty(requestBody, 'TemplateButtonIds')) {
             updateModel.TemplateButtonIds = JSON.stringify(requestBody.TemplateButtonIds);
         }
-        if (Helper.hasProperty(requestBody, 'Description')) {
+        if (Helper.hasProperty(requestBody, 'Description') || requestBody.Description === "") {
             updateModel.Description = requestBody.Description;
         }
         if (Helper.hasProperty(requestBody, 'MessageType')) {
@@ -169,6 +170,9 @@ export class MessageControllerDelegate {
         if (Helper.hasProperty(requestBody, 'Version')) {
             updateModel.Version = requestBody.Version;
         }
+        if (Helper.hasProperty(requestBody, 'TenantId')) {
+            updateModel.TenantId = requestBody.TenantId;
+        }
 
         return updateModel;
     };
@@ -182,13 +186,34 @@ export class MessageControllerDelegate {
                 JSON.stringify(requestBody.TemplateVariables) as string : JSON.stringify([]),
             TemplateButtonIds : requestBody.TemplateButtonIds ?
                 JSON.stringify(requestBody.TemplateButtonIds) as string : JSON.stringify([]),
-            Description : requestBody.Description ? requestBody.Description : null,
+            Description : requestBody.Description ?? null,
             MessageType : requestBody.MessageType ? requestBody.MessageType : 'Unknown',
             Tags        : requestBody.Tags ? JSON.stringify(requestBody.Tags) as string : JSON.stringify([]),
             Url         : requestBody.Url ? requestBody.Url : null,
             Version     : requestBody.Version ? requestBody.Version : 'V1',
-            OwnerUserId : requestBody.OwnerUserId
+            OwnerUserId : requestBody.OwnerUserId,
+            TenantId    : requestBody.TenantId ? requestBody.TenantId : null,
+
         };
+    };
+
+    authorizeSearch = async (
+        request: express.Request,
+        searchFilters: MessageSearchFilters): Promise<MessageSearchFilters> => {
+    
+        if (request.currentClient?.IsPrivileged) {
+            return searchFilters;
+        }
+    
+        if (searchFilters.TenantId != null) {
+            if (searchFilters.TenantId !== request.currentUser.TenantId) {
+                throw new ApiError(403, 'Forbidden');
+            }
+        }
+        else {
+            searchFilters.TenantId = request.currentUser.TenantId;
+        }
+        return searchFilters;
     };
 
     getEnrichedDto = (record) => {
@@ -206,6 +231,7 @@ export class MessageControllerDelegate {
             AssetCategory     : record.AssetCategory,
             MessageType       : record.MessageType,
             OwnerUserId       : record.OwnerUserId,
+            TenantId          : record.TenantId,
             Tags              : JSON.parse(record.Tags),
             Url               : record.Url,
             Version           : record.Version
@@ -227,6 +253,7 @@ export class MessageControllerDelegate {
             AssetCategory     : record.AssetCategory,
             MessageType       : record.MessageType,
             OwnerUserId       : record.OwnerUserId,
+            TenantId          : record.TenantId,
             Tags              : JSON.parse(record.Tags),
             Url               : record.Url,
             Version           : record.Version,

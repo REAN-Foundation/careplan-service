@@ -156,6 +156,20 @@ export class EnrollmentService {
         }
     };
 
+    deleteByParticipantId = async (participantId) => {
+        try {
+            var result = await this.Enrollment.destroy({
+                where : {
+                    ParticipantId : participantId
+                },
+                force : true
+            });
+            return result > 0;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to delete enrollments by participant ID!', error);
+        }
+    };
+
     getEnrollmentStats = async (participantId) => {
         try {
             const totalTasks = await this.EnrollmentTask.findAll({
@@ -231,19 +245,41 @@ export class EnrollmentService {
             search.where['CareplanId'] = filters.CareplanId;
         }
         if (filters.CareplanName) {
-            search.where['CareplanName'] = filters.CareplanName;
+            search.where['CareplanName'] =
+            {
+                [Op.like] : '%' + filters.CareplanName + '%'
+            };
         }
         if (filters.ProgressStatus) {
             search.where['ProgressStatus'] = filters.ProgressStatus;
         }
         if (filters.DisplayId) {
-            search.where['DisplayId'] = filters.DisplayId;
+            search.where['DisplayId'] =  {
+                [Op.like] : '%' + filters.DisplayId + '%'
+            };
         }
-        if (filters.StartDate) {
-            search.where['StartDate'] = filters.StartDate;
-        }
-        if (filters.EndDate) {
-            search.where['EndDate'] = filters.EndDate;
+        // if (filters.StartDate) {
+        //     search.where['StartDate'] = filters.StartDate;
+        // }
+        // if (filters.EndDate) {
+        //     search.where['EndDate'] = filters.EndDate;
+        // }
+
+        ////////////////////////////////////////////
+
+        if (filters.StartDate && filters.EndDate) {
+            search.where[Op.and] = [
+                { StartDate: { [Op.lte]: new Date(filters.EndDate) } },
+                { EndDate: { [Op.gte]: new Date(filters.StartDate) } }
+            ];
+        } else if (filters.StartDate) {
+            search.where['StartDate'] = {
+                [Op.eq] : new Date(filters.StartDate)
+            };
+        } else if (filters.EndDate) {
+            search.where['EndDate'] = {
+                [Op.eq] : new Date(filters.EndDate)
+            };
         }
 
         const includeCareplanAsCareplan = {

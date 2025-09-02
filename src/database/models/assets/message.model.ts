@@ -72,6 +72,10 @@ export class MessageModel {
             type      : DataTypes.UUID,
             allowNull : true
         },
+        TenantId : {
+            type      : DataTypes.UUID,
+            allowNull : true
+        },
         Tags : {
             type         : DataTypes.TEXT,
             allowNull    : false,
