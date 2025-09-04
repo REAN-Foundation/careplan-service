@@ -41,6 +41,8 @@ export class EnrollmentValidator {
                 TenantId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
+                Language : joi.string().max(10).optional()
+                    .error(() => new Error("Language must be a string with maximum 10 characters (e.g., 'en', 'es', 'fr')")),
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -62,6 +64,8 @@ export class EnrollmentValidator {
                 TenantId  : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
+                Language  : joi.string().max(10).optional()
+                    .error(() => new Error("Language must be a string with maximum 10 characters (e.g., 'en', 'es', 'fr')")),
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -87,6 +91,8 @@ export class EnrollmentValidator {
                 orderBy        : joi.string().max(256).optional(),
                 order          : joi.string().valid('ascending', 'descending').optional()
                     .error(()=> new Error("order param: 'ascending' and 'descending' are the only valid values.")),
+                language       : joi.string().max(10).optional()
+                    .error(() => new Error("Language must be a string with maximum 10 characters (e.g., 'en', 'es', 'fr')")),
             });
             return await schema.validateAsync(query);
 

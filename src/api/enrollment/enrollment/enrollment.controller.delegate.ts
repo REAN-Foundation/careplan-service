@@ -361,6 +361,10 @@ export class EnrollmentControllerDelegate {
         if (tenantId != null) {
             filters['TenantId'] = tenantId;
         }
+        var language = query.language ? query.language : null;
+        if (language != null) {
+            filters['Language'] = language;
+        }
         var orderBy = query.orderBy ? query.orderBy : null;
         if (orderBy != null) {
             filters['OrderBy'] = orderBy;
@@ -402,6 +406,9 @@ export class EnrollmentControllerDelegate {
         if (Helper.hasProperty(requestBody, 'DayOffset')) {
             updateModel.DayOffset = requestBody.DayOffset;
         }
+        if (Helper.hasProperty(requestBody, 'Language')) {
+            updateModel.Language = requestBody.Language;
+        }
 
         if (Helper.hasProperty(requestBody, 'TenantId')) {
             updateModel.TenantId = requestBody.TenantId;
@@ -421,6 +428,7 @@ export class EnrollmentControllerDelegate {
             DayOffset      : requestBody.DayOffset ? requestBody.DayOffset : 0,
             EnrollmentDate : requestBody.EnrollmentDate ? requestBody.EnrollmentDate : new Date(),
             IsTest         : requestBody.IsTest ? requestBody.IsTest : false,
+            Language       : requestBody.Language ? requestBody.Language : 'en',
             TenantId       : requestBody.TenantId ? requestBody.TenantId : null
         };
     };
@@ -441,6 +449,7 @@ export class EnrollmentControllerDelegate {
             EnrollmentDate : record.EnrollmentDate,
             WeekOffset     : record.WeekOffset,
             DayOffset      : record.DayOffset,
+            Language       : record.Language,
             ProgressStatus : record.ProgressStatus,
             TenantId       : record.TenantId,
             Careplan       : record.Careplan,
@@ -467,6 +476,7 @@ export class EnrollmentControllerDelegate {
             EnrollmentDate : record.EnrollmentDate,
             WeekOffset     : record.WeekOffset,
             DayOffset      : record.DayOffset,
+            Language       : record.Language,
             ProgressStatus : record.ProgressStatus,
             TenantId       : record.TenantId,
             Careplan       : record.Careplan,

@@ -71,6 +71,11 @@ export class EnrollmentModel {
             allowNull    : false,
             defaultValue : 0
         },
+        Language : {
+            type         : DataTypes.STRING(16),
+            allowNull    : false,
+            defaultValue : 'en'
+        },
         CreatedAt : DataTypes.DATE,
         UpdatedAt : DataTypes.DATE,
         DeletedAt : DataTypes.DATE
