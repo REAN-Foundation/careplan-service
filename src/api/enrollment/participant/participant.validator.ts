@@ -11,9 +11,10 @@ export class ParticipantValidator {
                 Prefix                 : joi.string().max(16).optional(),
                 FirstName              : joi.string().max(64).required(),
                 LastName               : joi.string().max(64).optional().allow(null),
-                CountryCode            : joi.string().max(10).required(),
-                Phone                  : joi.string().max(16).min(6).required(),
+                CountryCode            : joi.string().max(10).optional().allow(null, ''),
+                Phone                  : joi.string().max(16).min(6).optional().allow(null),
                 Email                  : joi.string().max(256).optional().allow(null),
+                UniqueReferenceId      : joi.string().max(64).optional().allow(null),
                 ParticipantReferenceId : joi.string().max(256).optional(),
                 Gender                 : joi.string().valid("Male", "Female", "Other").required(),
                 BirthDate              : joi.string().optional(),
@@ -38,6 +39,7 @@ export class ParticipantValidator {
                 gender                 : joi.string().valid("Male", "Female", "Other").optional(),
                 country                : joi.string().max(64).optional(),
                 tenantId               : joi.string().guid({ version: ['uuidv4'] }).optional(),
+                uniqueReferenceId      : joi.string().max(64).optional(),
                 addedByUserId          : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
@@ -64,6 +66,7 @@ export class ParticipantValidator {
                 Gender                 : joi.string().valid("Male", "Female", "Other").optional(),
                 Country                : joi.string().max(64).optional(),
                 TenantId               : joi.string().guid({ version: ['uuidv4'] }).optional(),
+                UniqueReferenceId      : joi.string().max(64).optional().allow(null),
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {

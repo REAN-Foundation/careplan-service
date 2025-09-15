@@ -39,15 +39,19 @@ export class ParticipantModel {
         },
         CountryCode : {
             type         : DataTypes.STRING(10),
-            allowNull    : false,
+            allowNull    : true,
             defaultValue : '+91'
         },
         Phone : {
             type      : DataTypes.STRING(16),
-            allowNull : false
+            allowNull : true
         },
         Email : {
             type      : DataTypes.STRING(256),
+            allowNull : true
+        },
+        UniqueReferenceId : {
+            type      : DataTypes.STRING(64),
             allowNull : true
         },
         ParticipantReferenceId : {

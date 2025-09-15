@@ -192,4 +192,17 @@ export class ParticipantService {
         }
     };
 
+    getParticipantWithUniqueReferenceId = async (uniqueReferenceId) => {
+        try {
+            const record = await this.Participant.findOne({
+                where : {
+                    UniqueReferenceId : uniqueReferenceId
+                }
+            });
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('Unable to check if participant exists with unique reference ID!', error);
+        }
+    };
+
 }
