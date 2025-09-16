@@ -30,6 +30,19 @@ export class ParticipantService {
         }
     };
 
+    getByUserId = async (userId: string) => {
+        try {
+            const record = await this.Participant.findOne({
+                where : {
+                    ParticipantReferenceId : userId
+                }
+            });
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve participant!', error);
+        }
+    };
+
     exists = async (id) => {
         try {
             const record = await this.Participant.findByPk(id);
