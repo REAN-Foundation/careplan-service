@@ -63,6 +63,7 @@ export class ParticipantControllerDelegate {
             CountryCode            : requestBody.CountryCode ? requestBody.CountryCode : '+91',
             Phone                  : requestBody.Phone ? requestBody.Phone : null,
             Email                  : requestBody.Email ? requestBody.Email : null,
+            UniqueReferenceId      : requestBody.UniqueReferenceId ? requestBody.UniqueReferenceId : null,
             Country                : requestBody.Country ? requestBody.Country : null,
             ParticipantReferenceId : requestBody.ParticipantReferenceId ? requestBody.ParticipantReferenceId : null,
             Gender                 : requestBody.Gender ? requestBody.Gender : 'Male',
@@ -182,6 +183,11 @@ export class ParticipantControllerDelegate {
         if (phone != null) {
             filters['Phone'] = phone;
         }
+
+        var uniqueReferenceId = query.uniqueReferenceId ? query.uniqueReferenceId : null;
+        if (uniqueReferenceId != null) {
+            filters['UniqueReferenceId'] = uniqueReferenceId;
+        }
         return filters;
     };
 
@@ -220,6 +226,7 @@ export class ParticipantControllerDelegate {
             CountryCode            : record.CountryCode,
             Phone                  : record.Phone,
             Email                  : record.Email,
+            UniqueReferenceId      : record.UniqueReferenceId,
             Gender                 : record.Gender,
             BirthDate              : record.BirthDate,
             Country                : record.Country,
@@ -244,6 +251,7 @@ export class ParticipantControllerDelegate {
             CountryCode            : record.CountryCode,
             Phone                  : record.Phone,
             Email                  : record.Email,
+            UniqueReferenceId      : record.UniqueReferenceId,
             ParticipantReferenceId : record.ParticipantReferenceId,
             Gender                 : record.Gender,
             BirthDate              : record.BirthDate,

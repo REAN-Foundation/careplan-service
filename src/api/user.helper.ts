@@ -74,10 +74,28 @@ export class UserHelper {
         const participantService = new ParticipantService();
 
         requestBody.CountryCode = requestBody.CountryCode ?? "+91";
-        var userWithPhone =
-            await participantService.getParticipantWithPhone(requestBody.CountryCode, requestBody.Phone);
-        if (userWithPhone) {
-            ErrorHandler.throwDuplicateUserError(`Participant with phone ${requestBody.CountryCode} ${requestBody.Phone.toString()} already exists!`);
+ 
+        if (requestBody.Phone) {
+            var participantWithPhone =
+                await participantService.getParticipantWithPhone(requestBody.CountryCode, requestBody.Phone);
+            if (participantWithPhone) {
+                ErrorHandler.throwDuplicateUserError(`Participant with phone ${requestBody.CountryCode} ${requestBody.Phone.toString()} already exists!`);
+            }
+        }
+
+        if (requestBody.Email) {
+            var participantWithEmail = await participantService.getParticipantWithEmail(requestBody.Email);
+            if (participantWithEmail) {
+                ErrorHandler.throwDuplicateUserError(`Participant with email ${requestBody.Email} already exists!`);
+            }
+        }
+        
+        if (requestBody.UniqueReferenceId) {
+            var participantWithUniqueReferenceId =
+                await participantService.getParticipantWithUniqueReferenceId(requestBody.UniqueReferenceId);
+            if (participantWithUniqueReferenceId) {
+                ErrorHandler.throwDuplicateUserError(`Participant with unique reference ID ${requestBody.UniqueReferenceId} already exists!`);
+            }
         }
 
     };

@@ -19,6 +19,7 @@ export class ParticipantMapper {
             CountryCode            : enrollment.CountryCode,
             Phone                  : enrollment.Phone,
             Email                  : enrollment.Email,
+            UniqueReferenceId      : enrollment.UniqueReferenceId,
             ParticipantReferenceId : enrollment.ParticipantReferenceId,
             Gender                 : enrollment.Gender,
             BirthDate              : enrollment.BirthDate,
