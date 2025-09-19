@@ -104,7 +104,6 @@ export class AwsSqsEventConsumer implements IEventConsumer {
             
         } catch (error) {
             Logger.instance().log(`Error starting consumer for ${this.queueUrl}: ${error.message}`);
-            throw error;
         }
     }
     
