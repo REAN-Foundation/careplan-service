@@ -85,7 +85,6 @@ export class RabbitMqEventConsumer implements IEventConsumer {
             
         } catch (error) {
             Logger.instance().log(`Error starting consumer for ${this.queueName}: ${error.message}`);
-            throw error;
         }
     }
     
