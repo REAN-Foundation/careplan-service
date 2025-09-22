@@ -6,6 +6,14 @@ import {
     uuid
 } from "../miscellaneous/system.types";
 
+export interface Metadata {
+    Type: string;
+    TemplateName: string;
+    TemplateLanguage?: string;
+    FlowToken?: string;
+    FlowActionData?: Record<string, any>;
+}
+
 export interface AssessmentCreateModel {
     AssetCode ? : string;
     Name ? : string;
@@ -15,6 +23,7 @@ export interface AssessmentCreateModel {
     ReferenceTemplateId ? : string;
     Tags ? : string;
     Version ? : string;
+    Metadata ? : string;
     OwnerUserId?: uuid;
     TenantId?: uuid;
 }
@@ -28,6 +37,7 @@ export interface AssessmentUpdateModel {
     ReferenceTemplateId ? : string;
     Tags ? : string;
     Version ? : string;
+    Metadata ? : string;
     OwnerUserId?: uuid;
     TenantId?: uuid;
 }
@@ -45,6 +55,7 @@ export interface AssessmentDto {
     TenantId: uuid;
     Tags: string[];
     Version: string;
+    Metadata: string;
 
 }
 
@@ -57,6 +68,7 @@ export interface AssessmentSearchFilters extends BaseSearchFilters {
     TenantId?: uuid;
     Tags ? : string;
     Version ? : string;
+    Metadata ? : string;
     CreatedAt ? : Date;
 }
 

@@ -196,6 +196,11 @@ export class AssessmentService {
                 [Op.like] : '%' + filters.Version + '%'
             };
         }
+        if (filters.Metadata) {
+            search.where['Metadata'] = {
+                [Op.like] : '%' + filters.Metadata + '%'
+            };
+        }
 
         return search;
     };

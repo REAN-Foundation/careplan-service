@@ -77,6 +77,10 @@ export class AssessmentModel {
             allowNull    : true,
             defaultValue : 'V1'
         },
+        Metadata : {
+            type      : DataTypes.STRING(512),
+            allowNull : true,
+        },
 
         CreatedAt : DataTypes.DATE,
         UpdatedAt : DataTypes.DATE,
