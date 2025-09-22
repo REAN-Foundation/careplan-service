@@ -23,6 +23,7 @@ export class AssessmentMapper {
             TenantId              : assessment.TenantId,
             Tags                  : assessment.Tags,
             Version               : assessment.Version,
+            Metadata              : assessment.Metadata
 
         };
         return dto;
