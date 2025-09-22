@@ -3,6 +3,7 @@ import { container, DependencyContainer } from 'tsyringe';
 import { Logger } from '../common/logger';
 import { Injector } from './injector';
 import { Scheduler } from './scheduler';
+import { IEventConsumer } from '../modules/events/interfaces/event.consumer.interface';
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -13,6 +14,8 @@ export class Loader {
     private static _scheduler: Scheduler = Scheduler.instance();
 
     private static _container: DependencyContainer = container;
+
+    private static _eventConsumers: IEventConsumer = null;
 
     //#endregion
 
@@ -32,6 +35,9 @@ export class Loader {
 
             // Loader._authenticator = container.resolve(Authenticator);
             // Loader._authorizer = container.resolve(Authorizer);
+
+            Loader._eventConsumers = container.resolve('IEventConsumer');
+            await Loader._eventConsumers.startListening();
 
             return true;
 

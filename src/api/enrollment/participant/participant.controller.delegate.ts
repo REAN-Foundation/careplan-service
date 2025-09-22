@@ -89,6 +89,14 @@ export class ParticipantControllerDelegate {
         return this.getEnrichedDto(record);
     };
 
+    getByUserId = async (userId: string) => {
+        const record: ParticipantDto = await this._service.getByUserId(userId);
+        if (record === null) {
+            ErrorHandler.throwNotFoundError('Participant with userId ' + userId + ' cannot be found!');
+        }
+        return this.getEnrichedDto(record);
+    };
+
     search = async (request: express.Request) => {
         await validator.validateSearchRequest(request.query);
         var filters: ParticipantSearchFilters = this.getSearchFilters(request.query);

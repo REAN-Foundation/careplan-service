@@ -1,3 +1,4 @@
+import { MessagingConfig } from "../domain.types/events/provider.types";
 
 export type DatabaseType = 'SQL' | 'NoSQL';
 export type DatabaseORM = 'Sequelize' | 'Knex' | 'Mongoose';
@@ -66,6 +67,7 @@ export interface Configurations {
     BaseUrl             : string;
     Auth                : AuthConfig;
     FileStorage         : FileStorageConfig;
+    Messaging           : MessagingConfig;
     Communication       : CommunicationConfig;
     TemporaryFolders    : TemporaryFoldersConfig;
     MaxUploadFileSize   : number;
