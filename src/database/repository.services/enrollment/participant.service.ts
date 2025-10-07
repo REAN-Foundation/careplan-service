@@ -30,6 +30,19 @@ export class ParticipantService {
         }
     };
 
+    getByUserId = async (userId: string) => {
+        try {
+            const record = await this.Participant.findOne({
+                where : {
+                    ParticipantReferenceId : userId
+                }
+            });
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve participant!', error);
+        }
+    };
+
     exists = async (id) => {
         try {
             const record = await this.Participant.findByPk(id);
@@ -189,6 +202,19 @@ export class ParticipantService {
             return record;
         } catch (error) {
             ErrorHandler.throwDbAccessError('Unable to check if participant exists with email!', error);
+        }
+    };
+
+    getParticipantWithUniqueReferenceId = async (uniqueReferenceId) => {
+        try {
+            const record = await this.Participant.findOne({
+                where : {
+                    UniqueReferenceId : uniqueReferenceId
+                }
+            });
+            return record;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('Unable to check if participant exists with unique reference ID!', error);
         }
     };
 

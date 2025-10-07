@@ -7,6 +7,7 @@ import {
     EmailServiceProvider, FileStorageProvider,
     SMSServiceProvider
 } from './configuration.types';
+import { MessagingConfig, MessagingProvider } from '../domain.types/events/provider.types';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -27,6 +28,16 @@ export class ConfigurationManager {
             },
             FileStorage : {
                 Provider : configuration.FileStorage.Provider as FileStorageProvider,
+            },
+            Messaging : {
+                Provider : configuration?.Messaging?.Provider as MessagingProvider,
+                Events   : {
+                    Enabled                : configuration?.Messaging?.Events?.Enabled,
+                    RetryPolicy            : configuration?.Messaging?.Events?.RetryPolicy,
+                    DeadLetterQueue        : configuration?.Messaging?.Events?.DeadLetterQueue,
+                    MessageRetentionPeriod : configuration?.Messaging?.Events?.MessageRetentionPeriod,
+                    VisibilityTimeout      : configuration?.Messaging?.Events?.VisibilityTimeout,
+                },
             },
             Communication : {
                 SMSProvider   : configuration.Communication.SMS.Provider as SMSServiceProvider,
@@ -90,6 +101,14 @@ export class ConfigurationManager {
     
     public static TemporaryFolderCleanupBefore = (): number => {
         return ConfigurationManager._config.TemporaryFolders.CleanupFolderBeforeMinutes;
+    };
+
+    public static MessagingProvider = (): MessagingProvider => {
+        return ConfigurationManager._config.Messaging.Provider;
+    };
+
+    public static MessagingConfig = (): MessagingConfig => {
+        return ConfigurationManager._config.Messaging;
     };
 
 }

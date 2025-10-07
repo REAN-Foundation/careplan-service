@@ -135,6 +135,10 @@ export class AssessmentControllerDelegate {
         if (version != null) {
             filters['Version'] = version;
         }
+        var metadata = query.metadata ? query.metadata : null;
+        if (metadata != null) {
+            filters['Metadata'] = metadata;
+        }
 
         return filters;
     };
@@ -164,6 +168,9 @@ export class AssessmentControllerDelegate {
         if (Helper.hasProperty(requestBody, 'Version')) {
             updateModel.Version = requestBody.Version;
         }
+        if (Helper.hasProperty(requestBody, 'Metadata')) {
+            updateModel.Metadata = JSON.stringify(requestBody.Metadata);
+        }
         if (Helper.hasProperty(requestBody, 'ReferenceTemplateCode')) {
             updateModel.ReferenceTemplateCode = requestBody.ReferenceTemplateCode;
             requestBody = this.updateAssessmentId(requestBody);
@@ -182,6 +189,7 @@ export class AssessmentControllerDelegate {
             TenantId              : requestBody.TenantId ? requestBody.TenantId : null,
             Tags                  : requestBody.Tags ? JSON.stringify(requestBody.Tags) as string : JSON.stringify([]),
             Version               : requestBody.Version ? requestBody.Version : 'V1',
+            Metadata              : requestBody.Metadata ? JSON.stringify(requestBody.Metadata) : null,
             OwnerUserId           : requestBody.OwnerUserId
         };
     };
@@ -221,7 +229,8 @@ export class AssessmentControllerDelegate {
             OwnerUserId           : record.OwnerUserId,
             TenantId              : record.TenantId,
             Tags                  : JSON.parse(record.Tags),
-            Version               : record.Version
+            Version               : record.Version,
+            Metadata              : record.Metadata ? JSON.parse(record.Metadata) : null
         };
     };
 
@@ -242,6 +251,7 @@ export class AssessmentControllerDelegate {
             TenantId              : record.TenantId,
             Tags                  : JSON.parse(record.Tags),
             Version               : record.Version,
+            Metadata              : record.Metadata ? JSON.parse(record.Metadata) : null,
             CreatedAt             : record.CreatedAt,
         };
     };
