@@ -425,6 +425,7 @@ export class  CareplanService {
                     Day                    : activity.Day,
                     TimeSlot               : activity.TimeSlot,
                     IsRegistrationActivity : activity.IsRegistrationActivity,
+                    Sequence               : activity.Sequence,
                 };
                 await this.CareplanActivity.create(activityModel);
             }

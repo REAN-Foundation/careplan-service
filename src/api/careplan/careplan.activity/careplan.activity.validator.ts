@@ -20,6 +20,7 @@ export class CareplanActivityValidator {
                 Day                    : joi.number().integer().optional(),
                 TimeSlot               : joi.string().valid("Early morning", "Morning", "Afternoon", "Late afternoon", "Evening", "Night", "Late night", "Unspecified", "Whole day").optional(),
                 IsRegistrationActivity : joi.boolean().optional(),
+                Sequence               : joi.number().integer().optional(),
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -40,6 +41,7 @@ export class CareplanActivityValidator {
                 Day                    : joi.number().integer().optional(),
                 TimeSlot               : joi.string().valid("Early morning", "Morning", "Afternoon", "Late afternoon", "Evening", "Night", "Late night", "Unspecified", "Whole day").optional(),
                 IsRegistrationActivity : joi.boolean().optional(),
+                Sequence               : joi.number().integer().optional(),
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -60,6 +62,7 @@ export class CareplanActivityValidator {
                 day                    : joi.number().integer().optional(),
                 timeSlot               : joi.string().valid("Early morning", "Morning", "Afternoon", "Late afternoon", "Evening", "Night", "Late night", "Unspecified", "Whole day").optional(),
                 isRegistrationActivity : joi.boolean().optional(),
+                sequence               : joi.number().integer().optional(),
                 pageIndex              : joi.number().min(0).optional(),
                 itemsPerPage           : joi.number().min(1).optional(),
                 orderBy                : joi.string().max(256).optional(),

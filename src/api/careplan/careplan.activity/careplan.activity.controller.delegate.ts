@@ -124,6 +124,10 @@ export class CareplanActivityControllerDelegate {
         if (isRegistrationActivity != null) {
             filters['IsRegistrationActivity'] = isRegistrationActivity;
         }
+        var sequence = query.sequence ? query.sequence : null;
+        if (sequence != null) {
+            filters['Sequence'] = sequence;
+        }
         var orderBy = query.orderBy ? query.orderBy : 'CreatedAt';
         if (orderBy != null) {
             filters['OrderBy'] = orderBy;
@@ -166,6 +170,9 @@ export class CareplanActivityControllerDelegate {
         if (Helper.hasProperty(requestBody, 'IsRegistrationActivity')) {
             updateModel.IsRegistrationActivity = requestBody.IsRegistrationActivity;
         }
+        if (Helper.hasProperty(requestBody, 'Sequence')) {
+            updateModel.Sequence = requestBody.Sequence;
+        }
         return updateModel;
     };
 
@@ -177,6 +184,7 @@ export class CareplanActivityControllerDelegate {
             Day                    : requestBody.Day ? requestBody.Day : null,
             TimeSlot               : requestBody.TimeSlot ? requestBody.TimeSlot : 'Unspecified',
             IsRegistrationActivity : requestBody.IsRegistrationActivity ? requestBody.IsRegistrationActivity : false,
+            Sequence               : requestBody.Sequence ? requestBody.Sequence : null,
         };
     };
 
@@ -192,7 +200,8 @@ export class CareplanActivityControllerDelegate {
             Asset                  : record.Asset,
             Day                    : record.Day,
             TimeSlot               : record.TimeSlot,
-            IsRegistrationActivity : record.IsRegistrationActivity
+            IsRegistrationActivity : record.IsRegistrationActivity,
+            Sequence               : record.Sequence
         };
     };
 
@@ -209,6 +218,7 @@ export class CareplanActivityControllerDelegate {
             Day                    : record.Day,
             TimeSlot               : record.TimeSlot,
             IsRegistrationActivity : record.IsRegistrationActivity,
+            Sequence               : record.Sequence,
             Code                   : record.Careplan.Code
         };
     };
