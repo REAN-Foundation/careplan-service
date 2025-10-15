@@ -85,8 +85,8 @@ export class CareplanActivityService {
                 return a.Day - b.Day;
             }
             
-            const aSequence = a.Sequence || 0;
-            const bSequence = b.Sequence || 0;
+            const aSequence = a.Sequence ?? 0;
+            const bSequence = b.Sequence ?? 0;
             return aSequence - bSequence;
         });
         return sorted;

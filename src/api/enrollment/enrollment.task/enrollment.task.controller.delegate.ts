@@ -47,8 +47,8 @@ export class EnrollmentTaskControllerDelegate {
                 return a.CareplanActivityDay - b.CareplanActivityDay;
             }
             
-            const aSequence = a.CareplanActivitySequence || 0;
-            const bSequence = b.CareplanActivitySequence || 0;
+            const aSequence = a.CareplanActivitySequence ?? 0;
+            const bSequence = b.CareplanActivitySequence ?? 0;
             return aSequence - bSequence;
         });
         searchResults.Items = items;
