@@ -13,6 +13,7 @@ export interface CareplanActivityCreateModel {
     Day?                  : number;
     TimeSlot?             : TimeSlot;
     IsRegistrationActivity: boolean;
+    Sequence?             : number;
 }
 
 export interface CareplanActivityUpdateModel {
@@ -22,6 +23,7 @@ export interface CareplanActivityUpdateModel {
     Day?                   : number;
     TimeSlot?              : TimeSlot;
     IsRegistrationActivity?: boolean;
+    Sequence?              : number;
 }
 
 export interface CareplanActivityDto {
@@ -32,6 +34,7 @@ export interface CareplanActivityDto {
     Day                   : number;
     TimeSlot              : TimeSlot;
     IsRegistrationActivity: boolean;
+    Sequence              : number;
     Code                  : CareplanDto[];
 }
 
@@ -42,6 +45,7 @@ export interface CareplanActivitySearchFilters extends BaseSearchFilters {
     Day?                   : number;
     TimeSlot?              : TimeSlot;
     IsRegistrationActivity?: boolean;
+    Sequence?              : number;
 }
 
 export interface CareplanActivitySearchResults extends BaseSearchResults {
