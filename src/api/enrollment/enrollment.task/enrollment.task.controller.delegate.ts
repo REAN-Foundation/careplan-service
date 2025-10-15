@@ -43,7 +43,13 @@ export class EnrollmentTaskControllerDelegate {
         var searchResults: EnrollmentTaskSearchResults = await this._service.search(filters);
         var items = searchResults.Items.map(x => this.getSearchDto(x));
         items.sort((a, b) => {
-            return a.CareplanActivityDay - b.CareplanActivityDay;
+            if (a.CareplanActivityDay !== b.CareplanActivityDay) {
+                return a.CareplanActivityDay - b.CareplanActivityDay;
+            }
+            
+            const aSequence = a.CareplanActivitySequence || 0;
+            const bSequence = b.CareplanActivitySequence || 0;
+            return aSequence - bSequence;
         });
         searchResults.Items = items;
         return searchResults;
@@ -133,19 +139,20 @@ export class EnrollmentTaskControllerDelegate {
             return null;
         }
         return {
-            id                     : record.id,
-            EnrollmentId           : record.EnrollmentId,
-            ParticipantId          : record.ParticipantId,
-            CareplanActivityId     : record.CareplanActivityId,
-            CareplanActivityDay    : record.CareplanActivity.Day,
-            AssetId                : record.AssetId,
-            AssetType              : record.AssetType,
-            Asset                  : record.Asset,
-            CareplanId             : record.CareplanId,
-            TimeSlot               : record.TimeSlot,
-            ScheduledDate          : record.ScheduledDate,
-            IsRegistrationActivity : record.IsRegistrationActivity,
-            CreatedAt              : record.CreatedAt,
+            id                       : record.id,
+            EnrollmentId             : record.EnrollmentId,
+            ParticipantId            : record.ParticipantId,
+            CareplanActivityId       : record.CareplanActivityId,
+            CareplanActivityDay      : record.CareplanActivity.Day,
+            CareplanActivitySequence : record.CareplanActivity.Sequence,
+            AssetId                  : record.AssetId,
+            AssetType                : record.AssetType,
+            Asset                    : record.Asset,
+            CareplanId               : record.CareplanId,
+            TimeSlot                 : record.TimeSlot,
+            ScheduledDate            : record.ScheduledDate,
+            IsRegistrationActivity   : record.IsRegistrationActivity,
+            CreatedAt                : record.CreatedAt,
         };
     };
 
