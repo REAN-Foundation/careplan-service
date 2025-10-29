@@ -46,6 +46,10 @@ export class CareplanActivityModel {
             allowNull    : false,
             defaultValue : false
         },
+        Sequence : {
+            type      : DataTypes.INTEGER,
+            allowNull : true
+        },
 
         CreatedAt : DataTypes.DATE,
         UpdatedAt : DataTypes.DATE,

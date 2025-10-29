@@ -79,7 +79,16 @@ export class CareplanActivityService {
                 IsRegistrationActivity : false,
             }
         });
-        var sorted = records.sort((a,b) => a.Day - b.Day);
+        
+        var sorted = records.sort((a, b) => {
+            if (a.Day !== b.Day) {
+                return a.Day - b.Day;
+            }
+            
+            const aSequence = a.Sequence ?? 0;
+            const bSequence = b.Sequence ?? 0;
+            return aSequence - bSequence;
+        });
         return sorted;
     };
 
