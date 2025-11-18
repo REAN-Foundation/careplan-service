@@ -1,4 +1,4 @@
-FROM node:18.20.8-alpine3.21 AS builder
+FROM node:24-alpine3.22 AS builder
 ADD . /app
 RUN apk add bash
 RUN apk add --no-cache \
@@ -17,7 +17,7 @@ RUN npm run build
 # RUN npm run build
 
 
-FROM node:18.20.8-alpine3.21
+FROM node:24-alpine3.22
 RUN apk add bash
 RUN apk add --no-cache \
         python3 \
@@ -39,3 +39,4 @@ COPY --from=builder ./app/dist/ .
 RUN chmod +x /app/entrypoint.sh
 # ENTRYPOINT ["/bin/sh", "./entrypoint.sh"]
 ENTRYPOINT ["/bin/bash", "-c", "./entrypoint.sh"]
+# CMD ["node", "src/index.js"]
