@@ -216,7 +216,8 @@
     },
     "EnrollmentTask":{
         "GetById": true,
-        "Search": true
+        "Search": true,
+        "Update": true
     },
      "Types":{
         "CareplanCategory": true,

@@ -2,6 +2,8 @@ import * as joi from 'joi';
 import {
     ErrorHandler
 } from '../../../common/error.handler';
+import { Status, StatusList } from '../../../domain.types/enrollment/enrollment.task.domain.types';
+import { AssetTypeList, TimeSlotList } from '../../../domain.types/assets/asset.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -10,8 +12,10 @@ export class EnrollmentTaskValidator {
     static validateCreateRequest = async (requestBody) => {
         try {
             const schema = joi.object({
-                AssetType              : joi.string().valid("Action plan", "Animation", "Appointment", "Article", "Assessment", "Audio", "Biometrics", "Challenge", "Checkup", "Consultation", "Exercise", "Goal", "Infographics", "Medication", "Meditation", "Message", "Nutrition", "Physiotherapy", "Priority", "Reflection", "Reminder", "Video", "Web link", "Web newsfeed", "Word power").optional(),
+                AssetType              : joi.string().valid(...AssetTypeList).optional(),
                 IsRegistrationActivity : joi.boolean().optional(),
+                Status                 : joi.string().valid(...StatusList).optional(),
+                CompletedAt            : joi.date().iso().allow(null).optional(),
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -22,8 +26,15 @@ export class EnrollmentTaskValidator {
     static validateUpdateRequest = async (requestBody) => {
         try {
             const schema = joi.object({
-                AssetType              : joi.string().valid("Action plan", "Animation", "Appointment", "Article", "Assessment", "Audio", "Biometrics", "Challenge", "Checkup", "Consultation", "Exercise", "Goal", "Infographics", "Medication", "Meditation", "Message", "Nutrition", "Physiotherapy", "Priority", "Reflection", "Reminder", "Video", "Web link", "Web newsfeed", "Word power").optional(),
+                AssetId : joi.string().guid({
+                    version : ['uuidv4']
+                }).optional(),
+                AssetType              : joi.string().valid(...AssetTypeList).optional(),
+                TimeSlot               : joi.string().valid(...TimeSlotList).optional(),
+                ScheduledDate          : joi.date().iso().optional(),
                 IsRegistrationActivity : joi.boolean().optional(),
+                Status                 : joi.string().valid(...StatusList).optional(),
+                CompletedAt            : joi.date().iso().allow(null).optional(),
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -40,7 +51,7 @@ export class EnrollmentTaskValidator {
                 participantId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
-                assetType  : joi.string().valid("Action plan", "Animation", "Appointment", "Article", "Assessment", "Audio", "Biometrics", "Challenge", "Checkup", "Consultation", "Exercise", "Goal", "Infographics", "Medication", "Meditation", "Message", "Nutrition", "Physiotherapy", "Priority", "Reflection", "Reminder", "Video", "Web link", "Web newsfeed", "Word power").optional(),
+                assetType  : joi.string().valid(...AssetTypeList).optional(),
                 careplanId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
@@ -48,7 +59,7 @@ export class EnrollmentTaskValidator {
                     version : ['uuidv4']
                 }).optional(),
                 scheduledDate          : joi.date().iso().optional(),
-                timeSlot               : joi.string().valid("Early morning", "Morning", "Afternoon", "Late afternoon", "Evening", "Night", "Late night", "Unspecified", "Whole day").optional(),
+                timeSlot               : joi.string().valid(...TimeSlotList).optional(),
                 isRegistrationActivity : joi.boolean().optional(),
                 orderBy                : joi.string().valid("ScheduledDate", "CreatedAt", "AssetType"),
                 pageIndex              : joi.number().min(0).optional(),

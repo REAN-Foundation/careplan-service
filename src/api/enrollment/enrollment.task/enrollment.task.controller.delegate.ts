@@ -5,12 +5,19 @@ import {
     ErrorHandler
 } from '../../../common/error.handler';
 import {
+    Helper
+} from '../../../common/helper';
+import {
+    ApiError
+} from '../../../common/api.error';
+import {
     EnrollmentTaskValidator as validator
 } from './enrollment.task.validator';
 import {
     uuid
 } from '../../../domain.types/miscellaneous/system.types';
 import {
+    EnrollmentTaskUpdateModel,
     EnrollmentTaskSearchFilters,
     EnrollmentTaskSearchResults
 } from '../../../domain.types/enrollment/enrollment.task.domain.types';
@@ -53,6 +60,20 @@ export class EnrollmentTaskControllerDelegate {
         });
         searchResults.Items = items;
         return searchResults;
+    };
+
+    update = async (id: uuid, requestBody: any) => {
+        await validator.validateUpdateRequest(requestBody);
+        const record = await this._service.getById(id);
+        if (record === null) {
+            ErrorHandler.throwNotFoundError('Enrollment task with id ' + id.toString() + ' cannot be found!');
+        }
+        const updateModel: EnrollmentTaskUpdateModel = this.getUpdateModel(requestBody);
+        const updated = await this._service.update(id, updateModel);
+        if (updated == null) {
+            throw new ApiError('Unable to update enrollment task!', 400);
+        }
+        return this.getEnrichedDto(updated);
     };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -130,7 +151,9 @@ export class EnrollmentTaskControllerDelegate {
             CareplanId             : record.CareplanId,
             TimeSlot               : record.TimeSlot,
             ScheduledDate          : record.ScheduledDate,
-            IsRegistrationActivity : record.IsRegistrationActivity
+            IsRegistrationActivity : record.IsRegistrationActivity,
+            Status                 : record.Status,
+            CompletedAt            : record.CompletedAt
         };
     };
 
@@ -152,8 +175,38 @@ export class EnrollmentTaskControllerDelegate {
             TimeSlot                 : record.TimeSlot,
             ScheduledDate            : record.ScheduledDate,
             IsRegistrationActivity   : record.IsRegistrationActivity,
+            Status                   : record.Status,
+            CompletedAt              : record.CompletedAt,
             CreatedAt                : record.CreatedAt,
         };
+    };
+
+    getUpdateModel = (requestBody): EnrollmentTaskUpdateModel => {
+        const updateModel: EnrollmentTaskUpdateModel = {};
+
+        if (Helper.hasProperty(requestBody, 'AssetId')) {
+            updateModel.AssetId = requestBody.AssetId;
+        }
+        if (Helper.hasProperty(requestBody, 'AssetType')) {
+            updateModel.AssetType = requestBody.AssetType;
+        }
+        if (Helper.hasProperty(requestBody, 'TimeSlot')) {
+            updateModel.TimeSlot = requestBody.TimeSlot;
+        }
+        if (Helper.hasProperty(requestBody, 'ScheduledDate')) {
+            updateModel.ScheduledDate = requestBody.ScheduledDate;
+        }
+        if (Helper.hasProperty(requestBody, 'IsRegistrationActivity')) {
+            updateModel.IsRegistrationActivity = requestBody.IsRegistrationActivity;
+        }
+        if (Helper.hasProperty(requestBody, 'Status')) {
+            updateModel.Status = requestBody.Status;
+        }
+        if (Helper.hasProperty(requestBody, 'CompletedAt')) {
+            updateModel.CompletedAt = requestBody.CompletedAt;
+        }
+
+        return updateModel;
     };
 
     //#endregion

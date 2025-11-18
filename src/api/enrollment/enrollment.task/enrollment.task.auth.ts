@@ -28,4 +28,12 @@ export class EnrollmentTaskAuth {
         RequestType : RequestType.GetOne,
     };
 
+    static readonly update: AuthOptions = {
+        ...DefaultAuthOptions,
+        Context     : `${this._baseContext}.Update`,
+        Ownership   : ResourceOwnership.System,
+        ActionScope : ActionScope.Public,
+        RequestType : RequestType.UpdateOne,
+    };
+
 }
