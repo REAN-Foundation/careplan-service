@@ -16,7 +16,7 @@ export class ParticipantValidator {
                 Email                  : joi.string().max(256).optional().allow(null),
                 UniqueReferenceId      : joi.string().max(64).optional().allow(null),
                 ParticipantReferenceId : joi.string().max(256).optional(),
-                Gender                 : joi.string().valid("Male", "Female", "Other").required(),
+                Gender                 : joi.string().valid("Male", "Female", "Other","Unknown").required(),
                 BirthDate              : joi.string().optional(),
                 Country                : joi.string().max(64).optional().allow(null),
                 TenantId               : joi.string().guid({ version: ['uuidv4'] }).optional(),
