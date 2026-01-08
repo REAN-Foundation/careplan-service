@@ -21,5 +21,7 @@ export const register = (app: express.Application): void => {
     router.get('/:id/export', auth(CareplanAuth.export), controller.export);
     router.post('/import-file', auth(CareplanAuth.import), controller.importFromFile);
 
+    router.post('/:id/promote', auth(CareplanAuth.promote), controller.promote);
+
     app.use('/api/v1/careplans', router);
 };

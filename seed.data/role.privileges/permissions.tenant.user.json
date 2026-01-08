@@ -190,7 +190,8 @@
         "Search": true,
         "Update": true,
         "Export": true,
-        "Import": true
+        "Import": true,
+        "Promote": true
     },
     "CareplanActivity":{
         "Create": true,
