@@ -509,7 +509,6 @@ export class  CareplanService {
 
         const jsonObjectFields = ['Metadata'];
         const jsonArrayFields = ['Tags', 'TemplateButtonIds'];
-        const jsonStringFields = ['TemplateVariables'];
 
         for (const field of jsonObjectFields) {
             if (parsed[field] && typeof parsed[field] === 'string') {
