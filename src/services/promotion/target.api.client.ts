@@ -117,7 +117,7 @@ export class TargetApiClient {
             Logger.instance().error('Failed to get active tenants', 500, error);
             ErrorHandler.throwInternalServerError(`Failed to get active tenants: ${error.message}`);
         }
-    }
+    };
 
     async searchCategoryByType(type: string): Promise<any | null> {
         Logger.instance().log(`Searching for category with Type /api/v1/careplan-categories/search/${type} in target environment...`);
