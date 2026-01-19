@@ -258,6 +258,9 @@ export class EnrollmentService {
                 [Op.like] : '%' + filters.DisplayId + '%'
             };
         }
+        if (filters.TenantId) {
+            search.where['TenantId'] = filters.TenantId;
+        }
         // if (filters.StartDate) {
         //     search.where['StartDate'] = filters.StartDate;
         // }
