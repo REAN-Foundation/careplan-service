@@ -102,6 +102,20 @@ export class CarePlanController extends BaseController{
         }
     };
 
+    promote = async (request: express.Request, response: express.Response): Promise < void > => {
+        try {
+            const tenantName = request.currentUser?.TenantName;
+            if (!tenantName) {
+                throw new Error('Current user tenant information is missing.');
+            }
+            const careplan = await this._delegate.promote(request.params.id, tenantName);
+            const message = 'Care plan promoted successfully!';
+            ResponseHandler.success(request, response, message, 200, careplan);
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
+
     public static storeTemplateToFileLocally = async (careplanObj) => {
         const name = careplanObj.Name;
         const filename = Helper.strToFilename(name, 'json', '-');

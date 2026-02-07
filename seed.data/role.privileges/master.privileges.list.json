@@ -126,6 +126,7 @@
     "Careplan.Delete",
     "Careplan.Export",
     "Careplan.Import",
+    "Careplan.Promote",
     "CareplanActivity.Create",
     "CareplanActivity.GetById",
     "CareplanActivity.Search",

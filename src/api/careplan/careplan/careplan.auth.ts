@@ -69,4 +69,12 @@ export class CareplanAuth {
         RequestType : RequestType.GetOne,
     };
 
+    static readonly promote: AuthOptions = {
+        ...DefaultAuthOptions,
+        Context     : `${this._baseContext}.Promote`,
+        Ownership   : ResourceOwnership.System,
+        ActionScope : ActionScope.Tenant,
+        RequestType : RequestType.UpdateOne,
+    };
+
 }

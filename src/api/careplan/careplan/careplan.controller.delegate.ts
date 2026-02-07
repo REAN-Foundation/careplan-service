@@ -9,6 +9,7 @@ import { CareplanCreateModel, CareplanDto, CareplanSearchFilters, CareplanSearch
 import { uuid } from '../../../domain.types/miscellaneous/system.types';
 import path from 'path';
 import { ConfigurationManager } from '../../../config/configuration.manager';
+import { PromotionService } from '../../../services/promotion/promotion.service';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -118,6 +119,11 @@ export class CareplanControllerDelegate {
         }
 
         return careplan;
+    };
+
+    promote = async (id: uuid, tenantName: string): Promise<CareplanDto> => {
+        const promotionService = new PromotionService();
+        return await promotionService.promote(id, tenantName);
     };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
