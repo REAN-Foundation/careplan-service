@@ -129,6 +129,10 @@ export class PhysiotherapyControllerDelegate {
         if (version != null) {
             filters['Version'] = version;
         }
+        var tenantCode = query.tenantCode ? query.tenantCode : null;
+        if (tenantCode != null) {
+            filters['TenantCode'] = tenantCode;
+        }
 
         return filters;
     };
@@ -158,6 +162,9 @@ export class PhysiotherapyControllerDelegate {
         if (Helper.hasProperty(requestBody, 'TenantId')) {
             updateModel.TenantId = requestBody.TenantId;
         }
+        if (Helper.hasProperty(requestBody, 'TenantCode')) {
+            updateModel.TenantCode = requestBody.TenantCode;
+        }
 
         return updateModel;
     };
@@ -172,6 +179,7 @@ export class PhysiotherapyControllerDelegate {
             Version                : requestBody.Version ? requestBody.Version : 'V1',
             OwnerUserId            : requestBody.OwnerUserId,
             TenantId               : requestBody.TenantId ? requestBody.TenantId : null,
+            TenantCode             : requestBody.TenantCode ? requestBody.TenantCode : null,
         };
     };
 
@@ -207,6 +215,7 @@ export class PhysiotherapyControllerDelegate {
             AssetCategory          : record.AssetCategory,
             OwnerUserId            : record.OwnerUserId,
             TenantId               : record.TenantId,
+            TenantCode             : record.TenantCode,
             Tags                   : JSON.parse(record.Tags),
             Version                : record.Version
         };
@@ -225,6 +234,7 @@ export class PhysiotherapyControllerDelegate {
             AssetCategory          : record.AssetCategory,
             OwnerUserId            : record.OwnerUserId,
             TenantId               : record.TenantId,
+            TenantCode             : record.TenantCode,
             Tags                   : JSON.parse(record.Tags),
             Version                : record.Version,
             CreatedAt              : record.CreatedAt,

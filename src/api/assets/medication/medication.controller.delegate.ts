@@ -125,6 +125,10 @@ export class MedicationControllerDelegate {
         if (version != null) {
             filters['Version'] = version;
         }
+        var tenantCode = query.tenantCode ? query.tenantCode : null;
+        if (tenantCode != null) {
+            filters['TenantCode'] = tenantCode;
+        }
 
         return filters;
     };
@@ -151,6 +155,9 @@ export class MedicationControllerDelegate {
         if (Helper.hasProperty(requestBody, 'TenantId')) {
             updateModel.TenantId = requestBody.TenantId;
         }
+        if (Helper.hasProperty(requestBody, 'TenantCode')) {
+            updateModel.TenantCode = requestBody.TenantCode;
+        }
 
         return updateModel;
     };
@@ -164,6 +171,7 @@ export class MedicationControllerDelegate {
             Version     : requestBody.Version ? requestBody.Version : 'V1',
             OwnerUserId : requestBody.OwnerUserId,
             TenantId    : requestBody.TenantId ? requestBody.TenantId : null,
+            TenantCode  : requestBody.TenantCode ? requestBody.TenantCode : null,
         };
     };
 
@@ -199,6 +207,7 @@ export class MedicationControllerDelegate {
             OwnerUserId   : record.OwnerUserId,
             Tags          : JSON.parse(record.Tags),
             TenantId      : record.TenantId,
+            TenantCode    : record.TenantCode,
             Version       : record.Version
         };
     };
@@ -215,6 +224,7 @@ export class MedicationControllerDelegate {
             AssetCategory : record.AssetCategory,
             OwnerUserId   : record.OwnerUserId,
             TenantId      : record.TenantId,
+            TenantCode    : record.TenantCode,
             Tags          : JSON.parse(record.Tags),
             Version       : record.Version,
             CreatedAt     : record.CreatedAt,

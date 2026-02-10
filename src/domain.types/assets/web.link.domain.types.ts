@@ -15,6 +15,7 @@ export interface WebLinkCreateModel {
     Version ? : string;
     OwnerUserId ? : uuid;
     TenantId?: uuid;
+    TenantCode?: string;
 
 }
 
@@ -27,6 +28,7 @@ export interface WebLinkUpdateModel {
     Version ? : string;
     OwnerUserId ? : uuid;
     TenantId?: uuid;
+    TenantCode?: string;
 }
 
 export interface WebLinkDto {
@@ -38,6 +40,7 @@ export interface WebLinkDto {
     AssetCategory: string;
     OwnerUserId: uuid;
     TenantId: uuid;
+    TenantCode?: string;
     Tags: string[];
     Version: string;
 
@@ -52,6 +55,7 @@ export interface WebLinkSearchFilters extends BaseSearchFilters {
     Tags ? : string;
     Version ? : string;
     TenantId?: uuid;
+    TenantCode?: string;
     CreatedAt ? : Date;
 }
 

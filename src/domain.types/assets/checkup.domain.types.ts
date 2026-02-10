@@ -14,6 +14,7 @@ export interface CheckupCreateModel {
     Version ? : string;
     OwnerUserId ? : uuid;
     TenantId?: uuid;
+    TenantCode?: string;
 }
 
 export interface CheckupUpdateModel {
@@ -24,6 +25,7 @@ export interface CheckupUpdateModel {
     Version ? : string;
     OwnerUserId ? : uuid;
     TenantId?: uuid;
+    TenantCode?: string;
 }
 
 export interface CheckupDto {
@@ -34,6 +36,7 @@ export interface CheckupDto {
     AssetCategory: string;
     OwnerUserId: uuid;
     TenantId: uuid;
+    TenantCode?: string;
     Tags: string[];
     Version: string;
 
@@ -47,6 +50,7 @@ export interface CheckupSearchFilters extends BaseSearchFilters {
     Tags ? : string;
     Version ? : string;
     TenantId?: uuid;
+    TenantCode?: string;
     CreatedAt ? : Date;
 }
 

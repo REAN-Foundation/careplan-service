@@ -31,6 +31,7 @@ export interface MessageCreateModel {
     Version ? : string;
     OwnerUserId ? : uuid;
     TenantId?: uuid;
+    TenantCode?: string;
 }
 
 export interface MessageUpdateModel {
@@ -46,6 +47,7 @@ export interface MessageUpdateModel {
     Version ? : string;
     OwnerUserId ? : uuid;
     TenantId?: uuid;
+    TenantCode?: string;
 }
 
 export interface MessageDto {
@@ -60,6 +62,7 @@ export interface MessageDto {
     MessageType: MessageType;
     OwnerUserId: uuid;
     TenantId: uuid;
+    TenantCode?: string;
     Tags: string[];
     Url: string;
     Version: string;
@@ -75,6 +78,7 @@ export interface MessageSearchFilters extends BaseSearchFilters {
     MessageType ? : MessageType;
     Tags ? : string;
     TenantId?: uuid;
+    TenantCode?: string;
     Version ? : string;
     CreatedAt ? : Date;
 }

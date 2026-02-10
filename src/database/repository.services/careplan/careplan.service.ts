@@ -161,6 +161,9 @@ export class  CareplanService {
             if (filters.TenantId) {
                 search.where['TenantId'] = filters.TenantId;
             }
+            if (filters.TenantCode) {
+                search.where['TenantCode'] = filters.TenantCode;
+            }
             if (filters.Tags) {
                 search.where['Tags'] = filters.Tags;
             }
@@ -275,6 +278,7 @@ export class  CareplanService {
             Tags               : careplan.Tags,
             IsActive           : careplan.IsActive,
             Version            : careplan.Version,
+            TenantCode         : careplan.TenantCode,
             CareplanCategory   : careplan.Category,
             CareplanActivities : activities,
             Assets             : assets
@@ -306,7 +310,8 @@ export class  CareplanService {
                 OwnerUserId : careplan.OwnerUserId,
                 Tags        : careplan.Tags ? JSON.stringify(careplan.Tags) as string : JSON.stringify([]),
                 IsActive    : careplan.IsActive,
-                TenantId    : request.currentUser.TenantId
+                TenantId    : request.currentUser.TenantId,
+                TenantCode  : careplan.TenantCode,
             };
             await this.createAssets(careplan.Assets,request);
             const newCareplan = await this.Careplan.create(careplanModel);
@@ -384,6 +389,7 @@ export class  CareplanService {
             for await (var asset of assets) {
                 const assetType = asset.AssetType;
                 asset.TenantId = request.currentUser.TenantId;
+                asset.TenantCode = asset.TenantCode;
                 const model = this.assetModelMap[assetType];
                 const exists = await this.getByAssetcode(model, asset.AssetCode);
                 if (asset.Tags && Array.isArray(asset.Tags)) {

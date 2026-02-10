@@ -65,6 +65,10 @@ export class MeditationModel {
             type      : DataTypes.UUID,
             allowNull : true
         },
+        TenantCode : {
+            type      : DataTypes.STRING(64),
+            allowNull : true
+        },
         Tags : {
             type         : DataTypes.TEXT,
             allowNull    : false,

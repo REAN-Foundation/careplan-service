@@ -36,6 +36,7 @@ export interface MeditationCreateModel {
     Version                ?: string;
     OwnerUserId            ?: uuid;
     TenantId               ?: uuid;
+    TenantCode             ?: string;
 
 }
 
@@ -49,6 +50,7 @@ export interface MeditationUpdateModel {
     Version                ?: string;
     OwnerUserId            ?: uuid;
     TenantId               ?: uuid;
+    TenantCode             ?: string;
 }
 
 export interface MeditationDto {
@@ -61,6 +63,7 @@ export interface MeditationDto {
     AssetCategory         : string;
     OwnerUserId           : uuid;
     TenantId              : uuid;
+    TenantCode            ?: string;
     Tags                  : string[];
     Version               : string;
 
@@ -76,6 +79,7 @@ export interface MeditationSearchFilters extends BaseSearchFilters {
     Tags                   ?: string;
     Version                ?: string;
     TenantId               ?: uuid;
+    TenantCode             ?: string;
     CreatedAt              ?: Date;
 }
 
