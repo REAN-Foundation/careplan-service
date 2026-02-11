@@ -389,7 +389,7 @@ export class  CareplanService {
             for await (var asset of assets) {
                 const assetType = asset.AssetType;
                 asset.TenantId = request.currentUser.TenantId;
-                asset.TenantCode = asset.TenantCode;
+                // asset.TenantCode = asset.TenantCode;
                 const model = this.assetModelMap[assetType];
                 const exists = await this.getByAssetcode(model, asset.AssetCode);
                 if (asset.Tags && Array.isArray(asset.Tags)) {
