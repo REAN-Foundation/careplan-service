@@ -100,6 +100,10 @@ export class CareplanCategoryControllerDelegate {
         if (tenantId != null) {
             filters['TenantId'] = tenantId;
         }
+        var tenantCode = query.tenantCode ? query.tenantCode : null;
+        if (tenantCode != null) {
+            filters['TenantCode'] = tenantCode;
+        }
         var orderBy = query.orderBy ? query.orderBy : 'CreatedAt';
         if (orderBy != null) {
             filters['OrderBy'] = orderBy;
@@ -134,6 +138,9 @@ export class CareplanCategoryControllerDelegate {
         if (Helper.hasProperty(requestBody, 'TenantId')) {
             updateModel.TenantId = requestBody.TenantId;
         }
+        if (Helper.hasProperty(requestBody, 'TenantCode')) {
+            updateModel.TenantCode = requestBody.TenantCode;
+        }
         return updateModel;
     };
 
@@ -142,6 +149,7 @@ export class CareplanCategoryControllerDelegate {
             Type        : requestBody.Type ? requestBody.Type : null,
             Description : requestBody.Description ? requestBody.Description : null,
             TenantId    : requestBody.TenantId ? requestBody.TenantId : null,
+            TenantCode  : requestBody.TenantCode ? requestBody.TenantCode : null,
         };
     };
 
@@ -175,6 +183,7 @@ export class CareplanCategoryControllerDelegate {
             Type        : record.Type,
             Description : record.Description,
             TenantId    : record.TenantId,
+            TenantCode  : record.TenantCode,
         };
     };
 

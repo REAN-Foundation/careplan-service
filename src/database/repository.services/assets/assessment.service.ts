@@ -185,6 +185,9 @@ export class AssessmentService {
         if (filters.TenantId) {
             search.where['TenantId'] = filters.TenantId;
         }
+        if (filters.TenantCode) {
+            search.where['TenantCode'] = filters.TenantCode;
+        }
 
         if (filters.Tags) {
             search.where['Tags'] = {

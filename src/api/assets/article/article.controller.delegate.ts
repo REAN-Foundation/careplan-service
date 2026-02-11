@@ -133,6 +133,10 @@ export class ArticleControllerDelegate {
         if (tenantId != null) {
             filters['TenantId'] = tenantId;
         }
+        var tenantCode = query.tenantCode ? query.tenantCode : null;
+        if (tenantCode != null) {
+            filters['TenantCode'] = tenantCode;
+        }
 
         return filters;
     };
@@ -162,6 +166,9 @@ export class ArticleControllerDelegate {
         if (Helper.hasProperty(requestBody, 'TenantId')) {
             updateModel.TenantId = requestBody.TenantId;
         }
+        if (Helper.hasProperty(requestBody, 'TenantCode')) {
+            updateModel.TenantCode = requestBody.TenantCode;
+        }
 
         return updateModel;
     };
@@ -176,6 +183,7 @@ export class ArticleControllerDelegate {
             Version     : requestBody.Version ? requestBody.Version : 'V1',
             OwnerUserId : requestBody.OwnerUserId,
             TenantId    : requestBody.TenantId ? requestBody.TenantId : null,
+            TenantCode  : requestBody.TenantCode ? requestBody.TenantCode : null,
         };
     };
 
@@ -193,7 +201,9 @@ export class ArticleControllerDelegate {
             }
         }
         else {
-            searchFilters.TenantId = request.currentUser.TenantId;
+            if (!searchFilters.TenantCode) {
+                searchFilters.TenantId = request.currentUser.TenantId;
+            }
         }
         return searchFilters;
     };
@@ -212,6 +222,7 @@ export class ArticleControllerDelegate {
             AssetCategory  : record.AssetCategory,
             OwnerUserId    : record.OwnerUserId,
             TenantId       : record.TenantId,
+            TenantCode     : record.TenantCode,
             Tags           : JSON.parse(record.Tags),
             Version        : record.Version
         };
@@ -231,6 +242,7 @@ export class ArticleControllerDelegate {
             AssetCategory  : record.AssetCategory,
             OwnerUserId    : record.OwnerUserId,
             TenantId       : record.TenantId,
+            TenantCode     : record.TenantCode,
             Tags           : JSON.parse(record.Tags),
             Version        : record.Version,
             CreatedAt      : record.CreatedAt,

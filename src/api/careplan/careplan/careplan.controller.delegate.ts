@@ -150,6 +150,10 @@ export class CareplanControllerDelegate {
         // if (tenantId != null) {
         //     filters['TenantId'] = tenantId;
         // }
+        var tenantCode = query.tenantCode ? query.tenantCode : null;
+        if (tenantCode != null) {
+            filters['TenantCode'] = tenantCode;
+        }
         var tags = query.tags ? query.tags : null;
         if (tags != null) {
             filters['Tags'] = tags;
@@ -202,6 +206,9 @@ export class CareplanControllerDelegate {
         if (Helper.hasProperty(requestBody, 'TenantId')) {
             updateModel.TenantId = requestBody.TenantId;
         }
+        if (Helper.hasProperty(requestBody, 'TenantCode')) {
+            updateModel.TenantCode = requestBody.TenantCode;
+        }
         if (Helper.hasProperty(requestBody, 'Tags')) {
             updateModel.Tags = JSON.stringify(requestBody.Tags);
         }
@@ -217,6 +224,7 @@ export class CareplanControllerDelegate {
             Version     : requestBody.Version ? requestBody.Version : 'V1',
             OwnerUserId : requestBody.OwnerUserId ? requestBody.OwnerUserId : null,
             TenantId    : requestBody.TenantId ? requestBody.TenantId : null,
+            TenantCode  : requestBody.TenantCode ? requestBody.TenantCode : null,
             Tags        : requestBody.Tags ? JSON.stringify(requestBody.Tags) as string : JSON.stringify([]),
         };
     };
@@ -235,7 +243,9 @@ export class CareplanControllerDelegate {
             }
         }
         else {
-            searchFilters.TenantId = request.currentUser.TenantId;
+            if (!searchFilters.TenantCode) {
+                searchFilters.TenantId = request.currentUser.TenantId;
+            }
         }
         return searchFilters;
     };
@@ -255,6 +265,7 @@ export class CareplanControllerDelegate {
             Version     : record.Version,
             OwnerUserId : record.OwnerUserId,
             TenantId    : record.TenantId,
+            TenantCode  : record.TenantCode,
             Tags        : JSON.parse(record.Tags),
             IsActive    : record.IsActive,
             CreatedAt   : record.CreatedAt,
@@ -279,13 +290,14 @@ export class CareplanControllerDelegate {
             Version     : record.Version,
             OwnerUserId : record.OwnerUserId,
             TenantId    : record.TenantId,
+            TenantCode  : record.TenantCode,
             Tags        : JSON.parse(record.Tags),
             IsActive    : record.IsActive,
             CreatedAt   : record.CreatedAt,
             UpdatedAt   : record.UpdatedAt,
             Type        : record.Category.Type,
             Category    : record.Category
-        
+
         };
     };
 

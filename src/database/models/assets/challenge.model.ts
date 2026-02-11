@@ -54,6 +54,11 @@ export class ChallengeModel {
             type      : DataTypes.UUID,
             allowNull : true
         },
+        TenantCode : {
+            type         : DataTypes.STRING(64),
+            allowNull    : true,
+            defaultValue : null
+        },
         Tags : {
             type         : DataTypes.TEXT,
             allowNull    : false,
