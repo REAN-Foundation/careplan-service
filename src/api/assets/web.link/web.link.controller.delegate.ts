@@ -197,7 +197,9 @@ export class WebLinkControllerDelegate {
             }
         }
         else {
-            searchFilters.TenantId = request.currentUser.TenantId;
+            if (!searchFilters.TenantCode) {
+                searchFilters.TenantId = request.currentUser.TenantId;
+            }
         }
         return searchFilters;
     };

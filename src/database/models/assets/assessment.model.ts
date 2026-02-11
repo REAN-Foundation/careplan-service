@@ -68,8 +68,9 @@ export class AssessmentModel {
             allowNull : true
         },
         TenantCode : {
-            type      : DataTypes.STRING(64),
-            allowNull : true
+            type         : DataTypes.STRING(64),
+            allowNull    : true,
+            defaultValue : null
         },
         Tags : {
             type         : DataTypes.TEXT,
