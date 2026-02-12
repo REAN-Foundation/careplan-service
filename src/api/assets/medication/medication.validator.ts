@@ -21,6 +21,7 @@ export class MedicationValidator {
                 TenantId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
+                TenantCode : joi.string().max(64).optional(),
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -39,6 +40,7 @@ export class MedicationValidator {
                 TenantId    : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
+                TenantCode : joi.string().max(64).optional(),
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -56,6 +58,7 @@ export class MedicationValidator {
                 tags          : joi.array().items(joi.string()).optional(),
                 version       : joi.string().max(128).optional(),
                 tenantId      : joi.string().guid({ version: ['uuidv4'] }).optional(),
+                tenantCode    : joi.string().max(64).optional(),
                 order         : joi.string().max(128).optional(),
                 orderBy       : joi.string().max(128).optional(),
                 itemsPerPage  : joi.number().optional(),

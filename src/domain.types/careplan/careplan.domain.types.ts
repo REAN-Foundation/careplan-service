@@ -12,6 +12,7 @@ export interface CareplanCreateModel {
     Version?: string;
     OwnerUserId: uuid;
     TenantId?: uuid;
+    TenantCode?: string;
     Tags?: string;
     IsActive?: boolean;
     Category?:CareplanCategoryCreateModel;
@@ -27,6 +28,7 @@ export interface CareplanUpdateModel {
     Version?: string;
     OwnerUserId?: uuid;
     TenantId?: uuid;
+    TenantCode?: string;
     Tags?: string;
     IsActive?: boolean;
 }
@@ -40,6 +42,7 @@ export interface CareplanDto  {
     Version: string;
     OwnerUserId: uuid;
     TenantId: uuid;
+    TenantCode?: string;
     Tags: string[];
     IsActive: boolean;
     CreatedAt:Date;
@@ -54,6 +57,7 @@ export interface CareplanSearchFilters extends BaseSearchFilters {
     Version?: string;
     OwnerUserId?: uuid;
     TenantId?: uuid;
+    TenantCode?: string;
     Tags?: string[];
     IsActive?: boolean;
 }

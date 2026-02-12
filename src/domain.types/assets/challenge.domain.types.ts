@@ -14,6 +14,7 @@ export interface ChallengeCreateModel {
     Version ? : string;
     OwnerUserId?: uuid;
     TenantId?: uuid;
+    TenantCode?: string;
 }
 
 export interface ChallengeUpdateModel {
@@ -24,6 +25,7 @@ export interface ChallengeUpdateModel {
     Version ? : string;
     OwnerUserId?: uuid;
     TenantId?: uuid;
+    TenantCode?: string;
 }
 
 export interface ChallengeDto {
@@ -34,6 +36,7 @@ export interface ChallengeDto {
     AssetCategory: string;
     OwnerUserId: uuid;
     TenantId: uuid;
+    TenantCode?: string;
     Tags: string[];
     Version: string;
 
@@ -46,6 +49,7 @@ export interface ChallengeSearchFilters extends BaseSearchFilters {
     AssetCategory ? : string;
     Tags ? : string;
     TenantId?: uuid;
+    TenantCode?: string;
     Version ? : string;
     CreatedAt ? : Date;
 }

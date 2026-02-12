@@ -197,6 +197,9 @@ export class ArticleService {
         if (filters.TenantId) {
             search.where['TenantId'] = filters.TenantId;
         }
+        if (filters.TenantCode) {
+            search.where['TenantCode'] = filters.TenantCode;
+        }
         const includeFileResourceAsFileResource = {
             model    : this.FileResource,
             required : false,
