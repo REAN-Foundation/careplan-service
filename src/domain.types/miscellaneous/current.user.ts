@@ -9,5 +9,6 @@ export interface CurrentUser {
     CurrentRoleName?: string;
     SessionId       : string;
     TenantId        : string;
+    TenantCode?     : string;
     TenantName      : string;
 }

@@ -15,6 +15,7 @@ export interface WebNewsfeedCreateModel {
     Version ? : string;
     OwnerUserId ? : uuid;
     TenantId?: uuid;
+    TenantCode?: string;
 }
 
 export interface WebNewsfeedUpdateModel {
@@ -26,6 +27,7 @@ export interface WebNewsfeedUpdateModel {
     Version ? : string;
     OwnerUserId ? : uuid;
     TenantId?: uuid;
+    TenantCode?: string;
 }
 
 export interface WebNewsfeedDto {
@@ -37,6 +39,7 @@ export interface WebNewsfeedDto {
     AssetCategory: string;
     OwnerUserId: uuid;
     TenantId: uuid;
+    TenantCode?: string;
     Tags: string[];
     Version: string;
 
@@ -51,6 +54,7 @@ export interface WebNewsfeedSearchFilters extends BaseSearchFilters {
     Tags ? : string;
     Version ? : string;
     TenantId?: uuid;
+    TenantCode?: string;
     CreatedAt ? : Date;
 }
 

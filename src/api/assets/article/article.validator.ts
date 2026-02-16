@@ -21,7 +21,8 @@ export class ArticleValidator {
                 }).optional(),
                 TenantId : joi.string().guid({
                     version : ['uuidv4']
-                }).optional()
+                }).optional(),
+                TenantCode : joi.string().max(64).optional(),
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -41,6 +42,7 @@ export class ArticleValidator {
                 TenantId  : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
+                TenantCode : joi.string().max(64).optional(),
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -61,6 +63,7 @@ export class ArticleValidator {
                 tenantId      : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
+                tenantCode   : joi.string().max(64).optional(),
                 order        : joi.string().max(128).optional(),
                 orderBy      : joi.string().max(128).optional(),
                 itemsPerPage : joi.number().optional(),

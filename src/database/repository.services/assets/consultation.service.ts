@@ -193,6 +193,9 @@ export class ConsultationService {
         if (filters.TenantId) {
             search.where['TenantId'] = filters.TenantId;
         }
+        if (filters.TenantCode) {
+            search.where['TenantCode'] = filters.TenantCode;
+        }
 
         return search;
     };

@@ -26,6 +26,7 @@ export interface AssessmentCreateModel {
     Metadata ? : string;
     OwnerUserId?: uuid;
     TenantId?: uuid;
+    TenantCode?: string;
 }
 
 export interface AssessmentUpdateModel {
@@ -40,6 +41,7 @@ export interface AssessmentUpdateModel {
     Metadata ? : string;
     OwnerUserId?: uuid;
     TenantId?: uuid;
+    TenantCode?: string;
 }
 
 export interface AssessmentDto {
@@ -53,6 +55,7 @@ export interface AssessmentDto {
     ReferenceTemplateId? : string;
     OwnerUserId: uuid;
     TenantId: uuid;
+    TenantCode?: string;
     Tags: string[];
     Version: string;
     Metadata: string;
@@ -66,6 +69,7 @@ export interface AssessmentSearchFilters extends BaseSearchFilters {
     AssetCategory ? : string;
     Template ? : string;
     TenantId?: uuid;
+    TenantCode?: string;
     Tags ? : string;
     Version ? : string;
     Metadata ? : string;

@@ -23,6 +23,7 @@ export class BiometricsValidator {
                 TenantId : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
+                TenantCode : joi.string().max(64).optional(),
 
             });
             return await schema.validateAsync(requestBody);
@@ -42,6 +43,7 @@ export class BiometricsValidator {
                 TenantId        : joi.string().guid({
                     version : ['uuidv4']
                 }).optional(),
+                TenantCode : joi.string().max(64).optional(),
 
                 Tags    : joi.array().items(joi.string()).optional(),
                 Version : joi.string().max(128).optional()
@@ -62,6 +64,7 @@ export class BiometricsValidator {
                 biometricsType  : joi.string().valid("Blood pressure", "Blood glucose", "Blood oxygen saturation", "Body height", "Body weight", "Body temperature", "Pulse", "Other").optional(),
                 measurementUnit : joi.string().max(128).optional(),
                 tenantId        : joi.string().guid({ version: ['uuidv4'] }).optional(),
+                tenantCode      : joi.string().max(64).optional(),
                 tags            : joi.array().items(joi.string()).optional(),
                 version         : joi.string().max(128).optional(),
                 order           : joi.string().max(128).optional(),

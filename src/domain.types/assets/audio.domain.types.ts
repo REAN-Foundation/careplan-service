@@ -15,6 +15,7 @@ export interface AudioCreateModel {
     Version ? : string;
     OwnerUserId?: uuid;
     TenantId?: uuid;
+    TenantCode?: string;
 }
 
 export interface AudioUpdateModel {
@@ -26,6 +27,7 @@ export interface AudioUpdateModel {
     Version ? : string;
     OwnerUserId?: uuid;
     TenantId?: uuid;
+    TenantCode?: string;
 }
 
 export interface AudioDto {
@@ -38,6 +40,7 @@ export interface AudioDto {
     AssetCategory: string;
     OwnerUserId: uuid;
     TenantId: uuid;
+    TenantCode?: string;
     Tags: string[];
     Version: string;
 
@@ -50,6 +53,7 @@ export interface AudioSearchFilters extends BaseSearchFilters {
     Url ? : string;
     AssetCategory ? : string;
     TenantId?: uuid;
+    TenantCode?: string;
     Tags ? : string;
     Version ? : string;
     CreatedAt ? : Date;
