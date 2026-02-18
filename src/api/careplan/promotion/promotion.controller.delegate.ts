@@ -125,35 +125,35 @@ export class PromotionControllerDelegate {
         };
     };
 
-    promoteTo = async (requestBody: any) => {
-        const isValidLambdaAuth = validator.validateLambdaAuthHeader(requestBody);
+    promoteTo = async (request: any) => {
+        const isValidLambdaAuth = validator.validateLambdaAuthHeader(request);
         if (!isValidLambdaAuth) {
             throw new ApiError(401, 'Unauthorized: Invalid Lambda authentication token');
         }
-        await validator.validatePromoteToRequest(requestBody);
+        await validator.validatePromoteToRequest(request.body);
 
-        const { targetEnvironment, tenantCode, careplan } = requestBody;
+        const { TargetEnvironment, TenantCode, Careplan } = request.body;
 
         const currentEnv = process.env.NODE_ENV;
-        if (targetEnvironment !== currentEnv) {
-            throw new ApiError(400, `Target environment mismatch. Expected: ${currentEnv}, Received: ${targetEnvironment}`);
+        if (TargetEnvironment !== currentEnv) {
+            throw new ApiError(400, `Target environment mismatch. Expected: ${currentEnv}, Received: ${TargetEnvironment}`);
         }
         
-        Logger.instance().log(`Receiving careplan ${careplan.Code} for tenant ${tenantCode}...`);
+        Logger.instance().log(`Receiving careplan ${Careplan.Code} for tenant ${TenantCode}...`);
 
-        const searchResult = await this._careplanService.search({ Code: careplan.Code });
+        const searchResult = await this._careplanService.search({ Code: Careplan.Code });
         const existingCareplan = searchResult.Items && searchResult.Items.length > 0
             ? searchResult.Items[0]
             : null;
 
         if (existingCareplan) {
-            Logger.instance().log(`Careplan ${careplan.Code} exists, syncing...`);
-            const result = await this.syncCareplan(existingCareplan.id, careplan, tenantCode);
+            Logger.instance().log(`Careplan ${Careplan.Code} exists, syncing...`);
+            const result = await this.syncCareplan(existingCareplan.id, Careplan, TenantCode);
             return result;
         }
 
-        Logger.instance().log(`Careplan ${careplan.Code} does not exist, creating...`);
-        return await this.createCareplan(careplan, tenantCode);
+        Logger.instance().log(`Careplan ${Careplan.Code} does not exist, creating...`);
+        return await this.createCareplan(Careplan, TenantCode);
     };
 
     //#region Private Helper Methods
