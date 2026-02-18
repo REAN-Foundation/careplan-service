@@ -30,7 +30,7 @@ export class PromotionController extends BaseController {
 
     promoteTo = async (request: express.Request, response: express.Response): Promise<void> => {
         try {
-            const result = await this._delegate.promoteTo(request.body);
+            const result = await this._delegate.promoteTo(request);
             const message = `Careplan ${result.action} successfully!`;
             ResponseHandler.success(request, response, message, 200, result);
         } catch (error) {
