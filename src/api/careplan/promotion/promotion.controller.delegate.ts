@@ -99,7 +99,6 @@ export class PromotionControllerDelegate {
             Careplan          : careplanExport
         };
 
-        return lambdaPayload;
         Logger.instance().log(`Invoking Lambda with payload for careplan ${careplan.Code}...`);
         Logger.instance().log(`Target Environment: ${TargetEnvironment}`);
 
