@@ -14,6 +14,7 @@ export interface ActionPlanCreateModel {
     Version?    : string;
     OwnerUserId?: uuid;
     TenantId?   : uuid;
+    TenantCode? : string;
 }
 
 export interface ActionPlanUpdateModel {
@@ -24,6 +25,7 @@ export interface ActionPlanUpdateModel {
     Version?    : string;
     OwnerUserId?: uuid;
     TenantId?   : uuid;
+    TenantCode? : string;
 }
 
 export interface ActionPlanDto {
@@ -34,6 +36,7 @@ export interface ActionPlanDto {
     AssetCategory: string;
     OwnerUserId  : uuid;
     TenantId?    : uuid;
+    TenantCode?  : string;
     Tags         : string[];
     Version      : string;
 }
@@ -44,6 +47,7 @@ export interface ActionPlanSearchFilters extends BaseSearchFilters {
     Description?  : string;
     AssetCategory?: string;
     TenantId?     : uuid;
+    TenantCode?   : string;
     Tags?         : string;
     Version?      : string;
     CreatedAt?    : Date;

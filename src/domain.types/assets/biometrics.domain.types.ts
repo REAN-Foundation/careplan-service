@@ -38,6 +38,7 @@ export interface BiometricsCreateModel {
     Version         ?: string;
     OwnerUserId     ?: uuid;
     TenantId        ?: uuid;
+    TenantCode      ?: string;
 }
 
 export interface BiometricsUpdateModel {
@@ -50,6 +51,7 @@ export interface BiometricsUpdateModel {
     Version         ?: string;
     OwnerUserId     ?: uuid;
     TenantId        ?: uuid;
+    TenantCode      ?: string;
 }
 
 export interface BiometricsDto {
@@ -62,6 +64,7 @@ export interface BiometricsDto {
     MeasurementUnit: string;
     OwnerUserId    : uuid;
     TenantId       : uuid;
+    TenantCode?    : string;
     Tags           : string[];
     Version        : string;
 
@@ -75,6 +78,7 @@ export interface BiometricsSearchFilters extends BaseSearchFilters {
     BiometricsType  ?: BiometricsType;
     MeasurementUnit ?: string;
     TenantId        ?: uuid;
+    TenantCode      ?: string;
     Tags            ?: string;
     Version         ?: string;
     CreatedAt       ?: Date;

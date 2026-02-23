@@ -14,6 +14,7 @@ export class CareplanCategoryValidator {
                     .string()
                     .guid({ version: ['uuidv4'] })
                     .optional(),
+                TenantCode : joi.string().max(64).optional(),
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {
@@ -30,6 +31,7 @@ export class CareplanCategoryValidator {
                     .string()
                     .guid({ version: ['uuidv4'] })
                     .optional(),
+                tenantCode   : joi.string().max(64).optional(),
                 pageIndex    : joi.number().min(0).optional(),
                 itemsPerPage : joi.number().min(1).optional(),
                 orderBy      : joi.string().max(256).optional(),
@@ -54,6 +56,7 @@ export class CareplanCategoryValidator {
                     .string()
                     .guid({ version: ['uuidv4'] })
                     .optional(),
+                TenantCode : joi.string().max(64).optional(),
             });
             return await schema.validateAsync(requestBody);
         } catch (error) {

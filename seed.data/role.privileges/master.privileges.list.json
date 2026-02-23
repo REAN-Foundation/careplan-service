@@ -172,6 +172,7 @@
     "FileResource.Download",
     "FileResource.GetById",
     "FileResource.Delete",
-    "Statistics.Search"
-
+    "Statistics.Search",
+    "Careplan.Promotion.PromoteFrom",
+    "Careplan.Promotion.PromoteTo"  
 ]

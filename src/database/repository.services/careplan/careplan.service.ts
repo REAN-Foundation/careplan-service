@@ -38,6 +38,7 @@ import { CareplanCategoryCreateModel } from '../../../domain.types/careplan/care
 import { CareplanActivityCreateModel } from '../../../domain.types/careplan/careplan.activity.domain.types';
 import { TimeHelper } from '../../../common/time.helper';
 import { DateStringFormat } from '../../../domain.types/miscellaneous/time.types';
+import { CareplanExport } from '../../../domain.types/promotion/promotion.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -161,6 +162,9 @@ export class  CareplanService {
             if (filters.TenantId) {
                 search.where['TenantId'] = filters.TenantId;
             }
+            if (filters.TenantCode) {
+                search.where['TenantCode'] = filters.TenantCode;
+            }
             if (filters.Tags) {
                 search.where['Tags'] = filters.Tags;
             }
@@ -275,6 +279,7 @@ export class  CareplanService {
             Tags               : careplan.Tags,
             IsActive           : careplan.IsActive,
             Version            : careplan.Version,
+            TenantCode         : careplan.TenantCode,
             CareplanCategory   : careplan.Category,
             CareplanActivities : activities,
             Assets             : assets
@@ -306,7 +311,8 @@ export class  CareplanService {
                 OwnerUserId : careplan.OwnerUserId,
                 Tags        : careplan.Tags ? JSON.stringify(careplan.Tags) as string : JSON.stringify([]),
                 IsActive    : careplan.IsActive,
-                TenantId    : request.currentUser.TenantId
+                TenantId    : request.currentUser.TenantId,
+                TenantCode  : careplan.TenantCode,
             };
             await this.createAssets(careplan.Assets,request);
             const newCareplan = await this.Careplan.create(careplanModel);
@@ -384,6 +390,7 @@ export class  CareplanService {
             for await (var asset of assets) {
                 const assetType = asset.AssetType;
                 asset.TenantId = request.currentUser.TenantId;
+                // asset.TenantCode = asset.TenantCode;
                 const model = this.assetModelMap[assetType];
                 const exists = await this.getByAssetcode(model, asset.AssetCode);
                 if (asset.Tags && Array.isArray(asset.Tags)) {
@@ -434,6 +441,123 @@ export class  CareplanService {
             ErrorHandler.throwDbAccessError('DB Error: Unable to create careplan activity!', error);
         }
     };
+
+    //#region Promotion Export (Preserves AssetCodes)
+
+    exportForPromotion = async (careplan: any): Promise<CareplanExport> => {
+        try {
+            const careplanActivities = await this.getCareplanActivitiesForExport(careplan.id);
+            const { assets, activities } = await this.getAssetsForPromotion(careplanActivities);
+
+            const careplanObj: CareplanExport = {
+                Code               : careplan.Code,
+                Name               : careplan.Name,
+                Description        : careplan.Description,
+                Tags               : careplan.Tags ? JSON.parse(careplan.Tags) : [],
+                IsActive           : careplan.IsActive,
+                Version            : careplan.Version,
+                Category           : careplan.Category,
+                CategoryId         : careplan.CategoryId,
+                OwnerUserId        : careplan.OwnerUserId,
+                TenantId           : careplan.TenantId,
+                Assets             : assets,
+                CareplanActivities : activities
+            };
+            return careplanObj;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to export careplan for promotion!', error);
+        }
+    };
+
+    getAssetsForPromotion = async (careplanActivities) => {
+        try {
+            const assets = [];
+            const activities = [];
+
+            for await (const careplanActivity of careplanActivities) {
+                const { AssetType, AssetId, Day, TimeSlot, Sequence, IsRegistrationActivity } = careplanActivity;
+                const model = this.assetModelMap[AssetType];
+
+                const asset = await model.findOne({
+                    where      : { id: AssetId },
+                    attributes : {
+                        exclude : ['id', 'DisplayId', 'OwnerUserId', 'CreatedAt', 'UpdatedAt', 'DeletedAt'],
+                    },
+                });
+
+                if (asset) {
+                    const parsedAsset = this.parseAssetJsonFields(asset.dataValues);
+
+                    assets.push({
+                        ...parsedAsset,
+                        AssetType : AssetType
+                    });
+
+                    activities.push({
+                        AssetType              : AssetType,
+                        AssetCode              : asset.AssetCode,
+                        Day                    : Day,
+                        TimeSlot               : TimeSlot,
+                        Sequence               : Sequence,
+                        IsRegistrationActivity : IsRegistrationActivity
+                    });
+                }
+            }
+
+            return { assets, activities };
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to get assets for promotion!', error);
+        }
+    };
+
+    private parseAssetJsonFields = (assetData: any) => {
+        const parsed = { ...assetData };
+
+        const jsonObjectFields = ['Metadata'];
+        const jsonArrayFields = ['Tags', 'TemplateButtonIds'];
+
+        for (const field of jsonObjectFields) {
+            if (parsed[field] && typeof parsed[field] === 'string') {
+                try {
+                    parsed[field] = JSON.parse(parsed[field]);
+                } catch (e) {
+                    parsed[field] = null;
+                }
+            }
+        }
+
+        for (const field of jsonArrayFields) {
+            if (parsed[field]) {
+                if (typeof parsed[field] === 'string') {
+                    try {
+                        parsed[field] = JSON.parse(parsed[field]);
+                    } catch (e) {
+                        parsed[field] = [];
+                    }
+                }
+                if (!Array.isArray(parsed[field])) {
+                    parsed[field] = [];
+                }
+            } else {
+                parsed[field] = [];
+            }
+        }
+
+        if (parsed['TemplateVariables'] && typeof parsed['TemplateVariables'] === 'string') {
+            try {
+                const parsedVars = JSON.parse(parsed['TemplateVariables']);
+                if (typeof parsedVars === 'object' && parsedVars !== null) {
+                    parsed['TemplateVariables'] = parsedVars;
+                }
+            } catch (e) {
+                // Keep as string if parsing fails
+            }
+        }
+
+        return parsed;
+    };
+
+    //#endregion
 
 }
 

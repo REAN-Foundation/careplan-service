@@ -14,6 +14,7 @@ export interface NutritionCreateModel {
     Version ? : string;
     OwnerUserId ? : uuid;
     TenantId?: uuid;
+    TenantCode?: string;
 }
 
 export interface NutritionUpdateModel {
@@ -24,6 +25,7 @@ export interface NutritionUpdateModel {
     Version ? : string;
     OwnerUserId ? : uuid;
     TenantId?: uuid;
+    TenantCode?: string;
 }
 
 export interface NutritionDto {
@@ -34,6 +36,7 @@ export interface NutritionDto {
     AssetCategory: string;
     OwnerUserId: uuid;
     TenantId: uuid;
+    TenantCode?: string;
     Tags: string[];
     Version: string;
 
@@ -46,6 +49,7 @@ export interface NutritionSearchFilters extends BaseSearchFilters {
     AssetCategory ? : string;
     Tags ? : string;
     TenantId?: uuid;
+    TenantCode?: string;
     Version ? : string;
     CreatedAt ? : Date;
 }

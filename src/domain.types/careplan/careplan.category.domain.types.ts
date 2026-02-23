@@ -6,12 +6,14 @@ export interface CareplanCategoryCreateModel {
     Type: string;
     Description?: string;
     TenantId?: uuid;
+    TenantCode?: string;
 }
 
 export interface CareplanCategoryUpdateModel {
     Type?: string;
     Description?: string;
     TenantId?: uuid;
+    TenantCode?: string;
 }
 
 export interface CareplanCategoryDto {
@@ -19,11 +21,13 @@ export interface CareplanCategoryDto {
     Type: string;
     Description?: string;
     TenantId?: uuid;
+    TenantCode?: string;
 }
 
 export interface CareplanCategorySearchFilters extends BaseSearchFilters {
     Type?: string;
     TenantId?: uuid;
+    TenantCode?: string;
 }
 
 export interface CareplanCategorySearchResults extends BaseSearchResults {
