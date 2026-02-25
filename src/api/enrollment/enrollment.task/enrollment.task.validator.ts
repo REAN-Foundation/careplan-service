@@ -2,7 +2,7 @@ import * as joi from 'joi';
 import {
     ErrorHandler
 } from '../../../common/error.handler';
-import { Status, StatusList } from '../../../domain.types/enrollment/enrollment.task.domain.types';
+import { StatusList } from '../../../domain.types/enrollment/enrollment.task.domain.types';
 import { AssetTypeList, TimeSlotList } from '../../../domain.types/assets/asset.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
