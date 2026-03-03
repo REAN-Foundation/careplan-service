@@ -26,6 +26,7 @@ import { WordPowerModel } from '../../models/assets/word.power.model';
 import { ErrorHandler } from '../../../common/error.handler';
 import { AssetType, AssetTypeCodePrefixes } from '../../../domain.types/assets/asset.types';
 import { Helper } from '../../../common/helper';
+import { v4 as uuidv4 } from 'uuid';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -121,33 +122,50 @@ export class AssetHelper {
         }
     };
 
-    public static generateAssetCode = (displayId: number, assetType: AssetType, assetName: string) => {
-
-        let name = assetName;
-        name = name.toUpperCase();
-        let cleanedName = '';
-        const len = name.length;
-        for (let i = 0; i < len; i++) {
-            if (Helper.isAlpha(name.charAt(i))) {
-                if (!Helper.isAlphaVowel(name.charAt(i))) {
-                    cleanedName += name.charAt(i);
-                }
-            }
-        }
+    public static generateAssetCode = (assetType: AssetType, assetName: string): string => {
 
         if (!AssetTypeCodePrefixes[assetType]) {
             ErrorHandler.throwNotFoundError(`This asset type is not handled - ${assetType}`);
         }
 
-        var shortened = cleanedName.substring(0, 12);
+        const name = assetName.toUpperCase();
 
-        const code = AssetTypeCodePrefixes[assetType] + '-' + shortened + '-' + Helper.padInteger(displayId, 4, '0');
-        return code;
+        // Pass 1: extract consonants only (no vowels, no non-alpha)
+        let nameSegment = '';
+        for (let i = 0; i < name.length; i++) {
+            const ch = name.charAt(i);
+            if (Helper.isAlpha(ch) && !Helper.isAlphaVowel(ch)) {
+                nameSegment += ch;
+            }
+        }
+
+        // Pass 2: if fewer than 3 consonants, fall back to all alphanumeric chars
+        if (nameSegment.length < 3) {
+            nameSegment = '';
+            for (let i = 0; i < name.length; i++) {
+                const ch = name.charAt(i);
+                if (/[A-Z0-9]/.test(ch)) {
+                    nameSegment += ch;
+                }
+            }
+        }
+
+        // Fixed 6 chars: truncate then right-pad with '0'
+        nameSegment = nameSegment.substring(0, 6).padEnd(6, '0');
+
+        // UUID6: first 6 hex chars of UUID v4, uppercase
+        const uuid8 = uuidv4().replace(/-/g, '').substring(0, 6).toUpperCase();
+
+        return `${AssetTypeCodePrefixes[assetType]}-${nameSegment}-${uuid8}`;
+    };
+
+    public static isNewFormatCode = (code: string): boolean => {
+        return /^[A-Z0-9]{4}-[A-Z0-9]{6}-[A-Z0-9]{6}$/.test(code);
     };
 
     public static updateAssetCode = async (record, service) => {
         if (!record.AssetCode) {
-            const assetCode = AssetHelper.generateAssetCode(record.DisplayId, record.AssetType, record.Name);
+            const assetCode = AssetHelper.generateAssetCode(record.AssetType, record.Name);
             const updated = await service.update(record.id, { AssetCode: assetCode });
             if (updated == null) {
                 ErrorHandler.throwInternalServerError('Unable to update asset!');

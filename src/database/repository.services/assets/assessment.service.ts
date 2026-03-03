@@ -16,7 +16,8 @@ import {
 import {
     Op
 } from 'sequelize';
-import { Helper } from '../../../common/helper';
+import { AssetHelper } from './asset.helper';
+import { AssetType } from '../../../domain.types/assets/asset.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -35,12 +36,7 @@ export class AssessmentService {
     create = async (createModel: AssessmentCreateModel) => {
         try {
             if (!createModel.AssetCode) {
-                const count = await this.Assessment.count() + 1;
-                createModel.AssetCode = 'Assessment-' + count.toString();
-                const exists = await this.getByCode(createModel.AssetCode);
-                if (exists) {
-                    createModel.AssetCode = 'Assessment-' + Helper.generateDisplayId();
-                }
+                createModel.AssetCode = AssetHelper.generateAssetCode(AssetType.Assessment, createModel.Name);
             }
             var record = await this.Assessment.create(createModel);
             return await this.getById(record.id);

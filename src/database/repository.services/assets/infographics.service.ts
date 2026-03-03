@@ -19,7 +19,8 @@ import {
 import {
     Op
 } from 'sequelize';
-import { Helper } from '../../../common/helper';
+import { AssetHelper } from './asset.helper';
+import { AssetType } from '../../../domain.types/assets/asset.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -40,12 +41,7 @@ export class InfographicsService {
     create = async (createModel: InfographicsCreateModel) => {
         try {
             if (!createModel.AssetCode) {
-                const count = await this.Infographics.count() + 1;
-                createModel.AssetCode = 'Infographics-' + count.toString();
-                const exists = await this.getByCode(createModel.AssetCode);
-                if (exists) {
-                    createModel.AssetCode = 'Infographics-' + Helper.generateDisplayId();
-                }
+                createModel.AssetCode = AssetHelper.generateAssetCode(AssetType.Infographics, createModel.Name);
             }
             var record = await this.Infographics.create(createModel);
             return await this.getById(record.id);

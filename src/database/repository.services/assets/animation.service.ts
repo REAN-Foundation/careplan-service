@@ -19,7 +19,8 @@ import {
 import {
     Op
 } from 'sequelize';
-import { Helper } from '../../../common/helper';
+import { AssetHelper } from './asset.helper';
+import { AssetType } from '../../../domain.types/assets/asset.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -40,12 +41,7 @@ export class AnimationService {
     create = async (createModel: AnimationCreateModel) => {
         try {
             if (!createModel.AssetCode) {
-                const count = await this.Animation.count() + 1;
-                createModel.AssetCode = 'Animation-' + count.toString();
-                const exists = await this.getByCode(createModel.AssetCode);
-                if (exists) {
-                    createModel.AssetCode = 'Animation-' + Helper.generateDisplayId();
-                }
+                createModel.AssetCode = AssetHelper.generateAssetCode(AssetType.Animation, createModel.Name);
             }
             var record = await this.Animation.create(createModel);
             return await this.getById(record.id);
