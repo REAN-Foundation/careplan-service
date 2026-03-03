@@ -16,7 +16,8 @@ import {
 import {
     Op
 } from 'sequelize';
-import { Helper } from '../../../common/helper';
+import { AssetHelper } from './asset.helper';
+import { AssetType } from '../../../domain.types/assets/asset.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -35,12 +36,7 @@ export class ReminderService {
     create = async (createModel: ReminderCreateModel) => {
         try {
             if (!createModel.AssetCode) {
-                const count = await this.Reminder.count() + 1;
-                createModel.AssetCode = 'Reminder-' + count.toString();
-                const exists = await this.getByCode(createModel.AssetCode);
-                if (exists) {
-                    createModel.AssetCode = 'Reminder-' + Helper.generateDisplayId();
-                }
+                createModel.AssetCode = AssetHelper.generateAssetCode(AssetType.Reminder, createModel.Name);
             }
             var record = await this.Reminder.create(createModel);
             return await this.getById(record.id);
