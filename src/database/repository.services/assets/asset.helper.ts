@@ -128,21 +128,22 @@ export class AssetHelper {
             ErrorHandler.throwNotFoundError(`This asset type is not handled - ${assetType}`);
         }
 
-        const name = assetName.toUpperCase();
+        const rawName = assetName ?? '';
+        const name = String(rawName).toUpperCase();
+        const MAX_NAME_LENGTH = 256;
+        const effectiveLength = Math.min(name.length, MAX_NAME_LENGTH);
 
-        // Pass 1: extract consonants only (no vowels, no non-alpha)
         let nameSegment = '';
-        for (let i = 0; i < name.length; i++) {
+        for (let i = 0; i < effectiveLength; i++) {
             const ch = name.charAt(i);
             if (Helper.isAlpha(ch) && !Helper.isAlphaVowel(ch)) {
                 nameSegment += ch;
             }
         }
 
-        // Pass 2: if fewer than 3 consonants, fall back to all alphanumeric chars
         if (nameSegment.length < 3) {
             nameSegment = '';
-            for (let i = 0; i < name.length; i++) {
+            for (let i = 0; i < effectiveLength; i++) {
                 const ch = name.charAt(i);
                 if (/[A-Z0-9]/.test(ch)) {
                     nameSegment += ch;
@@ -150,10 +151,8 @@ export class AssetHelper {
             }
         }
 
-        // Fixed 6 chars: truncate then right-pad with '0'
         nameSegment = nameSegment.substring(0, 6).padEnd(6, '0');
 
-        // UUID6: first 6 hex chars of UUID v4, uppercase
         const uuid8 = uuidv4().replace(/-/g, '').substring(0, 6).toUpperCase();
 
         return `${AssetTypeCodePrefixes[assetType]}-${nameSegment}-${uuid8}`;
