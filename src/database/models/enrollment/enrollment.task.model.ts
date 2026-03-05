@@ -3,6 +3,7 @@ import { DataTypes } from 'sequelize';
 const sequelize = db.default.sequelize;
 import { AssetTypeList } from '../../../domain.types/assets/asset.types';
 import { TimeSlotList } from '../../../domain.types/assets/asset.types';
+import { StatusList } from '../../../domain.types/enrollment/enrollment.task.domain.types';
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -64,6 +65,15 @@ export class EnrollmentTaskModel {
             type         : DataTypes.BOOLEAN,
             allowNull    : false,
             defaultValue : false
+        },
+        Status : {
+            type         : DataTypes.ENUM({ values: StatusList }),
+            allowNull    : false,
+            defaultValue : 'Pending'
+        },
+        CompletedAt : {
+            type      : DataTypes.DATE,
+            allowNull : true
         },
         
         CreatedAt : DataTypes.DATE,

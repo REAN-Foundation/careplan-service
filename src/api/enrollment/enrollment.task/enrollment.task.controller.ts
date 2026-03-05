@@ -44,4 +44,14 @@ export class EnrollmentTaskController extends BaseController {
         }
     };
 
+    update = async (request: express.Request, response: express.Response): Promise < void > => {
+        try {
+            const updatedRecord = await this._delegate.update(request.params.id, request.body);
+            const message = 'Enrollment task updated successfully!';
+            ResponseHandler.success(request, response, message, 200, updatedRecord);
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
+
 }

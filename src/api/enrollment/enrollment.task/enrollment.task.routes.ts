@@ -14,6 +14,7 @@ export const register = (app: express.Application): void => {
 
     router.get('/search', auth(EnrollmentTaskAuth.search), controller.search);
     router.get('/:id', auth(EnrollmentTaskAuth.getById), controller.getById);
+    router.put('/:id', auth(EnrollmentTaskAuth.update), controller.update);
 
     app.use('/api/v1/enrollment-tasks', router);
 };

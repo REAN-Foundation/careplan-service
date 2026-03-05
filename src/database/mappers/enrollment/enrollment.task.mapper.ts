@@ -21,6 +21,8 @@ export class EnrollmentTaskMapper {
             TimeSlot               : enrollmentTask.TimeSlot,
             ScheduledDate          : enrollmentTask.ScheduledDate,
             IsRegistrationActivity : enrollmentTask.IsRegistrationActivity,
+            Status                 : enrollmentTask.Status,
+            CompletedAt            : enrollmentTask.CompletedAt,
             CreatedAt              : enrollmentTask.CreatedAt,
         };
         return dto;

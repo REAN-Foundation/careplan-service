@@ -5,13 +5,35 @@ import {
 import {
     uuid
 } from "../miscellaneous/system.types";
+import { NotificationChannel } from "../general/notification.channel.types";
 
-export interface Metadata {
-    Type: string;
+///////////////////////////////////////////////////////////////////////
+
+export interface WhatsAppConfig {
     TemplateName: string;
     TemplateLanguage?: string;
     FlowToken?: string;
     FlowActionData?: Record<string, any>;
+}
+
+export type GenericChannelConfig = Record<string, any>;
+
+export type ChannelConfigs = {
+    [NotificationChannel.WhatsApp]?: WhatsAppConfig;
+    [NotificationChannel.Telegram]?: GenericChannelConfig;
+    [NotificationChannel.Email]?: GenericChannelConfig;
+    [NotificationChannel.SMS]?: GenericChannelConfig;
+    [NotificationChannel.WebPush]?: GenericChannelConfig;
+    [NotificationChannel.MobilePush]?: GenericChannelConfig;
+    [NotificationChannel.Webhook]?: GenericChannelConfig;
+    [NotificationChannel.Slack]?: GenericChannelConfig;
+    [NotificationChannel.WhatsappWati]?: GenericChannelConfig;
+    [NotificationChannel.WhatsappMeta]?: GenericChannelConfig;
+};
+
+export interface Metadata {
+    Type: string;
+    Channels?: ChannelConfigs;
 }
 
 export interface AssessmentCreateModel {
