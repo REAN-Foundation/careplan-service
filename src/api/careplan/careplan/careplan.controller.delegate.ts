@@ -282,7 +282,7 @@ export class CareplanControllerDelegate {
             IsActive    : record.IsActive,
             CreatedAt   : record.CreatedAt,
             UpdatedAt   : record.UpdatedAt,
-            Type        : record.Category.Type,
+            Type        : record.Category?.Type ?? null,
             Category    : record.Category
         };
     };
@@ -307,7 +307,7 @@ export class CareplanControllerDelegate {
             IsActive    : record.IsActive,
             CreatedAt   : record.CreatedAt,
             UpdatedAt   : record.UpdatedAt,
-            Type        : record.Category.Type,
+            Type        : record.Category?.Type ?? null,
             Category    : record.Category
 
         };
