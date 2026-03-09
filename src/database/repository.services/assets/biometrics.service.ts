@@ -16,7 +16,8 @@ import {
 import {
     Op
 } from 'sequelize';
-import { Helper } from '../../../common/helper';
+import { AssetHelper } from './asset.helper';
+import { AssetType } from '../../../domain.types/assets/asset.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -35,12 +36,7 @@ export class BiometricsService {
     create = async (createModel: BiometricsCreateModel) => {
         try {
             if (!createModel.AssetCode) {
-                const count = await this.Biometrics.count() + 1;
-                createModel.AssetCode = 'Biometrics-' + count.toString();
-                const exists = await this.getByCode(createModel.AssetCode);
-                if (exists) {
-                    createModel.AssetCode = 'Biometrics-' + Helper.generateDisplayId();
-                }
+                createModel.AssetCode = AssetHelper.generateAssetCode(AssetType.Biometrics, createModel.Name);
             }
             var record = await this.Biometrics.create(createModel);
             return await this.getById(record.id);

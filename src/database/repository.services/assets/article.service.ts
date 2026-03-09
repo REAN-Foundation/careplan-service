@@ -8,7 +8,8 @@ import {
     ArticleSearchResults
 } from '../../../domain.types/assets/article.domain.types';
 import { Op } from 'sequelize';
-import { Helper } from '../../../common/helper';
+import { AssetHelper } from './asset.helper';
+import { AssetType } from '../../../domain.types/assets/asset.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -29,12 +30,7 @@ export class ArticleService {
     create = async (createModel: ArticleCreateModel) => {
         try {
             if (!createModel.AssetCode) {
-                const count = await this.Article.count() + 1;
-                createModel.AssetCode = 'Article-' + count.toString();
-                const exists = await this.getByCode(createModel.AssetCode);
-                if (exists) {
-                    createModel.AssetCode = 'Article-' + Helper.generateDisplayId();
-                }
+                createModel.AssetCode = AssetHelper.generateAssetCode(AssetType.Article, createModel.Name);
             }
             var record = await this.Article.create(createModel);
             return await this.getById(record.id);
