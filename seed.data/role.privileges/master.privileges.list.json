@@ -144,6 +144,7 @@
     "Enrollment.Delete",
     "EnrollmentTask.Search",
     "EnrollmentTask.GetById",
+    "Enrollment.Update",
     "Types.CareplanCategories",
     "Types.AssetTypes",
     "Types.TimeSlots",

@@ -83,7 +83,7 @@ export class AssessmentModel {
             defaultValue : 'V1'
         },
         Metadata : {
-            type      : DataTypes.STRING(512),
+            type      : DataTypes.TEXT,
             allowNull : true,
         },
 

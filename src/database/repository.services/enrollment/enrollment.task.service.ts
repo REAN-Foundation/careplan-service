@@ -19,11 +19,14 @@ import {
 } from '../../../common/error.handler';
 import {
     EnrollmentTaskCreateModel,
+    EnrollmentTaskUpdateModel,
     EnrollmentTaskSearchFilters,
     EnrollmentTaskSearchResults
 } from '../../../domain.types/enrollment/enrollment.task.domain.types';
 import { AssetHelper } from '../assets/asset.helper';
 import { Op } from 'sequelize';
+import { uuid } from '../../../domain.types/miscellaneous/system.types';
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 export class EnrollmentTaskService {
@@ -88,6 +91,24 @@ export class EnrollmentTaskService {
             return record;
         } catch (error) {
             ErrorHandler.throwDbAccessError('DB Error: Unable to retrieve enrollment schedule!', error);
+        }
+    };
+
+    update = async (id: uuid, updateModel: EnrollmentTaskUpdateModel) => {
+        try {
+            if (Object.keys(updateModel).length > 0) {
+                var res = await this.EnrollmentTask.update(updateModel, {
+                    where : {
+                        id : id
+                    }
+                });
+                if (res.length !== 1) {
+                    throw new Error('Unable to update enrollment task!');
+                }
+            }
+            return await this.getById(id);
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to update enrollment task!', error);
         }
     };
 
