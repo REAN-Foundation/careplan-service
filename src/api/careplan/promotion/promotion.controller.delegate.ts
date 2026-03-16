@@ -90,6 +90,8 @@ export class PromotionControllerDelegate {
             ErrorHandler.throwNotFoundError(`Careplan with ID ${CareplanId} not found.`);
         }
 
+        await this.enforceAssetCodeFormatCheck(CareplanId);
+
         Logger.instance().log(`Exporting careplan ${careplan.Code} for promotion...`);
         const careplanExport: CareplanExport = await this._careplanService.exportForPromotion(careplan);
 
@@ -456,6 +458,19 @@ export class PromotionControllerDelegate {
 
          return cleaned;
      };
+
+    private enforceAssetCodeFormatCheck = async (careplanId: string): Promise<void> => {
+        const { valid, invalidAssets } = await this._careplanService.validateAssetsForPromotion(careplanId);
+        if (!valid) {
+            const details = invalidAssets
+                .map(a => `${a.AssetType} "${a.Name}" (code: ${a.AssetCode ?? 'none'})`)
+                .join(', ');
+            throw new ApiError(
+                400,
+                `Promotion blocked: ${invalidAssets.length} asset(s) do not follow the new AssetCode format. Recreate these assets to enable promotion: ${details}`
+            );
+        }
+    };
 
     //#endregion
 
