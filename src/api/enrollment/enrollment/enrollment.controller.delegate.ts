@@ -34,6 +34,7 @@ import { CareplanService } from '../../../database/repository.services/careplan/
 import { CareplanActivityService } from '../../../database/repository.services/careplan/careplan.activity.service';
 import { ParticipantActivityResponseService } from '../../../database/repository.services/participant.responses/participant.activity.response.service';
 import { TimeSlot } from '../../../domain.types/assets/asset.types';
+import { Roles } from '../../../domain.types/miscellaneous/role.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -504,18 +505,25 @@ export class EnrollmentControllerDelegate {
     authorizeSearch = async (
         request: express.Request,
         searchFilters: EnrollmentSearchFilters): Promise<EnrollmentSearchFilters> => {
-            
+
         if (request.currentClient?.IsPrivileged) {
             return searchFilters;
         }
-            
+
+        const currentRole = request.currentUser.CurrentRole;
+
         if (searchFilters.TenantId != null) {
             if (searchFilters.TenantId !== request.currentUser.TenantId) {
-                throw new ApiError(403, 'Forbidden');
+                if (currentRole !== Roles.SystemAdmin &&
+                    currentRole !== Roles.SystemUser) {
+                    throw new ApiError(403, 'Forbidden');
+                }
             }
         }
         else {
+            
             searchFilters.TenantId = request.currentUser.TenantId;
+            
         }
         return searchFilters;
     };
