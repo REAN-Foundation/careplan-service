@@ -137,10 +137,12 @@ export class PromotionControllerDelegate {
         const { TargetEnvironment, TenantCode, Careplan } = request.body;
 
         const currentEnv = process.env.NODE_ENV;
-        if (TargetEnvironment !== currentEnv) {
-            throw new ApiError(400, `Target environment mismatch. Expected: ${currentEnv}, Received: ${TargetEnvironment}`);
+        const normalize = (env: string) => (env === 'prod' ? 'production' : env);
+        if (normalize(TargetEnvironment) !== normalize(currentEnv)) {
+            ErrorHandler.throwInputValidationError(
+                `Target environment mismatch. Expected: ${currentEnv}, Received: ${TargetEnvironment}`
+            );
         }
-        
         Logger.instance().log(`Receiving careplan ${Careplan.Code} for tenant ${TenantCode}...`);
 
         const searchResult = await this._careplanService.search({ Code: Careplan.Code });
