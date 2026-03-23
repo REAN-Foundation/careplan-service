@@ -510,7 +510,7 @@ export class EnrollmentControllerDelegate {
             return searchFilters;
         }
 
-        const currentRole = request.currentUser.CurrentRole;
+        const currentRole = request.currentUser?.CurrentRoleName;
 
         if (searchFilters.TenantId != null) {
             if (searchFilters.TenantId !== request.currentUser.TenantId) {
