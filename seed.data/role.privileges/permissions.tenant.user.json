@@ -190,7 +190,11 @@
         "Search": true,
         "Update": true,
         "Export": true,
-        "Import": true
+        "Import": true,
+        "Promotion":{
+            "PromoteFrom": true,
+            "PromoteTo": true
+        }
     },
     "CareplanActivity":{
         "Create": true,
@@ -216,7 +220,8 @@
     },
     "EnrollmentTask":{
         "GetById": true,
-        "Search": true
+        "Search": true,
+        "Update": true
     },
     "UserActivityResponse":{
         "Create": true,

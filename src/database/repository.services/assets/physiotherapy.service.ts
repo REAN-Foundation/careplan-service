@@ -16,7 +16,8 @@ import {
 import {
     Op
 } from 'sequelize';
-import { Helper } from '../../../common/helper';
+import { AssetHelper } from './asset.helper';
+import { AssetType } from '../../../domain.types/assets/asset.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -35,12 +36,7 @@ export class PhysiotherapyService {
     create = async (createModel: PhysiotherapyCreateModel) => {
         try {
             if (!createModel.AssetCode) {
-                const count = await this.Physiotherapy.count() + 1;
-                createModel.AssetCode = 'Physiotherapy-' + count.toString();
-                const exists = await this.getByCode(createModel.AssetCode);
-                if (exists) {
-                    createModel.AssetCode = 'Physiotherapy-' + Helper.generateDisplayId();
-                }
+                createModel.AssetCode = AssetHelper.generateAssetCode(AssetType.Physiotherapy, createModel.Name);
             }
             var record = await this.Physiotherapy.create(createModel);
             return await this.getById(record.id);

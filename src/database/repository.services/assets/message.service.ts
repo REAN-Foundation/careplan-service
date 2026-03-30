@@ -16,7 +16,8 @@ import {
 import {
     Op
 } from 'sequelize';
-import { Helper } from '../../../common/helper';
+import { AssetHelper } from './asset.helper';
+import { AssetType } from '../../../domain.types/assets/asset.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -35,12 +36,7 @@ export class MessageService {
     create = async (createModel: MessageCreateModel) => {
         try {
             if (!createModel.AssetCode) {
-                const count = await this.Message.count() + 1;
-                createModel.AssetCode = 'Message-' + count.toString();
-                const exists = await this.getByCode(createModel.AssetCode);
-                if (exists) {
-                    createModel.AssetCode = 'Message-' + Helper.generateDisplayId();
-                }
+                createModel.AssetCode = AssetHelper.generateAssetCode(AssetType.Message, createModel.Name);
             }
             var record = await this.Message.create(createModel);
             return await this.getById(record.id);

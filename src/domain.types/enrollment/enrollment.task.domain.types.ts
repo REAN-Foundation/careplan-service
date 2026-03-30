@@ -7,6 +7,24 @@ import {
     uuid
 } from "../miscellaneous/system.types";
 
+export enum Status {
+    Pending    = 'Pending',
+    InProgress = 'In-progress',
+    Completed  = 'Completed',
+    Cancelled  = 'Cancelled',
+    Delayed    = 'Delayed',
+    Unknown    = 'Unknown',
+}
+
+export const StatusList: Status[] = [
+    Status.Pending,
+    Status.InProgress,
+    Status.Completed,
+    Status.Cancelled,
+    Status.Delayed,
+    Status.Unknown,
+];
+
 export interface EnrollmentTaskCreateModel {
     EnrollmentId      : uuid;
     ParticipantId     : uuid;
@@ -17,10 +35,18 @@ export interface EnrollmentTaskCreateModel {
     IsRegistrationActivity : boolean;
     TimeSlot          : TimeSlot;
     ScheduledDate     : Date;
+    Status?           : Status;
+    CompletedAt?      : Date;
 }
 
 export interface EnrollmentTaskUpdateModel {
-    AssetType ?: AssetType;
+    AssetId?              : uuid;
+    AssetType?           : AssetType;
+    TimeSlot?            : TimeSlot;
+    ScheduledDate?       : Date;
+    IsRegistrationActivity? : boolean;
+    Status?              : Status;
+    CompletedAt?         : Date | null;
 }
 
 export interface EnrollmentTaskDto {
@@ -35,6 +61,8 @@ export interface EnrollmentTaskDto {
     TimeSlot          : TimeSlot;
     ScheduledDate     : Date;
     IsRegistrationActivity : boolean,
+    Status            : Status;
+    CompletedAt       : Date | null;
     CreatedAt        : Date;
 }
 
