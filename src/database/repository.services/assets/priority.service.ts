@@ -16,7 +16,8 @@ import {
 import {
     Op
 } from 'sequelize';
-import { Helper } from '../../../common/helper';
+import { AssetHelper } from './asset.helper';
+import { AssetType } from '../../../domain.types/assets/asset.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -35,12 +36,7 @@ export class PriorityService {
     create = async (createModel: PriorityCreateModel) => {
         try {
             if (!createModel.AssetCode) {
-                const count = await this.Priority.count() + 1;
-                createModel.AssetCode = 'Priority-' + count.toString();
-                const exists = await this.getByCode(createModel.AssetCode);
-                if (exists) {
-                    createModel.AssetCode = 'Priority-' + Helper.generateDisplayId();
-                }
+                createModel.AssetCode = AssetHelper.generateAssetCode(AssetType.Priority, createModel.Name);
             }
             var record = await this.Priority.create(createModel);
             return await this.getById(record.id);

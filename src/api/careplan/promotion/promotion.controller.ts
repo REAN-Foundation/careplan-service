@@ -1,43 +1,38 @@
 import express from 'express';
-import AWS from 'aws-sdk';
 import { ResponseHandler } from '../../../common/response.handler';
 import { BaseController } from '../../base.controller';
+import { PromotionControllerDelegate } from './promotion.controller.delegate';
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
 export class PromotionController extends BaseController {
 
+    //#region member variables and constructors
+
+    _delegate: PromotionControllerDelegate = null;
+
     constructor() {
         super();
+        this._delegate = new PromotionControllerDelegate();
     }
+
+    //#endregion
 
     promoteFrom = async (request: express.Request, response: express.Response): Promise<void> => {
         try {
-            const { TargetEnvironment } = request.body;
+            const result = await this._delegate.promoteFrom(request);
+            const message = 'Careplan promotion initiated successfully!';
+            ResponseHandler.success(request, response, message, 200, result);
+        } catch (error) {
+            ResponseHandler.handleError(request, response, error);
+        }
+    };
 
-            if (!TargetEnvironment || typeof TargetEnvironment !== 'string') {
-                throw new Error('TargetEnvironment is required and must be a string');
-            }
-
-            const lambda = new AWS.Lambda({
-                region : process.env.AWS_REGION || 'us-east-1',
-            });
-
-            const params: AWS.Lambda.InvocationRequest = {
-                FunctionName   : process.env.PROMOTION_LAMBDA_FUNCTION_NAME || 'promotion-lambda',
-                InvocationType : 'RequestResponse',
-                Payload        : JSON.stringify({
-                    TargetEnvironment : TargetEnvironment
-                }),
-            };
-
-            const result = await lambda.invoke(params).promise();
-
-            const message = 'Lambda function invoked successfully!';
-            ResponseHandler.success(request, response, message, 200, {
-                StatusCode : result.StatusCode,
-                Payload    : result.Payload ? JSON.parse(result.Payload as string) : null,
-            });
+    promoteTo = async (request: express.Request, response: express.Response): Promise<void> => {
+        try {
+            const result = await this._delegate.promoteTo(request);
+            const message = `Careplan ${result.action} successfully!`;
+            ResponseHandler.success(request, response, message, 200, result);
         } catch (error) {
             ResponseHandler.handleError(request, response, error);
         }

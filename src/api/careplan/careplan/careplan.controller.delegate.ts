@@ -27,6 +27,12 @@ export class CareplanControllerDelegate {
     create = async (requestBody: any) => {
         await validator.validateCreateRequest(requestBody);
         var createModel: CareplanCreateModel = this.getCreateModel(requestBody);
+        if (createModel.Code) {
+            const codeExists = await this._service.getByCode(createModel.Code);
+            if (codeExists) {
+                throw new ApiError('CarePlan code already exists. Please use a different code.', 409);
+            }
+        }
         const record: CareplanDto = await this._service.create(createModel);
         if (record === null) {
             throw new ApiError('Unable to create care plan!', 400);
@@ -59,6 +65,12 @@ export class CareplanControllerDelegate {
             ErrorHandler.throwNotFoundError('Care plan with id ' + id.toString() + ' cannot be found!');
         }
         const updateModel: CareplanUpdateModel = this.getUpdateModel(requestBody);
+        if (updateModel.Code && updateModel.Code !== record.Code) {
+            const codeExists = await this._service.getByCode(updateModel.Code);
+            if (codeExists) {
+                throw new ApiError('CarePlan code already exists. Please use a different code.', 409);
+            }
+        }
         const updated: CareplanDto = await this._service.update(id, updateModel);
         if (updated == null) {
             throw new ApiError('Unable to update care plan!', 400);
@@ -270,7 +282,7 @@ export class CareplanControllerDelegate {
             IsActive    : record.IsActive,
             CreatedAt   : record.CreatedAt,
             UpdatedAt   : record.UpdatedAt,
-            Type        : record.Category.Type,
+            Type        : record.Category?.Type ?? null,
             Category    : record.Category
         };
     };
@@ -295,7 +307,7 @@ export class CareplanControllerDelegate {
             IsActive    : record.IsActive,
             CreatedAt   : record.CreatedAt,
             UpdatedAt   : record.UpdatedAt,
-            Type        : record.Category.Type,
+            Type        : record.Category?.Type ?? null,
             Category    : record.Category
 
         };

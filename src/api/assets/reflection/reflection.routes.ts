@@ -18,5 +18,5 @@ export const register = (app: express.Application): void => {
     router.put('/:id', auth(ReflectionAuth.update), controller.update);
     router.delete('/:id', auth(ReflectionAuth.delete), controller.delete);
 
-    app.use('/api/v1/assets/reflectionReflectionAuthns', router);
+    app.use('/api/v1/assets/reflections', router);
 };
