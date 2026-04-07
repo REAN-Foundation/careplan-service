@@ -2,18 +2,45 @@ import * as joi from 'joi';
 import {
     ErrorHandler
 } from '../../../common/error.handler';
+import { NotificationChannel } from '../../../domain.types/general/notification.channel.types';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 export class AssessmentValidator {
 
-    private static getMetadataSchema = () => {
-        return joi.object({
-            Type             : joi.string().required(),
+    private static channelSchemas = {
+        [NotificationChannel.Email]      : joi.object().pattern(joi.string(), joi.any()),
+        [NotificationChannel.SMS]        : joi.object().pattern(joi.string(), joi.any()),
+        [NotificationChannel.WebPush]    : joi.object().pattern(joi.string(), joi.any()),
+        [NotificationChannel.MobilePush] : joi.object().pattern(joi.string(), joi.any()),
+        [NotificationChannel.Webhook]    : joi.object().pattern(joi.string(), joi.any()),
+        [NotificationChannel.WhatsApp]   : joi.object({
             TemplateName     : joi.string().required(),
             TemplateLanguage : joi.string().optional(),
             FlowToken        : joi.string().optional(),
             FlowActionData   : joi.object().pattern(joi.string(), joi.any()).optional()
+        }),
+        [NotificationChannel.Telegram]     : joi.object().pattern(joi.string(), joi.any()),
+        [NotificationChannel.Slack]        : joi.object().pattern(joi.string(), joi.any()),
+        [NotificationChannel.WhatsappWati] : joi.object().pattern(joi.string(), joi.any()),
+        [NotificationChannel.WhatsappMeta] : joi.object().pattern(joi.string(), joi.any())
+    };
+
+    private static getMetadataSchema = () => {
+        return joi.object({
+            Type     : joi.string().required(),
+            Channels : joi.object({
+                [NotificationChannel.Email]        : this.channelSchemas[NotificationChannel.Email].optional(),
+                [NotificationChannel.SMS]          : this.channelSchemas[NotificationChannel.SMS].optional(),
+                [NotificationChannel.WebPush]      : this.channelSchemas[NotificationChannel.WebPush].optional(),
+                [NotificationChannel.MobilePush]   : this.channelSchemas[NotificationChannel.MobilePush].optional(),
+                [NotificationChannel.Webhook]      : this.channelSchemas[NotificationChannel.Webhook].optional(),
+                [NotificationChannel.WhatsApp]     : this.channelSchemas[NotificationChannel.WhatsApp].optional(),
+                [NotificationChannel.Telegram]     : this.channelSchemas[NotificationChannel.Telegram].optional(),
+                [NotificationChannel.Slack]        : this.channelSchemas[NotificationChannel.Slack].optional(),
+                [NotificationChannel.WhatsappWati] : this.channelSchemas[NotificationChannel.WhatsappWati].optional(),
+                [NotificationChannel.WhatsappMeta] : this.channelSchemas[NotificationChannel.WhatsappMeta].optional()
+            }).optional()
         });
     };
 

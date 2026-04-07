@@ -127,6 +127,19 @@ export class  CareplanService {
         }
     };
 
+    getByCode = async (code: string): Promise<boolean> => {
+        try {
+            const record = await this.Careplan.findOne({
+                where : {
+                    Code : code
+                }
+            });
+            return record !== null;
+        } catch (error) {
+            ErrorHandler.throwDbAccessError('DB Error: Unable to check care plan code!', error);
+        }
+    };
+
     search = async (filters: CareplanSearchFilters): Promise<CareplanSearchResults> => {
         try {
 
