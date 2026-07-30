@@ -10,7 +10,7 @@ export class PromotionValidator {
         try {
             const schema = joi.object({
                 TenantCode        : joi.string().max(256).required(),
-                TargetEnvironment : joi.string().valid('dev', 'uat', 'prod').required()
+                TargetEnvironment : joi.string().valid('development', 'uat', 'production').required()
             });
 
             return await schema.validateAsync(requestBody);
@@ -54,7 +54,7 @@ export class PromotionValidator {
            }).unknown(true);
 
            const schema = joi.object({
-               TargetEnvironment : joi.string().valid('dev', 'uat', 'prod').required(),
+               TargetEnvironment : joi.string().valid('development', 'uat', 'production').required(),
                TenantCode        : joi.string().max(256).required(),
                Careplan          : careplanSchema.required()
            });
