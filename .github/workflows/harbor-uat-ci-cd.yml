@@ -3,7 +3,7 @@ name: UAT-CI-CD
 on:
   push:
     branches:
-      - "release/uat-v1.1.17"
+      - 'release/**'
   workflow_dispatch:
 
 jobs:
