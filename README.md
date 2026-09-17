@@ -1,6 +1,6 @@
 # Careplan Service
 
-Careplan service is meant for management of careplans.
+Careplan service is meant for management of careplans
 
 This service supports following workflows.
 - Author and edit careplan assets.
