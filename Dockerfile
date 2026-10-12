@@ -16,7 +16,6 @@ RUN npm run build
 
 # RUN npm run build
 
-
 FROM node:24-alpine3.22
 RUN apk add bash
 RUN apk add --no-cache \
